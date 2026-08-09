@@ -20,6 +20,11 @@ export function takeDamage(currentHealth, amount, invulnerabilityRemaining) {
   return { applied: true, health, defeated: health <= 0 };
 }
 
+export function isGoalReached(player, goal, activationPadding = 0) {
+  const activationRadius = player.radius + goal.radius + Math.max(0, activationPadding);
+  return Math.hypot(player.x - goal.x, player.y - goal.y) <= activationRadius;
+}
+
 export function grantAbility(abilitySet, abilityId, knownAbilityIds) {
   if (!knownAbilityIds.has(abilityId)) throw new Error(`Unknown ability: ${abilityId}`);
   const alreadyOwned = abilitySet.has(abilityId);

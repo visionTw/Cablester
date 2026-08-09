@@ -53,3 +53,17 @@ test("validator catches duplicate ids and unknown ability grants", () => {
   assert.ok(errors.some((error) => error.includes("valid segment")));
   assert.ok(errors.some((error) => error.includes("acceptance level")));
 });
+
+test("validator rejects unreachable or malformed goal placement", () => {
+  const embedded = structuredClone(PROTOTYPE_LEVEL);
+  embedded.goal = { id: "embedded-goal", x: 0, y: 700, radius: 34 };
+  assert.ok(validateLevel(embedded).some((error) => error.includes("embedded in platform")));
+
+  const outside = structuredClone(PROTOTYPE_LEVEL);
+  outside.goal = { id: "outside-goal", x: outside.bounds.x - 1, y: 0, radius: 34 };
+  assert.ok(validateLevel(outside).some((error) => error.includes("inside level bounds")));
+
+  const malformed = structuredClone(PROTOTYPE_LEVEL);
+  malformed.goal = { id: "malformed-goal", x: 100, y: 100, radius: 0 };
+  assert.ok(validateLevel(malformed).some((error) => error.includes("positive radius")));
+});

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
 
 test("energy spending is atomic", () => {
   assert.deepEqual(spendEnergy(2, 0.5), { ok: true, value: 1.5 });
@@ -14,6 +14,14 @@ test("resource restoration clamps to maximum", () => {
 test("invulnerability prevents repeated hazard damage", () => {
   assert.deepEqual(takeDamage(4, 1, 0.4), { applied: false, health: 4, defeated: false });
   assert.deepEqual(takeDamage(4, 1, 0), { applied: true, health: 3, defeated: false });
+});
+
+test("goal activation includes a forgiving approach margin", () => {
+  const player = { x: 78, y: 0, radius: 18 };
+  const goal = { x: 0, y: 0, radius: 34 };
+  assert.equal(isGoalReached(player, goal, 26), true);
+  assert.equal(isGoalReached({ ...player, x: 78.01 }, goal, 26), false);
+  assert.equal(isGoalReached(player, goal, -20), false);
 });
 
 test("ability grants are idempotent and reject unknown ids", () => {

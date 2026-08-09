@@ -19,7 +19,7 @@ import {
   rotate,
   TAU
 } from "./math.js";
-import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
 
 const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
@@ -1242,7 +1242,7 @@ class Game {
       this.startRotation(trigger.delta, "空间正在重构");
     }
 
-    if (!this.runtime.goalReached && length(player.x - this.level.goal.x, player.y - this.level.goal.y) <= player.radius + this.level.goal.radius) {
+    if (!this.runtime.goalReached && isGoalReached(player, this.level.goal, TUNING.goalActivationPadding)) {
       this.runtime.goalReached = true;
       this.showToast(`完成：${levelDisplayName(this.level)} · Esc选择其他关卡`, 5, "ability");
       this.particles.burst(this.level.goal.x, this.level.goal.y, "#fff0a4", 46, 280);
@@ -1759,6 +1759,13 @@ class Game {
     ctx.save();
     ctx.translate(goal.x, goal.y);
     ctx.globalAlpha = this.runtime.goalReached ? 0.35 : 1;
+    ctx.strokeStyle = "rgba(255, 233, 154, 0.2)";
+    ctx.lineWidth = 2;
+    ctx.setLineDash([7, 9]);
+    ctx.beginPath();
+    ctx.arc(0, 0, goal.radius + TUNING.goalActivationPadding, 0, TAU);
+    ctx.stroke();
+    ctx.setLineDash([]);
     ctx.strokeStyle = "#ffe99a";
     ctx.fillStyle = "rgba(255, 222, 111, 0.15)";
     ctx.shadowColor = "#ffe67a";
@@ -2155,6 +2162,22 @@ class Game {
       ctx.textAlign = "center";
       ctx.fillStyle = "#e9fffc";
       ctx.fillText(this.toast.text, VIEWPORT.width / 2, 53);
+    } else if (this.runtime.goalReached) {
+      const width = 330;
+      const x = VIEWPORT.width / 2 - width / 2;
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "rgba(4, 15, 21, 0.88)";
+      ctx.strokeStyle = "rgba(255, 233, 154, 0.45)";
+      roundedRect(ctx, x, 24, width, 54, 15);
+      ctx.fill();
+      ctx.stroke();
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#fff0ad";
+      ctx.font = "750 15px system-ui, sans-serif";
+      ctx.fillText("关卡完成", VIEWPORT.width / 2, 47);
+      ctx.fillStyle = "rgba(233, 255, 252, 0.68)";
+      ctx.font = "600 11px system-ui, sans-serif";
+      ctx.fillText("Esc 返回关卡选择", VIEWPORT.width / 2, 66);
     }
 
     if (this.debug) this.renderDebug(ctx);

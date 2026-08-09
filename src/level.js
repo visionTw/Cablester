@@ -79,7 +79,7 @@ export const PROTOTYPE_LEVEL = {
   rotationTriggers: [
     { id: "rotate-chamber", x: 2600, y: 525, w: 120, h: 125, delta: Math.PI / 2 }
   ],
-  goal: { id: "goal", x: 2510, y: 140, radius: 34 },
+  goal: { id: "goal", x: 3060, y: 260, radius: 38 },
   signs: [
     { id: "sign-start", x: 250, y: 585, text: "左键出绳 · 松开回收 · 绳上按住W / ↑快速收绳" },
     { id: "sign-bar", x: 1160, y: 445, text: "F连接角色与命中面 · 再按F释放" },

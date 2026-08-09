@@ -74,6 +74,7 @@ export const TUNING = Object.freeze({
   damageRecoveryWindow: 0.9,
   damageLiftSpeed: 370,
   damageAwaySpeed: 150,
+  goalActivationPadding: 26,
   rotationDuration: 1.25,
   cameraFollow: 7.5,
   cameraLookAhead: 0.18,

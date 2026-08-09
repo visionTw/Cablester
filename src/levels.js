@@ -393,7 +393,7 @@ const VERTICAL_LAB = labLevel({
     { id: "vert-cp-mid", x: 185, y: -590, w: 90, h: 90, spawn: { x: 230, y: -540 } },
     { id: "vert-cp-top", x: 540, y: -1520, w: 90, h: 90, spawn: { x: 585, y: -1470 } }
   ],
-  goal: { id: "vert-goal", x: 980, y: -1370, radius: 34 },
+  goal: { id: "vert-goal", x: 980, y: -1240, radius: 34 },
   signs: [
     { id: "vert-sign-a", x: 220, y: 585, text: "先向上攀升 · 顶部向右进入下降通道" },
     { id: "vert-sign-b", x: 790, y: -1370, text: "按住Space滑翔控制下降" }
