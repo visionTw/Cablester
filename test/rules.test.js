@@ -119,13 +119,13 @@ test("updraft lift reaches a maximum speed and then stays constant", () => {
   );
 });
 
-test("updraft lift rapidly decelerates after leaving the wind zone", () => {
+test("updraft lift decelerates smoothly after leaving the wind zone", () => {
   assert.deepEqual(
-    decelerateUpdraftLift({ vx: 240, vy: -520 }, { x: 0, y: 1 }, 2200, 0.1),
-    { vx: 240, vy: -300 }
+    decelerateUpdraftLift({ vx: 240, vy: -520 }, { x: 0, y: 1 }, 220, 0.5),
+    { vx: 240, vy: -410 }
   );
   assert.deepEqual(
-    decelerateUpdraftLift({ vx: 240, vy: -180 }, { x: 0, y: 1 }, 2200, 0.1),
+    decelerateUpdraftLift({ vx: 240, vy: -180 }, { x: 0, y: 1 }, 220, 1),
     { vx: 240, vy: 0 }
   );
 });

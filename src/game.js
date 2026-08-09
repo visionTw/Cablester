@@ -499,7 +499,7 @@ class Game {
 
     if (previousWind?.liftActive && !player.wind?.liftActive && player.gliding) {
       player.updraftExitTimer = TUNING.glideUpdraftExitDampingDuration;
-      this.showToast("离开上升气流 · 升力快速衰减", 0.8);
+      this.showToast("离开上升气流 · 约 1 秒恢复普通滑翔", 1.0);
     }
     if (!player.gliding || player.wind?.liftActive) {
       player.updraftExitTimer = 0;
