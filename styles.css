@@ -275,6 +275,19 @@ kbd {
   color: #dcfbfa;
 }
 
+/* Native select popovers can use a light system surface even in this dark UI. */
+.level-editor select option,
+.level-editor select optgroup {
+  background: #f2f7f8;
+  color: #102c35;
+  -webkit-text-fill-color: #102c35;
+}
+
+.level-editor select option:checked {
+  color: #071b24;
+  -webkit-text-fill-color: #071b24;
+}
+
 .level-editor button {
   padding: 7px 11px;
   cursor: pointer;
