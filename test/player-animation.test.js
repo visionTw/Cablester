@@ -123,3 +123,47 @@ test("tail turns continuously when the facing direction changes", () => {
   }
   assert.ok(animation.tailFacing < -0.9);
 });
+
+test("tail mass lags below the player during jump acceleration", () => {
+  const animation = createPlayerAnimation(1);
+  for (let index = 0; index < 24; index += 1) {
+    updatePlayerAnimation(animation, baseState, 1 / 120);
+  }
+  const idleTailY = animation.tailOffsetY;
+  triggerJumpAnimation(animation);
+
+  for (let index = 0; index < 12; index += 1) {
+    updatePlayerAnimation(animation, {
+      ...baseState,
+      vy: -590 + index * 13,
+      grounded: false
+    }, 1 / 120);
+  }
+
+  assert.ok(animation.tailOffsetY > idleTailY + 10);
+  assert.ok(animation.tailVelocityY > 0);
+});
+
+test("tail whips opposite a changing rope swing direction", () => {
+  const animation = createPlayerAnimation(1);
+  for (let index = 0; index < 18; index += 1) {
+    updatePlayerAnimation(animation, {
+      ...baseState,
+      vx: 650,
+      grounded: false,
+      constrained: true
+    }, 1 / 120);
+  }
+  assert.ok(animation.tailOffsetX < -40);
+
+  for (let index = 0; index < 18; index += 1) {
+    updatePlayerAnimation(animation, {
+      ...baseState,
+      vy: 650,
+      grounded: false,
+      constrained: true
+    }, 1 / 120);
+  }
+  assert.ok(animation.tailOffsetY < -20);
+  assert.ok(Math.abs(animation.tailVelocityX) > 100);
+});

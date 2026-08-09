@@ -270,7 +270,8 @@ export function levelToDocument(level) {
       id: level.id,
       name: level.name,
       category: level.category || "自定义关卡",
-      summary: level.summary || ""
+      summary: level.summary || "",
+      ...(level.acceptanceLevel ? { acceptanceLevel: level.acceptanceLevel } : {})
     },
     bounds: clone(level.bounds),
     startingAbilities: [...(level.startingAbilities || [])],
@@ -308,15 +309,28 @@ export function validateLevelDocument(document) {
   if (!Array.isArray(document.objects)) errors.push("Document must contain an objects array");
   const ids = new Set();
   for (const object of document.objects || []) {
-    if (!LEVEL_OBJECT_LIBRARY[object.type]) errors.push(`Unknown object type: ${object.type}`);
+    const definition = LEVEL_OBJECT_LIBRARY[object.type];
+    if (!definition) errors.push(`Unknown object type: ${object.type}`);
     if (!object.id) errors.push("Every object must have an id");
     if (ids.has(object.id)) errors.push(`Duplicate object id: ${object.id}`);
     ids.add(object.id);
     if (!Number.isFinite(object.position?.x) || !Number.isFinite(object.position?.y)) errors.push(`${object.id || object.type} must have a finite position`);
+    for (const [key, property] of Object.entries(definition?.properties || {})) {
+      const value = object.properties?.[key];
+      if (property.kind === "number" && (!Number.isFinite(value) || value < property.min || value > property.max)) {
+        errors.push(`${object.id || object.type}.${key} must be a number from ${property.min} to ${property.max}`);
+      } else if (property.kind === "select" && !property.options.some(([option]) => option === value)) {
+        errors.push(`${object.id || object.type}.${key} has an unsupported value`);
+      } else if (property.kind === "text" && typeof value !== "string") {
+        errors.push(`${object.id || object.type}.${key} must be text`);
+      } else if (property.kind === "boolean" && typeof value !== "boolean") {
+        errors.push(`${object.id || object.type}.${key} must be true or false`);
+      }
+    }
   }
-  for (const type of ["spawn", "goal"]) {
+  for (const [type, definition] of Object.entries(LEVEL_OBJECT_LIBRARY).filter(([, item]) => item.unique)) {
     const count = (document.objects || []).filter((object) => object.type === type).length;
-    if (count !== 1) errors.push(`Document must contain exactly one ${type} object`);
+    if (definition.unique && count !== 1) errors.push(`Document must contain exactly one ${type} object`);
   }
   return errors;
 }
@@ -329,6 +343,7 @@ export function compileLevelDocument(document) {
     name: document.metadata.name,
     category: document.metadata.category || "自定义关卡",
     summary: document.metadata.summary || "",
+    ...(document.metadata.acceptanceLevel ? { acceptanceLevel: document.metadata.acceptanceLevel } : {}),
     startingAbilities: [...(document.startingAbilities || [])],
     bounds: clone(document.bounds),
     backgroundSeeds: [],

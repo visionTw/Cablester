@@ -6,7 +6,7 @@ Cablester 是一个高速横版移动游戏原型。当前阶段使用浏览器 
 
 开发规划和验收标准见 [`docs/DEVELOPMENT_PLAN.md`](docs/DEVELOPMENT_PLAN.md)。
 
-浏览器原型 0.3 已支持：
+浏览器原型 0.4 已支持：
 
 - 跑跳、墙抓与二段跳；
 - 鼠标瞄准的软绳摆荡；
@@ -14,7 +14,8 @@ Cablester 是一个高速横版移动游戏原型。当前阶段使用浏览器 
 - 当前方向及八方向空中冲刺；
 - 血量、蓝量、伤害与检查点；
 - 固定测试关卡和整体旋转房间；
-- 开始界面选择关卡；六个单项3C关卡和四个综合关卡。
+- 开始界面选择关卡；六个单项3C关卡和四个综合关卡；
+- 关卡工坊：统一物件库、画布编辑、种子生成、设备内保存、JSON 导入导出和一键试玩。
 
 当前实现状态和试玩问题见 [`docs/PROTOTYPE_VALIDATION.md`](docs/PROTOTYPE_VALIDATION.md)。浏览器版通过体验验收前不会开始 Godot 迁移。
 
@@ -59,3 +60,5 @@ npm run check
 ```
 
 主要手感参数集中在 [`src/config.js`](src/config.js)，完整关卡套件位于 [`src/levels.js`](src/levels.js)，软绳基准关卡位于 [`src/level.js`](src/level.js)。关卡目录见 [`docs/LEVEL_CATALOG.md`](docs/LEVEL_CATALOG.md)。
+
+关卡工坊的物件格式、编辑流程与扩展方法见 [`docs/LEVEL_EDITOR.md`](docs/LEVEL_EDITOR.md)。关卡文档统一使用 `objects[]`，每个物件都由 `type`、`position` 和类型专属 `properties` 描述，进入游戏前再编译为现有运行时关卡格式。

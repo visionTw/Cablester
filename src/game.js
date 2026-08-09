@@ -1,5 +1,6 @@
 import { ABILITIES, KNOWN_ABILITY_IDS, TUNING, VIEWPORT } from "./config.js";
 import { syncCanvasBackingStore } from "./display.js";
+import { createLevelEditor } from "./level-editor.js";
 import { LEVELS } from "./levels.js";
 import { validateLevel } from "./level-validator.js";
 import {
@@ -33,6 +34,8 @@ const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
 const startCard = document.querySelector("#start-card");
 const levelGrid = document.querySelector("#level-grid");
+const levelEditorRoot = document.querySelector("#level-editor");
+const openLevelEditorButton = document.querySelector("#open-level-editor");
 
 for (const level of LEVELS) {
   const levelErrors = validateLevel(level);
@@ -1998,42 +2001,38 @@ class Game {
     const flash = this.player.invulnerability > 0 && Math.floor(this.player.invulnerability * 18) % 2 === 0;
     ctx.globalAlpha = flash ? 0.35 : 1;
     const velocityForward = normalize(speedScreen.x, speedScreen.y, this.player.facing, 0);
-    const tailSide = Math.sign(animation.tailFacing) || this.player.facing;
-    const facingForward = { x: tailSide, y: 0 };
     const motionBlend = animation.motionTailBlend;
-    const forward = normalize(
-      facingForward.x * (1 - motionBlend) + velocityForward.x * motionBlend,
-      velocityForward.y * motionBlend,
-      this.player.facing,
-      0
-    );
-    const tailVisibility = clamp(
-      motionBlend + (1 - motionBlend) * Math.abs(animation.tailFacing),
-      0.12,
-      1
-    );
-    const perpendicular = { x: -forward.y, y: forward.x };
-    const forwardAngle = Math.atan2(forward.y, forward.x);
-    const tailAxisAngle = forwardAngle - axisAngle;
+    const tailOffset = rotate(animation.tailOffsetX, animation.tailOffsetY, this.camera.angle);
+    const tailVelocity = rotate(animation.tailVelocityX, animation.tailVelocityY, this.camera.angle);
+    const tailDirection = normalize(tailOffset.x, tailOffset.y, -this.player.facing, 0);
+    const perpendicular = { x: -tailDirection.y, y: tailDirection.x };
+    const tailAngle = Math.atan2(tailDirection.y, tailDirection.x);
+    const tailAxisAngle = tailAngle - axisAngle;
     const edgeRadius = 1 / Math.sqrt(
       Math.pow(Math.cos(tailAxisAngle) / pose.longRadius, 2)
       + Math.pow(Math.sin(tailAxisAngle) / pose.crossRadius, 2)
     );
-    const tailLength = (25 + clamp(speed / 850, 0, 1) * 9) * tailVisibility;
-    const tailWave = Math.sin(this.elapsed * 8.5 + this.player.distanceTravelled * 0.035)
-      * (2.5 + motionBlend * 2.5) * tailVisibility;
+    const tailTangentSpeed = dot(
+      tailVelocity.x,
+      tailVelocity.y,
+      perpendicular.x,
+      perpendicular.y
+    );
+    const tailBend = clamp(tailTangentSpeed * 0.026, -9, 9);
+    const tailRootX = tailDirection.x * edgeRadius * 0.7;
+    const tailRootY = tailDirection.y * edgeRadius * 0.7;
     ctx.strokeStyle = "rgba(171, 255, 247, 0.65)";
     ctx.lineWidth = 3;
     ctx.lineCap = "round";
     ctx.shadowColor = "#a8fff5";
     ctx.shadowBlur = 11;
     ctx.beginPath();
-    ctx.moveTo(-forward.x * edgeRadius * 0.7, -forward.y * edgeRadius * 0.7);
+    ctx.moveTo(tailRootX, tailRootY);
     ctx.quadraticCurveTo(
-      -forward.x * (edgeRadius + tailLength * 0.55) + perpendicular.x * tailWave,
-      -forward.y * (edgeRadius + tailLength * 0.55) + perpendicular.y * tailWave,
-      -forward.x * (edgeRadius + tailLength) - perpendicular.x * tailWave * 0.35,
-      -forward.y * (edgeRadius + tailLength) - perpendicular.y * tailWave * 0.35
+      tailRootX + (tailOffset.x - tailRootX) * 0.5 + perpendicular.x * tailBend,
+      tailRootY + (tailOffset.y - tailRootY) * 0.5 + perpendicular.y * tailBend,
+      tailOffset.x,
+      tailOffset.y
     );
     ctx.stroke();
 
@@ -2328,37 +2327,60 @@ function isGodotSyncReady(level) {
 const input = new Input(canvas);
 const game = new Game(context, input, LEVELS);
 
-for (const level of LEVELS) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "level-button";
-  button.dataset.category = level.category;
-  if (level.category === "单项3C") button.dataset.godotReady = String(isGodotSyncReady(level));
+let customLevels = [];
 
-  const category = document.createElement("span");
-  category.className = "level-category";
-  category.textContent = level.category;
-  const name = document.createElement("span");
-  name.className = "level-name";
-  name.textContent = levelDisplayName(level);
-  const acceptance = document.createElement("span");
-  acceptance.className = "level-acceptance";
-  acceptance.textContent = isGodotSyncReady(level)
-    ? "Godot 同步开发已开放"
-    : "Web 验证中 · 暂不同步 Godot";
-  const summary = document.createElement("span");
-  summary.className = "level-summary";
-  summary.textContent = level.summary;
-  button.append(category, name);
-  if (level.category === "单项3C") button.append(acceptance);
-  button.append(summary);
+function renderLevelMenu() {
+  levelGrid.replaceChildren();
+  for (const level of [...LEVELS, ...customLevels]) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "level-button";
+    button.dataset.category = level.category;
+    if (level.category === "单项3C") button.dataset.godotReady = String(isGodotSyncReady(level));
 
-  button.addEventListener("click", () => {
+    const category = document.createElement("span");
+    category.className = "level-category";
+    category.textContent = level.category;
+    const name = document.createElement("span");
+    name.className = "level-name";
+    name.textContent = levelDisplayName(level);
+    const acceptance = document.createElement("span");
+    acceptance.className = "level-acceptance";
+    acceptance.textContent = isGodotSyncReady(level)
+      ? "Godot 同步开发已开放"
+      : "Web 验证中 · 暂不同步 Godot";
+    const summary = document.createElement("span");
+    summary.className = "level-summary";
+    summary.textContent = level.summary;
+    button.append(category, name);
+    if (level.category === "单项3C") button.append(acceptance);
+    button.append(summary);
+
+    button.addEventListener("click", () => {
+      startCard.classList.add("is-hidden");
+      canvas.focus();
+      game.start(level);
+    });
+    levelGrid.append(button);
+  }
+}
+
+const levelEditor = createLevelEditor({
+  root: levelEditorRoot,
+  sourceLevels: LEVELS,
+  onPlay(level) {
+    levelEditor.close();
     startCard.classList.add("is-hidden");
     canvas.focus();
     game.start(level);
-  });
-  levelGrid.append(button);
-}
+  },
+  onSavedLevelsChange(levels) {
+    customLevels = levels;
+    renderLevelMenu();
+  }
+});
+
+openLevelEditorButton.addEventListener("click", () => levelEditor.open());
+renderLevelMenu();
 
 window.cablester = game;

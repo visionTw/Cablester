@@ -20,6 +20,94 @@ function stepSpring(value, velocity, target, frequency, damping, deltaTime) {
   };
 }
 
+function limitVector(x, y, maximumLength) {
+  const magnitude = length(x, y);
+  if (magnitude <= maximumLength || magnitude < 0.000001) return { x, y };
+  return {
+    x: x / magnitude * maximumLength,
+    y: y / magnitude * maximumLength
+  };
+}
+
+function updateTailPhysics(animation, state, speed, deltaTime) {
+  const facingBackX = -state.tangent.x * animation.tailFacing;
+  const facingBackY = -state.tangent.y * animation.tailFacing;
+  const fallbackBack = length(facingBackX, facingBackY) > 0.05
+    ? { x: facingBackX, y: facingBackY }
+    : { x: -state.tangent.x * state.facing, y: -state.tangent.y * state.facing };
+  const motionBack = speed > 0.001
+    ? { x: -state.vx / speed, y: -state.vy / speed }
+    : fallbackBack;
+  const tailIsFree = !state.grounded || state.constrained || state.dashing;
+  const motionInfluence = tailIsFree
+    ? clamp(0.18 + speed / 680, 0.18, 0.94)
+    : 0;
+  const gravitySag = state.grounded ? 0.1 : 0.22 * (1 - motionInfluence);
+  const desiredX = fallbackBack.x * (1 - motionInfluence)
+    + motionBack.x * motionInfluence
+    + state.gravity.x * gravitySag;
+  const desiredY = fallbackBack.y * (1 - motionInfluence)
+    + motionBack.y * motionInfluence
+    + state.gravity.y * gravitySag;
+  const desiredLength = TUNING.tailRestLength
+    + clamp(speed / TUNING.maximumSwingSpeed, 0, 1) * 10;
+  const desiredMagnitude = Math.max(0.000001, length(desiredX, desiredY));
+  const targetX = desiredX / desiredMagnitude * desiredLength;
+  const targetY = desiredY / desiredMagnitude * desiredLength;
+
+  const rawBodyAccelerationX = (state.vx - animation.previousPlayerVx) / deltaTime;
+  const rawBodyAccelerationY = (state.vy - animation.previousPlayerVy) / deltaTime;
+  const bodyAcceleration = limitVector(
+    rawBodyAccelerationX,
+    rawBodyAccelerationY,
+    TUNING.tailMaximumBodyAcceleration
+  );
+  const relativeForceX = (-bodyAcceleration.x + state.gravity.x * TUNING.gravity)
+    * TUNING.tailInertia;
+  const relativeForceY = (-bodyAcceleration.y + state.gravity.y * TUNING.gravity)
+    * TUNING.tailInertia;
+  const springFrequency = TUNING.tailPhysicsFrequency;
+  const damping = 2 * TUNING.tailPhysicsDamping * springFrequency;
+  const accelerationX = (targetX - animation.tailOffsetX) * springFrequency * springFrequency
+    - animation.tailVelocityX * damping
+    + relativeForceX;
+  const accelerationY = (targetY - animation.tailOffsetY) * springFrequency * springFrequency
+    - animation.tailVelocityY * damping
+    + relativeForceY;
+
+  animation.tailVelocityX += accelerationX * deltaTime;
+  animation.tailVelocityY += accelerationY * deltaTime;
+  animation.tailOffsetX += animation.tailVelocityX * deltaTime;
+  animation.tailOffsetY += animation.tailVelocityY * deltaTime;
+
+  const limitedOffset = limitVector(
+    animation.tailOffsetX,
+    animation.tailOffsetY,
+    TUNING.tailMaximumLength
+  );
+  if (limitedOffset.x !== animation.tailOffsetX || limitedOffset.y !== animation.tailOffsetY) {
+    const radial = {
+      x: limitedOffset.x / TUNING.tailMaximumLength,
+      y: limitedOffset.y / TUNING.tailMaximumLength
+    };
+    const outwardSpeed = dot(
+      animation.tailVelocityX,
+      animation.tailVelocityY,
+      radial.x,
+      radial.y
+    );
+    if (outwardSpeed > 0) {
+      animation.tailVelocityX -= radial.x * outwardSpeed;
+      animation.tailVelocityY -= radial.y * outwardSpeed;
+    }
+    animation.tailOffsetX = limitedOffset.x;
+    animation.tailOffsetY = limitedOffset.y;
+  }
+
+  animation.previousPlayerVx = state.vx;
+  animation.previousPlayerVy = state.vy;
+}
+
 export function createPlayerAnimation(facing = 1) {
   return {
     stretch: 0,
@@ -27,6 +115,12 @@ export function createPlayerAnimation(facing = 1) {
     axisAngle: 0,
     tailFacing: facing < 0 ? -1 : 1,
     tailFacingVelocity: 0,
+    tailOffsetX: -TUNING.tailRestLength * (facing < 0 ? -1 : 1),
+    tailOffsetY: 0,
+    tailVelocityX: 0,
+    tailVelocityY: 0,
+    previousPlayerVx: 0,
+    previousPlayerVy: 0,
     motionTailBlend: 0,
     dashBlend: 0,
     jumpTimer: 0,
@@ -132,6 +226,7 @@ export function updatePlayerAnimation(animation, state, deltaTime) {
   );
   animation.tailFacing = clamp(tailSpring.value, -1.08, 1.08);
   animation.tailFacingVelocity = tailSpring.velocity;
+  updateTailPhysics(animation, state, speed, deltaTime);
 
   const usesMotionTail = speed > 120 && (state.dashing || state.constrained);
   const motionTailAmount = 1 - Math.exp(-(usesMotionTail ? 18 : 9) * deltaTime);
