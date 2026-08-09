@@ -20,6 +20,8 @@ Cablester 是一个高速横版移动游戏原型。当前阶段使用浏览器 
 
 单项3C使用 `L0–L4` 标记验收状态，规则见 [`docs/ACCEPTANCE_LEVELS.md`](docs/ACCEPTANCE_LEVELS.md)。只有达到 `L1` 及以上的能力才开放 Godot 同步开发；当前软绳、猛击和二段跳为 `L1`，其余单项能力暂为 `L0`。
 
+Web Canvas 会根据 CSS 显示尺寸和设备像素比动态生成高清绘制缓冲，同时维持 `1280×720` 玩法逻辑坐标。Godot 的对应缩放方案见 [`docs/RESOLUTION_SCALING.md`](docs/RESOLUTION_SCALING.md)。
+
 ## 本地运行
 
 ```bash

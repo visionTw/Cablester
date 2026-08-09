@@ -30,7 +30,7 @@ canvas {
 }
 
 .shell {
-  width: min(100vw, 1600px, calc((100vh - 68px) * 16 / 9));
+  width: min(100vw, 1600px, calc((100dvh - 68px) * 16 / 9));
   padding: 10px;
 }
 
@@ -39,10 +39,12 @@ canvas {
   overflow: hidden;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border: 1px solid rgba(126, 243, 255, 0.22);
   border-radius: 18px;
   background: #07131d;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), inset 0 0 80px rgba(53, 229, 228, 0.04);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(126, 243, 255, 0.22),
+    inset 0 0 80px rgba(53, 229, 228, 0.04);
 }
 
 canvas {
@@ -51,6 +53,7 @@ canvas {
   height: 100%;
   outline: none;
   cursor: crosshair;
+  image-rendering: auto;
 }
 
 .corner-label {

@@ -1,4 +1,5 @@
 import { ABILITIES, KNOWN_ABILITY_IDS, TUNING, VIEWPORT } from "./config.js";
+import { syncCanvasBackingStore } from "./display.js";
 import { LEVELS } from "./levels.js";
 import { validateLevel } from "./level-validator.js";
 import {
@@ -1342,6 +1343,7 @@ class Game {
 
   render() {
     const ctx = this.ctx;
+    this.displayMetrics = syncCanvasBackingStore(canvas, ctx, VIEWPORT);
     this.renderBackground(ctx);
     ctx.save();
     ctx.translate(VIEWPORT.width / 2, VIEWPORT.height / 2);
@@ -2115,6 +2117,7 @@ class Game {
       `velocity ${formatNumber(this.player.vx)} / ${formatNumber(this.player.vy)}`,
       `gravity ${formatNumber(gravity.x, 2)} / ${formatNumber(gravity.y, 2)}`,
       `camera ${(this.camera.angle * 180 / Math.PI).toFixed(0)}°`,
+      `render ${this.displayMetrics?.width || canvas.width}×${this.displayMetrics?.height || canvas.height}  ${this.displayMetrics?.scale.toFixed(2) || "1.00"}x`,
       `grounded ${this.player.grounded}  rope ${this.player.rope?.phase || "—"}  dash ${this.player.dashAvailable}`,
       `checkpoint ${this.currentCheckpoint.id}`,
       `abilities ${[...this.abilities].join(", ")}`

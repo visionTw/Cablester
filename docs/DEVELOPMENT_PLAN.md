@@ -66,6 +66,8 @@ Cablester 的核心不是一次性通过关卡，而是让玩家把固定的大�
 
 单项能力使用 `L0–L4` 验收等级。只有达到 `L1` 及以上的能力可以进入 Godot 同步实现；`L0` 继续留在 Web 原型中迭代。等级定义和当前状态见 [`ACCEPTANCE_LEVELS.md`](ACCEPTANCE_LEVELS.md)。
 
+Web 与 Godot 统一使用 `1280×720` 逻辑坐标，并分别以设备原生像素密度渲染。缩放、宽高比、安全画面和双边验收设备矩阵见 [`RESOLUTION_SCALING.md`](RESOLUTION_SCALING.md)。
+
 ## 阶段二：Godot 迁移
 
 目标版本暂定 Godot 4.x。开始迁移时先确认具体小版本，不在浏览器原型阶段提前依赖某个 Godot API。
