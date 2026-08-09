@@ -19,7 +19,7 @@ import {
   rotate,
   TAU
 } from "./math.js";
-import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, limitSpeedAlongDirection, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
 
 const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
@@ -255,6 +255,7 @@ class Game {
       damageRecoveryJump: false,
       gliding: false,
       wind: null,
+      updraftExitTimer: 0,
       dashAvailable: this.abilities?.has("dash") || false,
       dashTimer: 0,
       dashDirectionX: 0,
@@ -364,7 +365,8 @@ class Game {
     const tangent = this.screenRightDirection();
     const wasGrounded = player.grounded;
     const wasGliding = player.gliding;
-    const previousWindIds = player.wind?.ids || [];
+    const previousWind = player.wind;
+    const previousWindIds = previousWind?.ids || [];
     const previousWall = player.wallNormal;
 
     player.previousX = player.x;
@@ -468,8 +470,8 @@ class Game {
       if (!circleIntersectsRect(player.x, player.y, player.radius, wind)) continue;
       const multiplier = player.gliding ? TUNING.glideWindMultiplier : 1;
       const updraftStrength = -dot(wind.forceX, wind.forceY, gravity.x, gravity.y);
-      const enteredUpdraft = player.gliding
-        && updraftStrength > 0
+      const liftActive = player.gliding && updraftStrength > 0;
+      const enteredUpdraft = liftActive
         && (!wasGliding || !previousWindIds.includes(wind.id));
       if (enteredUpdraft) {
         const lifted = applyMinimumUpdraftLift(player, gravity, TUNING.glideUpdraftEntrySpeed);
@@ -481,12 +483,36 @@ class Game {
       const accelerated = applyWindForce(player, wind, deltaTime, multiplier);
       player.vx = accelerated.vx;
       player.vy = accelerated.vy;
-      if (!player.wind) player.wind = { forceX: 0, forceY: 0, multiplier, ids: [], updraft: false };
+      if (liftActive) {
+        const limitedLift = limitUpdraftLiftSpeed(player, gravity, TUNING.glideUpdraftMaximumSpeed);
+        player.vx = limitedLift.vx;
+        player.vy = limitedLift.vy;
+      }
+      if (!player.wind) player.wind = { forceX: 0, forceY: 0, multiplier, ids: [], updraft: false, liftActive: false };
       player.wind.forceX += wind.forceX * multiplier;
       player.wind.forceY += wind.forceY * multiplier;
       player.wind.multiplier = multiplier;
       player.wind.ids.push(wind.id);
       player.wind.updraft ||= updraftStrength > 0;
+      player.wind.liftActive ||= liftActive;
+    }
+
+    if (previousWind?.liftActive && !player.wind?.liftActive && player.gliding) {
+      player.updraftExitTimer = TUNING.glideUpdraftExitDampingDuration;
+      this.showToast("离开上升气流 · 升力快速衰减", 0.8);
+    }
+    if (!player.gliding || player.wind?.liftActive) {
+      player.updraftExitTimer = 0;
+    } else if (player.updraftExitTimer > 0) {
+      const dampedLift = decelerateUpdraftLift(
+        player,
+        gravity,
+        TUNING.glideUpdraftExitDeceleration,
+        deltaTime
+      );
+      player.vx = dampedLift.vx;
+      player.vy = dampedLift.vy;
+      player.updraftExitTimer = Math.max(0, player.updraftExitTimer - deltaTime);
     }
 
     if (player.wind && Math.random() < 0.2) {
@@ -1296,6 +1322,7 @@ class Game {
       damageRecoveryJump: false,
       gliding: false,
       wind: null,
+      updraftExitTimer: 0,
       dashAvailable: this.abilities.has("dash"),
       dashTimer: 0,
       dashDirectionX: 0,
@@ -2039,7 +2066,15 @@ class Game {
       ctx.fillStyle = "#a9eaff";
       ctx.font = "700 13px system-ui, sans-serif";
       const boost = this.player.gliding ? ` · 滑翔风力 ${this.player.wind.multiplier.toFixed(1)}×` : "";
-      const lift = this.player.gliding && this.player.wind.updraft ? " · 上升托举" : "";
+      const liftSpeed = Math.max(0, -dot(
+        this.player.vx,
+        this.player.vy,
+        this.gravityDirection().x,
+        this.gravityDirection().y
+      ));
+      const lift = this.player.wind.liftActive
+        ? ` · 上升 ${Math.round(liftSpeed)}/${TUNING.glideUpdraftMaximumSpeed}`
+        : "";
       ctx.fillText(`气流推动 ${horizontal}${vertical}${boost}${lift}`, VIEWPORT.width / 2, 136);
     }
 

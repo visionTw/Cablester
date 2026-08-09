@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, limitSpeedAlongDirection, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
 
 test("energy spending is atomic", () => {
   assert.deepEqual(spendEnergy(2, 0.5), { ok: true, value: 1.5 });
@@ -105,6 +105,28 @@ test("entering an updraft immediately turns falling speed into lift", () => {
   assert.deepEqual(
     applyMinimumUpdraftLift({ vx: 240, vy: -420 }, { x: 0, y: 1 }, 300),
     { vx: 240, vy: -420 }
+  );
+});
+
+test("updraft lift reaches a maximum speed and then stays constant", () => {
+  assert.deepEqual(
+    limitUpdraftLiftSpeed({ vx: 240, vy: -680 }, { x: 0, y: 1 }, 520),
+    { vx: 240, vy: -520 }
+  );
+  assert.deepEqual(
+    limitUpdraftLiftSpeed({ vx: 240, vy: -410 }, { x: 0, y: 1 }, 520),
+    { vx: 240, vy: -410 }
+  );
+});
+
+test("updraft lift rapidly decelerates after leaving the wind zone", () => {
+  assert.deepEqual(
+    decelerateUpdraftLift({ vx: 240, vy: -520 }, { x: 0, y: 1 }, 2200, 0.1),
+    { vx: 240, vy: -300 }
+  );
+  assert.deepEqual(
+    decelerateUpdraftLift({ vx: 240, vy: -180 }, { x: 0, y: 1 }, 2200, 0.1),
+    { vx: 240, vy: 0 }
   );
 });
 

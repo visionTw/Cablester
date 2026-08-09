@@ -64,6 +64,32 @@ export function applyMinimumUpdraftLift(state, gravity, minimumLiftSpeed) {
   };
 }
 
+export function limitUpdraftLiftSpeed(state, gravity, maximumLiftSpeed) {
+  const currentDownwardSpeed = dot(state.vx, state.vy, gravity.x, gravity.y);
+  const minimumDownwardSpeed = -Math.max(0, maximumLiftSpeed);
+  if (currentDownwardSpeed >= minimumDownwardSpeed) return { vx: state.vx, vy: state.vy };
+  const correction = minimumDownwardSpeed - currentDownwardSpeed;
+  return {
+    vx: state.vx + gravity.x * correction,
+    vy: state.vy + gravity.y * correction
+  };
+}
+
+export function decelerateUpdraftLift(state, gravity, deceleration, deltaTime) {
+  const currentDownwardSpeed = dot(state.vx, state.vy, gravity.x, gravity.y);
+  if (currentDownwardSpeed >= 0) return { vx: state.vx, vy: state.vy };
+  const nextDownwardSpeed = moveToward(
+    currentDownwardSpeed,
+    0,
+    Math.max(0, deceleration) * Math.max(0, deltaTime)
+  );
+  const correction = nextDownwardSpeed - currentDownwardSpeed;
+  return {
+    vx: state.vx + gravity.x * correction,
+    vy: state.vy + gravity.y * correction
+  };
+}
+
 export function applyRopeWinch(state, radial, deltaTime, tuning) {
   const reelSpeed = Math.min(
     tuning.maximumReelSpeed,
