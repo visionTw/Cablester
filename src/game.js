@@ -3,6 +3,14 @@ import { syncCanvasBackingStore } from "./display.js";
 import { LEVELS } from "./levels.js";
 import { validateLevel } from "./level-validator.js";
 import {
+  computeSoftBodyPose,
+  createPlayerAnimation,
+  triggerDashAnimation,
+  triggerJumpAnimation,
+  triggerLandingAnimation,
+  updatePlayerAnimation
+} from "./player-animation.js";
+import {
   circleIntersectsRect,
   clamp,
   closestPointOnSegment,
@@ -264,6 +272,7 @@ class Game {
       respawnTimer: 0,
       visible: true,
       facing: 1,
+      animation: createPlayerAnimation(1),
       distanceTravelled: 0,
       previousX: spawn.x,
       previousY: spawn.y
@@ -425,6 +434,7 @@ class Game {
         player.vx = previousWall.x * TUNING.wallJumpAwaySpeed - gravity.x * TUNING.wallJumpUpSpeed;
         player.vy = previousWall.y * TUNING.wallJumpAwaySpeed - gravity.y * TUNING.wallJumpUpSpeed;
         player.jumpBufferTimer = 0;
+        triggerJumpAnimation(player.animation);
         this.particles.burst(player.x, player.y, "#87f5ef", 8, 100);
       } else if (player.damageRecoveryJump && player.damageRecoveryTimer > 0) {
         this.performJump(gravity, TUNING.jumpSpeed * 0.92);
@@ -526,6 +536,7 @@ class Game {
       player.vy = player.vy / speed * speedLimit;
     }
 
+    const impactSpeed = Math.max(0, dot(player.vx, player.vy, gravity.x, gravity.y));
     player.x += player.vx * deltaTime;
     player.y += player.vy * deltaTime;
     this.constrainRope();
@@ -533,6 +544,22 @@ class Game {
     this.resolveCollisions();
     this.constrainHardBar();
     this.updateRopeVisual(deltaTime);
+
+    if (!wasGrounded && player.grounded) {
+      triggerLandingAnimation(player.animation, gravity, impactSpeed);
+    }
+    updatePlayerAnimation(player.animation, {
+      vx: player.vx,
+      vy: player.vy,
+      gravity,
+      tangent,
+      grounded: player.grounded,
+      gliding: player.gliding,
+      constrained: Boolean(this.isRopeAttached() || this.runtime.hardBar),
+      dashing,
+      facing: player.facing,
+      distanceTravelled: player.distanceTravelled
+    }, deltaTime);
 
     player.distanceTravelled += length(player.x - player.previousX, player.y - player.previousY);
     if (player.grounded) {
@@ -562,6 +589,7 @@ class Game {
     player.vy -= gravity.y * speed;
     player.jumpBufferTimer = 0;
     player.grounded = false;
+    triggerJumpAnimation(player.animation);
   }
 
   handleDashInput(horizontalAxis, verticalAxis) {
@@ -587,6 +615,7 @@ class Game {
     player.dashAvailable = false;
     player.grounded = false;
     player.gliding = false;
+    triggerDashAnimation(player.animation, dash.directionX, dash.directionY);
     this.particles.burst(player.x, player.y, "#a5eeff", 18, 220);
     this.showToast("冲刺 · 可在途中连接软绳或硬杆继承速度", 1.05, "ability");
     return true;
@@ -1331,6 +1360,7 @@ class Game {
       respawnTimer: 0,
       visible: true
     });
+    this.player.animation = createPlayerAnimation(this.player.facing);
     this.detachHardBar(false);
     this.camera.x = spawn.x;
     this.camera.y = spawn.y - 30;
@@ -1932,10 +1962,19 @@ class Game {
     if (!this.player.visible) return;
     const screen = this.worldToScreen(this.player.x, this.player.y);
     const speedScreen = rotate(this.player.vx, this.player.vy, this.camera.angle);
-    const angle = Math.atan2(speedScreen.y, speedScreen.x);
-    const movingFast = length(speedScreen.x, speedScreen.y) > 450;
+    const speed = length(speedScreen.x, speedScreen.y);
+    const animation = this.player.animation;
+    const pose = computeSoftBodyPose(animation, this.player.radius);
+    const axisAngle = pose.angle + this.camera.angle;
+    const verticalExtent = Math.sqrt(
+      Math.pow(pose.longRadius * Math.sin(axisAngle), 2)
+      + Math.pow(pose.crossRadius * Math.cos(axisAngle), 2)
+    );
+    const groundedOffset = this.player.grounded
+      ? this.player.radius - verticalExtent
+      : 0;
     ctx.save();
-    ctx.translate(screen.x, screen.y);
+    ctx.translate(screen.x, screen.y + groundedOffset);
     if (this.player.wind) {
       const windScreen = rotate(this.player.wind.forceX, this.player.wind.forceY, this.camera.angle);
       const direction = normalize(windScreen.x, windScreen.y, 0, -1);
@@ -1956,12 +1995,50 @@ class Game {
       }
       ctx.restore();
     }
-    if (movingFast && !this.player.gliding) ctx.rotate(angle);
     const flash = this.player.invulnerability > 0 && Math.floor(this.player.invulnerability * 18) % 2 === 0;
     ctx.globalAlpha = flash ? 0.35 : 1;
-    const dashing = this.player.dashTimer > 0;
-    ctx.shadowColor = dashing ? "#8fdfff" : "#a8fff5";
-    ctx.shadowBlur = dashing ? 38 : movingFast ? 26 : 17;
+    const velocityForward = normalize(speedScreen.x, speedScreen.y, this.player.facing, 0);
+    const tailSide = Math.sign(animation.tailFacing) || this.player.facing;
+    const facingForward = { x: tailSide, y: 0 };
+    const motionBlend = animation.motionTailBlend;
+    const forward = normalize(
+      facingForward.x * (1 - motionBlend) + velocityForward.x * motionBlend,
+      velocityForward.y * motionBlend,
+      this.player.facing,
+      0
+    );
+    const tailVisibility = clamp(
+      motionBlend + (1 - motionBlend) * Math.abs(animation.tailFacing),
+      0.12,
+      1
+    );
+    const perpendicular = { x: -forward.y, y: forward.x };
+    const forwardAngle = Math.atan2(forward.y, forward.x);
+    const tailAxisAngle = forwardAngle - axisAngle;
+    const edgeRadius = 1 / Math.sqrt(
+      Math.pow(Math.cos(tailAxisAngle) / pose.longRadius, 2)
+      + Math.pow(Math.sin(tailAxisAngle) / pose.crossRadius, 2)
+    );
+    const tailLength = (25 + clamp(speed / 850, 0, 1) * 9) * tailVisibility;
+    const tailWave = Math.sin(this.elapsed * 8.5 + this.player.distanceTravelled * 0.035)
+      * (2.5 + motionBlend * 2.5) * tailVisibility;
+    ctx.strokeStyle = "rgba(171, 255, 247, 0.65)";
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.shadowColor = "#a8fff5";
+    ctx.shadowBlur = 11;
+    ctx.beginPath();
+    ctx.moveTo(-forward.x * edgeRadius * 0.7, -forward.y * edgeRadius * 0.7);
+    ctx.quadraticCurveTo(
+      -forward.x * (edgeRadius + tailLength * 0.55) + perpendicular.x * tailWave,
+      -forward.y * (edgeRadius + tailLength * 0.55) + perpendicular.y * tailWave,
+      -forward.x * (edgeRadius + tailLength) - perpendicular.x * tailWave * 0.35,
+      -forward.y * (edgeRadius + tailLength) - perpendicular.y * tailWave * 0.35
+    );
+    ctx.stroke();
+
+    ctx.shadowColor = animation.dashBlend > 0.05 ? "#8fdfff" : "#a8fff5";
+    ctx.shadowBlur = 17 + animation.dashBlend * 21 + Math.abs(animation.stretch) * 18;
     if (this.player.gliding) {
       ctx.strokeStyle = "rgba(143, 225, 255, 0.84)";
       ctx.fillStyle = "rgba(91, 181, 235, 0.16)";
@@ -1976,22 +2053,29 @@ class Game {
       ctx.fill();
       ctx.stroke();
     }
-    ctx.fillStyle = dashing ? "#dff7ff" : "#e8fffb";
+    ctx.fillStyle = "#e8fffb";
+    ctx.save();
+    ctx.rotate(axisAngle);
     ctx.beginPath();
-    ctx.ellipse(0, 0, movingFast ? 23 : 18, movingFast ? 14 : 19, 0, 0, TAU);
+    ctx.ellipse(0, 0, pose.longRadius, pose.crossRadius, 0, 0, TAU);
     ctx.fill();
+    if (animation.dashBlend > 0.01) {
+      ctx.globalAlpha *= animation.dashBlend * 0.72;
+      ctx.fillStyle = "#d8f3ff";
+      ctx.fill();
+    }
+    ctx.restore();
     ctx.shadowBlur = 0;
     ctx.fillStyle = "#2d7278";
-    const eyeX = movingFast ? 7 : this.player.facing * 6;
+    const eyeForward = normalize(
+      this.player.facing * (1 - motionBlend) + velocityForward.x * motionBlend,
+      velocityForward.y * motionBlend,
+      this.player.facing,
+      0
+    );
     ctx.beginPath();
-    ctx.arc(eyeX, -4, 2.5, 0, TAU);
+    ctx.arc(eyeForward.x * 6, -4 + eyeForward.y * 4, 2.5, 0, TAU);
     ctx.fill();
-    ctx.strokeStyle = "rgba(171, 255, 247, 0.65)";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(-10, 11);
-    ctx.quadraticCurveTo(-22, 24, -29, 12);
-    ctx.stroke();
     ctx.restore();
   }
 
