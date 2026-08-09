@@ -1,11 +1,22 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { TUNING } from "../src/config.js";
 import { PROTOTYPE_LEVEL } from "../src/level.js";
 import { LEVEL_BY_ID, LEVELS } from "../src/levels.js";
 import { validateLevel } from "../src/level-validator.js";
 
 test("prototype level passes structural validation", () => {
   assert.deepEqual(validateLevel(PROTOTYPE_LEVEL), []);
+});
+
+test("soft rope rotation chamber has a player-sized entrance", () => {
+  const leftWall = PROTOTYPE_LEVEL.platforms.find((platform) => platform.id === "chamber-left");
+  const floor = PROTOTYPE_LEVEL.platforms.find((platform) => platform.id === "chamber-floor");
+  const chamberCheckpoint = PROTOTYPE_LEVEL.checkpoints.find((checkpoint) => checkpoint.id === "cp-chamber");
+  const passageY = chamberCheckpoint.spawn.y;
+
+  assert.ok(passageY - TUNING.playerRadius > leftWall.y + leftWall.h);
+  assert.ok(passageY + TUNING.playerRadius < floor.y);
 });
 
 test("all selectable levels pass structural validation", () => {

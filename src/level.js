@@ -21,7 +21,7 @@ export const PROTOTYPE_LEVEL = {
     { id: "island-c", x: 1430, y: 630, w: 190, h: 120 },
     { id: "island-d", x: 1760, y: 520, w: 150, h: 66 },
     { id: "runway", x: 2070, y: 640, w: 390, h: 180 },
-    { id: "chamber-left", x: 2440, y: 70, w: 55, h: 630 },
+    { id: "chamber-left", x: 2440, y: 70, w: 55, h: 430 },
     { id: "chamber-top", x: 2440, y: 70, w: 760, h: 55 },
     { id: "chamber-floor", x: 2440, y: 650, w: 760, h: 55 },
     { id: "chamber-right", x: 3145, y: 70, w: 55, h: 635 },
@@ -83,6 +83,6 @@ export const PROTOTYPE_LEVEL = {
   signs: [
     { id: "sign-start", x: 250, y: 585, text: "左键出绳 · 松开回收 · 绳上按住W / ↑快速收绳" },
     { id: "sign-bar", x: 1160, y: 445, text: "F连接角色与命中面 · 再按F释放" },
-    { id: "sign-rotation", x: 2210, y: 585, text: "前方空间会旋转 · 输入仍按屏幕方向" }
+    { id: "sign-rotation", x: 2210, y: 585, text: "从左侧入口进入旋转房 · 输入仍按屏幕方向" }
   ]
 };
