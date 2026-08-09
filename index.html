@@ -4,18 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#07131d" />
-    <title>Cablester · 3C Prototype</title>
+    <meta name="description" content="Cablester 高速横版移动原型：使用关卡工坊搭建、生成并试玩自定义路线。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Cablester · 关卡工坊" />
+    <meta property="og:description" content="用统一物件库搭建关卡，按种子生成路线，并立即试玩。" />
+    <meta property="og:image" content="__SITE_ORIGIN__/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cablester · 关卡工坊" />
+    <meta name="twitter:description" content="搭建 · 生成 · 试玩自己的高速横版关卡。" />
+    <meta name="twitter:image" content="__SITE_ORIGIN__/og.png" />
+    <title>Cablester · 关卡工坊</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="shell">
       <section class="game-frame" aria-label="Cablester browser prototype">
         <canvas id="game" width="1280" height="720" tabindex="0"></canvas>
-        <div class="corner-label">3C LAB · 0.3</div>
+        <div class="corner-label">3C LAB · 0.4</div>
         <div id="start-card" class="start-card">
           <p class="eyebrow">CABLESTER</p>
           <h1>选择3C测试关卡</h1>
           <p>先分别确认单项能力，再进入综合路线测试速度、方向和容错。</p>
+          <div class="menu-actions">
+            <button id="open-level-editor" class="primary-action" type="button">打开关卡工坊</button>
+            <span>搭建、生成并试玩自己的路线</span>
+          </div>
           <div id="level-grid" class="level-grid" aria-label="测试关卡"></div>
           <p class="menu-hint">关卡内按 <kbd>Esc</kbd> 返回这里</p>
         </div>
@@ -33,6 +46,90 @@
         <span><kbd>Backspace</kbd> 回安全点</span>
       </aside>
     </main>
+
+    <section id="level-editor" class="level-editor" aria-label="关卡工坊" hidden>
+      <header class="editor-topbar">
+        <div class="editor-brand">
+          <span class="eyebrow">CABLESTER WORKSHOP</span>
+          <strong>关卡工坊</strong>
+        </div>
+        <label class="editor-document-picker">
+          <span>打开关卡</span>
+          <select id="editor-document-select" aria-label="选择要编辑的关卡"></select>
+        </label>
+        <div class="editor-actions">
+          <button id="editor-new" type="button">新建</button>
+          <button id="editor-generator-toggle" type="button">生成器</button>
+          <button id="editor-save" type="button">保存</button>
+          <button id="editor-play" class="editor-play" type="button">试玩关卡</button>
+          <button id="editor-close" class="icon-action" type="button" aria-label="关闭关卡工坊">×</button>
+        </div>
+      </header>
+
+      <div id="generator-panel" class="generator-panel" hidden>
+        <label>种子 <input id="generator-seed" value="cablester-01" /></label>
+        <label>路线长度
+          <select id="generator-length">
+            <option value="5">短 · 5 段</option>
+            <option value="8" selected>中 · 8 段</option>
+            <option value="12">长 · 12 段</option>
+          </select>
+        </label>
+        <label>难度
+          <select id="generator-difficulty">
+            <option value="1">轻松</option>
+            <option value="2" selected>标准</option>
+            <option value="3">高压</option>
+          </select>
+        </label>
+        <button id="editor-generate" class="editor-play" type="button">按参数生成</button>
+        <p>相同种子与参数始终生成相同布局，生成后仍可逐个调整物件。</p>
+      </div>
+
+      <div class="editor-workspace">
+        <aside class="library-panel" aria-label="关卡物件库">
+          <div class="panel-title">
+            <span>关卡物件库</span>
+            <small>选择后点击画布放置</small>
+          </div>
+          <input id="object-search" class="object-search" type="search" placeholder="搜索物件…" aria-label="搜索关卡物件" />
+          <div id="object-library" class="object-library"></div>
+        </aside>
+
+        <main class="editor-stage">
+          <div class="editor-toolbar" aria-label="编辑工具">
+            <button id="editor-undo" type="button" title="撤销">撤销</button>
+            <button id="editor-redo" type="button" title="重做">重做</button>
+            <button id="editor-duplicate" type="button" title="复制物件">复制</button>
+            <button id="editor-delete" type="button" title="删除物件">删除</button>
+            <span class="toolbar-separator"></span>
+            <label class="snap-toggle"><input id="editor-snap" type="checkbox" checked /> 20px 吸附</label>
+            <span class="toolbar-spacer"></span>
+            <span id="editor-object-count">0 个物件</span>
+            <button id="editor-zoom-out" type="button" aria-label="缩小">−</button>
+            <span id="editor-zoom-label">100%</span>
+            <button id="editor-zoom-in" type="button" aria-label="放大">＋</button>
+            <button id="editor-fit" type="button">适应画布</button>
+          </div>
+          <div class="editor-canvas-wrap">
+            <canvas id="editor-canvas" tabindex="0" aria-label="关卡编辑画布"></canvas>
+            <div class="canvas-help">左键选择/拖动 · 滚轮缩放 · 右键或 ⌥ 拖动画布</div>
+          </div>
+          <footer class="editor-statusbar">
+            <span id="editor-status">选择物件后可拖动，滚轮缩放画布</span>
+            <div>
+              <button id="editor-import" type="button">导入 JSON</button>
+              <button id="editor-export" type="button">导出 JSON</button>
+            </div>
+          </footer>
+        </main>
+
+        <aside class="inspector-panel" aria-label="关卡物件属性">
+          <div id="object-inspector" class="object-inspector"></div>
+        </aside>
+      </div>
+      <input id="editor-file-input" type="file" accept="application/json,.json" hidden />
+    </section>
     <script type="module" src="./src/game.js"></script>
   </body>
 </html>

@@ -1,5 +1,6 @@
 import { ABILITIES, KNOWN_ABILITY_IDS, TUNING, VIEWPORT } from "./config.js";
 import { syncCanvasBackingStore } from "./display.js";
+import { createLevelEditor } from "./level-editor.js";
 import { LEVELS } from "./levels.js";
 import { validateLevel } from "./level-validator.js";
 import {
@@ -33,6 +34,8 @@ const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
 const startCard = document.querySelector("#start-card");
 const levelGrid = document.querySelector("#level-grid");
+const levelEditorRoot = document.querySelector("#level-editor");
+const openLevelEditorButton = document.querySelector("#open-level-editor");
 
 for (const level of LEVELS) {
   const levelErrors = validateLevel(level);
@@ -2328,37 +2331,60 @@ function isGodotSyncReady(level) {
 const input = new Input(canvas);
 const game = new Game(context, input, LEVELS);
 
-for (const level of LEVELS) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "level-button";
-  button.dataset.category = level.category;
-  if (level.category === "单项3C") button.dataset.godotReady = String(isGodotSyncReady(level));
+let customLevels = [];
 
-  const category = document.createElement("span");
-  category.className = "level-category";
-  category.textContent = level.category;
-  const name = document.createElement("span");
-  name.className = "level-name";
-  name.textContent = levelDisplayName(level);
-  const acceptance = document.createElement("span");
-  acceptance.className = "level-acceptance";
-  acceptance.textContent = isGodotSyncReady(level)
-    ? "Godot 同步开发已开放"
-    : "Web 验证中 · 暂不同步 Godot";
-  const summary = document.createElement("span");
-  summary.className = "level-summary";
-  summary.textContent = level.summary;
-  button.append(category, name);
-  if (level.category === "单项3C") button.append(acceptance);
-  button.append(summary);
+function renderLevelMenu() {
+  levelGrid.replaceChildren();
+  for (const level of [...LEVELS, ...customLevels]) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "level-button";
+    button.dataset.category = level.category;
+    if (level.category === "单项3C") button.dataset.godotReady = String(isGodotSyncReady(level));
 
-  button.addEventListener("click", () => {
+    const category = document.createElement("span");
+    category.className = "level-category";
+    category.textContent = level.category;
+    const name = document.createElement("span");
+    name.className = "level-name";
+    name.textContent = levelDisplayName(level);
+    const acceptance = document.createElement("span");
+    acceptance.className = "level-acceptance";
+    acceptance.textContent = isGodotSyncReady(level)
+      ? "Godot 同步开发已开放"
+      : "Web 验证中 · 暂不同步 Godot";
+    const summary = document.createElement("span");
+    summary.className = "level-summary";
+    summary.textContent = level.summary;
+    button.append(category, name);
+    if (level.category === "单项3C") button.append(acceptance);
+    button.append(summary);
+
+    button.addEventListener("click", () => {
+      startCard.classList.add("is-hidden");
+      canvas.focus();
+      game.start(level);
+    });
+    levelGrid.append(button);
+  }
+}
+
+const levelEditor = createLevelEditor({
+  root: levelEditorRoot,
+  sourceLevels: LEVELS,
+  onPlay(level) {
+    levelEditor.close();
     startCard.classList.add("is-hidden");
     canvas.focus();
     game.start(level);
-  });
-  levelGrid.append(button);
-}
+  },
+  onSavedLevelsChange(levels) {
+    customLevels = levels;
+    renderLevelMenu();
+  }
+});
+
+openLevelEditorButton.addEventListener("click", () => levelEditor.open());
+renderLevelMenu();
 
 window.cablester = game;
