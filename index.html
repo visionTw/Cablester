@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07131d" />
+    <title>Cablester · 3C Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="game-frame" aria-label="Cablester browser prototype">
+        <canvas id="game" width="1280" height="720" tabindex="0"></canvas>
+        <div class="corner-label">3C LAB · 0.3</div>
+        <div id="start-card" class="start-card">
+          <p class="eyebrow">CABLESTER</p>
+          <h1>选择3C测试关卡</h1>
+          <p>先分别确认单项能力，再进入综合路线测试速度、方向和容错。</p>
+          <div id="level-grid" class="level-grid" aria-label="测试关卡"></div>
+          <p class="menu-hint">关卡内按 <kbd>Esc</kbd> 返回这里</p>
+        </div>
+      </section>
+      <aside class="controls" aria-label="Controls">
+        <span><kbd>A</kbd><kbd>D</kbd> 移动</span>
+        <span><kbd>Ctrl</kbd> + 方向键 八方向冲刺</span>
+        <span><kbd>Space</kbd> 跳跃 / 二段跳</span>
+        <span><kbd>Shift</kbd> 墙抓</span>
+        <span><kbd>左键</kbd> 按住发射 / 松开回收软绳</span>
+        <span><kbd>W</kbd><kbd>↑</kbd> 绳上快速收绳</span>
+        <span><kbd>F</kbd> 连接 / 释放硬杆</span>
+        <span><kbd>Q</kbd> 按住时停选向 / 松开猛击</span>
+        <span><kbd>R</kbd> 测试旋转</span>
+        <span><kbd>Backspace</kbd> 回安全点</span>
+      </aside>
+    </main>
+    <script type="module" src="./src/game.js"></script>
+  </body>
+</html>
