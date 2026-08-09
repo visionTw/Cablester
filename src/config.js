@@ -61,6 +61,7 @@ export const TUNING = Object.freeze({
   glideGravityScale: 0.2,
   glideMaximumFallSpeed: 190,
   glideWindMultiplier: 1.9,
+  glideUpdraftEntrySpeed: 300,
   maximumHealth: 5,
   maximumEnergy: 6,
   safeEnergyFloor: 2,

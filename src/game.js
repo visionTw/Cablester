@@ -19,7 +19,7 @@ import {
   rotate,
   TAU
 } from "./math.js";
-import { advancePointTowards, applyConstraintDamping, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, limitSpeedAlongDirection, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, limitSpeedAlongDirection, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
 
 const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
@@ -363,6 +363,8 @@ class Game {
     const gravity = this.gravityDirection();
     const tangent = this.screenRightDirection();
     const wasGrounded = player.grounded;
+    const wasGliding = player.gliding;
+    const previousWindIds = player.wind?.ids || [];
     const previousWall = player.wallNormal;
 
     player.previousX = player.x;
@@ -435,7 +437,8 @@ class Game {
 
     let gravityScale = dashing ? 0 : 1;
     const fallingSpeed = dot(player.vx, player.vy, gravity.x, gravity.y);
-    player.gliding = !dashing && !this.isRopeAttached() && this.abilities.has("glide") && this.input.down("Space") && fallingSpeed > 40;
+    const wantsGlide = !dashing && !this.isRopeAttached() && this.abilities.has("glide") && this.input.down("Space");
+    player.gliding = !wasGrounded && wantsGlide && (wasGliding || fallingSpeed > 40);
     if (player.gliding) gravityScale = TUNING.glideGravityScale;
     if (previousWall && this.abilities.has("wallGrab") && this.input.down("ShiftLeft", "ShiftRight")) {
       gravityScale = 0.1;
@@ -464,14 +467,26 @@ class Game {
     for (const wind of dashing ? [] : this.level.windZones) {
       if (!circleIntersectsRect(player.x, player.y, player.radius, wind)) continue;
       const multiplier = player.gliding ? TUNING.glideWindMultiplier : 1;
+      const updraftStrength = -dot(wind.forceX, wind.forceY, gravity.x, gravity.y);
+      const enteredUpdraft = player.gliding
+        && updraftStrength > 0
+        && (!wasGliding || !previousWindIds.includes(wind.id));
+      if (enteredUpdraft) {
+        const lifted = applyMinimumUpdraftLift(player, gravity, TUNING.glideUpdraftEntrySpeed);
+        player.vx = lifted.vx;
+        player.vy = lifted.vy;
+        this.particles.burst(player.x, player.y, "#a9edff", 18, 155);
+        this.showToast("上升气流托举 · 保持滑翔继续上升", 1.1, "ability");
+      }
       const accelerated = applyWindForce(player, wind, deltaTime, multiplier);
       player.vx = accelerated.vx;
       player.vy = accelerated.vy;
-      if (!player.wind) player.wind = { forceX: 0, forceY: 0, multiplier, ids: [] };
+      if (!player.wind) player.wind = { forceX: 0, forceY: 0, multiplier, ids: [], updraft: false };
       player.wind.forceX += wind.forceX * multiplier;
       player.wind.forceY += wind.forceY * multiplier;
       player.wind.multiplier = multiplier;
       player.wind.ids.push(wind.id);
+      player.wind.updraft ||= updraftStrength > 0;
     }
 
     if (player.wind && Math.random() < 0.2) {
@@ -2024,7 +2039,8 @@ class Game {
       ctx.fillStyle = "#a9eaff";
       ctx.font = "700 13px system-ui, sans-serif";
       const boost = this.player.gliding ? ` · 滑翔风力 ${this.player.wind.multiplier.toFixed(1)}×` : "";
-      ctx.fillText(`气流推动 ${horizontal}${vertical}${boost}`, VIEWPORT.width / 2, 136);
+      const lift = this.player.gliding && this.player.wind.updraft ? " · 上升托举" : "";
+      ctx.fillText(`气流推动 ${horizontal}${vertical}${boost}${lift}`, VIEWPORT.width / 2, 136);
     }
 
     if (this.ropeTarget && !this.player.rope) {

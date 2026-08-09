@@ -53,6 +53,17 @@ export function applyWindForce(state, wind, deltaTime, multiplier = 1) {
   };
 }
 
+export function applyMinimumUpdraftLift(state, gravity, minimumLiftSpeed) {
+  const currentDownwardSpeed = dot(state.vx, state.vy, gravity.x, gravity.y);
+  const targetDownwardSpeed = -Math.max(0, minimumLiftSpeed);
+  if (currentDownwardSpeed <= targetDownwardSpeed) return { vx: state.vx, vy: state.vy };
+  const correction = currentDownwardSpeed - targetDownwardSpeed;
+  return {
+    vx: state.vx - gravity.x * correction,
+    vy: state.vy - gravity.y * correction
+  };
+}
+
 export function applyRopeWinch(state, radial, deltaTime, tuning) {
   const reelSpeed = Math.min(
     tuning.maximumReelSpeed,

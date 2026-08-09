@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { advancePointTowards, applyConstraintDamping, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, limitSpeedAlongDirection, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, limitSpeedAlongDirection, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
 
 test("energy spending is atomic", () => {
   assert.deepEqual(spendEnergy(2, 0.5), { ok: true, value: 1.5 });
@@ -94,6 +94,17 @@ test("wind force is amplified during gliding", () => {
   assert.deepEqual(
     applyWindForce({ vx: 100, vy: 50 }, { forceX: 300, forceY: -500 }, 0.1, 1.9),
     { vx: 157, vy: -45 }
+  );
+});
+
+test("entering an updraft immediately turns falling speed into lift", () => {
+  assert.deepEqual(
+    applyMinimumUpdraftLift({ vx: 240, vy: 190 }, { x: 0, y: 1 }, 300),
+    { vx: 240, vy: -300 }
+  );
+  assert.deepEqual(
+    applyMinimumUpdraftLift({ vx: 240, vy: -420 }, { x: 0, y: 1 }, 300),
+    { vx: 240, vy: -420 }
   );
 });
 
