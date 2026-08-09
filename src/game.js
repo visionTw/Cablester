@@ -19,7 +19,7 @@ import {
   rotate,
   TAU
 } from "./math.js";
-import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, limitSpeedAlongDirection, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
 
 const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
@@ -255,6 +255,7 @@ class Game {
       damageRecoveryJump: false,
       gliding: false,
       wind: null,
+      updraftExitTimer: 0,
       dashAvailable: this.abilities?.has("dash") || false,
       dashTimer: 0,
       dashDirectionX: 0,
@@ -364,7 +365,8 @@ class Game {
     const tangent = this.screenRightDirection();
     const wasGrounded = player.grounded;
     const wasGliding = player.gliding;
-    const previousWindIds = player.wind?.ids || [];
+    const previousWind = player.wind;
+    const previousWindIds = previousWind?.ids || [];
     const previousWall = player.wallNormal;
 
     player.previousX = player.x;
@@ -468,8 +470,8 @@ class Game {
       if (!circleIntersectsRect(player.x, player.y, player.radius, wind)) continue;
       const multiplier = player.gliding ? TUNING.glideWindMultiplier : 1;
       const updraftStrength = -dot(wind.forceX, wind.forceY, gravity.x, gravity.y);
-      const enteredUpdraft = player.gliding
-        && updraftStrength > 0
+      const liftActive = player.gliding && updraftStrength > 0;
+      const enteredUpdraft = liftActive
         && (!wasGliding || !previousWindIds.includes(wind.id));
       if (enteredUpdraft) {
         const lifted = applyMinimumUpdraftLift(player, gravity, TUNING.glideUpdraftEntrySpeed);
@@ -481,12 +483,36 @@ class Game {
       const accelerated = applyWindForce(player, wind, deltaTime, multiplier);
       player.vx = accelerated.vx;
       player.vy = accelerated.vy;
-      if (!player.wind) player.wind = { forceX: 0, forceY: 0, multiplier, ids: [], updraft: false };
+      if (liftActive) {
+        const limitedLift = limitUpdraftLiftSpeed(player, gravity, TUNING.glideUpdraftMaximumSpeed);
+        player.vx = limitedLift.vx;
+        player.vy = limitedLift.vy;
+      }
+      if (!player.wind) player.wind = { forceX: 0, forceY: 0, multiplier, ids: [], updraft: false, liftActive: false };
       player.wind.forceX += wind.forceX * multiplier;
       player.wind.forceY += wind.forceY * multiplier;
       player.wind.multiplier = multiplier;
       player.wind.ids.push(wind.id);
       player.wind.updraft ||= updraftStrength > 0;
+      player.wind.liftActive ||= liftActive;
+    }
+
+    if (previousWind?.liftActive && !player.wind?.liftActive && player.gliding) {
+      player.updraftExitTimer = TUNING.glideUpdraftExitDampingDuration;
+      this.showToast("离开上升气流 · 约 1 秒恢复普通滑翔", 1.0);
+    }
+    if (!player.gliding || player.wind?.liftActive) {
+      player.updraftExitTimer = 0;
+    } else if (player.updraftExitTimer > 0) {
+      const dampedLift = decelerateUpdraftLift(
+        player,
+        gravity,
+        TUNING.glideUpdraftExitDeceleration,
+        deltaTime
+      );
+      player.vx = dampedLift.vx;
+      player.vy = dampedLift.vy;
+      player.updraftExitTimer = Math.max(0, player.updraftExitTimer - deltaTime);
     }
 
     if (player.wind && Math.random() < 0.2) {
@@ -1216,7 +1242,7 @@ class Game {
       this.startRotation(trigger.delta, "空间正在重构");
     }
 
-    if (!this.runtime.goalReached && length(player.x - this.level.goal.x, player.y - this.level.goal.y) <= player.radius + this.level.goal.radius) {
+    if (!this.runtime.goalReached && isGoalReached(player, this.level.goal, TUNING.goalActivationPadding)) {
       this.runtime.goalReached = true;
       this.showToast(`完成：${levelDisplayName(this.level)} · Esc选择其他关卡`, 5, "ability");
       this.particles.burst(this.level.goal.x, this.level.goal.y, "#fff0a4", 46, 280);
@@ -1296,6 +1322,7 @@ class Game {
       damageRecoveryJump: false,
       gliding: false,
       wind: null,
+      updraftExitTimer: 0,
       dashAvailable: this.abilities.has("dash"),
       dashTimer: 0,
       dashDirectionX: 0,
@@ -1732,6 +1759,13 @@ class Game {
     ctx.save();
     ctx.translate(goal.x, goal.y);
     ctx.globalAlpha = this.runtime.goalReached ? 0.35 : 1;
+    ctx.strokeStyle = "rgba(255, 233, 154, 0.2)";
+    ctx.lineWidth = 2;
+    ctx.setLineDash([7, 9]);
+    ctx.beginPath();
+    ctx.arc(0, 0, goal.radius + TUNING.goalActivationPadding, 0, TAU);
+    ctx.stroke();
+    ctx.setLineDash([]);
     ctx.strokeStyle = "#ffe99a";
     ctx.fillStyle = "rgba(255, 222, 111, 0.15)";
     ctx.shadowColor = "#ffe67a";
@@ -2039,7 +2073,15 @@ class Game {
       ctx.fillStyle = "#a9eaff";
       ctx.font = "700 13px system-ui, sans-serif";
       const boost = this.player.gliding ? ` · 滑翔风力 ${this.player.wind.multiplier.toFixed(1)}×` : "";
-      const lift = this.player.gliding && this.player.wind.updraft ? " · 上升托举" : "";
+      const liftSpeed = Math.max(0, -dot(
+        this.player.vx,
+        this.player.vy,
+        this.gravityDirection().x,
+        this.gravityDirection().y
+      ));
+      const lift = this.player.wind.liftActive
+        ? ` · 上升 ${Math.round(liftSpeed)}/${TUNING.glideUpdraftMaximumSpeed}`
+        : "";
       ctx.fillText(`气流推动 ${horizontal}${vertical}${boost}${lift}`, VIEWPORT.width / 2, 136);
     }
 
@@ -2120,6 +2162,22 @@ class Game {
       ctx.textAlign = "center";
       ctx.fillStyle = "#e9fffc";
       ctx.fillText(this.toast.text, VIEWPORT.width / 2, 53);
+    } else if (this.runtime.goalReached) {
+      const width = 330;
+      const x = VIEWPORT.width / 2 - width / 2;
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "rgba(4, 15, 21, 0.88)";
+      ctx.strokeStyle = "rgba(255, 233, 154, 0.45)";
+      roundedRect(ctx, x, 24, width, 54, 15);
+      ctx.fill();
+      ctx.stroke();
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#fff0ad";
+      ctx.font = "750 15px system-ui, sans-serif";
+      ctx.fillText("关卡完成", VIEWPORT.width / 2, 47);
+      ctx.fillStyle = "rgba(233, 255, 252, 0.68)";
+      ctx.font = "600 11px system-ui, sans-serif";
+      ctx.fillText("Esc 返回关卡选择", VIEWPORT.width / 2, 66);
     }
 
     if (this.debug) this.renderDebug(ctx);

@@ -64,7 +64,25 @@ export function validateLevel(level) {
     errors.push("Spawn point must be inside level bounds");
   }
   if (!level.checkpoints?.length) errors.push("Level must have at least one checkpoint");
-  if (!level.goal) errors.push("Level must have a goal");
+  if (!level.goal) {
+    errors.push("Level must have a goal");
+  } else {
+    const goal = level.goal;
+    if (!goal.id) {
+      errors.push("Goal must have an id");
+    } else if (ids.has(goal.id)) {
+      errors.push(`Duplicate level item id: ${goal.id}`);
+    }
+    if (!Number.isFinite(goal.x) || !Number.isFinite(goal.y) || !Number.isFinite(goal.radius) || goal.radius <= 0) {
+      errors.push("Goal must define a valid position and positive radius");
+    } else {
+      if (level.bounds && !pointInRect(goal.x, goal.y, level.bounds)) {
+        errors.push("Goal center must be inside level bounds");
+      }
+      const blockingPlatform = (level.platforms || []).find((platform) => pointInRect(goal.x, goal.y, platform));
+      if (blockingPlatform) errors.push(`Goal center cannot be embedded in platform ${blockingPlatform.id}`);
+    }
+  }
 
   return errors;
 }

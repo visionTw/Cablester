@@ -20,6 +20,11 @@ export function takeDamage(currentHealth, amount, invulnerabilityRemaining) {
   return { applied: true, health, defeated: health <= 0 };
 }
 
+export function isGoalReached(player, goal, activationPadding = 0) {
+  const activationRadius = player.radius + goal.radius + Math.max(0, activationPadding);
+  return Math.hypot(player.x - goal.x, player.y - goal.y) <= activationRadius;
+}
+
 export function grantAbility(abilitySet, abilityId, knownAbilityIds) {
   if (!knownAbilityIds.has(abilityId)) throw new Error(`Unknown ability: ${abilityId}`);
   const alreadyOwned = abilitySet.has(abilityId);
@@ -61,6 +66,32 @@ export function applyMinimumUpdraftLift(state, gravity, minimumLiftSpeed) {
   return {
     vx: state.vx - gravity.x * correction,
     vy: state.vy - gravity.y * correction
+  };
+}
+
+export function limitUpdraftLiftSpeed(state, gravity, maximumLiftSpeed) {
+  const currentDownwardSpeed = dot(state.vx, state.vy, gravity.x, gravity.y);
+  const minimumDownwardSpeed = -Math.max(0, maximumLiftSpeed);
+  if (currentDownwardSpeed >= minimumDownwardSpeed) return { vx: state.vx, vy: state.vy };
+  const correction = minimumDownwardSpeed - currentDownwardSpeed;
+  return {
+    vx: state.vx + gravity.x * correction,
+    vy: state.vy + gravity.y * correction
+  };
+}
+
+export function decelerateUpdraftLift(state, gravity, deceleration, deltaTime) {
+  const currentDownwardSpeed = dot(state.vx, state.vy, gravity.x, gravity.y);
+  if (currentDownwardSpeed >= 0) return { vx: state.vx, vy: state.vy };
+  const nextDownwardSpeed = moveToward(
+    currentDownwardSpeed,
+    0,
+    Math.max(0, deceleration) * Math.max(0, deltaTime)
+  );
+  const correction = nextDownwardSpeed - currentDownwardSpeed;
+  return {
+    vx: state.vx + gravity.x * correction,
+    vy: state.vy + gravity.y * correction
   };
 }
 

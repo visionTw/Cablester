@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, limitSpeedAlongDirection, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
 
 test("energy spending is atomic", () => {
   assert.deepEqual(spendEnergy(2, 0.5), { ok: true, value: 1.5 });
@@ -14,6 +14,14 @@ test("resource restoration clamps to maximum", () => {
 test("invulnerability prevents repeated hazard damage", () => {
   assert.deepEqual(takeDamage(4, 1, 0.4), { applied: false, health: 4, defeated: false });
   assert.deepEqual(takeDamage(4, 1, 0), { applied: true, health: 3, defeated: false });
+});
+
+test("goal activation includes a forgiving approach margin", () => {
+  const player = { x: 78, y: 0, radius: 18 };
+  const goal = { x: 0, y: 0, radius: 34 };
+  assert.equal(isGoalReached(player, goal, 26), true);
+  assert.equal(isGoalReached({ ...player, x: 78.01 }, goal, 26), false);
+  assert.equal(isGoalReached(player, goal, -20), false);
 });
 
 test("ability grants are idempotent and reject unknown ids", () => {
@@ -105,6 +113,28 @@ test("entering an updraft immediately turns falling speed into lift", () => {
   assert.deepEqual(
     applyMinimumUpdraftLift({ vx: 240, vy: -420 }, { x: 0, y: 1 }, 300),
     { vx: 240, vy: -420 }
+  );
+});
+
+test("updraft lift reaches a maximum speed and then stays constant", () => {
+  assert.deepEqual(
+    limitUpdraftLiftSpeed({ vx: 240, vy: -680 }, { x: 0, y: 1 }, 520),
+    { vx: 240, vy: -520 }
+  );
+  assert.deepEqual(
+    limitUpdraftLiftSpeed({ vx: 240, vy: -410 }, { x: 0, y: 1 }, 520),
+    { vx: 240, vy: -410 }
+  );
+});
+
+test("updraft lift decelerates smoothly after leaving the wind zone", () => {
+  assert.deepEqual(
+    decelerateUpdraftLift({ vx: 240, vy: -520 }, { x: 0, y: 1 }, 220, 0.5),
+    { vx: 240, vy: -410 }
+  );
+  assert.deepEqual(
+    decelerateUpdraftLift({ vx: 240, vy: -180 }, { x: 0, y: 1 }, 220, 1),
+    { vx: 240, vy: 0 }
   );
 });
 
