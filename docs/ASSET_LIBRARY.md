@@ -25,7 +25,7 @@ AssetRegistry 自身使用 `schemaVersion: 1`，与关卡文档的 `schemaVersio
 | `label` / `description` | 编辑器显示名和用途说明。 |
 | `category` | 搜索和分类用的稳定类别。 |
 | `kind` | `procedural` 或 `image`。 |
-| `path` / `thumbnailPath` | 运行时文件与编辑器缩略图；程序化素材的 `path` 为 `null`。 |
+| `path` / `thumbnailPath` | 仓库中的实际文件与编辑器缩略图路径；图片必须是 canonical `./assets/game/...` AVIF/JPEG/PNG/WebP 路径，拒绝 dot segment、反斜杠、编码分隔符和目录外路径；程序化素材的 `path` 为 `null`。浏览器请求通过对应 `/media/game/...` Worker 交付路由发送，registry 仍保留可审计的真实文件路径。 |
 | `applicableTypes` | 可应用的物件类型，场景素材使用 `scene`，全局回退使用 `*`。 |
 | `tags` | 中英文搜索标签。 |
 | `prompt` | 实际生成提示词；程序化素材为 `null`。 |
@@ -98,7 +98,7 @@ Registry validation 会拒绝重复 ID、未知字段、缺失路径、非法尺
 6. 用最终文件的真实宽高和字节数登记 registry，同时保存完整 prompt、generation method、适用类型和 license。
 7. 立即检查透明边缘、缩略图、不同缩放、色调/翻转、重复接缝、编辑器回退和运行时回退，再开始下一项素材。
 8. 运行 `npm run assets:audit`，确认 registry 与 32 个最终文件一致。
-9. 构建时 `scripts/build.mjs` 会把整个 `assets/` 目录复制到 Sites client；部署前仍须检查实际请求和缓存行为。
+9. 构建时 `scripts/build.mjs` 会把整个 `assets/` 目录复制到 Sites client；`assetDeliveryUrl` 把浏览器请求映射到 `/media/`，Worker 再读取对应 `/assets/` 文件并设置 MIME 与一小时浏览器缓存。部署前仍须用公开地址检查实际响应头。
 
 处理脚本示例：
 

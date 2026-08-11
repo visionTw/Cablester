@@ -71,17 +71,17 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 
 ## 本轮结果区（2026-08-12 发布构建）
 
-> 当前状态：本地功能、素材、自动测试、结构检查、构建、浏览器功能巡检和性能审计已通过；Sites v12 已公开发布并完成实际保存、v1 JSON 导入、导出、一键试玩、正式关卡与 console 复验。v12 复验后发现 Cloudflare 静态资源层覆盖了 Worker 的 WebP MIME/缓存响应头；最终同步构建在静态资源根加入 `_headers`，并把 Worker-first 限定到 HTML shell，最终版本号、commit 与响应头复验结果以本轮交付说明为准。
+> 当前状态：本地功能、素材、自动测试、结构检查、构建、浏览器功能巡检和性能审计已有当前证据。Sites v12 是较早的公开验收版本，其复验发现静态资源层没有采用项目期望的 WebP MIME/缓存响应头；当前最终候选保留 registry 的真实 `assets/` 文件路径，同时让浏览器通过 `/media/` Worker 交付路由读取同一文件。最终 Sites 版本尚待主任务发布并以在线响应头复验为门禁。
 
 ### 版本、测试与构建
 
 | 项目 | 当前轮结果 | 证据 |
 | --- | --- | --- |
-| commit / 工作树指纹 | 基线 `HEAD 7b50c35e28af10d49be1b18a3f9c77afc2d7f4b7`；首个公开验收 commit `81c5d9bbcb1b3fe36080577561ae847800bcb250` | [`levels/art/performance-audit.json`](../levels/art/performance-audit.json) 的输入指纹为 `9051c11b7e27b042999c17f3677f662b48a7b0a447319b735a9a5f87aeb71a18`，覆盖 56 个性能相关文件；最终响应头同步 commit 以交付说明为准。 |
-| `npm test` | **通过：114/114，0 失败** | 2026-08-12 最终重新运行 `node --test`，总耗时 6.434 秒；包含 registry、单物件/同类型替换、重置、v1 迁移、v2 roundtrip、scene CRUD/无缝计算、回退、非法配置、16 份素材像素审计和性能证据指纹门禁。 |
-| `npm run check` | **通过：10 个正式关卡 + 908 个参考房间** | 当前命令输出 `10 built-in levels and 908 authored reference rooms passed structural validation.`；参考内容指纹 `44cb83474d66283953c299c859feb7fa22626aaef6dc3173741eaa60e26fe73e` 覆盖 930 文件（908 room + 22 runtime）。 |
+| commit / 工作树指纹 | 基线 `HEAD 7b50c35e28af10d49be1b18a3f9c77afc2d7f4b7`；首个公开验收 commit `81c5d9bbcb1b3fe36080577561ae847800bcb250` | [`levels/art/performance-audit.json`](../levels/art/performance-audit.json) 的输入指纹为 `95f58ed35e51b841e61ed8c574a00057c76b293733bec2a96bde22fa5bb36844`，覆盖 57 个性能相关文件；最终发布 commit 待主任务填写。 |
+| `npm test` | **通过：116/116，0 失败** | 2026-08-12 在最终工作树重新运行 `node --test`，总耗时 4.658 秒；包含 registry、canonical asset path、实际本地素材交付服务、单物件/同类型替换、v1/v2 roundtrip、scene、回退、素材像素审计和性能证据指纹门禁。 |
+| `npm run check` | **通过：10 个正式关卡 + 908 个参考房间** | 当前命令输出 `10 built-in levels and 908 authored reference rooms passed structural validation.`；参考内容指纹 `13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39` 覆盖 931 文件（908 room + 23 runtime）。 |
 | `npm run assets:audit` | **通过：16 个生成素材，32/32 文件，0 错误** | 16 个运行时 WebP + 16 个缩略图共 391.5 KiB；像素解码估算 3129.1 KiB；残留洋红像素为 0，透明边缘最大 alpha 4/255，最差缩略图 RGB MAE 2.999。 |
-| `npm run build` | **通过** | 最终候选 `dist/` 共 981 个文件、17,688,310 bytes，包含 16 个运行时素材、16 个缩略图与静态资源 `_headers`；命令输出 `Cablester Sites build created in dist/.`。 |
+| `npm run build` | **通过** | 最终候选 `dist/` 共 982 个文件、17,691,849 bytes，包含 16 个运行时素材、16 个缩略图、canonical asset path 模块、优先接管 `/media/*` 的 Worker 与静态资源 `_headers`；命令输出 `Cablester Sites build created in dist/.`。 |
 
 ### ImageGen 素材批次与授权
 
@@ -103,7 +103,7 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 | 三模式入口明显可见 | **通过** | `物件编辑`、`物件素材`、`场景分层` 均能直接进入；JSON 中 `obviousEntry: true`。 |
 | 素材搜索、缩略图、单个与批量替换 | **通过** | 17 张 registry 卡片；选择 platform 后 2 张兼容卡；搜索收敛为 1 张；单个替换、undo/redo 和 9 个 platform 同类型批量替换均通过，inspector canvas 实时显示图片。 |
 | 素材库按需加载 P1 | **通过，P1 已关闭** | 未进入“物件素材”模式时 DOM 中为 0 张素材缩略图；进入后渲染 17 张卡片、16 张图片缩略图，且全部图片使用 `thumbnailSrc` 路径，没有预取运行时原图。 |
-| 类型默认、项目默认、单字段与全部重置 | **部分通过** | 浏览器已通过 type default、same-type reset、project default reset + undo；单字段/全部配置的 canonical reset 由 114 项自动测试覆盖，但本轮 JSON 未保存单字段按钮的独立浏览器动作证据。 |
+| 类型默认、项目默认、单字段与全部重置 | **部分通过** | 浏览器已通过 type default、same-type reset、project default reset + undo；单字段/全部配置的 canonical reset 有自动测试覆盖，但本轮 JSON 未保存单字段按钮的独立浏览器动作证据。 |
 | 图层新增、锁定、排序、复制、删除 | **通过** | 8 层初始 scene；新增 + undo/redo、depth 排序 + undo、复制/删除及恢复 8 层均通过；实际切换锁定时 inspector 状态为 enabled → disabled → enabled，证明锁定拦截编辑、解锁恢复编辑。 |
 | scene 素材添加/替换与无缝预览 | **通过** | scene picker 有 9 个选项，替换 + undo 和实时 canvas 通过；10 关巡检未见可见接缝、突跳或洋红边。无缝放置的确定性、范围和 draw cap 另由自动测试覆盖。 |
 | 保存、JSON roundtrip、一键试玩 | **通过** | 保存与一键试玩通过；通过内置浏览器真实 file chooser 导入 schema v1 文件 `levels/reference/celeste/prologue/a/0.json`，界面显示“已导入关卡，请确认后保存”，随后执行导出并显示“关卡 JSON 已导出”。v1→v2 迁移及文档 roundtrip 另由自动测试覆盖。 |
@@ -112,26 +112,26 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 
 ### 性能、请求与内存
 
-可重复证据为 [`levels/art/performance-audit.json`](../levels/art/performance-audit.json)，生成于 2026-08-12 00:56（Asia/Shanghai），状态 `pass`。Chrome 119 headless 通过 CDP 注入真实按键并记录连续 `requestAnimationFrame`；正式样板每个视口测 10 秒，`combined-vertical` 与 `combined-hazards` 各补测 10 秒，low-tier 测 5 秒。可见浏览器另记录同视口 6.5 秒 warm rolling sample，二者不能混作同一测量面。
+可重复证据为 [`levels/art/performance-audit.json`](../levels/art/performance-audit.json)，生成于 2026-08-12 01:43（Asia/Shanghai），状态 `pass`。Chrome 119 headless 通过 CDP 注入真实按键并记录连续 `requestAnimationFrame`；正式样板每个视口测 10 秒，`combined-vertical` 与 `combined-hazards` 各补测 10 秒，low-tier 测 5 秒。可见浏览器另记录同视口 6.5 秒 warm rolling sample，二者不能混作同一测量面。
 
-首次冷启动从空缓存到正式关卡 interactive 为 349.6 ms；共 39 请求、2,282,954 transfer bytes、2,274,252 decoded bytes、0 失败和 0 应用错误。warm reload 到 interactive 为 99.2 ms；共 38 请求、1,976,576 transfer bytes、2,274,243 decoded bytes、0 失败和 0 应用错误。冷/暖启动均只有 15 个 `Image` 请求，素材库 thumbnail 请求均为 0；进入玩法后运行时图片 loader 最终发出 16 个去重素材请求，16 ready、0 error。
+首次冷启动从空缓存到正式关卡 interactive 为 588.4 ms；共 40 请求、2,284,679 transfer bytes、2,275,763 decoded bytes、0 失败和 0 应用错误。warm reload 到 interactive 为 178.8 ms；共 39 请求、1,978,301 transfer bytes、2,275,754 decoded bytes、0 失败和 0 应用错误。冷/暖启动均只有 15 个 `Image` 请求，15/15 都使用 `/media/` 路由，素材库 thumbnail 请求均为 0；进入玩法后运行时图片 loader 最终发出 16 个去重素材请求，16 ready、0 error。
 
 下表“前一基线”来自主任务在改造前对相同视口的 in-app browser 读数，未写入当前性能 JSON；当前固定时长数据来自 headless CDP。两种浏览器面适合做方向性核对，不能计算严格加速比。真正同一可见浏览器面的 1280×720 前后读数另列在表后。
 
 | 场景 / 视口 / 档位 | 测量窗口 | 运行时素材 | 图片 + tint RGBA 估算 | 平均 FPS | 平均 / P95 / 最差帧时 | 前一基线 | 结论 |
 | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| `combined-horizontal` / 1280×720 / high | 10 秒 | 16 ready / 0 error | 2.66 + 3.76 MiB | 119.999 | 8.333 / 8.333 / 8.807 ms | 改造前同视口 in-app：36.4 FPS，27.44 / 40.30 / 80.40 ms | 通过；0 帧超过 16.7 ms。不同浏览器面不能用 FPS 比值作为严格加速比。 |
-| `combined-horizontal` / 1600×1000 / high | 10 秒 | 16 ready / 0 error | 2.66 + 3.76 MiB | 118.299 | 8.453 / 8.333 / 17.141 ms | 改造前 in-app：36.2 FPS，27.61 / 33.70 / 58.30 ms | 通过；1 帧超过 16.7 ms，0 帧超过 33.3 ms。 |
-| `combined-horizontal` / 800×900 / high | 10 秒 | 16 ready / 0 error | 2.66 + 3.76 MiB | 119.899 | 8.340 / 8.333 / 16.666 ms | 改造前 in-app：53.3 FPS，18.77 / 26.30 / 27.00 ms | 通过；0 帧超过 16.7 ms。 |
-| `combined-vertical` / 1280×720 / high | 10 秒 | 16 ready / 0 error | 2.66 + 6.42 MiB | 117.597 | 8.504 / 8.333 / 66.664 ms | 无同关旧固定时长基线 | 整体通过；摄像机横向范围 1124.207 px、纵向位移 181.574 px。有 1 帧超过 50 ms，下一轮跟踪偶发峰值。 |
-| `combined-hazards` / 1280×720 / high | 10 秒 | 16 ready / 0 error | 2.66 + 9.08 MiB | 119.699 | 8.354 / 8.333 / 16.666 ms | 无同关旧固定时长基线 | 通过；旧报告的 108.329 ms 峰值未在最终报告复现，0 帧超过 16.7 ms。 |
-| `combined-horizontal` / 1280×720 / low + 4× CPU throttle | 5 秒 | 16 ready / 0 error | 2.66 + 3.76 MiB | 64.304 | 15.551 / 33.332 / 66.664 ms | 受控降级样本，无同配置旧基线 | 通过降级功能门禁，但 P95 33.332 ms、最差 66.664 ms 需持续跟踪；自动降为 12 层上限、0.42 密度、2 px 最大 blur，`sceneDraws=9`。这是受控模拟，不是宿主低端机实测。 |
+| `combined-horizontal` / 1280×720 / high | 10 秒 | 16 ready / 0 error | 2.66 + 3.76 MiB | 111.546 | 8.965 / 16.666 / 24.999 ms | 改造前同视口 in-app：36.4 FPS，27.44 / 40.30 / 80.40 ms | 通过；4 帧超过 16.7 ms，0 帧超过 33.3 ms。不同浏览器面不能用 FPS 比值作为严格加速比。 |
+| `combined-horizontal` / 1600×1000 / high | 10 秒 | 16 ready / 0 error | 2.66 + 3.76 MiB | 99.899 | 10.010 / 16.666 / 49.998 ms | 改造前 in-app：36.2 FPS，27.61 / 33.70 / 58.30 ms | 通过；9 帧超过 16.7 ms，其中 3 帧超过 33.3 ms，0 帧超过 50 ms。 |
+| `combined-horizontal` / 800×900 / high | 10 秒 | 16 ready / 0 error | 2.66 + 3.76 MiB | 117.499 | 8.511 / 8.333 / 24.999 ms | 改造前 in-app：53.3 FPS，18.77 / 26.30 / 27.00 ms | 通过；2 帧超过 16.7 ms，0 帧超过 33.3 ms。 |
+| `combined-vertical` / 1280×720 / high | 10 秒 | 16 ready / 0 error | 2.66 + 6.42 MiB | 117.050 | 8.543 / 8.333 / 24.999 ms | 无同关旧固定时长基线 | 通过；摄像机横向范围 1127.124 px、纵向位移 176.229 px；1 帧超过 16.7 ms。 |
+| `combined-hazards` / 1280×720 / high | 10 秒 | 16 ready / 0 error | 2.66 + 9.08 MiB | 105.887 | 9.444 / 16.666 / 24.999 ms | 无同关旧固定时长基线 | 通过；1 帧超过 16.7 ms，0 帧超过 33.3 ms。 |
+| `combined-horizontal` / 1280×720 / low + 4× CPU throttle | 5 秒 | 16 ready / 0 error | 2.66 + 3.76 MiB | 95.834 | 10.435 / 16.666 / 24.999 ms | 受控降级样本，无同配置旧基线 | 通过降级功能门禁；17 帧超过 16.7 ms，0 帧超过 33.3 ms。自动降为 12 层上限、0.42 密度、2 px 最大 blur，`sceneDraws=9`；这是受控模拟，不是宿主低端机实测。 |
 
 同一可见 in-app browser 的 1280×720 warm 样板由改造前 36.4 FPS、P95 40.30 ms、最差 80.40 ms，变为当前 JSON 记录的 64.3 FPS、P95 21.9 ms、最差 25.3 ms；当前画面同时为 `sceneDraws=10`、`objectAssetDraws=50`、`fallbackDraws=11`。这是较适合直接前后比较的一组，但仍是 rolling overlay 读数，不替代上表的固定时长 CDP 样本。
 
-20 次正式关卡切换后，runtime 仍为 16 ready / 0 error；tint cache 在第 10 次达到 93 variants / 15.66 MiB，并在第 20 次保持不变。强制 GC 后 CDP JS heap 相对切换前减少 1,771,388 bytes。最终 texture 合计 19,210,560 bytes（约 18.32 MiB）是按图片/Canvas 尺寸 × 4 RGBA bytes 得出的 **VisualRuntime 估算**；Chrome/CDP 未提供本 Canvas 页面可靠的独立 GPU 显存读数，因此本文不声称测得了显存。
+20 次正式关卡切换全部完成后，runtime 仍为 16 ready / 0 error；tint cache 为 93 variants / 15.66 MiB，最终 `cacheEntries=16`、`evictions=0`。强制 GC 后 CDP JS heap 相对切换前减少 1,536,876 bytes。最终 texture 合计 19,210,560 bytes（约 18.32 MiB）是按图片/Canvas 尺寸 × 4 RGBA bytes 得出的 **VisualRuntime 估算**；Chrome/CDP 未提供本 Canvas 页面可靠的独立 GPU 显存读数，因此本文不声称测得了显存。
 
-跨内容性能抽样还覆盖最重 Celeste 白盒 `celeste.temple.a.d-01`（1280×720：120.049 FPS，P95 8.333 ms，最差 8.333 ms）和最重 Ori 白盒 `ori.mount-horu.central-shaft`（1280×720：119.849 / 8.333 / 16.666；1600×1000：119.649 / 8.333 / 16.666；800×900：119.999 / 8.333 / 8.808）。这些仅证明选定白盒在迁移、公共素材默认和程序化回退下的性能，不代表 908 个参考房间已完成逐房美术。
+跨内容性能抽样还覆盖最重 Celeste 白盒 `celeste.temple.a.d-01`（1280×720：119.249 FPS，P95 8.333 ms，最差 24.999 ms）和最重 Ori 白盒 `ori.mount-horu.central-shaft`（1280×720：119.999 / 8.333 / 8.808；1600×1000：120.049 / 8.333 / 8.333；800×900：119.949 / 8.333 / 16.666）。这些仅证明选定白盒在迁移、公共素材默认和程序化回退下的性能，不代表 908 个参考房间已完成逐房美术。
 
 ### 10 关视觉验收
 
@@ -147,24 +147,24 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 | `dash-lab` | 程序化基线 → 电光裂林 | 8 层；蓝紫高对比与增强光点 | 汇总巡检通过 | 可见巡检；无独立 10 秒样本 | 视觉通过；静态 before/after 待固化。 |
 | `combined-speed` | 程序化基线 → 金萤飞径 | 8 层；暖金点与高速路线亮暗分离 | 汇总巡检通过 | 可见巡检；无独立 10 秒样本 | 视觉通过；静态 before/after 待固化。 |
 | `combined-horizontal` | 程序化基线 → 深月长廊 | 样板 8 层；完整横向视差 | 汇总巡检通过 | 10 秒 × 3 视口 + low-tier；见性能表 | 视觉与性能通过；静态 before/after 待固化。 |
-| `combined-vertical` | 程序化基线 → 天穹古树 | 8 层；冷蓝纵深与高耸树干 | 汇总巡检通过 | 10 秒 1280×720：117.597 FPS，P95 8.333 ms，最差 66.664 ms | 视觉与总体性能通过；保留单次长帧跟踪和静态 before/after 待办。 |
-| `combined-hazards` | 程序化基线 → 绯荆沼泽 | 8 层；暗紫沼泽与绯红危险物 | 汇总巡检通过 | 10 秒 1280×720：119.699 FPS，P95 8.333 ms，最差 16.666 ms | 视觉与性能通过；静态 before/after 待固化。 |
+| `combined-vertical` | 程序化基线 → 天穹古树 | 8 层；冷蓝纵深与高耸树干 | 汇总巡检通过 | 10 秒 1280×720：117.050 FPS，P95 8.333 ms，最差 24.999 ms | 视觉与性能通过；静态 before/after 待固化。 |
+| `combined-hazards` | 程序化基线 → 绯荆沼泽 | 8 层；暗紫沼泽与绯红危险物 | 汇总巡检通过 | 10 秒 1280×720：105.887 FPS，P95 16.666 ms，最差 24.999 ms | 视觉与性能通过；静态 before/after 待固化。 |
 
 ### 908 个参考白盒复验
 
-本轮不仅执行 `npm run check`，还在参考内容指纹 `44cb83474d66283953c299c859feb7fa22626aaef6dc3173741eaa60e26fe73e` 上刷新浏览器审计：908/908 load、2326 个 entrance、17.1 秒、0 failure/0 新日志；908/908 acceptance、3668 个 connection、908 次 re-entry、76.5 秒、0 failure/0 新日志；continuous run 44/44 collection、864 transitions、27.8 秒、0 reset/0 failure/0 新日志。它们证明参考白盒在当前统一文档、迁移和运行时链路中继续可加载、可连通、可安全回退；其边界仍是白盒而不是逐房原创场景美术，不能计入“全部房间已美术化”。具体证据见 `levels/reference/browser-load-audit.json`、`browser-acceptance-audit.json` 和 `continuous-run-audit.json`。
+本轮不仅执行 `npm run check`，还在参考内容指纹 `13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39` 上刷新浏览器审计：908/908 load、2326 个 entrance、8.2 秒、0 failure/0 新日志；908/908 acceptance、3668 个 connection、908 次 re-entry、20.5 秒、0 failure/0 新日志；continuous run 44/44 collection、864 transitions、28.7 秒、0 reset/0 failure/0 新日志。它们证明参考白盒在当前统一文档、迁移和运行时链路中继续可加载、可连通、可安全回退；其边界仍是白盒而不是逐房原创场景美术，不能计入“全部房间已美术化”。具体证据见 `levels/reference/browser-load-audit.json`、`browser-acceptance-audit.json` 和 `continuous-run-audit.json`。
 
 ### Sites 发布与线上复验
 
-首个公开验收版本为 v12。它使用已推送的精确 commit 和官方 Sites 打包器生成 980 文件归档；部署成功后重新打开公开地址完成真实浏览器工作流。v12 复验发现 `/assets/*.webp` 由 Cloudflare 静态资源层直接响应为 `application/octet-stream` 且未使用项目期望的 1 小时缓存，因此最终同步构建按 Cloudflare Static Assets 约定加入 `_headers`，显式登记图片 MIME 与缓存策略，并仅让 Worker 优先处理 `/` 和 `/index.html`；最终公开版本与头部结果见本轮交付说明。
+首个公开验收版本为 v12。它使用已推送的精确 commit 和官方 Sites 打包器生成 980 文件归档；部署成功后重新打开公开地址完成真实浏览器工作流。v12 复验发现直接 `/assets/*.webp` 由 Sites 静态资源层响应为 `application/octet-stream` 且未使用项目期望的一小时缓存；静态 `_headers` 在该托管包装层也未改变线上响应。当前最终候选因此让浏览器请求 `/media/*`，由 Worker 映射到同一 `/assets/*` 文件并显式设置 MIME 与缓存头；registry、素材审计和归档仍以真实 `assets/` 文件为准。**该最终候选尚待主任务保存为新的 Sites 版本、部署并复验，不预填版本号。**
 
 | 项目 | 当前轮结果 |
 | --- | --- |
 | 公开地址 | `https://cablester-game.visiontw.chatgpt.site`；2026-08-12 已重新打开公开版本复验。 |
-| Sites 版本 | 首个公开验收版本 v12；source commit `81c5d9bbcb1b3fe36080577561ae847800bcb250`；archive `sha256:6ccf86094befb076eb98452c5178ea29428b0fb87d82a43959d616e238656236`。 |
-| 发布状态与时间 | deployment `appgdep_6a7b57439ae4819190c4c9d934087c86` 为 `succeeded`；2026-08-12 01:09:41（Asia/Shanghai）。 |
+| Sites 版本 | 历史验收版本 v12；当前 982 文件最终候选待主任务保存版本后填写，**不预设版本号**。 |
+| 发布状态与时间 | v12 历史 deployment `appgdep_6a7b57439ae4819190c4c9d934087c86` 为 `succeeded`；当前最终候选的 deployment ID、状态与时间待主任务发布后填写。 |
 | 线上入口与素材加载 | **通过**：未进入素材模式时 0 张素材图；进入后 17 张卡片、16 张缩略图且路径均在 `/thumbnails/`；场景编辑器显示 8 层。正式样板加载原创场景和物件图，未见洋红边或可见接缝。 |
 | 线上保存/导入导出/试玩 | **通过**：公开版本显示“关卡已保存到这台设备”；通过真实 file chooser 导入 v1 JSON 并显示“已导入关卡，请确认后保存”；导出显示“关卡 JSON 已导出”；一键试玩正常切回游戏画布。 |
 | 线上无缝场景、控件与 console | **通过**：`combined-horizontal` 横向主题场景、玩法路线和前景层级可读；原生 option 为浅底深字；console error/warning 均为 0。缺失素材回退由自动测试覆盖，本轮线上未人为制造 404。 |
-| 遗留风险 | 当前已知：逐关静态 before/after 未入库；`combined-vertical` 有一次 66.664 ms 长帧；low-tier P95 33.332 ms、最差 66.664 ms；单字段重置和人为 404 回退的独立浏览器证据待固化；GPU 显存只有估算。 |
+| 遗留风险 | 当前已知：Sites `/media/` 响应头复验待主任务完成；逐关静态 before/after 未入库；1600×1000 样板最差 49.998 ms；单字段重置和人为 404 回退的独立浏览器证据待固化；GPU 显存只有估算。 |
 | 下一轮建议 | 固化 10 组同视口静态 before/after；在真实低端设备复测 low-tier 与偶发长帧；增加显式 404 注错录像和单字段重置浏览器步骤；如继续美术化 908 个参考白盒，应建立独立 preset 规则，不能沿用正式 10 关的验收结论。 |

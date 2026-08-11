@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { cp, mkdir, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { MEDIA_ASSET_PATH_PATTERN_SOURCE } from "../src/asset-paths.js";
 
 const root = process.cwd();
 const dist = resolve(root, "dist");
@@ -35,9 +36,16 @@ await writeFile(
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/") url.pathname = "/index.html";
-    const response = await env.ASSETS.fetch(new Request(url, request));
+    const rawPath = request.url.slice(url.origin.length).split(/[?#]/, 1)[0];
+    const requestedAssetDelivery = /^\\/media\\//i.test(rawPath);
+    const assetDeliveryMatch = rawPath.match(new RegExp(${JSON.stringify(MEDIA_ASSET_PATH_PATTERN_SOURCE)}));
+    if (requestedAssetDelivery && !assetDeliveryMatch) return new Response("Not found", { status: 404 });
+    const isAssetDelivery = Boolean(assetDeliveryMatch);
+    const assetUrl = new URL(url);
+    if (isAssetDelivery) assetUrl.pathname = \`/assets/\${assetDeliveryMatch[1]}\`;
+    const response = await env.ASSETS.fetch(new Request(assetUrl, request));
     if (!response.ok) return response;
-    if (url.pathname.startsWith("/assets/")) {
+    if (isAssetDelivery || url.pathname.startsWith("/assets/")) {
       const headers = new Headers(response.headers);
       headers.set("cache-control", "public, max-age=3600, must-revalidate");
       const extension = url.pathname.slice(url.pathname.lastIndexOf(".")).toLowerCase();
@@ -75,7 +83,7 @@ await writeFile(
     assets: {
       directory: "../client",
       binding: "ASSETS",
-      run_worker_first: ["/", "/index.html"],
+      run_worker_first: ["/", "/index.html", "/media/*"],
     },
     observability: { enabled: true },
   })}\n`,

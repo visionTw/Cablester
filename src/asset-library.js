@@ -1,3 +1,7 @@
+import { assetDeliveryUrl, isCanonicalAssetPath } from "./asset-paths.js";
+
+export { assetDeliveryUrl, isCanonicalAssetPath } from "./asset-paths.js";
+
 export const ASSET_REGISTRY_VERSION = 1;
 export const BUILTIN_PROCEDURAL_ASSET_ID = "builtin:procedural";
 
@@ -174,12 +178,14 @@ function validateAsset(asset, index) {
   if (typeof asset.description !== "string") errors.push(`${path}.description must be text`);
   if (typeof asset.category !== "string" || !asset.category.trim()) errors.push(`${path}.category must be a non-empty string`);
   if (!new Set(["procedural", "image"]).has(asset.kind)) errors.push(`${path}.kind must be procedural or image`);
-  if (asset.kind === "image" && (typeof asset.path !== "string" || !asset.path.trim())) {
-    errors.push(`${path}.path must be a non-empty string for image assets`);
+  if (asset.kind === "image" && !isCanonicalAssetPath(asset.path)) {
+    errors.push(`${path}.path must be a canonical ./assets/game image path`);
   } else if (asset.kind === "procedural" && asset.path !== null) {
     errors.push(`${path}.path must be null for procedural assets`);
   }
-  if (asset.thumbnailPath !== null && typeof asset.thumbnailPath !== "string") errors.push(`${path}.thumbnailPath must be text or null`);
+  if (asset.thumbnailPath !== null && !isCanonicalAssetPath(asset.thumbnailPath)) {
+    errors.push(`${path}.thumbnailPath must be a canonical ./assets/game image path or null`);
+  }
   if (!Array.isArray(asset.applicableTypes) || asset.applicableTypes.length === 0 || asset.applicableTypes.some((type) => typeof type !== "string" || !type)) {
     errors.push(`${path}.applicableTypes must contain at least one object type or *`);
   }

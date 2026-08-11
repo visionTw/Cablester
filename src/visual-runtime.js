@@ -2,6 +2,7 @@ import {
   BUILTIN_PROCEDURAL_ASSET_ID,
   DEFAULT_ASSET_REGISTRY,
   DEFAULT_VISUAL_CONFIG,
+  assetDeliveryUrl,
   getAssetById,
   resolveAssetReference,
   resolveVisualAsset
@@ -102,6 +103,8 @@ export class AssetImageLoader {
   request(assetOrId) {
     const asset = this.resolveAsset(assetOrId);
     if (!asset || asset.kind !== "image" || !asset.path) return null;
+    const deliveryUrl = assetDeliveryUrl(asset.path);
+    if (!deliveryUrl) return null;
     const cached = this.entries.get(asset.id);
     if (cached) {
       this.cacheHits += 1;
@@ -111,7 +114,7 @@ export class AssetImageLoader {
     const entry = {
       assetId: asset.id,
       asset,
-      url: this.resolveUrl(asset.path),
+      url: this.resolveUrl(deliveryUrl),
       status: "loading",
       image: null,
       error: null,

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   BUILTIN_PROCEDURAL_ASSET_ID,
   DEFAULT_ASSET_REGISTRY,
+  assetDeliveryUrl,
   createAssetRegistry,
   createVisualConfig
 } from "../src/asset-library.js";
@@ -19,13 +20,14 @@ import {
 } from "../src/visual-runtime.js";
 
 function imageAsset(id, applicableTypes = ["*"]) {
+  const fileStem = id.replace(/[^a-z0-9_-]/gi, "-");
   return {
     id,
     label: id,
     description: `${id} test image`,
     category: "test",
     kind: "image",
-    path: `./assets/${id}.webp`,
+    path: `./assets/game/test/${fileStem}.webp`,
     thumbnailPath: null,
     applicableTypes,
     tags: ["test"],
@@ -82,7 +84,7 @@ test("AssetImageLoader deduplicates requests, records decoded bytes and contains
   });
   const first = loader.request(assets[0].id);
   assert.equal(loader.request(assets[0].id), first);
-  assert.equal(first.url, `resolved:${assets[0].path}`);
+  assert.equal(first.url, `resolved:${assetDeliveryUrl(assets[0].path)}`);
   await first.promise;
   assert.deepEqual(loader.stats(), {
     requests: 1,

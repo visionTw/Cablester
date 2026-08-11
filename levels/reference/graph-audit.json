@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-11T16:58:15.387Z",
+  "generatedAt": "2026-08-11T17:42:52.477Z",
   "policy": "Graph audit only; does not upgrade playable, browser, validation, or continuousRun status.",
   "contentFingerprint": {
     "algorithm": "sha256",
-    "value": "44cb83474d66283953c299c859feb7fa22626aaef6dc3173741eaa60e26fe73e",
-    "fileCount": 930,
+    "value": "13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39",
+    "fileCount": 931,
     "roomFileCount": 908,
-    "runtimeFileCount": 22
+    "runtimeFileCount": 23
   },
   "totals": {
     "rooms": 908,

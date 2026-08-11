@@ -27,6 +27,7 @@ import {
 import {
   BUILTIN_PROCEDURAL_ASSET_ID,
   DEFAULT_ASSET_REGISTRY,
+  assetDeliveryUrl,
   createVisualConfig,
   getAssetById,
   getProjectDefaultAssetId,
@@ -97,8 +98,8 @@ function normalizeAssetRecord(record) {
     category: String(record.category || "other"),
     categoryLabel: String(record.categoryLabel || record.category || "其他"),
     applicableTypes: Array.isArray(applicableTypes) ? applicableTypes.map(String) : [String(applicableTypes)],
-    src: record.src || record.url || record.path || record.file || record.filePath || "",
-    thumbnailSrc: record.thumbnailSrc || record.thumbnailPath || record.src || record.url || record.path || "",
+    src: assetDeliveryUrl(record.src || record.url || record.path || record.file || record.filePath || ""),
+    thumbnailSrc: assetDeliveryUrl(record.thumbnailSrc || record.thumbnailPath || record.src || record.url || record.path || ""),
     fallback: record.kind === "procedural" || id === PROCEDURAL_ASSET_ID
   };
 }

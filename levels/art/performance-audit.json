@@ -1,21 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-11T16:56:48.328Z",
+  "generatedAt": "2026-08-11T17:43:20.412Z",
   "status": "pass",
   "inputFingerprint": {
     "algorithm": "sha256",
-    "value": "9051c11b7e27b042999c17f3677f662b48a7b0a447319b735a9a5f87aeb71a18",
-    "fileCount": 56
+    "value": "95f58ed35e51b841e61ed8c574a00057c76b293733bec2a96bde22fa5bb36844",
+    "fileCount": 57
   },
   "referenceContentFingerprint": {
     "algorithm": "sha256",
-    "value": "44cb83474d66283953c299c859feb7fa22626aaef6dc3173741eaa60e26fe73e",
-    "fileCount": 930,
+    "value": "13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39",
+    "fileCount": 931,
     "roomFileCount": 908,
-    "runtimeFileCount": 22
+    "runtimeFileCount": 23
   },
   "configuration": {
-    "url": "http://127.0.0.1:4175/",
+    "url": "http://127.0.0.1:4176/",
     "representativeLevelId": "combined-horizontal",
     "formalViewports": [
       {
@@ -125,7 +125,7 @@
         "glWsVendor": "",
         "glWsVersion": "",
         "inProcessGpu": false,
-        "initializationTime": 0.159439,
+        "initializationTime": 0.178307,
         "isAsan": false,
         "isClangCoverage": false,
         "jpegDecodeAcceleratorSupported": false,
@@ -169,71 +169,71 @@
   "startup": {
     "cold": {
       "formalInteractive": {
-        "elapsedMs": 349.60000014305115,
+        "elapsedMs": 588.4000000953674,
         "formalLevelCount": 10,
         "readyState": "complete"
       },
       "referenceReady": {
-        "elapsedMs": 351.10000014305115,
+        "elapsedMs": 598.4000000953674,
         "visibleReferenceButtons": 24
       },
       "visualReady": {
-        "elapsedMs": 352.2999999523163,
+        "elapsedMs": 604,
         "stats": {
           "requests": 15,
-          "cacheHits": 52,
+          "cacheHits": 156,
           "ready": 15,
           "loading": 0,
           "error": 0,
           "estimatedDecodedBytes": 2699328,
-          "estimatedTintBytes": 0,
-          "tintVariants": 0,
+          "estimatedTintBytes": 2699328,
+          "tintVariants": 15,
           "cacheEntries": 15,
           "evictions": 0,
-          "sceneDraws": 8,
-          "objectAssetDraws": 0,
-          "fallbackDraws": 65,
+          "sceneDraws": 10,
+          "objectAssetDraws": 42,
+          "fallbackDraws": 14,
           "cullCount": 14,
           "qualityTier": "high"
         }
       },
       "resourceTiming": {
         "navigation": {
-          "domContentLoadedMs": 224.60000014305115,
-          "loadEventMs": 329.7000000476837,
-          "responseEndMs": 3.4000000953674316,
+          "domContentLoadedMs": 351.30000019073486,
+          "loadEventMs": 455.90000009536743,
+          "responseEndMs": 12.400000095367432,
           "transferSize": 10677,
           "encodedBodySize": 10377,
           "decodedBodySize": 10377
         },
-        "entryCount": 39,
-        "transferBytes": 2285952,
-        "encodedBodyBytes": 2274252,
-        "decodedBodyBytes": 2274252
+        "entryCount": 40,
+        "transferBytes": 2287763,
+        "encodedBodyBytes": 2275763,
+        "decodedBodyBytes": 2275763
       },
       "network": {
         "label": "cold-start-empty-cache",
-        "elapsedWallMs": 1080,
-        "requestCount": 39,
-        "completedCount": 39,
+        "elapsedWallMs": 1330,
+        "requestCount": 40,
+        "completedCount": 40,
         "failedCount": 0,
         "httpErrorCount": 1,
         "ignoredOptionalRequestCount": 1,
         "applicationErrorCount": 0,
         "cachedRequestCount": 0,
-        "transferBytes": 2282954,
-        "decodedBodyBytes": 2274252,
+        "transferBytes": 2284679,
+        "decodedBodyBytes": 2275763,
         "byType": {
           "Document": 1,
           "Stylesheet": 1,
-          "Script": 20,
+          "Script": 21,
           "Fetch": 1,
           "Image": 15,
           "Other": 1
         },
         "resources": [
           {
-            "requestId": "8FC0F540A686C4D6E2B3FCD3E8867F0D",
+            "requestId": "D8CB07E7E49C2760D473A7F05A1B71A7",
             "url": "/",
             "type": "Document",
             "method": "GET",
@@ -248,7 +248,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.2",
+            "requestId": "75712.2",
             "url": "/styles.css",
             "type": "Stylesheet",
             "method": "GET",
@@ -263,7 +263,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.3",
+            "requestId": "75712.3",
             "url": "/src/game.js",
             "type": "Script",
             "method": "GET",
@@ -272,13 +272,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 154920,
-            "encodedChunkBytes": 154951,
+            "encodedChunkBytes": 154946,
             "transferBytes": 155153,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.6",
+            "requestId": "75712.6",
             "url": "/src/config.js",
             "type": "Script",
             "method": "GET",
@@ -287,13 +287,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 3316,
-            "encodedChunkBytes": 3328,
+            "encodedChunkBytes": 3323,
             "transferBytes": 3530,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.7",
+            "requestId": "75712.7",
             "url": "/src/display.js",
             "type": "Script",
             "method": "GET",
@@ -302,13 +302,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 1590,
-            "encodedChunkBytes": 1602,
+            "encodedChunkBytes": 1597,
             "transferBytes": 1804,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.8",
+            "requestId": "75712.8",
             "url": "/src/asset-library.js",
             "type": "Script",
             "method": "GET",
@@ -316,14 +316,14 @@
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 42998,
-            "encodedChunkBytes": 43006,
-            "transferBytes": 43213,
+            "decodedBodyBytes": 43175,
+            "encodedChunkBytes": 43188,
+            "transferBytes": 43390,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.9",
+            "requestId": "75712.9",
             "url": "/src/level-editor.js",
             "type": "Script",
             "method": "GET",
@@ -331,14 +331,14 @@
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 83515,
-            "encodedChunkBytes": 83537,
-            "transferBytes": 83739,
+            "decodedBodyBytes": 83571,
+            "encodedChunkBytes": 83588,
+            "transferBytes": 83795,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.10",
+            "requestId": "75712.10",
             "url": "/src/levels.js",
             "type": "Script",
             "method": "GET",
@@ -347,13 +347,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 20979,
-            "encodedChunkBytes": 20992,
+            "encodedChunkBytes": 20987,
             "transferBytes": 21194,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.11",
+            "requestId": "75712.11",
             "url": "/src/level-validator.js",
             "type": "Script",
             "method": "GET",
@@ -362,13 +362,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 7716,
-            "encodedChunkBytes": 7729,
+            "encodedChunkBytes": 7724,
             "transferBytes": 7931,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.12",
+            "requestId": "75712.12",
             "url": "/src/reference-level-library.js",
             "type": "Script",
             "method": "GET",
@@ -377,13 +377,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 6430,
-            "encodedChunkBytes": 6443,
+            "encodedChunkBytes": 6438,
             "transferBytes": 6645,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.13",
+            "requestId": "75712.13",
             "url": "/src/reference-autoplay.js",
             "type": "Script",
             "method": "GET",
@@ -398,7 +398,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.14",
+            "requestId": "75712.14",
             "url": "/src/dash-refill.js",
             "type": "Script",
             "method": "GET",
@@ -413,7 +413,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.15",
+            "requestId": "75712.15",
             "url": "/src/motion.js",
             "type": "Script",
             "method": "GET",
@@ -428,7 +428,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.16",
+            "requestId": "75712.16",
             "url": "/src/reference-mechanisms.js",
             "type": "Script",
             "method": "GET",
@@ -443,7 +443,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.17",
+            "requestId": "75712.17",
             "url": "/src/player-animation.js",
             "type": "Script",
             "method": "GET",
@@ -458,7 +458,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.18",
+            "requestId": "75712.18",
             "url": "/src/math.js",
             "type": "Script",
             "method": "GET",
@@ -473,7 +473,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.19",
+            "requestId": "75712.19",
             "url": "/src/rules.js",
             "type": "Script",
             "method": "GET",
@@ -488,7 +488,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.20",
+            "requestId": "75712.20",
             "url": "/src/visual-runtime.js",
             "type": "Script",
             "method": "GET",
@@ -496,14 +496,29 @@
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 20881,
-            "encodedChunkBytes": 20894,
-            "transferBytes": 21096,
+            "decodedBodyBytes": 20991,
+            "encodedChunkBytes": 21004,
+            "transferBytes": 21206,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.21",
+            "requestId": "75712.21",
+            "url": "/src/asset-paths.js",
+            "type": "Script",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 1168,
+            "encodedChunkBytes": 1175,
+            "transferBytes": 1382,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.22",
             "url": "/src/level-objects.js",
             "type": "Script",
             "method": "GET",
@@ -518,7 +533,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.22",
+            "requestId": "75712.23",
             "url": "/src/scene-layers.js",
             "type": "Script",
             "method": "GET",
@@ -533,7 +548,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.23",
+            "requestId": "75712.24",
             "url": "/src/level.js",
             "type": "Script",
             "method": "GET",
@@ -542,13 +557,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 4080,
-            "encodedChunkBytes": 4092,
+            "encodedChunkBytes": 4087,
             "transferBytes": 4294,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.24",
+            "requestId": "75712.25",
             "url": "/src/level-art-presets.js",
             "type": "Script",
             "method": "GET",
@@ -557,13 +572,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 14685,
-            "encodedChunkBytes": 14698,
+            "encodedChunkBytes": 14693,
             "transferBytes": 14900,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.25",
+            "requestId": "75712.26",
             "url": "/levels/reference/playable-index.json",
             "type": "Fetch",
             "method": "GET",
@@ -578,8 +593,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.26",
-            "url": "/assets/game/terrain/moss-root-platform.webp",
+            "requestId": "75712.27",
+            "url": "/media/game/terrain/moss-root-platform.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -593,8 +608,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.27",
-            "url": "/assets/game/gameplay/crimson-thorn-vine.webp",
+            "requestId": "75712.28",
+            "url": "/media/game/gameplay/crimson-thorn-vine.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -608,8 +623,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.28",
-            "url": "/assets/game/gameplay/crystal-rope-anchor.webp",
+            "requestId": "75712.29",
+            "url": "/media/game/gameplay/crystal-rope-anchor.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -623,8 +638,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.29",
-            "url": "/assets/game/gameplay/leaf-energy-orb.webp",
+            "requestId": "75712.30",
+            "url": "/media/game/gameplay/leaf-energy-orb.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -638,8 +653,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.30",
-            "url": "/assets/game/gameplay/seed-lantern-checkpoint.webp",
+            "requestId": "75712.31",
+            "url": "/media/game/gameplay/seed-lantern-checkpoint.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -653,8 +668,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.31",
-            "url": "/assets/game/layout/root-spawn-gate.webp",
+            "requestId": "75712.32",
+            "url": "/media/game/layout/root-spawn-gate.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -662,119 +677,14 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 12780,
-            "encodedChunkBytes": 12788,
+            "encodedChunkBytes": 12793,
             "transferBytes": 13004,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.32",
-            "url": "/assets/game/scene/background/distant-trunk-grove.webp",
-            "type": "Image",
-            "method": "GET",
-            "status": 200,
-            "mimeType": "image/webp",
-            "protocol": "http/1.1",
-            "fromCache": false,
-            "decodedBodyBytes": 46290,
-            "encodedChunkBytes": 46303,
-            "transferBytes": 46514,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "requestId": "66707.33",
-            "url": "/assets/game/scene/atmosphere/cyan-mist-band.webp",
-            "type": "Image",
-            "method": "GET",
-            "status": 200,
-            "mimeType": "image/webp",
-            "protocol": "http/1.1",
-            "fromCache": false,
-            "decodedBodyBytes": 15556,
-            "encodedChunkBytes": 15569,
-            "transferBytes": 15780,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "requestId": "66707.34",
-            "url": "/assets/game/scene/trees/ancient-amber-tree.webp",
-            "type": "Image",
-            "method": "GET",
-            "status": 200,
-            "mimeType": "image/webp",
-            "protocol": "http/1.1",
-            "fromCache": false,
-            "decodedBodyBytes": 42060,
-            "encodedChunkBytes": 42073,
-            "transferBytes": 42284,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "requestId": "66707.35",
-            "url": "/assets/game/scene/trees/mid-tree-cluster.webp",
-            "type": "Image",
-            "method": "GET",
-            "status": 200,
-            "mimeType": "image/webp",
-            "protocol": "http/1.1",
-            "fromCache": false,
-            "decodedBodyBytes": 17036,
-            "encodedChunkBytes": 17049,
-            "transferBytes": 17260,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "requestId": "66707.36",
-            "url": "/assets/game/scene/vegetation/cyan-seed-plant.webp",
-            "type": "Image",
-            "method": "GET",
-            "status": 200,
-            "mimeType": "image/webp",
-            "protocol": "http/1.1",
-            "fromCache": false,
-            "decodedBodyBytes": 13090,
-            "encodedChunkBytes": 13103,
-            "transferBytes": 13314,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "requestId": "66707.37",
-            "url": "/assets/game/scene/atmosphere/forest-light-motes.webp",
-            "type": "Image",
-            "method": "GET",
-            "status": 200,
-            "mimeType": "image/webp",
-            "protocol": "http/1.1",
-            "fromCache": false,
-            "decodedBodyBytes": 17432,
-            "encodedChunkBytes": 17445,
-            "transferBytes": 17656,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "requestId": "66707.38",
-            "url": "/assets/game/scene/vegetation/moss-bush-cluster.webp",
-            "type": "Image",
-            "method": "GET",
-            "status": 200,
-            "mimeType": "image/webp",
-            "protocol": "http/1.1",
-            "fromCache": false,
-            "decodedBodyBytes": 11710,
-            "encodedChunkBytes": 11723,
-            "transferBytes": 11934,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "requestId": "66707.39",
-            "url": "/assets/game/layout/golden-goal-gate.webp",
+            "requestId": "75712.33",
+            "url": "/media/game/layout/golden-goal-gate.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -788,8 +698,53 @@
             "errorText": null
           },
           {
-            "requestId": "66707.40",
-            "url": "/assets/game/scene/foreground/overhang-vine-branch.webp",
+            "requestId": "75712.34",
+            "url": "/media/game/scene/background/distant-trunk-grove.webp",
+            "type": "Image",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "image/webp",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 46290,
+            "encodedChunkBytes": 46303,
+            "transferBytes": 46514,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.35",
+            "url": "/media/game/scene/trees/ancient-amber-tree.webp",
+            "type": "Image",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "image/webp",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 42060,
+            "encodedChunkBytes": 42073,
+            "transferBytes": 42284,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.36",
+            "url": "/media/game/scene/vegetation/moss-bush-cluster.webp",
+            "type": "Image",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "image/webp",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 11710,
+            "encodedChunkBytes": 11723,
+            "transferBytes": 11934,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.37",
+            "url": "/media/game/scene/foreground/overhang-vine-branch.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -803,7 +758,67 @@
             "errorText": null
           },
           {
-            "requestId": "66707.41",
+            "requestId": "75712.38",
+            "url": "/media/game/scene/vegetation/cyan-seed-plant.webp",
+            "type": "Image",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "image/webp",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 13090,
+            "encodedChunkBytes": 13103,
+            "transferBytes": 13314,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.39",
+            "url": "/media/game/scene/atmosphere/cyan-mist-band.webp",
+            "type": "Image",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "image/webp",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 15556,
+            "encodedChunkBytes": 15569,
+            "transferBytes": 15780,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.40",
+            "url": "/media/game/scene/trees/mid-tree-cluster.webp",
+            "type": "Image",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "image/webp",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 17036,
+            "encodedChunkBytes": 17049,
+            "transferBytes": 17260,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.41",
+            "url": "/media/game/scene/atmosphere/forest-light-motes.webp",
+            "type": "Image",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "image/webp",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 17432,
+            "encodedChunkBytes": 17445,
+            "transferBytes": 17656,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.42",
             "url": "/favicon.ico",
             "type": "Other",
             "method": "GET",
@@ -822,19 +837,19 @@
     },
     "warm": {
       "formalInteractive": {
-        "elapsedMs": 99.20000004768372,
+        "elapsedMs": 178.79999995231628,
         "formalLevelCount": 10,
         "readyState": "complete"
       },
       "referenceReady": {
-        "elapsedMs": 120.59999990463257,
+        "elapsedMs": 202.79999995231628,
         "visibleReferenceButtons": 24
       },
       "visualReady": {
-        "elapsedMs": 126,
+        "elapsedMs": 208.60000014305115,
         "stats": {
           "requests": 15,
-          "cacheHits": 260,
+          "cacheHits": 156,
           "ready": 15,
           "loading": 0,
           "error": 0,
@@ -852,40 +867,40 @@
       },
       "resourceTiming": {
         "navigation": {
-          "domContentLoadedMs": 68.89999985694885,
-          "loadEventMs": 80.29999995231628,
-          "responseEndMs": 5.799999952316284,
+          "domContentLoadedMs": 121.29999995231628,
+          "loadEventMs": 152.5,
+          "responseEndMs": 5.5,
           "transferSize": 10677,
           "encodedBodySize": 10377,
           "decodedBodySize": 10377
         },
-        "entryCount": 38,
-        "transferBytes": 1978323,
-        "encodedBodyBytes": 2274243,
-        "decodedBodyBytes": 2274243
+        "entryCount": 39,
+        "transferBytes": 1980134,
+        "encodedBodyBytes": 2275754,
+        "decodedBodyBytes": 2275754
       },
       "network": {
         "label": "warm-reload-populated-cache",
-        "elapsedWallMs": 802,
-        "requestCount": 38,
-        "completedCount": 38,
+        "elapsedWallMs": 881,
+        "requestCount": 39,
+        "completedCount": 39,
         "failedCount": 0,
         "httpErrorCount": 0,
         "ignoredOptionalRequestCount": 0,
         "applicationErrorCount": 0,
         "cachedRequestCount": 15,
-        "transferBytes": 1976576,
-        "decodedBodyBytes": 2274243,
+        "transferBytes": 1978301,
+        "decodedBodyBytes": 2275754,
         "byType": {
           "Document": 1,
           "Stylesheet": 1,
-          "Script": 20,
+          "Script": 21,
           "Fetch": 1,
           "Image": 15
         },
         "resources": [
           {
-            "requestId": "D4E387EFD5392FBF9F5F071751E70779",
+            "requestId": "4BD67BD8484A2DE16DE78325CEEC7B59",
             "url": "/",
             "type": "Document",
             "method": "GET",
@@ -900,7 +915,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.43",
+            "requestId": "75712.44",
             "url": "/styles.css",
             "type": "Stylesheet",
             "method": "GET",
@@ -909,13 +924,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 26431,
-            "encodedChunkBytes": 26444,
+            "encodedChunkBytes": 26439,
             "transferBytes": 26639,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.44",
+            "requestId": "75712.45",
             "url": "/src/game.js",
             "type": "Script",
             "method": "GET",
@@ -924,13 +939,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 154920,
-            "encodedChunkBytes": 154951,
+            "encodedChunkBytes": 154946,
             "transferBytes": 155153,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.47",
+            "requestId": "75712.48",
             "url": "/src/config.js",
             "type": "Script",
             "method": "GET",
@@ -945,7 +960,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.48",
+            "requestId": "75712.49",
             "url": "/src/display.js",
             "type": "Script",
             "method": "GET",
@@ -960,7 +975,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.49",
+            "requestId": "75712.50",
             "url": "/src/asset-library.js",
             "type": "Script",
             "method": "GET",
@@ -968,14 +983,14 @@
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 42998,
-            "encodedChunkBytes": 43011,
-            "transferBytes": 43213,
+            "decodedBodyBytes": 43175,
+            "encodedChunkBytes": 43188,
+            "transferBytes": 43390,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.50",
+            "requestId": "75712.51",
             "url": "/src/level-editor.js",
             "type": "Script",
             "method": "GET",
@@ -983,14 +998,14 @@
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 83515,
-            "encodedChunkBytes": 83537,
-            "transferBytes": 83739,
+            "decodedBodyBytes": 83571,
+            "encodedChunkBytes": 83588,
+            "transferBytes": 83795,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.51",
+            "requestId": "75712.52",
             "url": "/src/levels.js",
             "type": "Script",
             "method": "GET",
@@ -999,13 +1014,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 20979,
-            "encodedChunkBytes": 20992,
+            "encodedChunkBytes": 20987,
             "transferBytes": 21194,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.52",
+            "requestId": "75712.53",
             "url": "/src/level-validator.js",
             "type": "Script",
             "method": "GET",
@@ -1020,7 +1035,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.53",
+            "requestId": "75712.54",
             "url": "/src/reference-level-library.js",
             "type": "Script",
             "method": "GET",
@@ -1029,13 +1044,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 6430,
-            "encodedChunkBytes": 6443,
+            "encodedChunkBytes": 6438,
             "transferBytes": 6645,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.54",
+            "requestId": "75712.55",
             "url": "/src/reference-autoplay.js",
             "type": "Script",
             "method": "GET",
@@ -1050,7 +1065,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.55",
+            "requestId": "75712.56",
             "url": "/src/dash-refill.js",
             "type": "Script",
             "method": "GET",
@@ -1059,13 +1074,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 1732,
-            "encodedChunkBytes": 1744,
+            "encodedChunkBytes": 1739,
             "transferBytes": 1946,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.56",
+            "requestId": "75712.57",
             "url": "/src/motion.js",
             "type": "Script",
             "method": "GET",
@@ -1080,7 +1095,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.57",
+            "requestId": "75712.58",
             "url": "/src/reference-mechanisms.js",
             "type": "Script",
             "method": "GET",
@@ -1095,7 +1110,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.58",
+            "requestId": "75712.59",
             "url": "/src/player-animation.js",
             "type": "Script",
             "method": "GET",
@@ -1110,7 +1125,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.59",
+            "requestId": "75712.60",
             "url": "/src/math.js",
             "type": "Script",
             "method": "GET",
@@ -1125,7 +1140,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.60",
+            "requestId": "75712.61",
             "url": "/src/rules.js",
             "type": "Script",
             "method": "GET",
@@ -1140,7 +1155,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.61",
+            "requestId": "75712.62",
             "url": "/src/visual-runtime.js",
             "type": "Script",
             "method": "GET",
@@ -1148,14 +1163,29 @@
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 20881,
-            "encodedChunkBytes": 20894,
-            "transferBytes": 21096,
+            "decodedBodyBytes": 20991,
+            "encodedChunkBytes": 21004,
+            "transferBytes": 21206,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.62",
+            "requestId": "75712.63",
+            "url": "/src/asset-paths.js",
+            "type": "Script",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 1168,
+            "encodedChunkBytes": 1175,
+            "transferBytes": 1382,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.64",
             "url": "/src/level.js",
             "type": "Script",
             "method": "GET",
@@ -1170,7 +1200,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.63",
+            "requestId": "75712.65",
             "url": "/src/level-art-presets.js",
             "type": "Script",
             "method": "GET",
@@ -1185,7 +1215,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.64",
+            "requestId": "75712.66",
             "url": "/src/level-objects.js",
             "type": "Script",
             "method": "GET",
@@ -1200,7 +1230,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.65",
+            "requestId": "75712.67",
             "url": "/src/scene-layers.js",
             "type": "Script",
             "method": "GET",
@@ -1215,7 +1245,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.66",
+            "requestId": "75712.68",
             "url": "/levels/reference/playable-index.json",
             "type": "Fetch",
             "method": "GET",
@@ -1230,8 +1260,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.67",
-            "url": "/assets/game/terrain/moss-root-platform.webp",
+            "requestId": "75712.69",
+            "url": "/media/game/terrain/moss-root-platform.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1245,8 +1275,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.68",
-            "url": "/assets/game/gameplay/crimson-thorn-vine.webp",
+            "requestId": "75712.70",
+            "url": "/media/game/gameplay/crimson-thorn-vine.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1260,8 +1290,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.69",
-            "url": "/assets/game/gameplay/crystal-rope-anchor.webp",
+            "requestId": "75712.71",
+            "url": "/media/game/gameplay/crystal-rope-anchor.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1275,8 +1305,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.70",
-            "url": "/assets/game/gameplay/leaf-energy-orb.webp",
+            "requestId": "75712.72",
+            "url": "/media/game/gameplay/leaf-energy-orb.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1290,8 +1320,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.71",
-            "url": "/assets/game/gameplay/seed-lantern-checkpoint.webp",
+            "requestId": "75712.73",
+            "url": "/media/game/gameplay/seed-lantern-checkpoint.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1305,8 +1335,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.72",
-            "url": "/assets/game/layout/root-spawn-gate.webp",
+            "requestId": "75712.74",
+            "url": "/media/game/layout/root-spawn-gate.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1320,8 +1350,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.73",
-            "url": "/assets/game/scene/background/distant-trunk-grove.webp",
+            "requestId": "75712.75",
+            "url": "/media/game/scene/background/distant-trunk-grove.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1335,8 +1365,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.74",
-            "url": "/assets/game/scene/atmosphere/cyan-mist-band.webp",
+            "requestId": "75712.76",
+            "url": "/media/game/scene/atmosphere/cyan-mist-band.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1350,8 +1380,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.75",
-            "url": "/assets/game/scene/trees/ancient-amber-tree.webp",
+            "requestId": "75712.77",
+            "url": "/media/game/scene/trees/ancient-amber-tree.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1365,8 +1395,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.76",
-            "url": "/assets/game/scene/trees/mid-tree-cluster.webp",
+            "requestId": "75712.78",
+            "url": "/media/game/scene/trees/mid-tree-cluster.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1380,8 +1410,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.77",
-            "url": "/assets/game/scene/vegetation/cyan-seed-plant.webp",
+            "requestId": "75712.79",
+            "url": "/media/game/scene/vegetation/cyan-seed-plant.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1395,8 +1425,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.78",
-            "url": "/assets/game/scene/atmosphere/forest-light-motes.webp",
+            "requestId": "75712.80",
+            "url": "/media/game/scene/atmosphere/forest-light-motes.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1410,8 +1440,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.79",
-            "url": "/assets/game/scene/vegetation/moss-bush-cluster.webp",
+            "requestId": "75712.81",
+            "url": "/media/game/scene/vegetation/moss-bush-cluster.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1425,8 +1455,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.80",
-            "url": "/assets/game/layout/golden-goal-gate.webp",
+            "requestId": "75712.82",
+            "url": "/media/game/layout/golden-goal-gate.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1440,8 +1470,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.81",
-            "url": "/assets/game/scene/foreground/overhang-vine-branch.webp",
+            "requestId": "75712.83",
+            "url": "/media/game/scene/foreground/overhang-vine-branch.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -1469,32 +1499,32 @@
         "label": "combined-horizontal-1280x720",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 10000.074,
-          "frameCount": 1200,
-          "averageFps": 119.999,
-          "averageFrameMs": 8.333,
+          "measuredDurationMs": 9995.908,
+          "frameCount": 1115,
+          "averageFps": 111.546,
+          "averageFrameMs": 8.965,
           "p50FrameMs": 8.333,
-          "p95FrameMs": 8.333,
-          "p99FrameMs": 8.333,
-          "worstFrameMs": 8.807,
-          "framesOver16_7Ms": 0,
+          "p95FrameMs": 16.666,
+          "p99FrameMs": 16.666,
+          "worstFrameMs": 24.999,
+          "framesOver16_7Ms": 4,
           "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10005,
+        "pageWallDurationMs": 10010.6,
         "input": {
-          "heldRightMs": 9875,
+          "heldRightMs": 9882,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 1638.441,
-          "cameraDeltaY": -181.595,
-          "cameraRangeX": 1638.441,
-          "cameraCumulativeX": 4323.688,
-          "playerDeltaX": 1621.104,
-          "playerDeltaY": -195.635,
-          "distanceTravelledDelta": 4779.383
+          "cameraDeltaX": 1641.388,
+          "cameraDeltaY": -173.546,
+          "cameraRangeX": 1641.388,
+          "cameraCumulativeX": 4314.228,
+          "playerDeltaX": 1624.021,
+          "playerDeltaY": -187.277,
+          "distanceTravelledDelta": 4781.598
         },
         "before": {
           "levelId": "combined-horizontal",
@@ -1503,7 +1533,7 @@
           "paused": false,
           "camera": {
             "x": 100,
-            "y": 621.9999996370778,
+            "y": 621.9999996590661,
             "angle": 0
           },
           "player": {
@@ -1526,8 +1556,8 @@
           "collisionCandidates": 36,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 117.55572263706877,
-            "averageMs": 8.506604166666666,
+            "averageFps": 114.74562568160096,
+            "averageMs": 8.714929166666668,
             "p95Ms": 8.333000000000084,
             "worstMs": 16.666000000000167
           },
@@ -1541,7 +1571,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 22495,
+            "cacheHits": 21375,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -1563,16 +1593,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 1738.4411433889975,
-            "y": 440.4053942948327,
+            "x": 1741.3875438986197,
+            "y": 448.45446277228933,
             "angle": 0
           },
           "player": {
-            "x": 1721.10416666667,
-            "y": 426.3651388888883,
+            "x": 1724.0208333333367,
+            "y": 434.72277777777714,
             "vx": 350,
             "vy": -258.6333333333331,
-            "distanceTravelled": 4811.383068630586,
+            "distanceTravelled": 4813.597950969317,
             "respawnTimer": 0
           },
           "viewport": {
@@ -1587,10 +1617,10 @@
           "collisionCandidates": 18,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200768,
-            "averageMs": 8.333,
-            "p95Ms": 8.333000000000538,
-            "worstMs": 8.333000000000538
+            "averageFps": 109.51008382540627,
+            "averageMs": 9.131579166666665,
+            "p95Ms": 16.665999999999258,
+            "worstMs": 24.998999999999796
           },
           "qualityProfile": {
             "tier": "high",
@@ -1602,7 +1632,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 94555,
+            "cacheHits": 88335,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -1614,7 +1644,7 @@
             "sceneDraws": 10,
             "objectAssetDraws": 50,
             "fallbackDraws": 11,
-            "cullCount": 13,
+            "cullCount": 14,
             "qualityTier": "high"
           }
         }
@@ -1627,32 +1657,32 @@
         "label": "combined-horizontal-1600x1000",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 10000.075,
-          "frameCount": 1183,
-          "averageFps": 118.299,
-          "averageFrameMs": 8.453,
+          "measuredDurationMs": 10000.074,
+          "frameCount": 999,
+          "averageFps": 99.899,
+          "averageFrameMs": 10.01,
           "p50FrameMs": 8.333,
-          "p95FrameMs": 8.333,
+          "p95FrameMs": 16.666,
           "p99FrameMs": 16.666,
-          "worstFrameMs": 17.141,
-          "framesOver16_7Ms": 1,
-          "framesOver33_3Ms": 0,
+          "worstFrameMs": 49.998,
+          "framesOver16_7Ms": 9,
+          "framesOver33_3Ms": 3,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10006.9,
+        "pageWallDurationMs": 10004.7,
         "input": {
           "heldRightMs": 9874,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 1638.441,
-          "cameraDeltaY": -177.624,
-          "cameraRangeX": 1638.441,
-          "cameraCumulativeX": 4340.06,
-          "playerDeltaX": 1621.104,
-          "playerDeltaY": -191.51,
-          "distanceTravelledDelta": 4778.264
+          "cameraDeltaX": 1641.381,
+          "cameraDeltaY": -176.626,
+          "cameraRangeX": 1641.381,
+          "cameraCumulativeX": 4317.423,
+          "playerDeltaX": 1624.021,
+          "playerDeltaY": -190.361,
+          "distanceTravelledDelta": 4777.286
         },
         "before": {
           "levelId": "combined-horizontal",
@@ -1684,10 +1714,10 @@
           "collisionCandidates": 36,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 118.52325944889648,
-            "averageMs": 8.4371625,
-            "p95Ms": 8.333000000000538,
-            "worstMs": 24.998999999999796
+            "averageFps": 102.49520301096747,
+            "averageMs": 9.75655416666666,
+            "p95Ms": 16.666000000001077,
+            "worstMs": 41.66500000000087
           },
           "qualityProfile": {
             "tier": "high",
@@ -1699,7 +1729,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 112407,
+            "cacheHits": 103547,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -1721,16 +1751,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 1738.4411450803075,
-            "y": 444.3762078518518,
+            "x": 1741.3809468015904,
+            "y": 445.3739965119798,
             "angle": 0
           },
           "player": {
-            "x": 1721.10416666667,
-            "y": 430.4901388888881,
+            "x": 1724.0208333333367,
+            "y": 431.63944444444365,
             "vx": 350,
             "vy": -258.6333333333331,
-            "distanceTravelled": 4810.264117784226,
+            "distanceTravelled": 4809.285698240097,
             "respawnTimer": 0
           },
           "viewport": {
@@ -1745,10 +1775,10 @@
           "collisionCandidates": 18,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 119.0130249838091,
-            "averageMs": 8.402441666666679,
-            "p95Ms": 8.333000000002357,
-            "worstMs": 16.666000000001077
+            "averageFps": 96.32492323104299,
+            "averageMs": 10.381529166666663,
+            "p95Ms": 16.666000000001077,
+            "worstMs": 24.999000000003434
           },
           "qualityProfile": {
             "tier": "high",
@@ -1760,7 +1790,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 183447,
+            "cacheHits": 163547,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -1772,7 +1802,7 @@
             "sceneDraws": 10,
             "objectAssetDraws": 50,
             "fallbackDraws": 11,
-            "cullCount": 13,
+            "cullCount": 14,
             "qualityTier": "high"
           }
         }
@@ -1785,32 +1815,32 @@
         "label": "combined-horizontal-800x900",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 10000.074,
-          "frameCount": 1199,
-          "averageFps": 119.899,
-          "averageFrameMs": 8.34,
+          "measuredDurationMs": 10000.075,
+          "frameCount": 1175,
+          "averageFps": 117.499,
+          "averageFrameMs": 8.511,
           "p50FrameMs": 8.333,
           "p95FrameMs": 8.333,
-          "p99FrameMs": 8.333,
-          "worstFrameMs": 16.666,
-          "framesOver16_7Ms": 0,
+          "p99FrameMs": 16.666,
+          "worstFrameMs": 24.999,
+          "framesOver16_7Ms": 2,
           "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10003.7,
+        "pageWallDurationMs": 10007.8,
         "input": {
-          "heldRightMs": 9873,
+          "heldRightMs": 9871,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 1641.398,
-          "cameraDeltaY": -180.705,
-          "cameraRangeX": 1641.398,
-          "cameraCumulativeX": 4346.895,
+          "cameraDeltaX": 1641.385,
+          "cameraDeltaY": -183.775,
+          "cameraRangeX": 1641.385,
+          "cameraCumulativeX": 4329.192,
           "playerDeltaX": 1624.021,
-          "playerDeltaY": -194.593,
-          "distanceTravelledDelta": 4763.195
+          "playerDeltaY": -197.683,
+          "distanceTravelledDelta": 4781.57
         },
         "before": {
           "levelId": "combined-horizontal",
@@ -1819,7 +1849,7 @@
           "paused": false,
           "camera": {
             "x": 100,
-            "y": 621.9999995039443,
+            "y": 621.9999995339988,
             "angle": 0
           },
           "player": {
@@ -1842,10 +1872,10 @@
           "collisionCandidates": 36,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200758,
-            "averageMs": 8.333000000000007,
+            "averageFps": 119.23131570763289,
+            "averageMs": 8.387058333333334,
             "p95Ms": 8.333000000002357,
-            "worstMs": 8.333000000002357
+            "worstMs": 16.666000000001077
           },
           "qualityProfile": {
             "tier": "high",
@@ -1857,7 +1887,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 201539,
+            "cacheHits": 181399,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -1879,16 +1909,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 1741.3977022747206,
-            "y": 441.29517239066837,
+            "x": 1741.385026900125,
+            "y": 438.2248132123177,
             "angle": 0
           },
           "player": {
             "x": 1724.0208333333367,
-            "y": 427.40680555555497,
+            "y": 424.31749999999937,
             "vx": 350,
-            "vy": -258.6333333333331,
-            "distanceTravelled": 4795.194919289285,
+            "vy": -245.71666666666644,
+            "distanceTravelled": 4813.569974735544,
             "respawnTimer": 0
           },
           "viewport": {
@@ -1903,10 +1933,10 @@
           "collisionCandidates": 18,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200778,
-            "averageMs": 8.332999999999993,
+            "averageFps": 114.7195727843111,
+            "averageMs": 8.716908333333322,
             "p95Ms": 8.333000000005995,
-            "worstMs": 8.333000000005995
+            "worstMs": 24.999000000003434
           },
           "qualityProfile": {
             "tier": "high",
@@ -1918,7 +1948,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 273539,
+            "cacheHits": 252019,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -1949,32 +1979,32 @@
         "label": "combined-horizontal-1280x720",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 10000.074,
-          "frameCount": 1200,
-          "averageFps": 119.999,
-          "averageFrameMs": 8.333,
+          "measuredDurationMs": 9995.908,
+          "frameCount": 1115,
+          "averageFps": 111.546,
+          "averageFrameMs": 8.965,
           "p50FrameMs": 8.333,
-          "p95FrameMs": 8.333,
-          "p99FrameMs": 8.333,
-          "worstFrameMs": 8.807,
-          "framesOver16_7Ms": 0,
+          "p95FrameMs": 16.666,
+          "p99FrameMs": 16.666,
+          "worstFrameMs": 24.999,
+          "framesOver16_7Ms": 4,
           "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10005,
+        "pageWallDurationMs": 10010.6,
         "input": {
-          "heldRightMs": 9875,
+          "heldRightMs": 9882,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 1638.441,
-          "cameraDeltaY": -181.595,
-          "cameraRangeX": 1638.441,
-          "cameraCumulativeX": 4323.688,
-          "playerDeltaX": 1621.104,
-          "playerDeltaY": -195.635,
-          "distanceTravelledDelta": 4779.383
+          "cameraDeltaX": 1641.388,
+          "cameraDeltaY": -173.546,
+          "cameraRangeX": 1641.388,
+          "cameraCumulativeX": 4314.228,
+          "playerDeltaX": 1624.021,
+          "playerDeltaY": -187.277,
+          "distanceTravelledDelta": 4781.598
         },
         "before": {
           "levelId": "combined-horizontal",
@@ -1983,7 +2013,7 @@
           "paused": false,
           "camera": {
             "x": 100,
-            "y": 621.9999996370778,
+            "y": 621.9999996590661,
             "angle": 0
           },
           "player": {
@@ -2006,8 +2036,8 @@
           "collisionCandidates": 36,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 117.55572263706877,
-            "averageMs": 8.506604166666666,
+            "averageFps": 114.74562568160096,
+            "averageMs": 8.714929166666668,
             "p95Ms": 8.333000000000084,
             "worstMs": 16.666000000000167
           },
@@ -2021,7 +2051,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 22495,
+            "cacheHits": 21375,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2043,16 +2073,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 1738.4411433889975,
-            "y": 440.4053942948327,
+            "x": 1741.3875438986197,
+            "y": 448.45446277228933,
             "angle": 0
           },
           "player": {
-            "x": 1721.10416666667,
-            "y": 426.3651388888883,
+            "x": 1724.0208333333367,
+            "y": 434.72277777777714,
             "vx": 350,
             "vy": -258.6333333333331,
-            "distanceTravelled": 4811.383068630586,
+            "distanceTravelled": 4813.597950969317,
             "respawnTimer": 0
           },
           "viewport": {
@@ -2067,10 +2097,10 @@
           "collisionCandidates": 18,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200768,
-            "averageMs": 8.333,
-            "p95Ms": 8.333000000000538,
-            "worstMs": 8.333000000000538
+            "averageFps": 109.51008382540627,
+            "averageMs": 9.131579166666665,
+            "p95Ms": 16.665999999999258,
+            "worstMs": 24.998999999999796
           },
           "qualityProfile": {
             "tier": "high",
@@ -2082,7 +2112,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 94555,
+            "cacheHits": 88335,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2094,7 +2124,7 @@
             "sceneDraws": 10,
             "objectAssetDraws": 50,
             "fallbackDraws": 11,
-            "cullCount": 13,
+            "cullCount": 14,
             "qualityTier": "high"
           }
         }
@@ -2108,32 +2138,32 @@
         "label": "combined-horizontal-1600x1000",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 10000.075,
-          "frameCount": 1183,
-          "averageFps": 118.299,
-          "averageFrameMs": 8.453,
+          "measuredDurationMs": 10000.074,
+          "frameCount": 999,
+          "averageFps": 99.899,
+          "averageFrameMs": 10.01,
           "p50FrameMs": 8.333,
-          "p95FrameMs": 8.333,
+          "p95FrameMs": 16.666,
           "p99FrameMs": 16.666,
-          "worstFrameMs": 17.141,
-          "framesOver16_7Ms": 1,
-          "framesOver33_3Ms": 0,
+          "worstFrameMs": 49.998,
+          "framesOver16_7Ms": 9,
+          "framesOver33_3Ms": 3,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10006.9,
+        "pageWallDurationMs": 10004.7,
         "input": {
           "heldRightMs": 9874,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 1638.441,
-          "cameraDeltaY": -177.624,
-          "cameraRangeX": 1638.441,
-          "cameraCumulativeX": 4340.06,
-          "playerDeltaX": 1621.104,
-          "playerDeltaY": -191.51,
-          "distanceTravelledDelta": 4778.264
+          "cameraDeltaX": 1641.381,
+          "cameraDeltaY": -176.626,
+          "cameraRangeX": 1641.381,
+          "cameraCumulativeX": 4317.423,
+          "playerDeltaX": 1624.021,
+          "playerDeltaY": -190.361,
+          "distanceTravelledDelta": 4777.286
         },
         "before": {
           "levelId": "combined-horizontal",
@@ -2165,10 +2195,10 @@
           "collisionCandidates": 36,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 118.52325944889648,
-            "averageMs": 8.4371625,
-            "p95Ms": 8.333000000000538,
-            "worstMs": 24.998999999999796
+            "averageFps": 102.49520301096747,
+            "averageMs": 9.75655416666666,
+            "p95Ms": 16.666000000001077,
+            "worstMs": 41.66500000000087
           },
           "qualityProfile": {
             "tier": "high",
@@ -2180,7 +2210,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 112407,
+            "cacheHits": 103547,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2202,16 +2232,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 1738.4411450803075,
-            "y": 444.3762078518518,
+            "x": 1741.3809468015904,
+            "y": 445.3739965119798,
             "angle": 0
           },
           "player": {
-            "x": 1721.10416666667,
-            "y": 430.4901388888881,
+            "x": 1724.0208333333367,
+            "y": 431.63944444444365,
             "vx": 350,
             "vy": -258.6333333333331,
-            "distanceTravelled": 4810.264117784226,
+            "distanceTravelled": 4809.285698240097,
             "respawnTimer": 0
           },
           "viewport": {
@@ -2226,10 +2256,10 @@
           "collisionCandidates": 18,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 119.0130249838091,
-            "averageMs": 8.402441666666679,
-            "p95Ms": 8.333000000002357,
-            "worstMs": 16.666000000001077
+            "averageFps": 96.32492323104299,
+            "averageMs": 10.381529166666663,
+            "p95Ms": 16.666000000001077,
+            "worstMs": 24.999000000003434
           },
           "qualityProfile": {
             "tier": "high",
@@ -2241,7 +2271,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 183447,
+            "cacheHits": 163547,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2253,7 +2283,7 @@
             "sceneDraws": 10,
             "objectAssetDraws": 50,
             "fallbackDraws": 11,
-            "cullCount": 13,
+            "cullCount": 14,
             "qualityTier": "high"
           }
         }
@@ -2267,32 +2297,32 @@
         "label": "combined-horizontal-800x900",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 10000.074,
-          "frameCount": 1199,
-          "averageFps": 119.899,
-          "averageFrameMs": 8.34,
+          "measuredDurationMs": 10000.075,
+          "frameCount": 1175,
+          "averageFps": 117.499,
+          "averageFrameMs": 8.511,
           "p50FrameMs": 8.333,
           "p95FrameMs": 8.333,
-          "p99FrameMs": 8.333,
-          "worstFrameMs": 16.666,
-          "framesOver16_7Ms": 0,
+          "p99FrameMs": 16.666,
+          "worstFrameMs": 24.999,
+          "framesOver16_7Ms": 2,
           "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10003.7,
+        "pageWallDurationMs": 10007.8,
         "input": {
-          "heldRightMs": 9873,
+          "heldRightMs": 9871,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 1641.398,
-          "cameraDeltaY": -180.705,
-          "cameraRangeX": 1641.398,
-          "cameraCumulativeX": 4346.895,
+          "cameraDeltaX": 1641.385,
+          "cameraDeltaY": -183.775,
+          "cameraRangeX": 1641.385,
+          "cameraCumulativeX": 4329.192,
           "playerDeltaX": 1624.021,
-          "playerDeltaY": -194.593,
-          "distanceTravelledDelta": 4763.195
+          "playerDeltaY": -197.683,
+          "distanceTravelledDelta": 4781.57
         },
         "before": {
           "levelId": "combined-horizontal",
@@ -2301,7 +2331,7 @@
           "paused": false,
           "camera": {
             "x": 100,
-            "y": 621.9999995039443,
+            "y": 621.9999995339988,
             "angle": 0
           },
           "player": {
@@ -2324,10 +2354,10 @@
           "collisionCandidates": 36,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200758,
-            "averageMs": 8.333000000000007,
+            "averageFps": 119.23131570763289,
+            "averageMs": 8.387058333333334,
             "p95Ms": 8.333000000002357,
-            "worstMs": 8.333000000002357
+            "worstMs": 16.666000000001077
           },
           "qualityProfile": {
             "tier": "high",
@@ -2339,7 +2369,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 201539,
+            "cacheHits": 181399,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2361,16 +2391,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 1741.3977022747206,
-            "y": 441.29517239066837,
+            "x": 1741.385026900125,
+            "y": 438.2248132123177,
             "angle": 0
           },
           "player": {
             "x": 1724.0208333333367,
-            "y": 427.40680555555497,
+            "y": 424.31749999999937,
             "vx": 350,
-            "vy": -258.6333333333331,
-            "distanceTravelled": 4795.194919289285,
+            "vy": -245.71666666666644,
+            "distanceTravelled": 4813.569974735544,
             "respawnTimer": 0
           },
           "viewport": {
@@ -2385,10 +2415,10 @@
           "collisionCandidates": 18,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200778,
-            "averageMs": 8.332999999999993,
+            "averageFps": 114.7195727843111,
+            "averageMs": 8.716908333333322,
             "p95Ms": 8.333000000005995,
-            "worstMs": 8.333000000005995
+            "worstMs": 24.999000000003434
           },
           "qualityProfile": {
             "tier": "high",
@@ -2400,7 +2430,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 273539,
+            "cacheHits": 252019,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2426,32 +2456,32 @@
         "label": "combined-vertical-1280x720",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 9991.742,
-          "frameCount": 1175,
-          "averageFps": 117.597,
-          "averageFrameMs": 8.504,
+          "measuredDurationMs": 10004.241,
+          "frameCount": 1171,
+          "averageFps": 117.05,
+          "averageFrameMs": 8.543,
           "p50FrameMs": 8.333,
           "p95FrameMs": 8.333,
           "p99FrameMs": 16.666,
-          "worstFrameMs": 66.664,
-          "framesOver16_7Ms": 4,
-          "framesOver33_3Ms": 4,
-          "framesOver50Ms": 1
+          "worstFrameMs": 24.999,
+          "framesOver16_7Ms": 1,
+          "framesOver33_3Ms": 0,
+          "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10002.3,
+        "pageWallDurationMs": 10006.7,
         "input": {
-          "heldRightMs": 9876,
+          "heldRightMs": 9873,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
           "cameraDeltaX": 976.464,
-          "cameraDeltaY": 181.574,
-          "cameraRangeX": 1124.207,
-          "cameraCumulativeX": 5414.389,
+          "cameraDeltaY": 176.229,
+          "cameraRangeX": 1127.124,
+          "cameraCumulativeX": 5417.305,
           "playerDeltaX": 958.687,
-          "playerDeltaY": 196.953,
-          "distanceTravelledDelta": 4331.857
+          "playerDeltaY": 191.155,
+          "distanceTravelledDelta": 4325.558
         },
         "before": {
           "levelId": "combined-vertical",
@@ -2483,10 +2513,10 @@
           "collisionCandidates": 28,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200735,
-            "averageMs": 8.333000000000023,
+            "averageFps": 115.66727729350171,
+            "averageMs": 8.645487499999975,
             "p95Ms": 8.333000000005995,
-            "worstMs": 8.333000000005995
+            "worstMs": 16.666000000004715
           },
           "qualityProfile": {
             "tier": "high",
@@ -2498,7 +2528,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 288880,
+            "cacheHits": 266340,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2521,15 +2551,15 @@
           "paused": false,
           "camera": {
             "x": 1096.4639766593527,
-            "y": 803.574072043093,
+            "y": 798.2294671699195,
             "angle": 0
           },
           "player": {
             "x": 1078.6874999999961,
-            "y": 818.9534722222222,
+            "y": 813.1552777777777,
             "vx": 350,
             "vy": 409.5833333333335,
-            "distanceTravelled": 4363.856701136697,
+            "distanceTravelled": 4357.557558317404,
             "respawnTimer": 0
           },
           "viewport": {
@@ -2544,10 +2574,10 @@
           "collisionCandidates": 14,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 110.3492415558691,
-            "averageMs": 9.062137500000002,
-            "p95Ms": 8.333000000005995,
-            "worstMs": 66.66400000000431
+            "averageFps": 113.39036238614926,
+            "averageMs": 8.819091666666646,
+            "p95Ms": 16.66599999999744,
+            "worstMs": 24.99899999999616
           },
           "qualityProfile": {
             "tier": "high",
@@ -2559,7 +2589,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 348907,
+            "cacheHits": 326112,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2585,32 +2615,32 @@
         "label": "combined-hazards-1280x720",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 10000.074,
-          "frameCount": 1197,
-          "averageFps": 119.699,
-          "averageFrameMs": 8.354,
+          "measuredDurationMs": 9991.74,
+          "frameCount": 1058,
+          "averageFps": 105.887,
+          "averageFrameMs": 9.444,
           "p50FrameMs": 8.333,
-          "p95FrameMs": 8.333,
-          "p99FrameMs": 8.333,
-          "worstFrameMs": 16.666,
-          "framesOver16_7Ms": 0,
+          "p95FrameMs": 16.666,
+          "p99FrameMs": 16.666,
+          "worstFrameMs": 24.999,
+          "framesOver16_7Ms": 1,
           "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10005.7,
+        "pageWallDurationMs": 10001.6,
         "input": {
-          "heldRightMs": 9876,
+          "heldRightMs": 9877,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 1155.185,
-          "cameraDeltaY": 39.442,
-          "cameraRangeX": 1576.454,
-          "cameraCumulativeX": 4369.772,
-          "playerDeltaX": 1137.417,
-          "playerDeltaY": 29.066,
-          "distanceTravelledDelta": 4402.697
+          "cameraDeltaX": 328.925,
+          "cameraDeltaY": -83.647,
+          "cameraRangeX": 1334.763,
+          "cameraCumulativeX": 5618.265,
+          "playerDeltaX": 339.59,
+          "playerDeltaY": -92.84,
+          "distanceTravelledDelta": 4768.496
         },
         "before": {
           "levelId": "combined-hazards",
@@ -2642,10 +2672,10 @@
           "collisionCandidates": 42,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 119.01302498380953,
-            "averageMs": 8.402441666666649,
-            "p95Ms": 8.333000000005995,
-            "worstMs": 16.66599999999744
+            "averageFps": 92.58730597343016,
+            "averageMs": 10.800616666467977,
+            "p95Ms": 16.666000000004715,
+            "worstMs": 58.33099999999831
           },
           "qualityProfile": {
             "tier": "high",
@@ -2657,7 +2687,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 365683,
+            "cacheHits": 338968,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2679,16 +2709,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 1255.184766637512,
-            "y": 661.4420470978691,
+            "x": 428.925154410231,
+            "y": 538.3528240925664,
             "angle": 0
           },
           "player": {
-            "x": 1237.4166666666708,
-            "y": 651.0659722222222,
-            "vx": 350,
-            "vy": -305.83333333333326,
-            "distanceTravelled": 4434.696913911684,
+            "x": 439.59027777777766,
+            "y": 529.1597222222222,
+            "vx": -334.1666666666666,
+            "vy": -260.83333333333303,
+            "distanceTravelled": 4800.495823392022,
             "respawnTimer": 0
           },
           "viewport": {
@@ -2699,14 +2729,14 @@
             "canvasHeight": 641
           },
           "activeObjects": 53,
-          "renderedObjects": 53,
+          "renderedObjects": 54,
           "collisionCandidates": 21,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200778,
-            "averageMs": 8.332999999999993,
-            "p95Ms": 8.333000000005995,
-            "worstMs": 8.333000000005995
+            "averageFps": 107.86948331865858,
+            "averageMs": 9.2704625,
+            "p95Ms": 16.66599999999744,
+            "worstMs": 16.666000000004715
           },
           "qualityProfile": {
             "tier": "high",
@@ -2718,7 +2748,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 432141,
+            "cacheHits": 398272,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2728,7 +2758,7 @@
             "cacheEntries": 16,
             "evictions": 0,
             "sceneDraws": 10,
-            "objectAssetDraws": 45,
+            "objectAssetDraws": 46,
             "fallbackDraws": 8,
             "cullCount": 14,
             "qualityTier": "high"
@@ -2748,32 +2778,32 @@
         "label": "combined-vertical-1280x720",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 9991.742,
-          "frameCount": 1175,
-          "averageFps": 117.597,
-          "averageFrameMs": 8.504,
+          "measuredDurationMs": 10004.241,
+          "frameCount": 1171,
+          "averageFps": 117.05,
+          "averageFrameMs": 8.543,
           "p50FrameMs": 8.333,
           "p95FrameMs": 8.333,
           "p99FrameMs": 16.666,
-          "worstFrameMs": 66.664,
-          "framesOver16_7Ms": 4,
-          "framesOver33_3Ms": 4,
-          "framesOver50Ms": 1
+          "worstFrameMs": 24.999,
+          "framesOver16_7Ms": 1,
+          "framesOver33_3Ms": 0,
+          "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10002.3,
+        "pageWallDurationMs": 10006.7,
         "input": {
-          "heldRightMs": 9876,
+          "heldRightMs": 9873,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
           "cameraDeltaX": 976.464,
-          "cameraDeltaY": 181.574,
-          "cameraRangeX": 1124.207,
-          "cameraCumulativeX": 5414.389,
+          "cameraDeltaY": 176.229,
+          "cameraRangeX": 1127.124,
+          "cameraCumulativeX": 5417.305,
           "playerDeltaX": 958.687,
-          "playerDeltaY": 196.953,
-          "distanceTravelledDelta": 4331.857
+          "playerDeltaY": 191.155,
+          "distanceTravelledDelta": 4325.558
         },
         "before": {
           "levelId": "combined-vertical",
@@ -2805,10 +2835,10 @@
           "collisionCandidates": 28,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200735,
-            "averageMs": 8.333000000000023,
+            "averageFps": 115.66727729350171,
+            "averageMs": 8.645487499999975,
             "p95Ms": 8.333000000005995,
-            "worstMs": 8.333000000005995
+            "worstMs": 16.666000000004715
           },
           "qualityProfile": {
             "tier": "high",
@@ -2820,7 +2850,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 288880,
+            "cacheHits": 266340,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2843,15 +2873,15 @@
           "paused": false,
           "camera": {
             "x": 1096.4639766593527,
-            "y": 803.574072043093,
+            "y": 798.2294671699195,
             "angle": 0
           },
           "player": {
             "x": 1078.6874999999961,
-            "y": 818.9534722222222,
+            "y": 813.1552777777777,
             "vx": 350,
             "vy": 409.5833333333335,
-            "distanceTravelled": 4363.856701136697,
+            "distanceTravelled": 4357.557558317404,
             "respawnTimer": 0
           },
           "viewport": {
@@ -2866,10 +2896,10 @@
           "collisionCandidates": 14,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 110.3492415558691,
-            "averageMs": 9.062137500000002,
-            "p95Ms": 8.333000000005995,
-            "worstMs": 66.66400000000431
+            "averageFps": 113.39036238614926,
+            "averageMs": 8.819091666666646,
+            "p95Ms": 16.66599999999744,
+            "worstMs": 24.99899999999616
           },
           "qualityProfile": {
             "tier": "high",
@@ -2881,7 +2911,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 348907,
+            "cacheHits": 326112,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -2907,32 +2937,32 @@
         "label": "combined-hazards-1280x720",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 10000.074,
-          "frameCount": 1197,
-          "averageFps": 119.699,
-          "averageFrameMs": 8.354,
+          "measuredDurationMs": 9991.74,
+          "frameCount": 1058,
+          "averageFps": 105.887,
+          "averageFrameMs": 9.444,
           "p50FrameMs": 8.333,
-          "p95FrameMs": 8.333,
-          "p99FrameMs": 8.333,
-          "worstFrameMs": 16.666,
-          "framesOver16_7Ms": 0,
+          "p95FrameMs": 16.666,
+          "p99FrameMs": 16.666,
+          "worstFrameMs": 24.999,
+          "framesOver16_7Ms": 1,
           "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10005.7,
+        "pageWallDurationMs": 10001.6,
         "input": {
-          "heldRightMs": 9876,
+          "heldRightMs": 9877,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 1155.185,
-          "cameraDeltaY": 39.442,
-          "cameraRangeX": 1576.454,
-          "cameraCumulativeX": 4369.772,
-          "playerDeltaX": 1137.417,
-          "playerDeltaY": 29.066,
-          "distanceTravelledDelta": 4402.697
+          "cameraDeltaX": 328.925,
+          "cameraDeltaY": -83.647,
+          "cameraRangeX": 1334.763,
+          "cameraCumulativeX": 5618.265,
+          "playerDeltaX": 339.59,
+          "playerDeltaY": -92.84,
+          "distanceTravelledDelta": 4768.496
         },
         "before": {
           "levelId": "combined-hazards",
@@ -2964,10 +2994,10 @@
           "collisionCandidates": 42,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 119.01302498380953,
-            "averageMs": 8.402441666666649,
-            "p95Ms": 8.333000000005995,
-            "worstMs": 16.66599999999744
+            "averageFps": 92.58730597343016,
+            "averageMs": 10.800616666467977,
+            "p95Ms": 16.666000000004715,
+            "worstMs": 58.33099999999831
           },
           "qualityProfile": {
             "tier": "high",
@@ -2979,7 +3009,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 365683,
+            "cacheHits": 338968,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3001,16 +3031,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 1255.184766637512,
-            "y": 661.4420470978691,
+            "x": 428.925154410231,
+            "y": 538.3528240925664,
             "angle": 0
           },
           "player": {
-            "x": 1237.4166666666708,
-            "y": 651.0659722222222,
-            "vx": 350,
-            "vy": -305.83333333333326,
-            "distanceTravelled": 4434.696913911684,
+            "x": 439.59027777777766,
+            "y": 529.1597222222222,
+            "vx": -334.1666666666666,
+            "vy": -260.83333333333303,
+            "distanceTravelled": 4800.495823392022,
             "respawnTimer": 0
           },
           "viewport": {
@@ -3021,14 +3051,14 @@
             "canvasHeight": 641
           },
           "activeObjects": 53,
-          "renderedObjects": 53,
+          "renderedObjects": 54,
           "collisionCandidates": 21,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 120.00480019200778,
-            "averageMs": 8.332999999999993,
-            "p95Ms": 8.333000000005995,
-            "worstMs": 8.333000000005995
+            "averageFps": 107.86948331865858,
+            "averageMs": 9.2704625,
+            "p95Ms": 16.66599999999744,
+            "worstMs": 16.666000000004715
           },
           "qualityProfile": {
             "tier": "high",
@@ -3040,7 +3070,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 432141,
+            "cacheHits": 398272,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3050,7 +3080,7 @@
             "cacheEntries": 16,
             "evictions": 0,
             "sceneDraws": 10,
-            "objectAssetDraws": 45,
+            "objectAssetDraws": 46,
             "fallbackDraws": 8,
             "cullCount": 14,
             "qualityTier": "high"
@@ -3080,32 +3110,32 @@
         "label": "celeste.temple.a.d-01-1280x720",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 9995.908,
-          "frameCount": 1190,
-          "averageFps": 119.049,
-          "averageFrameMs": 8.4,
+          "measuredDurationMs": 9995.909,
+          "frameCount": 1192,
+          "averageFps": 119.249,
+          "averageFrameMs": 8.386,
           "p50FrameMs": 8.333,
           "p95FrameMs": 8.333,
           "p99FrameMs": 8.333,
-          "worstFrameMs": 41.665,
-          "framesOver16_7Ms": 2,
-          "framesOver33_3Ms": 1,
+          "worstFrameMs": 24.999,
+          "framesOver16_7Ms": 1,
+          "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10001.8,
+        "pageWallDurationMs": 10001.6,
         "input": {
-          "heldRightMs": 9876,
+          "heldRightMs": 9874,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 1468.688,
-          "cameraDeltaY": -56.757,
+          "cameraDeltaX": 1472.686,
+          "cameraDeltaY": -59.202,
           "cameraRangeX": 1841.808,
-          "cameraCumulativeX": 5157.36,
-          "playerDeltaX": 1451.688,
-          "playerDeltaY": -64.028,
-          "distanceTravelledDelta": 4081.13
+          "cameraCumulativeX": 5161.358,
+          "playerDeltaX": 1454.91,
+          "playerDeltaY": -67.115,
+          "distanceTravelledDelta": 4084.323
         },
         "before": {
           "levelId": "celeste.temple.a.d-01",
@@ -3114,7 +3144,7 @@
           "paused": false,
           "camera": {
             "x": 140,
-            "y": 1521.999999759717,
+            "y": 1521.999999787951,
             "angle": 0
           },
           "player": {
@@ -3137,10 +3167,10 @@
           "collisionCandidates": 54,
           "sceneLayerCount": 4,
           "frameMetrics": {
-            "averageFps": 119.50685496299495,
-            "averageMs": 8.367720833333351,
+            "averageFps": 120.00480019200735,
+            "averageMs": 8.333000000000023,
             "p95Ms": 8.333000000005995,
-            "worstMs": 16.666000000004715
+            "worstMs": 8.333000000013271
           },
           "qualityProfile": {
             "tier": "high",
@@ -3152,7 +3182,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 440935,
+            "cacheHits": 407125,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3174,16 +3204,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 1608.688097124124,
-            "y": 1465.2431743374566,
+            "x": 1612.686198905577,
+            "y": 1462.7981278509692,
             "angle": 0
           },
           "player": {
-            "x": 1591.687500000009,
-            "y": 1457.9722222222224,
-            "vx": 325.8333333333333,
-            "vy": -383.33333333333337,
-            "distanceTravelled": 4087.1297416538464,
+            "x": 1594.9097222222317,
+            "y": 1454.8854166666667,
+            "vx": 350,
+            "vy": -370.4166666666667,
+            "distanceTravelled": 4090.323480797961,
             "respawnTimer": 0
           },
           "viewport": {
@@ -3198,10 +3228,10 @@
           "collisionCandidates": 26,
           "sceneLayerCount": 4,
           "frameMetrics": {
-            "averageFps": 115.20460818432738,
-            "averageMs": 8.680208333333333,
+            "averageFps": 120.00480019200778,
+            "averageMs": 8.332999999999993,
             "p95Ms": 8.333000000013271,
-            "worstMs": 41.6649999999936
+            "worstMs": 8.333000000013271
           },
           "qualityProfile": {
             "tier": "high",
@@ -3213,7 +3243,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 475474,
+            "cacheHits": 441722,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3247,32 +3277,32 @@
         "label": "ori.mount-horu.central-shaft-1280x720",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 9995.908,
-          "frameCount": 1198,
-          "averageFps": 119.849,
-          "averageFrameMs": 8.344,
+          "measuredDurationMs": 10000.075,
+          "frameCount": 1200,
+          "averageFps": 119.999,
+          "averageFrameMs": 8.333,
           "p50FrameMs": 8.333,
           "p95FrameMs": 8.333,
           "p99FrameMs": 8.333,
-          "worstFrameMs": 16.666,
+          "worstFrameMs": 8.808,
           "framesOver16_7Ms": 0,
           "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10000.4,
+        "pageWallDurationMs": 10007.7,
         "input": {
-          "heldRightMs": 9873,
+          "heldRightMs": 9872,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 3350.987,
-          "cameraDeltaY": -91.283,
-          "cameraRangeX": 3350.987,
-          "cameraCumulativeX": 3378.226,
-          "playerDeltaX": 3333.21,
-          "playerDeltaY": -100.92,
-          "distanceTravelledDelta": 4306.448
+          "cameraDeltaX": 3353.903,
+          "cameraDeltaY": -87.037,
+          "cameraRangeX": 3353.903,
+          "cameraCumulativeX": 3381.143,
+          "playerDeltaX": 3336.127,
+          "playerDeltaY": -96.746,
+          "distanceTravelledDelta": 4315.374
         },
         "before": {
           "levelId": "ori.mount-horu.central-shaft",
@@ -3281,7 +3311,7 @@
           "paused": false,
           "camera": {
             "x": 140,
-            "y": 1561.999999759717,
+            "y": 1561.999999774275,
             "angle": 0
           },
           "player": {
@@ -3304,10 +3334,10 @@
           "collisionCandidates": 34,
           "sceneLayerCount": 4,
           "frameMetrics": {
-            "averageFps": 120.00480019200778,
-            "averageMs": 8.332999999999993,
+            "averageFps": 119.97636465616272,
+            "averageMs": 8.334975000000002,
             "p95Ms": 8.333000000013271,
-            "worstMs": 8.333000000013271
+            "worstMs": 8.807000000000698
           },
           "qualityProfile": {
             "tier": "high",
@@ -3319,7 +3349,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 480327,
+            "cacheHits": 446562,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3341,16 +3371,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 3490.9867578415765,
-            "y": 1470.7168309950607,
+            "x": 3493.903424508243,
+            "y": 1474.9624998335516,
             "angle": 0
           },
           "player": {
-            "x": 3473.2102811582295,
-            "y": 1461.0804166666667,
+            "x": 3476.126947824896,
+            "y": 1465.25375,
             "vx": 350,
-            "vy": -283.3499999999998,
-            "distanceTravelled": 4312.447966838141,
+            "vy": -257.5166666666664,
+            "distanceTravelled": 4321.3744064446655,
             "respawnTimer": 0
           },
           "viewport": {
@@ -3365,10 +3395,10 @@
           "collisionCandidates": 16,
           "sceneLayerCount": 4,
           "frameMetrics": {
-            "averageFps": 119.50685496299538,
-            "averageMs": 8.36772083333332,
+            "averageFps": 119.9763046798255,
+            "averageMs": 8.334979166666683,
             "p95Ms": 8.333000000013271,
-            "worstMs": 16.66599999999744
+            "worstMs": 8.807999999989988
           },
           "qualityProfile": {
             "tier": "high",
@@ -3380,7 +3410,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 499511,
+            "cacheHits": 465778,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3414,32 +3444,32 @@
         "label": "ori.mount-horu.central-shaft-1600x1000",
         "metrics": {
           "requestedDurationMs": 10000,
-          "measuredDurationMs": 10004.241,
-          "frameCount": 1179,
-          "averageFps": 117.85,
-          "averageFrameMs": 8.485,
+          "measuredDurationMs": 9995.908,
+          "frameCount": 1200,
+          "averageFps": 120.049,
+          "averageFrameMs": 8.33,
           "p50FrameMs": 8.333,
           "p95FrameMs": 8.333,
-          "p99FrameMs": 16.666,
-          "worstFrameMs": 41.665,
-          "framesOver16_7Ms": 3,
-          "framesOver33_3Ms": 2,
+          "p99FrameMs": 8.333,
+          "worstFrameMs": 8.333,
+          "framesOver16_7Ms": 0,
+          "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10009.2,
+        "pageWallDurationMs": 10003.2,
         "input": {
-          "heldRightMs": 9881,
+          "heldRightMs": 9871,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 3350.987,
-          "cameraDeltaY": -97.302,
-          "cameraRangeX": 3350.987,
-          "cameraCumulativeX": 3378.468,
-          "playerDeltaX": 3333.21,
-          "playerDeltaY": -107.298,
-          "distanceTravelledDelta": 4306.276
+          "cameraDeltaX": 3353.903,
+          "cameraDeltaY": -85.066,
+          "cameraRangeX": 3353.903,
+          "cameraCumulativeX": 3381.143,
+          "playerDeltaX": 3336.127,
+          "playerDeltaY": -94.6,
+          "distanceTravelledDelta": 4314.67
         },
         "before": {
           "levelId": "ori.mount-horu.central-shaft",
@@ -3448,7 +3478,7 @@
           "paused": false,
           "camera": {
             "x": 140,
-            "y": 1561.9999998007984,
+            "y": 1561.999999759717,
             "angle": 0
           },
           "player": {
@@ -3471,10 +3501,10 @@
           "collisionCandidates": 34,
           "sceneLayerCount": 4,
           "frameMetrics": {
-            "averageFps": 116.13367760516859,
-            "averageMs": 8.610766666666677,
+            "averageFps": 119.50685496299538,
+            "averageMs": 8.36772083333332,
             "p95Ms": 8.333000000013271,
-            "worstMs": 16.66600000001199
+            "worstMs": 16.66599999999744
           },
           "qualityProfile": {
             "tier": "high",
@@ -3486,7 +3516,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 504127,
+            "cacheHits": 470586,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3508,16 +3538,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 3490.9867578415765,
-            "y": 1464.6980957845158,
+            "x": 3493.903424508243,
+            "y": 1476.933941012652,
             "angle": 0
           },
           "player": {
-            "x": 3473.2102811582295,
-            "y": 1454.7018055555557,
+            "x": 3476.126947824896,
+            "y": 1467.3997222222224,
             "vx": 350,
             "vy": -270.4333333333331,
-            "distanceTravelled": 4312.27569201821,
+            "distanceTravelled": 4320.670004039498,
             "respawnTimer": 0
           },
           "viewport": {
@@ -3532,10 +3562,10 @@
           "collisionCandidates": 16,
           "sceneLayerCount": 4,
           "frameMetrics": {
-            "averageFps": 116.6038544375781,
-            "averageMs": 8.57604583333335,
+            "averageFps": 120.00480019200691,
+            "averageMs": 8.333000000000053,
             "p95Ms": 8.333000000013271,
-            "worstMs": 33.33199999999488
+            "worstMs": 8.333000000013271
           },
           "qualityProfile": {
             "tier": "high",
@@ -3547,7 +3577,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 523007,
+            "cacheHits": 489802,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3582,31 +3612,31 @@
         "metrics": {
           "requestedDurationMs": 10000,
           "measuredDurationMs": 9995.908,
-          "frameCount": 1193,
-          "averageFps": 119.349,
-          "averageFrameMs": 8.379,
+          "frameCount": 1199,
+          "averageFps": 119.949,
+          "averageFrameMs": 8.337,
           "p50FrameMs": 8.333,
           "p95FrameMs": 8.333,
           "p99FrameMs": 8.333,
-          "worstFrameMs": 33.332,
-          "framesOver16_7Ms": 1,
-          "framesOver33_3Ms": 1,
+          "worstFrameMs": 16.666,
+          "framesOver16_7Ms": 0,
+          "framesOver33_3Ms": 0,
           "framesOver50Ms": 0
         },
-        "pageWallDurationMs": 10004.7,
+        "pageWallDurationMs": 10003.2,
         "input": {
-          "heldRightMs": 9875,
+          "heldRightMs": 9873,
           "jumpPresses": 11,
           "dashPresses": 3
         },
         "movement": {
-          "cameraDeltaX": 3353.903,
-          "cameraDeltaY": -89.252,
-          "cameraRangeX": 3353.903,
-          "cameraCumulativeX": 3381.143,
-          "playerDeltaX": 3336.127,
-          "playerDeltaY": -98.941,
-          "distanceTravelledDelta": 4312.357
+          "cameraDeltaX": 3350.987,
+          "cameraDeltaY": -85.066,
+          "cameraRangeX": 3350.987,
+          "cameraCumulativeX": 3378.226,
+          "playerDeltaX": 3333.21,
+          "playerDeltaY": -94.6,
+          "distanceTravelledDelta": 4311.753
         },
         "before": {
           "levelId": "ori.mount-horu.central-shaft",
@@ -3615,7 +3645,7 @@
           "paused": false,
           "camera": {
             "x": 140,
-            "y": 1561.999999774275,
+            "y": 1561.999999759717,
             "angle": 0
           },
           "player": {
@@ -3638,10 +3668,10 @@
           "collisionCandidates": 34,
           "sceneLayerCount": 4,
           "frameMetrics": {
-            "averageFps": 118.03750838558173,
-            "averageMs": 8.471883333333304,
+            "averageFps": 120.00480019200778,
+            "averageMs": 8.332999999999993,
             "p95Ms": 8.333000000013271,
-            "worstMs": 16.66600000001199
+            "worstMs": 8.333000000013271
           },
           "qualityProfile": {
             "tier": "high",
@@ -3653,7 +3683,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 527719,
+            "cacheHits": 494626,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3675,16 +3705,16 @@
           "running": true,
           "paused": false,
           "camera": {
-            "x": 3493.903424508243,
-            "y": 1472.7478983536928,
+            "x": 3490.9867578415765,
+            "y": 1476.9339406452343,
             "angle": 0
           },
           "player": {
-            "x": 3476.126947824896,
-            "y": 1463.0594444444446,
+            "x": 3473.2102811582295,
+            "y": 1467.3997222222224,
             "vx": 350,
             "vy": -270.4333333333331,
-            "distanceTravelled": 4318.3574302610605,
+            "distanceTravelled": 4317.753337372831,
             "respawnTimer": 0
           },
           "viewport": {
@@ -3699,8 +3729,8 @@
           "collisionCandidates": 16,
           "sceneLayerCount": 4,
           "frameMetrics": {
-            "averageFps": 120.00480019200691,
-            "averageMs": 8.333000000000053,
+            "averageFps": 120.00480019200778,
+            "averageMs": 8.332999999999993,
             "p95Ms": 8.333000000013271,
             "worstMs": 8.333000000013271
           },
@@ -3714,7 +3744,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 546823,
+            "cacheHits": 513826,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3764,7 +3794,7 @@
         "levelId": "movement-lab-01",
         "visualStats": {
           "requests": 16,
-          "cacheHits": 547181,
+          "cacheHits": 514200,
           "ready": 16,
           "loading": 0,
           "error": 0,
@@ -3785,7 +3815,7 @@
         "levelId": "glide-lab",
         "visualStats": {
           "requests": 16,
-          "cacheHits": 547493,
+          "cacheHits": 514512,
           "ready": 16,
           "loading": 0,
           "error": 0,
@@ -3806,7 +3836,7 @@
         "levelId": "combined-hazards",
         "visualStats": {
           "requests": 16,
-          "cacheHits": 548139,
+          "cacheHits": 515158,
           "ready": 16,
           "loading": 0,
           "error": 0,
@@ -3827,7 +3857,7 @@
         "levelId": "glide-lab",
         "visualStats": {
           "requests": 16,
-          "cacheHits": 548585,
+          "cacheHits": 515604,
           "ready": 16,
           "loading": 0,
           "error": 0,
@@ -3848,7 +3878,7 @@
         "levelId": "combined-hazards",
         "visualStats": {
           "requests": 16,
-          "cacheHits": 549231,
+          "cacheHits": 516250,
           "ready": 16,
           "loading": 0,
           "error": 0,
@@ -3867,7 +3897,7 @@
     ],
     "network": {
       "label": "twenty-formal-level-switches",
-      "elapsedWallMs": 710,
+      "elapsedWallMs": 702,
       "requestCount": 0,
       "completedCount": 0,
       "failedCount": 0,
@@ -3883,21 +3913,21 @@
     "heap": {
       "before": {
         "cdp": {
-          "timestamp": 1781837.234309,
+          "timestamp": 1784629.537853,
           "documents": 1,
           "nodes": 1346,
           "jsEventListeners": 139,
-          "jsHeapUsedBytes": 7320524,
+          "jsHeapUsedBytes": 7170152,
           "jsHeapTotalBytes": 10813440,
-          "layoutCount": 19,
-          "recalcStyleCount": 22,
-          "taskDurationSeconds": 31.328835,
-          "scriptDurationSeconds": 22.198943
+          "layoutCount": 20,
+          "recalcStyleCount": 23,
+          "taskDurationSeconds": 30.716645,
+          "scriptDurationSeconds": 22.238304
         },
         "page": {
           "jsHeapSizeLimit": 4294705152,
-          "totalJSHeapSize": 9991413,
-          "usedJSHeapSize": 8173045
+          "totalJSHeapSize": 10025637,
+          "usedJSHeapSize": 8191761
         },
         "state": {
           "levelId": "ori.mount-horu.central-shaft",
@@ -3906,15 +3936,15 @@
           "paused": false,
           "camera": {
             "x": 3534.736757841574,
-            "y": 1451.3648308728903,
+            "y": 1454.7114136615282,
             "angle": 0
           },
           "player": {
             "x": 3516.960281158227,
-            "y": 1442.810972222222,
+            "y": 1446.5122222222221,
             "vx": 350,
-            "vy": -89.59999999999984,
-            "distanceTravelled": 4364.2603580239165,
+            "vy": -76.68333333333317,
+            "distanceTravelled": 4366.642115256711,
             "respawnTimer": 0
           },
           "viewport": {
@@ -3944,7 +3974,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 547047,
+            "cacheHits": 514066,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -3963,21 +3993,21 @@
       },
       "afterBeforeGc": {
         "cdp": {
-          "timestamp": 1781837.948263,
+          "timestamp": 1784630.243615,
           "documents": 1,
           "nodes": 1346,
           "jsEventListeners": 139,
-          "jsHeapUsedBytes": 6385884,
+          "jsHeapUsedBytes": 6787148,
           "jsHeapTotalBytes": 10813440,
-          "layoutCount": 19,
-          "recalcStyleCount": 22,
-          "taskDurationSeconds": 31.592191,
-          "scriptDurationSeconds": 22.403559
+          "layoutCount": 20,
+          "recalcStyleCount": 23,
+          "taskDurationSeconds": 30.942838,
+          "scriptDurationSeconds": 22.4131
         },
         "page": {
           "jsHeapSizeLimit": 4294705152,
-          "totalJSHeapSize": 11467227,
-          "usedJSHeapSize": 7582679
+          "totalJSHeapSize": 11468683,
+          "usedJSHeapSize": 7639251
         },
         "state": {
           "levelId": "combined-hazards",
@@ -3986,7 +4016,7 @@
           "paused": false,
           "camera": {
             "x": 100,
-            "y": 617.8590605671532,
+            "y": 617.5919929190201,
             "angle": 0
           },
           "player": {
@@ -4009,10 +4039,10 @@
           "collisionCandidates": 42,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 124.54288861109752,
-            "averageMs": 8.029362504370996,
+            "averageFps": 124.920168236011,
+            "averageMs": 8.005112498013174,
             "p95Ms": 8.333000000013271,
-            "worstMs": 24.99899999999616
+            "worstMs": 16.66599999999744
           },
           "qualityProfile": {
             "tier": "high",
@@ -4024,7 +4054,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 551695,
+            "cacheHits": 518658,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -4043,21 +4073,21 @@
       },
       "afterForcedGc": {
         "cdp": {
-          "timestamp": 1781838.063088,
+          "timestamp": 1784630.358113,
           "documents": 1,
           "nodes": 1346,
           "jsEventListeners": 139,
-          "jsHeapUsedBytes": 5549136,
-          "jsHeapTotalBytes": 8454144,
-          "layoutCount": 19,
-          "recalcStyleCount": 22,
-          "taskDurationSeconds": 31.63609,
-          "scriptDurationSeconds": 22.431464
+          "jsHeapUsedBytes": 5633276,
+          "jsHeapTotalBytes": 8716288,
+          "layoutCount": 20,
+          "recalcStyleCount": 23,
+          "taskDurationSeconds": 30.981034,
+          "scriptDurationSeconds": 22.435274
         },
         "page": {
           "jsHeapSizeLimit": 4294705152,
-          "totalJSHeapSize": 8960475,
-          "usedJSHeapSize": 6402911
+          "totalJSHeapSize": 9240459,
+          "usedJSHeapSize": 6854207
         },
         "state": {
           "levelId": "combined-hazards",
@@ -4089,10 +4119,10 @@
           "collisionCandidates": 42,
           "sceneLayerCount": 8,
           "frameMetrics": {
-            "averageFps": 124.54288861109752,
-            "averageMs": 8.029362504370996,
+            "averageFps": 124.920168236011,
+            "averageMs": 8.005112498013174,
             "p95Ms": 8.333000000013271,
-            "worstMs": 24.99899999999616
+            "worstMs": 16.66599999999744
           },
           "qualityProfile": {
             "tier": "high",
@@ -4104,7 +4134,7 @@
           },
           "visualStats": {
             "requests": 16,
-            "cacheHits": 552423,
+            "cacheHits": 519442,
             "ready": 16,
             "loading": 0,
             "error": 0,
@@ -4121,11 +4151,11 @@
           }
         }
       },
-      "retainedJsHeapDeltaBytes": -1771388
+      "retainedJsHeapDeltaBytes": -1536876
     },
     "visualRuntime": {
       "requests": 16,
-      "cacheHits": 552423,
+      "cacheHits": 519442,
       "ready": 16,
       "loading": 0,
       "error": 0,
@@ -4152,16 +4182,16 @@
     "cpuThrottlingRate": 4,
     "reload": {
       "formalInteractive": {
-        "elapsedMs": 598.7000000476837,
+        "elapsedMs": 459.2000000476837,
         "formalLevelCount": 10,
         "readyState": "complete"
       },
       "referenceReady": {
-        "elapsedMs": 697,
+        "elapsedMs": 532.3999998569489,
         "visibleReferenceButtons": 24
       },
       "visualReady": {
-        "elapsedMs": 747.9000000953674,
+        "elapsedMs": 585.5999999046326,
         "stats": {
           "requests": 15,
           "cacheHits": 204,
@@ -4182,40 +4212,40 @@
       },
       "resourceTiming": {
         "navigation": {
-          "domContentLoadedMs": 428.2999999523163,
-          "loadEventMs": 517.9000000953674,
-          "responseEndMs": 7.6000001430511475,
+          "domContentLoadedMs": 319.59999990463257,
+          "loadEventMs": 390.5,
+          "responseEndMs": 4.5,
           "transferSize": 10677,
           "encodedBodySize": 10377,
           "decodedBodySize": 10377
         },
-        "entryCount": 38,
-        "transferBytes": 1978323,
-        "encodedBodyBytes": 2274243,
-        "decodedBodyBytes": 2274243
+        "entryCount": 39,
+        "transferBytes": 1980134,
+        "encodedBodyBytes": 2275754,
+        "decodedBodyBytes": 2275754
       },
       "network": {
         "label": "controlled-low-tier-reload",
-        "elapsedWallMs": 1426,
-        "requestCount": 38,
-        "completedCount": 38,
+        "elapsedWallMs": 1259,
+        "requestCount": 39,
+        "completedCount": 39,
         "failedCount": 0,
         "httpErrorCount": 0,
         "ignoredOptionalRequestCount": 0,
         "applicationErrorCount": 0,
         "cachedRequestCount": 15,
-        "transferBytes": 1976576,
-        "decodedBodyBytes": 2274243,
+        "transferBytes": 1978301,
+        "decodedBodyBytes": 2275754,
         "byType": {
           "Document": 1,
           "Stylesheet": 1,
-          "Script": 20,
+          "Script": 21,
           "Fetch": 1,
           "Image": 15
         },
         "resources": [
           {
-            "requestId": "6E087D73B03BA2BC436CDB8CFE8E7FD8",
+            "requestId": "43170AABE65D731E20B56C1CC225F607",
             "url": "/",
             "type": "Document",
             "method": "GET",
@@ -4230,7 +4260,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.86",
+            "requestId": "75712.88",
             "url": "/styles.css",
             "type": "Stylesheet",
             "method": "GET",
@@ -4245,7 +4275,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.87",
+            "requestId": "75712.89",
             "url": "/src/game.js",
             "type": "Script",
             "method": "GET",
@@ -4260,7 +4290,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.90",
+            "requestId": "75712.92",
             "url": "/src/config.js",
             "type": "Script",
             "method": "GET",
@@ -4275,7 +4305,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.91",
+            "requestId": "75712.93",
             "url": "/src/display.js",
             "type": "Script",
             "method": "GET",
@@ -4290,7 +4320,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.92",
+            "requestId": "75712.94",
             "url": "/src/asset-library.js",
             "type": "Script",
             "method": "GET",
@@ -4298,14 +4328,14 @@
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 42998,
-            "encodedChunkBytes": 43011,
-            "transferBytes": 43213,
+            "decodedBodyBytes": 43175,
+            "encodedChunkBytes": 43188,
+            "transferBytes": 43390,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.93",
+            "requestId": "75712.95",
             "url": "/src/level-editor.js",
             "type": "Script",
             "method": "GET",
@@ -4313,14 +4343,14 @@
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 83515,
-            "encodedChunkBytes": 83537,
-            "transferBytes": 83739,
+            "decodedBodyBytes": 83571,
+            "encodedChunkBytes": 83593,
+            "transferBytes": 83795,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.94",
+            "requestId": "75712.96",
             "url": "/src/levels.js",
             "type": "Script",
             "method": "GET",
@@ -4335,7 +4365,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.95",
+            "requestId": "75712.97",
             "url": "/src/level-validator.js",
             "type": "Script",
             "method": "GET",
@@ -4344,13 +4374,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 7716,
-            "encodedChunkBytes": 7724,
+            "encodedChunkBytes": 7729,
             "transferBytes": 7931,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.96",
+            "requestId": "75712.98",
             "url": "/src/reference-level-library.js",
             "type": "Script",
             "method": "GET",
@@ -4365,7 +4395,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.97",
+            "requestId": "75712.99",
             "url": "/src/reference-autoplay.js",
             "type": "Script",
             "method": "GET",
@@ -4380,7 +4410,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.98",
+            "requestId": "75712.100",
             "url": "/src/dash-refill.js",
             "type": "Script",
             "method": "GET",
@@ -4395,7 +4425,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.99",
+            "requestId": "75712.101",
             "url": "/src/motion.js",
             "type": "Script",
             "method": "GET",
@@ -4410,7 +4440,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.100",
+            "requestId": "75712.102",
             "url": "/src/reference-mechanisms.js",
             "type": "Script",
             "method": "GET",
@@ -4425,7 +4455,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.101",
+            "requestId": "75712.103",
             "url": "/src/player-animation.js",
             "type": "Script",
             "method": "GET",
@@ -4440,7 +4470,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.102",
+            "requestId": "75712.104",
             "url": "/src/math.js",
             "type": "Script",
             "method": "GET",
@@ -4455,7 +4485,7 @@
             "errorText": null
           },
           {
-            "requestId": "66707.103",
+            "requestId": "75712.105",
             "url": "/src/rules.js",
             "type": "Script",
             "method": "GET",
@@ -4464,13 +4494,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 14148,
-            "encodedChunkBytes": 14161,
+            "encodedChunkBytes": 14156,
             "transferBytes": 14363,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.104",
+            "requestId": "75712.106",
             "url": "/src/visual-runtime.js",
             "type": "Script",
             "method": "GET",
@@ -4478,44 +4508,29 @@
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 20881,
-            "encodedChunkBytes": 20894,
-            "transferBytes": 21096,
+            "decodedBodyBytes": 20991,
+            "encodedChunkBytes": 21004,
+            "transferBytes": 21206,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.105",
-            "url": "/src/level.js",
+            "requestId": "75712.107",
+            "url": "/src/asset-paths.js",
             "type": "Script",
             "method": "GET",
             "status": 200,
             "mimeType": "text/javascript",
             "protocol": "http/1.1",
             "fromCache": false,
-            "decodedBodyBytes": 4080,
-            "encodedChunkBytes": 4092,
-            "transferBytes": 4294,
+            "decodedBodyBytes": 1168,
+            "encodedChunkBytes": 1175,
+            "transferBytes": 1382,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.106",
-            "url": "/src/level-art-presets.js",
-            "type": "Script",
-            "method": "GET",
-            "status": 200,
-            "mimeType": "text/javascript",
-            "protocol": "http/1.1",
-            "fromCache": false,
-            "decodedBodyBytes": 14685,
-            "encodedChunkBytes": 14698,
-            "transferBytes": 14900,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "requestId": "66707.107",
+            "requestId": "75712.108",
             "url": "/src/level-objects.js",
             "type": "Script",
             "method": "GET",
@@ -4524,13 +4539,13 @@
             "protocol": "http/1.1",
             "fromCache": false,
             "decodedBodyBytes": 37617,
-            "encodedChunkBytes": 37630,
+            "encodedChunkBytes": 37625,
             "transferBytes": 37832,
             "failed": false,
             "errorText": null
           },
           {
-            "requestId": "66707.108",
+            "requestId": "75712.109",
             "url": "/src/scene-layers.js",
             "type": "Script",
             "method": "GET",
@@ -4545,7 +4560,37 @@
             "errorText": null
           },
           {
-            "requestId": "66707.109",
+            "requestId": "75712.110",
+            "url": "/src/level.js",
+            "type": "Script",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 4080,
+            "encodedChunkBytes": 4092,
+            "transferBytes": 4294,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.111",
+            "url": "/src/level-art-presets.js",
+            "type": "Script",
+            "method": "GET",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "protocol": "http/1.1",
+            "fromCache": false,
+            "decodedBodyBytes": 14685,
+            "encodedChunkBytes": 14693,
+            "transferBytes": 14900,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "requestId": "75712.112",
             "url": "/levels/reference/playable-index.json",
             "type": "Fetch",
             "method": "GET",
@@ -4560,8 +4605,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.110",
-            "url": "/assets/game/terrain/moss-root-platform.webp",
+            "requestId": "75712.113",
+            "url": "/media/game/terrain/moss-root-platform.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4575,8 +4620,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.111",
-            "url": "/assets/game/gameplay/crimson-thorn-vine.webp",
+            "requestId": "75712.114",
+            "url": "/media/game/gameplay/crimson-thorn-vine.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4590,8 +4635,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.112",
-            "url": "/assets/game/gameplay/crystal-rope-anchor.webp",
+            "requestId": "75712.115",
+            "url": "/media/game/gameplay/crystal-rope-anchor.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4605,8 +4650,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.113",
-            "url": "/assets/game/gameplay/leaf-energy-orb.webp",
+            "requestId": "75712.116",
+            "url": "/media/game/gameplay/leaf-energy-orb.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4620,8 +4665,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.114",
-            "url": "/assets/game/gameplay/seed-lantern-checkpoint.webp",
+            "requestId": "75712.117",
+            "url": "/media/game/gameplay/seed-lantern-checkpoint.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4635,8 +4680,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.115",
-            "url": "/assets/game/layout/root-spawn-gate.webp",
+            "requestId": "75712.118",
+            "url": "/media/game/layout/root-spawn-gate.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4650,8 +4695,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.116",
-            "url": "/assets/game/scene/background/distant-trunk-grove.webp",
+            "requestId": "75712.119",
+            "url": "/media/game/scene/background/distant-trunk-grove.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4665,8 +4710,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.117",
-            "url": "/assets/game/scene/atmosphere/cyan-mist-band.webp",
+            "requestId": "75712.120",
+            "url": "/media/game/scene/atmosphere/cyan-mist-band.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4680,8 +4725,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.118",
-            "url": "/assets/game/scene/trees/ancient-amber-tree.webp",
+            "requestId": "75712.121",
+            "url": "/media/game/scene/trees/ancient-amber-tree.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4695,8 +4740,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.119",
-            "url": "/assets/game/scene/trees/mid-tree-cluster.webp",
+            "requestId": "75712.122",
+            "url": "/media/game/scene/trees/mid-tree-cluster.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4710,8 +4755,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.120",
-            "url": "/assets/game/scene/vegetation/cyan-seed-plant.webp",
+            "requestId": "75712.123",
+            "url": "/media/game/scene/vegetation/cyan-seed-plant.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4725,8 +4770,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.121",
-            "url": "/assets/game/scene/atmosphere/forest-light-motes.webp",
+            "requestId": "75712.124",
+            "url": "/media/game/scene/atmosphere/forest-light-motes.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4740,8 +4785,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.122",
-            "url": "/assets/game/scene/vegetation/moss-bush-cluster.webp",
+            "requestId": "75712.125",
+            "url": "/media/game/scene/vegetation/moss-bush-cluster.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4755,8 +4800,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.123",
-            "url": "/assets/game/layout/golden-goal-gate.webp",
+            "requestId": "75712.126",
+            "url": "/media/game/layout/golden-goal-gate.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4770,8 +4815,8 @@
             "errorText": null
           },
           {
-            "requestId": "66707.124",
-            "url": "/assets/game/scene/foreground/overhang-vine-branch.webp",
+            "requestId": "75712.127",
+            "url": "/media/game/scene/foreground/overhang-vine-branch.webp",
             "type": "Image",
             "method": "GET",
             "status": 200,
@@ -4791,32 +4836,32 @@
       "label": "combined-horizontal-low-tier-4x-cpu",
       "metrics": {
         "requestedDurationMs": 5000,
-        "measuredDurationMs": 4991.941,
-        "frameCount": 321,
-        "averageFps": 64.304,
-        "averageFrameMs": 15.551,
-        "p50FrameMs": 16.666,
-        "p95FrameMs": 33.332,
-        "p99FrameMs": 41.665,
-        "worstFrameMs": 66.664,
-        "framesOver16_7Ms": 64,
-        "framesOver33_3Ms": 20,
-        "framesOver50Ms": 1
+        "measuredDurationMs": 4987.775,
+        "frameCount": 478,
+        "averageFps": 95.834,
+        "averageFrameMs": 10.435,
+        "p50FrameMs": 8.333,
+        "p95FrameMs": 16.666,
+        "p99FrameMs": 24.999,
+        "worstFrameMs": 24.999,
+        "framesOver16_7Ms": 17,
+        "framesOver33_3Ms": 0,
+        "framesOver50Ms": 0
       },
-      "pageWallDurationMs": 5011.4,
+      "pageWallDurationMs": 5012.9,
       "input": {
-        "heldRightMs": 4969,
+        "heldRightMs": 4918,
         "jumpPresses": 6,
         "dashPresses": 1
       },
       "movement": {
         "cameraDeltaX": 0,
-        "cameraDeltaY": -39.295,
-        "cameraRangeX": 1240.765,
-        "cameraCumulativeX": 2678.904,
+        "cameraDeltaY": -37.435,
+        "cameraRangeX": 1216.917,
+        "cameraCumulativeX": 2628.256,
         "playerDeltaX": 0,
-        "playerDeltaY": -23.604,
-        "distanceTravelledDelta": 2241.662
+        "playerDeltaY": -22.205,
+        "distanceTravelledDelta": 2245.795
       },
       "before": {
         "levelId": "combined-horizontal",
@@ -4825,7 +4870,7 @@
         "paused": false,
         "camera": {
           "x": 100,
-          "y": 621.9999997344804,
+          "y": 621.9999997173559,
           "angle": 0
         },
         "player": {
@@ -4848,10 +4893,10 @@
         "collisionCandidates": 36,
         "sceneLayerCount": 8,
         "frameMetrics": {
-          "averageFps": 84.70927072377012,
-          "averageMs": 11.805083333333334,
+          "averageFps": 102.86125730743517,
+          "averageMs": 9.721833333333333,
           "p95Ms": 16.666000000000167,
-          "worstMs": 33.33200000000011
+          "worstMs": 24.99900000000025
         },
         "qualityProfile": {
           "tier": "low",
@@ -4863,7 +4908,7 @@
         },
         "visualStats": {
           "requests": 16,
-          "cacheHits": 16294,
+          "cacheHits": 19298,
           "ready": 16,
           "loading": 0,
           "error": 0,
@@ -4886,15 +4931,15 @@
         "paused": false,
         "camera": {
           "x": 100,
-          "y": 582.7053130207689,
+          "y": 584.5647913065776,
           "angle": 0
         },
         "player": {
           "x": 100,
-          "y": 598.3958333333334,
+          "y": 599.7951388888889,
           "vx": 0,
-          "vy": 155,
-          "distanceTravelled": 2273.6615863288916,
+          "vy": 167.91666666666666,
+          "distanceTravelled": 2277.7948096420605,
           "respawnTimer": 0
         },
         "viewport": {
@@ -4909,10 +4954,10 @@
         "collisionCandidates": 18,
         "sceneLayerCount": 8,
         "frameMetrics": {
-          "averageFps": 59.38381865171515,
-          "averageMs": 16.839604166666664,
-          "p95Ms": 33.332000000000335,
-          "worstMs": 66.66400000000067
+          "averageFps": 104.35200016696318,
+          "averageMs": 9.582950000000002,
+          "p95Ms": 16.666000000000167,
+          "worstMs": 24.998999999999796
         },
         "qualityProfile": {
           "tier": "low",
@@ -4924,7 +4969,7 @@
         },
         "visualStats": {
           "requests": 16,
-          "cacheHits": 35576,
+          "cacheHits": 47988,
           "ready": 16,
           "loading": 0,
           "error": 0,
@@ -4968,7 +5013,7 @@
       {
         "source": "network",
         "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "url": "http://127.0.0.1:4175/favicon.ico",
+        "url": "http://127.0.0.1:4176/favicon.ico",
         "lineNumber": null,
         "reason": "Chrome's implicit optional favicon request is not an application resource."
       }

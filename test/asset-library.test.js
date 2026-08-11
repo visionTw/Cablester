@@ -9,6 +9,7 @@ import {
   GAME_ASSET_IDS,
   GENERATED_GAME_ASSETS,
   SCENE_ASSET_IDS,
+  assetDeliveryUrl,
   createAssetRegistry,
   createVisualConfig,
   getProjectDefaultAssetId,
@@ -28,16 +29,18 @@ import {
   validateVisualConfig
 } from "../src/asset-library.js";
 import { createBlankLevelDocument, createLevelObject } from "../src/level-objects.js";
+import { mediaAssetRelativePath } from "../src/asset-paths.js";
 
 function imageAsset(id, applicableTypes, label = id) {
+  const fileStem = id.replace(/[^a-z0-9_-]/gi, "-");
   return {
     id,
     label,
     description: `${label} test asset`,
     category: "terrain",
     kind: "image",
-    path: `./assets/${id}.webp`,
-    thumbnailPath: `./assets/${id}-thumb.webp`,
+    path: `./assets/game/test/${fileStem}.webp`,
+    thumbnailPath: `./assets/game/test/${fileStem}-thumb.webp`,
     applicableTypes,
     tags: ["forest", "test"],
     prompt: "original test prompt",
@@ -61,6 +64,26 @@ function testRegistry() {
     projectDefaultAssetId: BUILTIN_PROCEDURAL_ASSET_ID
   });
 }
+
+test("asset delivery URLs preserve canonical file paths while using the runtime media route", () => {
+  assert.equal(assetDeliveryUrl("./assets/game/terrain/moss.webp"), "./media/game/terrain/moss.webp");
+  assert.equal(assetDeliveryUrl("/assets/game/terrain/moss.webp"), "/media/game/terrain/moss.webp");
+  assert.equal(assetDeliveryUrl("./assets/../index.html"), null);
+  assert.equal(assetDeliveryUrl("./assets/game/%2e%2e/index.webp"), null);
+  assert.equal(assetDeliveryUrl("./assets/game/terrain/moss.WEBP"), null);
+  assert.equal(assetDeliveryUrl("https://cdn.example/moss.webp"), null);
+  assert.equal(assetDeliveryUrl(null), null);
+  assert.equal(mediaAssetRelativePath("/media/game/terrain/moss.webp"), "game/terrain/moss.webp");
+  for (const invalidPath of [
+    "/media/../index.html",
+    "/media/game/../index.webp",
+    "/media/game%2F..%2Findex.webp",
+    "/media/game\\..\\index.webp",
+    "/media/game/%00.webp",
+    "/MEDIA/game/terrain/moss.webp",
+    "/media/game/terrain/moss.WEBP"
+  ]) assert.equal(mediaAssetRelativePath(invalidPath), null, invalidPath);
+});
 
 test("asset registry supports search, applicability and project/type defaults", () => {
   const registry = testRegistry();
@@ -203,4 +226,12 @@ test("visual and registry validation reject malformed configuration", () => {
   const registry = testRegistry();
   registry.typeDefaults.hazard = "test:platform-moss";
   assert.ok(validateAssetRegistry(registry).some((error) => error.includes("does not apply")));
+
+  const traversalRegistry = testRegistry();
+  traversalRegistry.assets[1].path = "./assets/game/../index.webp";
+  assert.ok(validateAssetRegistry(traversalRegistry).some((error) => error.includes("canonical ./assets/game")));
+
+  const encodedSeparatorRegistry = testRegistry();
+  encodedSeparatorRegistry.assets[1].thumbnailPath = "./assets/game/test%2Fthumb.webp";
+  assert.ok(validateAssetRegistry(encodedSeparatorRegistry).some((error) => error.includes("thumbnailPath")));
 });
