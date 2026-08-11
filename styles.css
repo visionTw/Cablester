@@ -486,6 +486,34 @@ kbd {
   font-size: 19px;
 }
 
+.editor-mode-tabs {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid rgba(118, 232, 229, 0.14);
+  border-radius: 11px;
+  background: rgba(2, 13, 20, 0.52);
+}
+
+.level-editor .editor-mode-tabs button {
+  min-height: 31px;
+  padding: 5px 10px;
+  border-color: transparent;
+  background: transparent;
+  color: rgba(214, 246, 245, 0.56);
+  font-size: 10px;
+  font-weight: 720;
+  white-space: nowrap;
+}
+
+.level-editor .editor-mode-tabs button[data-active="true"] {
+  border-color: rgba(117, 244, 235, 0.38);
+  background: linear-gradient(135deg, rgba(71, 220, 207, 0.2), rgba(73, 132, 187, 0.16));
+  color: #eafffc;
+  box-shadow: 0 0 18px rgba(58, 211, 201, 0.08);
+}
+
 .editor-document-picker {
   display: flex;
   align-items: center;
@@ -558,6 +586,10 @@ kbd {
   background: rgba(7, 24, 32, 0.92);
 }
 
+.library-panel[hidden] {
+  display: none !important;
+}
+
 .library-panel {
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr);
@@ -592,6 +624,345 @@ kbd {
   overflow-y: auto;
   padding: 0 8px 18px;
   scrollbar-color: rgba(111, 232, 227, 0.3) transparent;
+}
+
+.asset-panel {
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+}
+
+.asset-filters {
+  display: grid;
+  gap: 7px;
+  padding: 0 10px 10px;
+  border-bottom: 1px solid rgba(126, 231, 231, 0.08);
+}
+
+.asset-filters .object-search {
+  width: 100%;
+  margin: 0;
+}
+
+.asset-filters select {
+  width: 100%;
+  padding: 0 8px;
+}
+
+.compatible-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: rgba(211, 246, 247, 0.54);
+  font-size: 9px;
+}
+
+.asset-library {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  overflow-y: auto;
+  padding: 9px;
+  scrollbar-color: rgba(111, 232, 227, 0.3) transparent;
+}
+
+.level-editor .asset-card {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+  min-height: 65px;
+  padding: 6px;
+  text-align: left;
+}
+
+.asset-card[data-selected="true"] {
+  border-color: rgba(255, 230, 135, 0.72) !important;
+  background: rgba(255, 220, 118, 0.1) !important;
+}
+
+.asset-card[data-compatible="false"] {
+  opacity: 0.48;
+}
+
+.asset-thumbnail,
+.inspector-asset-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(139, 236, 231, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(45deg, rgba(180, 231, 229, 0.045) 25%, transparent 25%, transparent 75%, rgba(180, 231, 229, 0.045) 75%),
+    linear-gradient(45deg, rgba(180, 231, 229, 0.045) 25%, transparent 25%, transparent 75%, rgba(180, 231, 229, 0.045) 75%),
+    #071a23;
+  background-position: 0 0, 6px 6px;
+  background-size: 12px 12px;
+}
+
+.asset-thumbnail {
+  width: 54px;
+  height: 54px;
+}
+
+.asset-thumbnail img,
+.inspector-asset-preview img,
+.inspector-asset-preview canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.asset-fallback-glyph {
+  width: 28px;
+  height: 18px;
+  border: 2px solid var(--fallback-color, #63dcd4);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--fallback-color, #63dcd4), transparent 77%);
+  box-shadow: 0 0 13px color-mix(in srgb, var(--fallback-color, #63dcd4), transparent 45%);
+}
+
+.asset-card-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.asset-card-copy strong {
+  overflow: hidden;
+  color: #e8fffc;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.asset-card-copy small,
+.asset-card-types {
+  overflow: hidden;
+  color: rgba(209, 244, 244, 0.42);
+  font: 8px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.asset-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  padding: 9px;
+  border-top: 1px solid rgba(126, 231, 231, 0.08);
+  background: rgba(5, 19, 27, 0.98);
+}
+
+.level-editor .asset-actions button {
+  min-height: 31px;
+  padding: 5px 6px;
+  font-size: 8px;
+}
+
+.asset-actions button:first-child,
+.asset-actions button:last-child {
+  grid-column: 1 / -1;
+}
+
+.level-editor .danger-subtle {
+  border-color: rgba(255, 112, 139, 0.18);
+  color: rgba(255, 180, 193, 0.82);
+}
+
+.scene-panel {
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+}
+
+.scene-create-row,
+.scene-layer-actions {
+  display: grid;
+  gap: 5px;
+  padding: 0 9px 8px;
+}
+
+.scene-create-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.scene-create-row select {
+  min-width: 0;
+  padding: 0 7px;
+}
+
+.scene-layer-actions {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid rgba(126, 231, 231, 0.08);
+}
+
+.level-editor .scene-layer-actions button,
+.level-editor .scene-create-row button {
+  min-height: 31px;
+  padding: 5px;
+  font-size: 8px;
+}
+
+.scene-layer-list {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  overflow-y: auto;
+  padding: 9px;
+}
+
+.level-editor .scene-layer-item {
+  display: grid;
+  grid-template-columns: 24px 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 5px;
+  min-height: 48px;
+  padding: 5px;
+  border: 1px solid rgba(126, 231, 231, 0.13);
+  border-radius: 8px;
+  background: rgba(112, 218, 220, 0.045);
+  color: #dcfbfa;
+  cursor: pointer;
+  text-align: left;
+}
+
+.level-editor .scene-layer-item:focus-visible {
+  border-color: rgba(113, 250, 239, 0.52);
+  outline: none;
+}
+
+.scene-layer-item[data-active="true"] {
+  border-color: rgba(255, 232, 142, 0.68) !important;
+  background: rgba(255, 224, 125, 0.09) !important;
+}
+
+.scene-layer-item[data-visible="false"] .scene-layer-copy {
+  opacity: 0.42;
+}
+
+.level-editor .scene-layer-toggle {
+  min-height: 26px;
+  padding: 0;
+  border-color: transparent;
+  background: rgba(126, 231, 231, 0.045);
+  font-size: 10px;
+}
+
+.scene-layer-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.scene-layer-copy strong {
+  overflow: hidden;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-layer-copy small,
+.scene-depth {
+  color: rgba(209, 244, 244, 0.4);
+  font: 8px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.scene-player-badge {
+  color: #fff0a4;
+  font-size: 9px;
+}
+
+.scene-panel-hint {
+  margin: 0;
+  padding: 8px 11px 11px;
+  border-top: 1px solid rgba(126, 231, 231, 0.08);
+  color: rgba(211, 246, 247, 0.38);
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.inspector-section {
+  display: grid;
+  gap: 6px;
+  margin: 11px 0;
+  padding: 10px;
+  border: 1px solid rgba(126, 231, 231, 0.09);
+  border-radius: 10px;
+  background: rgba(4, 18, 26, 0.5);
+}
+
+.inspector-section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  color: #abeee9;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.inspector-section-title small {
+  color: rgba(210, 243, 242, 0.36);
+  font: 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.inspector-asset-preview {
+  width: 100%;
+  height: 112px;
+}
+
+.inspector-preview-fallback {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  color: rgba(212, 247, 245, 0.5);
+  font-size: 9px;
+  text-align: center;
+}
+
+.inspector-field-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px;
+  align-items: end;
+  gap: 4px;
+}
+
+.inspector-field-row .inspector-field {
+  min-width: 0;
+}
+
+.level-editor .field-reset {
+  min-height: 34px;
+  padding: 0;
+  color: rgba(209, 244, 244, 0.54);
+}
+
+.inspector-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.level-editor .inspector-actions button {
+  min-height: 32px;
+  padding: 5px;
+  font-size: 8px;
+}
+
+.inspector-field input[type="color"] {
+  width: 100%;
+  padding: 4px;
+}
+
+.scene-layer-locked-note,
+.asset-empty-state {
+  margin: 4px 0;
+  padding: 12px;
+  border: 1px dashed rgba(126, 231, 231, 0.14);
+  border-radius: 8px;
+  color: rgba(211, 246, 247, 0.46);
+  font-size: 9px;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .library-group h3 {
@@ -845,6 +1216,10 @@ kbd {
     margin-left: 0;
   }
 
+  .level-editor .editor-mode-tabs button {
+    padding-inline: 8px;
+  }
+
   .editor-workspace {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: 56px minmax(280px, 1fr) 170px;
@@ -889,6 +1264,101 @@ kbd {
     margin: 0;
   }
 
+  .asset-panel {
+    grid-template-columns: 176px minmax(220px, 1fr) 330px;
+    grid-template-rows: 56px;
+    overflow-x: auto;
+  }
+
+  .asset-filters {
+    grid-template-columns: minmax(0, 1fr) 74px;
+    align-items: center;
+    gap: 5px;
+    padding: 7px;
+    border-right: 1px solid rgba(126, 231, 231, 0.08);
+    border-bottom: 0;
+  }
+
+  .asset-filters .object-search {
+    margin: 0;
+  }
+
+  .compatible-toggle {
+    display: none;
+  }
+
+  .asset-library {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 5px 7px;
+  }
+
+  .level-editor .asset-card {
+    flex: 0 0 146px;
+    grid-template-columns: 42px minmax(0, 1fr);
+    min-height: 46px;
+    padding: 3px;
+  }
+
+  .asset-thumbnail {
+    width: 40px;
+    height: 40px;
+  }
+
+  .asset-actions {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    padding: 7px;
+    border-top: 0;
+    border-left: 1px solid rgba(126, 231, 231, 0.08);
+  }
+
+  .asset-actions button:first-child,
+  .asset-actions button:last-child {
+    grid-column: auto;
+  }
+
+  .level-editor .asset-actions button {
+    flex: 0 0 auto;
+  }
+
+  .scene-panel {
+    grid-template-columns: 190px 235px minmax(280px, 1fr);
+    grid-template-rows: 56px;
+    overflow-x: auto;
+  }
+
+  .scene-create-row,
+  .scene-layer-actions {
+    align-items: center;
+    padding: 7px;
+  }
+
+  .scene-layer-actions {
+    border-right: 1px solid rgba(126, 231, 231, 0.08);
+    border-bottom: 0;
+  }
+
+  .scene-layer-list {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 5px 7px;
+  }
+
+  .level-editor .scene-layer-item {
+    flex: 0 0 190px;
+    min-height: 46px;
+  }
+
+  .scene-panel-hint {
+    display: none;
+  }
+
   .inspector-panel {
     border-top: 1px solid rgba(126, 231, 231, 0.12);
     border-left: 0;
@@ -902,7 +1372,10 @@ kbd {
   }
 
   .inspector-heading,
-  .inspector-hint {
+  .inspector-hint,
+  .inspector-section,
+  .inspector-actions,
+  .scene-layer-locked-note {
     grid-column: 1 / -1;
   }
 

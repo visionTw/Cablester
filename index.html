@@ -53,6 +53,11 @@
           <span class="eyebrow">CABLESTER WORKSHOP</span>
           <strong>关卡工坊</strong>
         </div>
+        <nav class="editor-mode-tabs" aria-label="关卡工坊模式">
+          <button id="editor-mode-objects" type="button" data-mode="objects" data-active="true" aria-pressed="true">物件编辑</button>
+          <button id="editor-mode-assets" type="button" data-mode="assets" data-active="false" aria-pressed="false">物件素材</button>
+          <button id="editor-mode-scene" type="button" data-mode="scene" data-active="false" aria-pressed="false">场景分层</button>
+        </nav>
         <label class="editor-document-picker">
           <span>打开关卡</span>
           <select id="editor-document-select" aria-label="选择要编辑的关卡"></select>
@@ -87,13 +92,59 @@
       </div>
 
       <div class="editor-workspace">
-        <aside class="library-panel" aria-label="关卡物件库">
+        <aside id="object-panel" class="library-panel" aria-label="关卡物件库">
           <div class="panel-title">
             <span>关卡物件库</span>
             <small>选择后点击画布放置</small>
           </div>
           <input id="object-search" class="object-search" type="search" placeholder="搜索物件…" aria-label="搜索关卡物件" />
           <div id="object-library" class="object-library"></div>
+        </aside>
+
+        <aside id="asset-panel" class="library-panel asset-panel" aria-label="物件素材库" hidden>
+          <div class="panel-title">
+            <span>物件素材</span>
+            <small>不改变碰撞与玩法语义</small>
+          </div>
+          <div class="asset-filters">
+            <input id="asset-search" class="object-search" type="search" placeholder="搜索素材…" aria-label="搜索物件素材" />
+            <select id="asset-category" aria-label="素材分类">
+              <option value="all">全部分类</option>
+            </select>
+            <label class="compatible-toggle"><input id="asset-compatible-only" type="checkbox" checked /> 只看适用素材</label>
+          </div>
+          <div id="asset-library" class="asset-library" role="listbox" aria-label="可用素材"></div>
+          <div class="asset-actions" aria-label="素材应用与重置">
+            <button id="asset-apply-selected" class="editor-play" type="button">应用到当前物件</button>
+            <button id="asset-apply-type" type="button">同类型批量应用</button>
+            <button id="asset-reset-selected" type="button">恢复类型默认</button>
+            <button id="asset-reset-type" type="button">同类型全部重置</button>
+            <button id="asset-reset-all" class="danger-subtle" type="button">恢复项目默认</button>
+          </div>
+        </aside>
+
+        <aside id="scene-panel" class="library-panel scene-panel" aria-label="场景图层" hidden>
+          <div class="panel-title">
+            <span>场景分层</span>
+            <small>玩家层是受保护的深度基准</small>
+          </div>
+          <div class="scene-create-row">
+            <select id="scene-new-role" aria-label="新图层角色">
+              <option value="background">背景</option>
+              <option value="midground" selected>中景</option>
+              <option value="foreground">前景</option>
+              <option value="custom">自定义深度</option>
+            </select>
+            <button id="scene-add" class="editor-play" type="button">新增图层</button>
+          </div>
+          <div class="scene-layer-actions" aria-label="图层操作">
+            <button id="scene-move-up" type="button" title="向前移动图层">上移</button>
+            <button id="scene-move-down" type="button" title="向后移动图层">下移</button>
+            <button id="scene-duplicate" type="button">复制</button>
+            <button id="scene-delete" class="danger-subtle" type="button">删除</button>
+          </div>
+          <div id="scene-layer-list" class="scene-layer-list" role="listbox" aria-label="场景图层列表"></div>
+          <p class="scene-panel-hint">画布会按深度实时预览；滚轮缩放，右键或 ⌥ 拖动平移。</p>
         </aside>
 
         <main class="editor-stage">
@@ -105,6 +156,7 @@
             <span class="toolbar-separator"></span>
             <label class="snap-toggle"><input id="editor-snap" type="checkbox" checked /> 20px 吸附</label>
             <span class="toolbar-spacer"></span>
+            <span id="editor-mode-label">物件编辑</span>
             <span id="editor-object-count">0 个物件</span>
             <button id="editor-zoom-out" type="button" aria-label="缩小">−</button>
             <span id="editor-zoom-label">100%</span>
@@ -113,7 +165,7 @@
           </div>
           <div class="editor-canvas-wrap">
             <canvas id="editor-canvas" tabindex="0" aria-label="关卡编辑画布"></canvas>
-            <div class="canvas-help">左键选择/拖动 · 滚轮缩放 · 右键或 ⌥ 拖动画布</div>
+            <div id="editor-canvas-help" class="canvas-help">左键选择/拖动 · 滚轮缩放 · 右键或 ⌥ 拖动画布</div>
           </div>
           <footer class="editor-statusbar">
             <span id="editor-status">选择物件后可拖动，滚轮缩放画布</span>

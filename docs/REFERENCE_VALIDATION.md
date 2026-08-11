@@ -42,13 +42,13 @@
 
 完整首轮白盒库接入后，菜单只渲染每页 24 个参考卡片，并按 27 个 Celeste Side 集合与 17 个 Ori 区域筛选；浏览器抽样加载 Farewell ST-1-01、Ori 熔火山心终局逃亡和含四类新机关的 Celeste CR-2-01，新鲜控制台均为 0 error / 0 warning。CR-2-01 首测暴露了靠边出生后立即触发出口的问题，随后加入安全出生内缩、入口内缩和切房冷却并复测通过。该抽样不等于其余自动白盒已完成逐房浏览器验收，因此它们的 `browser` 状态保持 `not-run`。
 
-随后通过真实页面的“浏览器加载审计”依次对 908/908 房间执行本地 JSON 获取、文档校验/编译、默认出生与全部 2326 个入口出生的 Game 运行时初始化，以及至少一帧绘制；最终指纹内容上的全量复测耗时 11.4 秒，失败 0，本轮控制台 error/warning 0。机器记录位于 [`levels/reference/browser-load-audit.json`](../levels/reference/browser-load-audit.json)。这仍不是路线通关、死亡重置、手感或高保真验收，所以不会单独据此升级逐房 `browser` 状态。
+随后通过真实页面的“浏览器加载审计”依次对 908/908 房间执行本地 JSON 获取、文档校验/编译、默认出生与全部 2326 个入口出生的 Game 运行时初始化，以及至少一帧绘制；当前指纹内容上的全量复测耗时 17.1 秒，失败 0，本轮控制台 error/warning 0。机器记录位于 [`levels/reference/browser-load-audit.json`](../levels/reference/browser-load-audit.json)。这仍不是路线通关、死亡重置、手感或高保真验收，所以不会单独据此升级逐房 `browser` 状态。
 
-同一最终指纹又在真实页面执行“逐房综合验收”：908/908 房逐一核对 2326 个入口合法出生、908 次检查点死亡重置与血蓝/冲刺/速度恢复、机关固定步状态、3668 个实际出口对象到目标入口的初始化、908 次渲染及返回菜单后清缓存重进；峰值活动物件 53，结束缓存 0，耗时 19.1 秒，失败 0，控制台 error/warning 0。记录位于 [`levels/reference/browser-acceptance-audit.json`](../levels/reference/browser-acceptance-audit.json)。它与连续物理输入审计共同为逐房 `playable/browser` 状态提供证据；主观手感仍保持 `humanConfirmation=needed`。
+同一最终指纹又在真实页面执行“逐房综合验收”：908/908 房逐一核对 2326 个入口合法出生、908 次检查点死亡重置与血蓝/冲刺/速度恢复、机关固定步状态、3668 个实际出口对象到目标入口的初始化、908 次渲染及返回菜单后清缓存重进；峰值活动物件 53，结束缓存 0，耗时 76.5 秒，失败 0，控制台 error/warning 0。记录位于 [`levels/reference/browser-acceptance-audit.json`](../levels/reference/browser-acceptance-audit.json)。它与连续物理输入审计共同为逐房 `playable/browser` 状态提供证据；主观手感仍保持 `humanConfirmation=needed`。
 
 连接图审计覆盖 908 房、44 个集合和 3678 条 manifest 候选连接：3678/3678 已有 JSON 出口，目标/入口无效项为 0；44/44 集合弱连通，且从各集合首房在候选有向图中正反向都可覆盖全集合。完整记录位于 [`docs/REFERENCE_GRAPH_AUDIT.md`](REFERENCE_GRAPH_AUDIT.md) 和 [`levels/reference/graph-audit.json`](../levels/reference/graph-audit.json)。这同样不等于实际输入通关。
 
-菜单为每个 Side/区域提供“从首房连续开始”，切房时保留能力、世界标记、检查点和访问记录。最终浏览器自动连续审计使用真实 Game 固定步、碰撞、死亡/房间重置和异步出口加载，不传送也不直接修改角色状态；进度敏感输入逐一走完 44/44 个集合、908 房和 864 次连续切房，0 次死亡重置、失败 0、耗时 14.9 秒，本轮控制台 error/warning 0。因此与内容指纹匹配的 908/908 条目升级为 `continuousRun=passed`。机器记录位于 [`levels/reference/continuous-run-audit.json`](../levels/reference/continuous-run-audit.json)；任何运行时、样式或房间 JSON 改动都会使指纹失配并自动撤销该状态。这证明每个集合的一条顺序主路线；所有支路出口由逐房综合验收和连接图覆盖，但人工手感或原作坐标/美术保真不由自动化替代。
+菜单为每个 Side/区域提供“从首房连续开始”，切房时保留能力、世界标记、检查点和访问记录。最终浏览器自动连续审计使用真实 Game 固定步、碰撞、死亡/房间重置和异步出口加载，不传送也不直接修改角色状态；进度敏感输入逐一走完 44/44 个集合、908 房和 864 次连续切房，0 次死亡重置、失败 0、耗时 27.8 秒，本轮控制台 error/warning 0。因此与内容指纹匹配的 908/908 条目升级为 `continuousRun=passed`。机器记录位于 [`levels/reference/continuous-run-audit.json`](../levels/reference/continuous-run-audit.json)；任何运行时、样式或房间 JSON 改动都会使指纹失配并自动撤销该状态。这证明每个集合的一条顺序主路线；所有支路出口由逐房综合验收和连接图覆盖，但人工手感或原作坐标/美术保真不由自动化替代。
 
 保真度差异审计位于 [`docs/REFERENCE_FIDELITY_AUDIT.md`](REFERENCE_FIDELITY_AUDIT.md) 和 [`levels/reference/fidelity-audit.json`](../levels/reference/fidelity-audit.json)：每条条目-机制使用都必须有明确等价系统，并另行报告当前 JSON 是否实际存在对应对象或能力。当前工程 `validated` 为 908/908；这表示全部指纹化工程证据闭环，不等于原作位置、节奏、视觉或手感已经由真人确认。
 
@@ -58,7 +58,14 @@ Ori 月影洞“西侧深降”液体白盒在同一 1280×720 浏览器短窗�
 
 Celeste 镜暗神殿 ST-1-01 黑暗白盒在 1280×720 约 120.9 FPS、平均 8.27 ms、P95 10.10 ms、最差 18.40 ms，active/drawn/collision 32/32/42；照明半径可见且控制台无新增错误。
 
-最终生成结果中对象数最多的房间是 Celeste 镜暗神殿 SC-4-02（`celeste.temple.a.d-01`，JSON 54 个对象）：1280×720 静置窗口约 80.2 FPS、平均 12.47 ms、P95 17.60 ms、最差 20.90 ms，active/drawn/collision 53/53/54。Ori 对象数最高梯队且代表大型连续区域的“中央熔井”（`ori.mount-horu.central-shaft`，JSON 28 个对象）在 1280×720 约 79.0 FPS、平均 12.66 ms、P95 17.80 ms、最差 21.60 ms；1600×1000 约 71.4 FPS、平均 14.00 ms、P95 21.00 ms、最差 22.80 ms；800×900 约 77.7 FPS、平均 12.83 ms、P95 18.60 ms、最差 21.90 ms。三种视口 active/drawn/collision 均为 27/27/34，三种平均值均超过 60 FPS，性能复验过程控制台无新增 error/warning。机器记录位于 [`levels/reference/performance-audit.json`](../levels/reference/performance-audit.json)。
+当前指纹性能复验使用浏览器真实 `requestAnimationFrame` 滚动帧样本；机器记录位于 [`levels/reference/performance-audit.json`](../levels/reference/performance-audit.json)。
+
+| 房间 | 视口 | 平均 FPS | 平均 ms | P95 ms | 最差 ms | active/drawn/collision |
+|---|---:|---:|---:|---:|---:|---:|
+| `celeste.temple.a.d-01` | 1280x720 | 119.049 | 8.4 | 8.333 | 41.665 | 53/54/26 |
+| `ori.mount-horu.central-shaft` | 1280x720 | 119.849 | 8.344 | 8.333 | 16.666 | 27/28/16 |
+| `ori.mount-horu.central-shaft` | 1600x1000 | 117.85 | 8.485 | 8.333 | 41.665 | 27/28/16 |
+| `ori.mount-horu.central-shaft` | 800x900 | 119.349 | 8.379 | 8.333 | 33.332 | 27/28/16 |
 
 这些数字是静置或短输入白盒的开发机观测值，不代表连续移动、大型区域或完整章节最终性能；后续机制与地图批次仍须重复测量。
 

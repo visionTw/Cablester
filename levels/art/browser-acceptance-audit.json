@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "ranAt": "2026-08-12T00:54:56+08:00",
+  "environment": {
+    "browserSurface": "Codex in-app browser",
+    "viewport": "1280x720",
+    "timezone": "Asia/Shanghai",
+    "url": "http://127.0.0.1:4175/"
+  },
+  "scope": {
+    "formalLevels": 10,
+    "registeredAssets": 17,
+    "generatedAssets": 16,
+    "representativeLevelId": "combined-horizontal",
+    "sceneLayersPerFormalLevel": 8
+  },
+  "formalLevelSweep": {
+    "loadedLevelIds": [
+      "movement-lab-01",
+      "hard-bar-lab",
+      "bash-lab",
+      "double-jump-lab",
+      "glide-lab",
+      "dash-lab",
+      "combined-speed",
+      "combined-horizontal",
+      "combined-vertical",
+      "combined-hazards"
+    ],
+    "passed": 10,
+    "failed": 0,
+    "assetRequests": 16,
+    "readyAssets": 16,
+    "assetErrors": 0,
+    "qualityTier": "high",
+    "postSweepTintVariants": 93,
+    "postSweepEstimatedTintMiB": 15.66,
+    "visualChecks": [
+      "distinct theme palette rendered",
+      "gameplay route and collision cues remained readable",
+      "foreground remained behind critical prompts and HUD",
+      "scene and object images loaded without visible seams or magenta fringe"
+    ]
+  },
+  "representativeWarmSample": {
+    "levelId": "combined-horizontal",
+    "warmupSeconds": 6.5,
+    "averageFps": 64.3,
+    "averageFrameMs": 15.56,
+    "p95FrameMs": 21.9,
+    "worstFrameMs": 25.3,
+    "activeObjects": 60,
+    "drawnObjects": 61,
+    "collisionCandidates": 36,
+    "sceneDraws": 10,
+    "objectAssetDraws": 50,
+    "fallbackDraws": 11,
+    "decodedImageMiB": 2.66,
+    "estimatedTintMiB": 3.76
+  },
+  "objectAssetEditor": {
+    "obviousEntry": true,
+    "registeredCards": 17,
+    "selectedPlatformCompatibleCards": 2,
+    "searchFilteredCards": 1,
+    "liveInspectorCanvas": true,
+    "singleReplacement": "passed",
+    "undoRedo": "passed",
+    "typeDefaultReset": "passed",
+    "sameTypeBatchReplacementCount": 9,
+    "sameTypeReset": "passed",
+    "projectDefaultResetAndUndo": "passed"
+  },
+  "assetLibraryDemandLoading": {
+    "thumbnailImagesBeforeOpeningAssetMode": 0,
+    "cardsAfterOpeningAssetMode": 17,
+    "thumbnailImagesAfterOpeningAssetMode": 16,
+    "allLibraryImagesUseThumbnailPaths": true
+  },
+  "sceneEditor": {
+    "obviousEntry": true,
+    "initialLayers": 8,
+    "sceneAssetPickerOptions": 9,
+    "liveCanvas": true,
+    "createUndoRedo": "passed",
+    "duplicateDelete": "passed",
+    "depthSortAndUndo": "passed",
+    "lockDisablesInspectorAndUnlockRestoresIt": "passed",
+    "assetReplaceAndUndo": "passed",
+    "restoredLayers": 8
+  },
+  "documentWorkflow": {
+    "save": "passed",
+    "fileImport": "passed",
+    "importedFixture": "levels/reference/celeste/prologue/a/0.json",
+    "importedSourceSchemaVersion": 1,
+    "migrationStatusText": "已导入关卡，请确认后保存",
+    "exportAction": "passed",
+    "exportStatusText": "关卡 JSON 已导出",
+    "oneClickPlaytest": "passed"
+  },
+  "nativeControlReadability": {
+    "status": "passed",
+    "surface": "dark editor with native select popover",
+    "optionBackground": "#f2f7f8",
+    "optionForeground": "#102c35",
+    "selectedForeground": "#071b24"
+  },
+  "freshConsoleErrorsOrWarnings": 0,
+  "caveat": "The representative warm sample is a visible rolling debug-overlay reading. Repeatable 10-second multi-viewport and cold/warm network measurements are recorded separately by the browser performance audit."
+}

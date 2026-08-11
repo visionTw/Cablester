@@ -1,4 +1,4 @@
-import { compileLevelDocument, validateLevelDocument } from "./level-objects.js";
+import { compileLevelDocument, migrateLevelDocument, validateLevelDocument } from "./level-objects.js";
 import { validateLevel } from "./level-validator.js";
 
 function clone(value) {
@@ -80,7 +80,7 @@ export class ReferenceLevelLibrary {
     const room = this.ensureIndex().rooms[roomId];
     if (!room) throw new Error(`Reference room is not authored or indexed: ${roomId}`);
     if (!this.documentCache.has(roomId)) {
-      const documentData = await this.fetchJson(this.resolveDataUrl(room.dataFile));
+      const documentData = migrateLevelDocument(await this.fetchJson(this.resolveDataUrl(room.dataFile)));
       const errors = validateLevelDocument(documentData);
       if (errors.length) throw new Error(`${roomId} document validation failed:\n${errors.join("\n")}`);
       if (documentData.metadata.id !== roomId) {

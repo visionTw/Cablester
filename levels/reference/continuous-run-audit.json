@@ -1,19 +1,20 @@
 {
   "schemaVersion": 1,
-  "ranAt": "2026-08-10T00:49:58.938+08:00",
+  "ranAt": "2026-08-12T01:02:45.000+08:00",
   "environment": {
     "device": "MacBook Pro Mac15,6",
     "processor": "Apple M3 Pro 11-core",
     "memory": "18 GB",
     "operatingSystem": "macOS 14.4 arm64",
+    "timeZone": "Asia/Shanghai",
     "viewport": "1280x720"
   },
   "contentFingerprint": {
     "algorithm": "sha256",
-    "value": "848fda18e100da288c8aa66f0a9970bb06c4aebd200c1fd2d21d881576b4eb8c",
-    "fileCount": 926,
+    "value": "44cb83474d66283953c299c859feb7fa22626aaef6dc3173741eaa60e26fe73e",
+    "fileCount": 930,
     "roomFileCount": 908,
-    "runtimeFileCount": 18
+    "runtimeFileCount": 22
   },
   "scope": {
     "collections": 44,
@@ -33,7 +34,7 @@
     "transitionsCompleted": 864,
     "deathsOrResets": 0,
     "failedCollections": 0,
-    "elapsedSeconds": 14.9,
+    "elapsedSeconds": 27.8,
     "freshConsoleErrorsOrWarnings": 0
   },
   "statusPolicy": {

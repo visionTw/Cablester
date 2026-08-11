@@ -1,4 +1,5 @@
 import { PROTOTYPE_LEVEL } from "./level.js";
+import { compileLevelWithArtPreset } from "./level-art-presets.js";
 
 function labLevel(definition) {
   return {
@@ -455,7 +456,7 @@ const HAZARD_LAB = labLevel({
   ]
 });
 
-export const LEVELS = [
+export const LEGACY_LEVELS = Object.freeze([
   PROTOTYPE_LEVEL,
   HARD_BAR_LAB,
   BASH_LAB,
@@ -466,6 +467,8 @@ export const LEVELS = [
   HORIZONTAL_LAB,
   VERTICAL_LAB,
   HAZARD_LAB
-];
+]);
+
+export const LEVELS = Object.freeze(LEGACY_LEVELS.map((level) => compileLevelWithArtPreset(level)));
 
 export const LEVEL_BY_ID = new Map(LEVELS.map((level) => [level.id, level]));

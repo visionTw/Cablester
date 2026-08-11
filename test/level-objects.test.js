@@ -9,8 +9,11 @@ import {
   createLevelObject,
   generateLevelDocument,
   levelToDocument,
+  migrateLevelDocument,
   validateLevelDocument
 } from "../src/level-objects.js";
+import { createVisualConfig, getTypeDefaultAssetId } from "../src/asset-library.js";
+import { addSceneLayer } from "../src/scene-layers.js";
 
 test("object library exposes every editable runtime collection", () => {
   for (const type of [
@@ -128,4 +131,87 @@ test("launchers, fragile platforms, gates and state triggers round-trip through 
   for (const collection of ["launchers", "fragilePlatforms", "gates", "stateTriggers", "liquidZones", "darknessZones"]) {
     assert.deepEqual(roundTrip[collection], level[collection], collection);
   }
+});
+
+test("schema v1 documents migrate without mutation and receive visual and scene defaults", () => {
+  const versionTwo = createBlankLevelDocument("旧关卡迁移");
+  const versionOne = structuredClone(versionTwo);
+  versionOne.schemaVersion = 1;
+  delete versionOne.scene;
+  for (const object of versionOne.objects) delete object.properties.visual;
+  const original = structuredClone(versionOne);
+
+  const migrated = migrateLevelDocument(versionOne);
+  assert.equal(migrated.schemaVersion, 2);
+  assert.deepEqual(versionOne, original);
+  assert.ok(migrated.objects.every((object) => (
+    object.properties.visual.assetId === getTypeDefaultAssetId(object.type)
+  )));
+  assert.deepEqual(migrated.scene.layers.map((layer) => layer.role), ["background", "midground", "player", "foreground"]);
+  assert.deepEqual(validateLevelDocument(versionOne), []);
+  assert.deepEqual(validateLevelDocument(migrated), []);
+});
+
+test("visual mappings and scene layers survive compile and document round-trip without changing gameplay arrays", () => {
+  const document = createBlankLevelDocument("视觉往返");
+  const platform = document.objects.find((object) => object.type === "platform");
+  platform.properties.visual = createVisualConfig({
+    assetId: "asset:missing-but-safe",
+    scaleX: 1.4,
+    scaleY: 0.8,
+    anchorX: 0.25,
+    anchorY: 0.75,
+    offsetX: 12,
+    offsetY: -8,
+    flipX: true,
+    flipY: false,
+    drawLayer: 7,
+    opacity: 0.7,
+    tint: "#88ccffff"
+  });
+  document.scene = addSceneLayer(document.scene, {
+    id: "scene-mist",
+    role: "custom",
+    name: "雾层",
+    depth: -45,
+    parallax: 0.4,
+    opacity: 0.6,
+    fog: 0.8,
+    seed: "roundtrip-mist"
+  });
+
+  const level = compileLevelDocument(document);
+  assert.deepEqual(level.visuals[platform.id], platform.properties.visual);
+  assert.deepEqual(level.scene, document.scene);
+  assert.equal(Object.hasOwn(level.platforms[0], "visual"), false);
+  assert.deepEqual(Object.keys(level.platforms[0]).sort(), ["h", "id", "w", "x", "y"]);
+
+  const roundTrip = levelToDocument(level);
+  assert.deepEqual(roundTrip.objects.find((object) => object.id === platform.id).properties.visual, platform.properties.visual);
+  assert.deepEqual(roundTrip.scene, document.scene);
+  assert.deepEqual(compileLevelDocument(roundTrip).platforms, level.platforms);
+});
+
+test("schema v2 rejects malformed visual and scene configuration", () => {
+  const missingVisual = createBlankLevelDocument("非法视觉");
+  delete missingVisual.objects[0].properties.visual;
+  assert.ok(validateLevelDocument(missingVisual).some((error) => error.includes("visual")));
+  assert.throws(() => compileLevelDocument(missingVisual), /visual/);
+
+  const invalidVisual = createBlankLevelDocument("非法缩放");
+  invalidVisual.objects[0].properties.visual.scaleX = 0;
+  invalidVisual.objects[0].properties.visual.tint = "blue";
+  const visualErrors = validateLevelDocument(invalidVisual);
+  assert.ok(visualErrors.some((error) => error.includes("scaleX")));
+  assert.ok(visualErrors.some((error) => error.includes("tint")));
+
+  const invalidScene = createBlankLevelDocument("非法场景");
+  invalidScene.scene.layers = invalidScene.scene.layers.filter((layer) => layer.role !== "player");
+  assert.ok(validateLevelDocument(invalidScene).some((error) => error.includes("player layer")));
+
+  const malformedObjects = createBlankLevelDocument("非法物件数组");
+  malformedObjects.objects.push(null);
+  assert.ok(validateLevelDocument(malformedObjects).some((error) => error.includes("objects[")));
+  malformedObjects.objects = {};
+  assert.ok(validateLevelDocument(malformedObjects).some((error) => error.includes("objects array")));
 });

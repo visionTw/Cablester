@@ -15,7 +15,11 @@ Cablester 是一个高速横版移动游戏原型。当前阶段使用浏览器 
 - 血量、蓝量、伤害与检查点；
 - 固定测试关卡和整体旋转房间；
 - 开始界面选择关卡；六个单项3C关卡和四个综合关卡；
-- 关卡工坊：统一物件库、画布编辑、种子生成、设备内保存、JSON 导入导出和一键试玩。
+- 关卡工坊：统一 v2 物件文档、画布编辑、种子生成、设备内保存、JSON 导入导出和一键试玩；
+- 物件素材编辑器：分类、搜索、缩略图、单个/同类型替换、逐项/类型/项目默认重置和程序化安全回退；
+- 场景分层编辑器：背景、中景、玩家层、前景与自定义深度层，支持视差、无缝重复、雾化、混合和质量降级；
+- 统一 AssetRegistry：当前登记 1 个程序化回退和 16 个原创 ImageGen WebP 素材；
+- 10 个正式关卡已接入统一森林视觉 preset；908 个参考房间保持白盒范围，加载时迁移并使用类型默认/程序化回退，不视为逐房间美术完成。
 
 当前实现状态和试玩问题见 [`docs/PROTOTYPE_VALIDATION.md`](docs/PROTOTYPE_VALIDATION.md)。浏览器版通过体验验收前不会开始 Godot 迁移。
 
@@ -57,8 +61,19 @@ npm run dev
 ```bash
 npm test
 npm run check
+npm run assets:audit
+npm run build
 ```
 
 主要手感参数集中在 [`src/config.js`](src/config.js)，完整关卡套件位于 [`src/levels.js`](src/levels.js)，软绳基准关卡位于 [`src/level.js`](src/level.js)。关卡目录见 [`docs/LEVEL_CATALOG.md`](docs/LEVEL_CATALOG.md)。
 
-关卡工坊的物件格式、编辑流程与扩展方法见 [`docs/LEVEL_EDITOR.md`](docs/LEVEL_EDITOR.md)。关卡文档统一使用 `objects[]`，每个物件都由 `type`、`position` 和类型专属 `properties` 描述，进入游戏前再编译为现有运行时关卡格式。
+关卡文档统一使用 `objects[]`，每个物件都由 `type`、`position` 和类型专属 `properties` 描述，进入游戏前再编译为现有运行时关卡格式。视觉配置位于 `properties.visual`，分层场景位于同一文档的 `scene`，两者都不建立平行玩法数据。
+
+相关文档：
+
+- [`docs/LEVEL_EDITOR.md`](docs/LEVEL_EDITOR.md)：v2 文档、三模式工坊、迁移、保存和运行时编译；
+- [`docs/ASSET_LIBRARY.md`](docs/ASSET_LIBRARY.md)：AssetRegistry、当前素材清单、ImageGen 处理和授权边界；
+- [`docs/SCENE_LAYERS.md`](docs/SCENE_LAYERS.md)：图层字段、无缝计算、渲染 pass、缓存和质量降级；
+- [`docs/ART_RELEASE.md`](docs/ART_RELEASE.md)：10 关主题、908 参考白盒边界，以及浏览器、性能和 Sites 发布证据模板；
+- [`docs/LEVEL_CATALOG.md`](docs/LEVEL_CATALOG.md)：正式关卡目录；
+- [`docs/REFERENCE_LEVEL_MANIFEST.md`](docs/REFERENCE_LEVEL_MANIFEST.md)：参考房间范围与计数。

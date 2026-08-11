@@ -1,73 +1,197 @@
 {
-  "schemaVersion": 1,
-  "ranAt": "2026-08-10T00:51:05.546+08:00",
+  "schemaVersion": 2,
+  "ranAt": "2026-08-11T16:56:48.328Z",
   "environment": {
-    "device": "MacBook Pro Mac15,6",
-    "processor": "Apple M3 Pro 11-core",
-    "memory": "18 GB",
-    "operatingSystem": "macOS 14.4 arm64",
-    "browserSurface": "Codex in-app browser"
+    "chromeVersion": "Google Chrome 119.0.6045.159",
+    "platform": "MacIntel",
+    "hardwareConcurrency": 11,
+    "deviceMemoryGiB": 8,
+    "webgl": {
+      "vendor": "Google Inc. (Apple)",
+      "renderer": "ANGLE (Apple, Apple M3 Pro, OpenGL 4.1)",
+      "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+    },
+    "browserSurface": "Installed Google Chrome headless=new through direct CDP"
   },
   "contentFingerprint": {
     "algorithm": "sha256",
-    "value": "848fda18e100da288c8aa66f0a9970bb06c4aebd200c1fd2d21d881576b4eb8c",
-    "fileCount": 926,
+    "value": "44cb83474d66283953c299c859feb7fa22626aaef6dc3173741eaa60e26fe73e",
+    "fileCount": 930,
     "roomFileCount": 908,
-    "runtimeFileCount": 18
+    "runtimeFileCount": 22
   },
-  "method": "Load the final local room through the visible menu, enable the built-in debug overlay, leave the real requestAnimationFrame loop running for 4-5 seconds, then read its rolling frame and object counters from a browser screenshot.",
+  "method": "From the same direct-CDP performance run as levels/art/performance-audit.json: dynamically select the highest unified object-count Celeste and Ori rooms, keep each sample in its selected room by temporarily disconnecting exits, warm the live runtime, then collect a 10-second requestAnimationFrame distribution while dispatching real keyboard input.",
   "samples": [
     {
       "roomId": "celeste.temple.a.d-01",
-      "selectionReason": "Highest current document object count across the complete library",
+      "selectionReason": "Highest unified document object count per source game; ties use larger bounds area, then lexical room ID.",
       "documentObjects": 54,
       "viewport": "1280x720",
-      "averageFps": 80.2,
-      "averageFrameMs": 12.47,
-      "p95FrameMs": 17.6,
-      "worstFrameMs": 20.9,
+      "requestedDurationMs": 10000,
+      "measuredDurationMs": 9995.908,
+      "averageFps": 119.049,
+      "averageFrameMs": 8.4,
+      "p95FrameMs": 8.333,
+      "worstFrameMs": 41.665,
       "activeObjects": 53,
-      "drawnObjects": 53,
-      "collisionCandidates": 54
+      "drawnObjects": 54,
+      "collisionCandidates": 26,
+      "realKeyboardInput": {
+        "heldRightMs": 9876,
+        "jumpPresses": 11,
+        "dashPresses": 3
+      },
+      "cameraMovement": {
+        "netX": 1468.688,
+        "rangeX": 1841.808,
+        "cumulativeX": 5157.36
+      },
+      "visualRuntime": {
+        "requests": 16,
+        "cacheHits": 475474,
+        "ready": 16,
+        "loading": 0,
+        "error": 0,
+        "estimatedDecodedBytes": 2789568,
+        "estimatedTintBytes": 9518016,
+        "tintVariants": 52,
+        "cacheEntries": 16,
+        "evictions": 0,
+        "sceneDraws": 0,
+        "objectAssetDraws": 29,
+        "fallbackDraws": 16,
+        "cullCount": 0,
+        "qualityTier": "high"
+      }
     },
     {
       "roomId": "ori.mount-horu.central-shaft",
-      "selectionReason": "Tied highest current Ori document object count and representative large continuous-area partition",
+      "selectionReason": "Highest unified document object count per source game; ties use larger bounds area, then lexical room ID.",
       "documentObjects": 28,
       "viewport": "1280x720",
-      "averageFps": 79.0,
-      "averageFrameMs": 12.66,
-      "p95FrameMs": 17.8,
-      "worstFrameMs": 21.6,
+      "requestedDurationMs": 10000,
+      "measuredDurationMs": 9995.908,
+      "averageFps": 119.849,
+      "averageFrameMs": 8.344,
+      "p95FrameMs": 8.333,
+      "worstFrameMs": 16.666,
       "activeObjects": 27,
-      "drawnObjects": 27,
-      "collisionCandidates": 34
+      "drawnObjects": 28,
+      "collisionCandidates": 16,
+      "realKeyboardInput": {
+        "heldRightMs": 9873,
+        "jumpPresses": 11,
+        "dashPresses": 3
+      },
+      "cameraMovement": {
+        "netX": 3350.987,
+        "rangeX": 3350.987,
+        "cumulativeX": 3378.226
+      },
+      "visualRuntime": {
+        "requests": 16,
+        "cacheHits": 499511,
+        "ready": 16,
+        "loading": 0,
+        "error": 0,
+        "estimatedDecodedBytes": 2789568,
+        "estimatedTintBytes": 9518016,
+        "tintVariants": 52,
+        "cacheEntries": 16,
+        "evictions": 0,
+        "sceneDraws": 0,
+        "objectAssetDraws": 16,
+        "fallbackDraws": 10,
+        "cullCount": 0,
+        "qualityTier": "high"
+      }
     },
     {
       "roomId": "ori.mount-horu.central-shaft",
+      "selectionReason": "Highest unified document object count per source game; ties use larger bounds area, then lexical room ID.",
       "documentObjects": 28,
       "viewport": "1600x1000",
-      "averageFps": 71.4,
-      "averageFrameMs": 14.0,
-      "p95FrameMs": 21.0,
-      "worstFrameMs": 22.8,
+      "requestedDurationMs": 10000,
+      "measuredDurationMs": 10004.241,
+      "averageFps": 117.85,
+      "averageFrameMs": 8.485,
+      "p95FrameMs": 8.333,
+      "worstFrameMs": 41.665,
       "activeObjects": 27,
-      "drawnObjects": 27,
-      "collisionCandidates": 34
+      "drawnObjects": 28,
+      "collisionCandidates": 16,
+      "realKeyboardInput": {
+        "heldRightMs": 9881,
+        "jumpPresses": 11,
+        "dashPresses": 3
+      },
+      "cameraMovement": {
+        "netX": 3350.987,
+        "rangeX": 3350.987,
+        "cumulativeX": 3378.468
+      },
+      "visualRuntime": {
+        "requests": 16,
+        "cacheHits": 523007,
+        "ready": 16,
+        "loading": 0,
+        "error": 0,
+        "estimatedDecodedBytes": 2789568,
+        "estimatedTintBytes": 9518016,
+        "tintVariants": 52,
+        "cacheEntries": 16,
+        "evictions": 0,
+        "sceneDraws": 0,
+        "objectAssetDraws": 16,
+        "fallbackDraws": 10,
+        "cullCount": 0,
+        "qualityTier": "high"
+      }
     },
     {
       "roomId": "ori.mount-horu.central-shaft",
+      "selectionReason": "Highest unified document object count per source game; ties use larger bounds area, then lexical room ID.",
       "documentObjects": 28,
       "viewport": "800x900",
-      "averageFps": 77.7,
-      "averageFrameMs": 12.83,
-      "p95FrameMs": 18.6,
-      "worstFrameMs": 21.9,
+      "requestedDurationMs": 10000,
+      "measuredDurationMs": 9995.908,
+      "averageFps": 119.349,
+      "averageFrameMs": 8.379,
+      "p95FrameMs": 8.333,
+      "worstFrameMs": 33.332,
       "activeObjects": 27,
-      "drawnObjects": 27,
-      "collisionCandidates": 34
+      "drawnObjects": 28,
+      "collisionCandidates": 16,
+      "realKeyboardInput": {
+        "heldRightMs": 9875,
+        "jumpPresses": 11,
+        "dashPresses": 3
+      },
+      "cameraMovement": {
+        "netX": 3353.903,
+        "rangeX": 3353.903,
+        "cumulativeX": 3381.143
+      },
+      "visualRuntime": {
+        "requests": 16,
+        "cacheHits": 546823,
+        "ready": 16,
+        "loading": 0,
+        "error": 0,
+        "estimatedDecodedBytes": 2789568,
+        "estimatedTintBytes": 9518016,
+        "tintVariants": 52,
+        "cacheEntries": 16,
+        "evictions": 0,
+        "sceneDraws": 0,
+        "objectAssetDraws": 16,
+        "fallbackDraws": 10,
+        "cullCount": 0,
+        "qualityTier": "high"
+      }
     }
   ],
   "freshConsoleErrorsOrWarnings": 0,
-  "caveat": "These are short stationary whitebox samples on the stated machine. The 44-collection continuous traversal is recorded separately and checks transitions and resets, not frame-time distributions while a human explores every branch."
+  "sourceAudit": "levels/art/performance-audit.json",
+  "caveat": "Headless Chrome rAF cadence and controlled input are reproducible evidence for this machine and checkout, not a promise for every device. GPU memory is not directly measured; the linked art audit reports only decoded/tint texture estimates."
 }

@@ -63,6 +63,10 @@ test("reference library loads and compiles an indexed reference room on demand",
     })
   });
   await library.loadIndex();
+  const migratedDocument = await library.loadRoomDocument("test.room");
+  assert.equal(migratedDocument.schemaVersion, 2);
+  assert.ok(migratedDocument.objects.every((object) => object.properties.visual));
+  assert.equal(migratedDocument.scene.layers.filter((layer) => layer.role === "player").length, 1);
   const level = await library.loadRoom("test.room");
   assert.equal(level.id, "test.room");
   assert.equal(level.roomEntrances[0].id, "entry-main");

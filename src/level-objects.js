@@ -1,4 +1,10 @@
 import { formatMotionPath, parseMotionPath, validateMotionDefinition } from "./motion.js";
+import {
+  createVisualConfig,
+  getTypeDefaultAssetId,
+  validateVisualConfig
+} from "./asset-library.js";
+import { createDefaultScene, validateScene } from "./scene-layers.js";
 
 const numberProperty = (label, defaultValue, min = -100000, max = 100000, step = 1) => ({
   label,
@@ -304,7 +310,7 @@ export const LEVEL_OBJECT_LIBRARY = Object.freeze({
   }
 });
 
-export const LEVEL_DOCUMENT_VERSION = 1;
+export const LEVEL_DOCUMENT_VERSION = 2;
 
 const COLLECTION_BY_TYPE = Object.freeze({
   platform: "platforms",
@@ -338,6 +344,10 @@ function clone(value) {
   return structuredClone(value);
 }
 
+function isRecord(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
 function slug(value) {
   return String(value || "level")
     .trim()
@@ -359,11 +369,16 @@ export function createLevelObject(type, x, y, objects = [], overrides = {}) {
   if (!definition) throw new Error(`Unknown level object type: ${type}`);
   const properties = Object.fromEntries(Object.entries(definition.properties)
     .map(([key, property]) => [key, property.default]));
+  const overrideProperties = overrides.properties || {};
+  const visual = createVisualConfig({
+    assetId: getTypeDefaultAssetId(type),
+    ...(overrideProperties.visual || {})
+  });
   return {
     id: overrides.id || createObjectId(type, objects),
     type,
     position: { x: Math.round(x), y: Math.round(y) },
-    properties: { ...properties, ...(overrides.properties || {}) }
+    properties: { ...properties, ...overrideProperties, visual }
   };
 }
 
@@ -384,6 +399,7 @@ export function createBlankLevelDocument(name = "未命名关卡") {
     bounds: { x: -500, y: -450, w: 2800, h: 1700 },
     dashCapacity: 1,
     startingAbilities: ["rope", "hardBar", "bash", "doubleJump", "glide", "dash", "wallGrab"],
+    scene: createDefaultScene(),
     objects
   };
 }
@@ -492,24 +508,53 @@ function readObjectProperties(type, item) {
   }
 }
 
+function runtimeObjectId(level, type, index, fallbackId, objects) {
+  return fallbackId
+    || level.visualOrder?.[type]?.[index]
+    || createObjectId(type, objects);
+}
+
+function runtimeObjectVisual(level, type, objectId) {
+  return createVisualConfig({
+    assetId: getTypeDefaultAssetId(type),
+    ...(level.visuals?.[objectId] || {})
+  });
+}
+
 export function levelToDocument(level) {
   const objects = [];
   for (const collection of LEVEL_COLLECTIONS) {
     const type = TYPE_BY_COLLECTION.get(collection);
-    for (const item of level[collection] || []) {
+    for (const [index, item] of (level[collection] || []).entries()) {
       const x = type === "slope" ? item.ax : item.x;
       const y = type === "slope" ? item.ay : item.y;
+      const id = runtimeObjectId(level, type, index, item.id, objects);
       objects.push(createLevelObject(type, x, y, objects, {
-        id: item.id || createObjectId(type, objects),
-        properties: readObjectProperties(type, item)
+        id,
+        properties: {
+          ...readObjectProperties(type, item),
+          visual: runtimeObjectVisual(level, type, id)
+        }
       }));
     }
   }
-  if (level.spawn) objects.push(createLevelObject("spawn", level.spawn.x, level.spawn.y, objects, { id: "spawn" }));
-  if (level.goal) objects.push(createLevelObject("goal", level.goal.x, level.goal.y, objects, {
-    id: level.goal.id || "goal",
-    properties: { radius: level.goal.radius }
-  }));
+  if (level.spawn) {
+    const id = level.visualOrder?.spawn?.[0] || "spawn";
+    objects.push(createLevelObject("spawn", level.spawn.x, level.spawn.y, objects, {
+      id,
+      properties: { visual: runtimeObjectVisual(level, "spawn", id) }
+    }));
+  }
+  if (level.goal) {
+    const id = runtimeObjectId(level, "goal", 0, level.goal.id, objects);
+    objects.push(createLevelObject("goal", level.goal.x, level.goal.y, objects, {
+      id,
+      properties: {
+        radius: level.goal.radius,
+        visual: runtimeObjectVisual(level, "goal", id)
+      }
+    }));
+  }
   return {
     schemaVersion: LEVEL_DOCUMENT_VERSION,
     metadata: {
@@ -525,6 +570,7 @@ export function levelToDocument(level) {
     startingAbilities: [...(level.startingAbilities || [])],
     ...(level.reference ? { reference: clone(level.reference) } : {}),
     ...(level.statePolicy ? { statePolicy: clone(level.statePolicy) } : {}),
+    scene: level.scene ? clone(level.scene) : createDefaultScene(),
     objects
   };
 }
@@ -616,7 +662,31 @@ function compileObject(object) {
   }
 }
 
-export function validateLevelDocument(document) {
+export function migrateLevelDocument(document) {
+  if (!isRecord(document)) throw new Error("Document must be an object");
+  if (document.schemaVersion === LEVEL_DOCUMENT_VERSION) return clone(document);
+  if (document.schemaVersion !== 1) throw new Error(`Unsupported schema version: ${document.schemaVersion}`);
+  const migrated = clone(document);
+  migrated.schemaVersion = LEVEL_DOCUMENT_VERSION;
+  if (Array.isArray(migrated.objects)) migrated.objects = migrated.objects.map((object) => {
+    if (!isRecord(object)) return object;
+    const properties = isRecord(object.properties) ? object.properties : {};
+    return {
+      ...object,
+      properties: {
+        ...properties,
+        visual: createVisualConfig({
+          assetId: getTypeDefaultAssetId(object.type),
+          ...(isRecord(properties.visual) ? properties.visual : {})
+        })
+      }
+    };
+  });
+  migrated.scene = migrated.scene ? clone(migrated.scene) : createDefaultScene();
+  return migrated;
+}
+
+function validateVersionTwoDocument(document) {
   const errors = [];
   if (!document || typeof document !== "object") return ["Document must be an object"];
   if (document.schemaVersion !== LEVEL_DOCUMENT_VERSION) errors.push(`Unsupported schema version: ${document.schemaVersion}`);
@@ -629,15 +699,23 @@ export function validateLevelDocument(document) {
   if (document.dashCapacity !== undefined && (!Number.isInteger(document.dashCapacity) || document.dashCapacity < 1 || document.dashCapacity > 3)) {
     errors.push("Document dashCapacity must be an integer from 1 to 3");
   }
+  errors.push(...validateScene(document.scene));
   if (!Array.isArray(document.objects)) errors.push("Document must contain an objects array");
+  const objects = Array.isArray(document.objects) ? document.objects : [];
   const ids = new Set();
-  for (const object of document.objects || []) {
+  for (const [objectIndex, object] of objects.entries()) {
+    if (!isRecord(object)) {
+      errors.push(`objects[${objectIndex}] must be an object`);
+      continue;
+    }
     const definition = LEVEL_OBJECT_LIBRARY[object.type];
     if (!definition) errors.push(`Unknown object type: ${object.type}`);
     if (!object.id) errors.push("Every object must have an id");
     if (ids.has(object.id)) errors.push(`Duplicate object id: ${object.id}`);
     ids.add(object.id);
     if (!Number.isFinite(object.position?.x) || !Number.isFinite(object.position?.y)) errors.push(`${object.id || object.type} must have a finite position`);
+    if (!isRecord(object.properties)) errors.push(`${object.id || object.type}.properties must be an object`);
+    errors.push(...validateVisualConfig(object.properties?.visual, { path: `${object.id || object.type}.visual` }));
     for (const [key, property] of Object.entries(definition?.properties || {})) {
       const value = object.properties?.[key];
       if (property.kind === "number" && (!Number.isFinite(value) || value < property.min || value > property.max)) {
@@ -652,14 +730,15 @@ export function validateLevelDocument(document) {
     }
   }
   for (const [type, definition] of Object.entries(LEVEL_OBJECT_LIBRARY).filter(([, item]) => item.unique)) {
-    const count = (document.objects || []).filter((object) => object.type === type).length;
+    const count = objects.filter((object) => isRecord(object) && object.type === type).length;
     if (type === "goal" && document.metadata?.mode === "reference-room") {
       if (count > 1) errors.push("Reference room document may contain at most one goal object");
     } else if (definition.unique && count !== 1) {
       errors.push(`Document must contain exactly one ${type} object`);
     }
   }
-  for (const object of document.objects || []) {
+  for (const object of objects) {
+    if (!isRecord(object)) continue;
     if (object.type === "roomExit" && !object.properties?.targetRoomId) {
       errors.push(`${object.id || "roomExit"}.targetRoomId must not be empty`);
     }
@@ -691,9 +770,19 @@ export function validateLevelDocument(document) {
   return errors;
 }
 
+export function validateLevelDocument(document) {
+  try {
+    return validateVersionTwoDocument(migrateLevelDocument(document));
+  } catch (error) {
+    return [error instanceof Error ? error.message : String(error)];
+  }
+}
+
 export function compileLevelDocument(document) {
-  const documentErrors = validateLevelDocument(document);
+  const migrated = migrateLevelDocument(document);
+  const documentErrors = validateVersionTwoDocument(migrated);
   if (documentErrors.length) throw new Error(documentErrors.join("\n"));
+  document = migrated;
   const level = {
     id: document.metadata.id,
     name: document.metadata.name,
@@ -704,6 +793,9 @@ export function compileLevelDocument(document) {
     startingAbilities: [...(document.startingAbilities || [])],
     dashCapacity: document.dashCapacity ?? 1,
     bounds: clone(document.bounds),
+    scene: clone(document.scene),
+    visuals: {},
+    visualOrder: {},
     backgroundSeeds: [],
     platforms: [],
     slopes: [],
@@ -730,6 +822,9 @@ export function compileLevelDocument(document) {
     ...(document.statePolicy ? { statePolicy: clone(document.statePolicy) } : {})
   };
   for (const object of document.objects) {
+    level.visuals[object.id] = clone(object.properties.visual);
+    if (!level.visualOrder[object.type]) level.visualOrder[object.type] = [];
+    level.visualOrder[object.type].push(object.id);
     if (object.type === "spawn") {
       level.spawn = clone(object.position);
     } else if (object.type === "goal") {

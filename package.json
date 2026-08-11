@@ -8,6 +8,8 @@
     "dev": "node scripts/serve.mjs",
     "test": "node --test",
     "check": "node scripts/check.mjs",
+    "assets:audit": "python3 scripts/audit-game-assets.py",
+    "performance:audit": "node scripts/audit-browser-performance.mjs",
     "reference:catalog": "node scripts/build-reference-catalog.mjs",
     "reference:whiteboxes": "node scripts/build-reference-whiteboxes.mjs",
     "reference:audit": "node scripts/audit-reference-graph.mjs && node scripts/audit-reference-fidelity.mjs",

@@ -1,5 +1,6 @@
 import { ABILITIES, KNOWN_ABILITY_IDS, TUNING, VIEWPORT } from "./config.js";
 import { syncCanvasBackingStore } from "./display.js";
+import { DEFAULT_ASSET_REGISTRY, DEFAULT_VISUAL_CONFIG } from "./asset-library.js";
 import { createLevelEditor } from "./level-editor.js";
 import { LEVELS } from "./levels.js";
 import { validateLevel } from "./level-validator.js";
@@ -62,6 +63,7 @@ import {
   TAU
 } from "./math.js";
 import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
+import { VisualRuntime, stableSortRenderQueue } from "./visual-runtime.js";
 
 const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
@@ -239,6 +241,7 @@ class Game {
     this.lastTimestamp = 0;
     this.toast = { text: "", time: 0, tone: "normal" };
     this.particles = new ParticleField();
+    this.visualRuntime = new VisualRuntime({ registry: DEFAULT_ASSET_REGISTRY });
     this.onRoomExit = null;
     this.frameMetrics = { samples: [], averageFps: 0, averageMs: 0, p95Ms: 0, worstMs: 0 };
     this.debugStats = { activeObjects: 0, renderedObjects: 0, collisionCandidates: 0 };
@@ -309,6 +312,7 @@ class Game {
     this.debugStats.activeObjects = this.countLevelObjects();
     this.debugStats.renderedObjects = 0;
     this.debugStats.collisionCandidates = 0;
+    void this.visualRuntime.preloadLevel(level);
   }
 
   setRoomExitHandler(handler) {
@@ -1699,17 +1703,33 @@ class Game {
   render() {
     const ctx = this.ctx;
     this.displayMetrics = syncCanvasBackingStore(canvas, ctx, VIEWPORT);
+    this.visualRuntime.beginFrame();
+    const sceneCamera = {
+      x: this.camera.x,
+      y: this.camera.y,
+      width: VIEWPORT.width,
+      height: VIEWPORT.height
+    };
     this.renderBackground(ctx);
+    this.visualRuntime.renderScenePass(ctx, this.level.scene, "background", sceneCamera);
+    this.visualRuntime.renderScenePass(ctx, this.level.scene, "midground", sceneCamera);
+    this.visualRuntime.renderScenePass(ctx, this.level.scene, "player", sceneCamera);
+    this.renderInWorld(ctx, () => this.renderWorld(ctx));
+    this.renderPlayer(ctx);
+    this.visualRuntime.renderScenePass(ctx, this.level.scene, "foreground", sceneCamera);
+    this.renderInWorld(ctx, () => this.renderGameplayCues(ctx));
+    this.renderBashAimOverlay(ctx);
+    this.renderHud(ctx);
+    if (this.paused) this.renderPause(ctx);
+  }
+
+  renderInWorld(ctx, renderer) {
     ctx.save();
     ctx.translate(VIEWPORT.width / 2, VIEWPORT.height / 2);
     ctx.rotate(this.camera.angle);
     ctx.translate(-this.camera.x, -this.camera.y);
-    this.renderWorld(ctx);
+    renderer();
     ctx.restore();
-    this.renderPlayer(ctx);
-    this.renderBashAimOverlay(ctx);
-    this.renderHud(ctx);
-    if (this.paused) this.renderPause(ctx);
   }
 
   renderBackground(ctx) {
@@ -1736,35 +1756,62 @@ class Game {
   }
 
   renderWorld(ctx) {
-    this.debugStats.renderedObjects = this.countLevelObjects();
-    for (const seed of this.level.backgroundSeeds) this.renderBackgroundSeed(ctx, seed);
-    for (const wind of this.level.windZones) this.renderWindZone(ctx, wind);
-    for (const liquid of this.level.liquidZones || []) this.renderLiquidZone(ctx, liquid);
-    for (const platform of this.level.platforms) this.renderPlatform(ctx, platform);
-    for (const item of this.runtime.movingObjects.filter((moving) => moving.objectKind === "platform")) this.renderMovingObject(ctx, item);
-    for (const fragile of this.runtime.fragilePlatforms) this.renderFragilePlatform(ctx, fragile);
-    for (const gate of this.runtime.gates) this.renderGate(ctx, gate);
-    for (const slope of this.level.slopes || []) this.renderSlope(ctx, slope);
-    for (const hazard of this.level.hazards) this.renderHazard(ctx, hazard);
-    for (const item of this.runtime.movingObjects.filter((moving) => moving.objectKind === "hazard")) this.renderMovingObject(ctx, item);
-    for (const checkpoint of this.level.checkpoints) this.renderCheckpoint(ctx, checkpoint);
-    for (const entrance of this.level.roomEntrances || []) if (this.debug) this.renderRoomEntrance(ctx, entrance);
-    for (const exit of this.level.roomExits || []) this.renderRoomExit(ctx, exit);
-    for (const sign of this.level.signs) this.renderSign(ctx, sign);
-    for (const orb of this.runtime.energyOrbs) if (orb.available) this.renderEnergyOrb(ctx, orb);
-    for (const refill of this.runtime.dashRefills) this.renderDashRefill(ctx, refill);
-    for (const launcher of this.runtime.launchers) this.renderLauncher(ctx, launcher);
-    for (const trigger of this.runtime.stateTriggers) this.renderStateTrigger(ctx, trigger);
-    for (const pickup of this.runtime.abilityPickups) if (!pickup.collected) this.renderAbilityPickup(ctx, pickup);
-    for (const target of this.runtime.bashTargets) this.renderBashTarget(ctx, target);
-    for (const item of this.runtime.movingObjects.filter((moving) => moving.objectKind === "bashTarget")) this.renderMovingObject(ctx, item);
-    if (this.level.goal) this.renderGoal(ctx);
-    this.renderHardBar(ctx);
-    this.renderRope(ctx);
-    this.renderSurfaceTarget(ctx);
-    this.renderHardBarTarget(ctx);
-    for (const anchor of this.level.anchors) this.renderAnchor(ctx, anchor);
-    for (const item of this.runtime.movingObjects.filter((moving) => moving.objectKind === "anchor")) this.renderMovingObject(ctx, item);
+    const commands = [];
+    let defaultOrder = 0;
+    const append = (type, items, fallback, visible = () => true) => {
+      const order = defaultOrder++;
+      (items || []).forEach((item, index) => {
+        if (!visible(item, index)) return;
+        const visual = this.runtimeVisualForObject(type, item, index);
+        commands.push({
+          type,
+          item,
+          visual,
+          drawLayer: visual.drawLayer,
+          defaultOrder: order,
+          fallback: typeof fallback === "function" ? () => fallback(item, index) : null,
+          overlay: () => this.renderAssetSemanticCue(ctx, type, item)
+        });
+      });
+    };
+
+    append("backgroundSeed", this.level.backgroundSeeds, (seed) => this.renderBackgroundSeed(ctx, seed));
+    append("spawn", this.level.spawn ? [this.level.spawn] : [], null);
+    append("windZone", this.level.windZones, (wind) => this.renderWindZone(ctx, wind));
+    append("liquidZone", this.level.liquidZones, (liquid) => this.renderLiquidZone(ctx, liquid));
+    append("platform", this.level.platforms, (platform) => this.renderPlatform(ctx, platform));
+    append("movingObject", this.runtime.movingObjects, (item) => this.renderMovingObject(ctx, item), (item) => item.objectKind === "platform");
+    append(
+      "fragilePlatform",
+      this.runtime.fragilePlatforms,
+      (fragile) => this.renderFragilePlatform(ctx, fragile),
+      (fragile) => fragile.phase !== "gone" || fragile.offsetY <= 520
+    );
+    append("gate", this.runtime.gates, (gate) => this.renderGate(ctx, gate));
+    append("slope", this.level.slopes, (slope) => this.renderSlope(ctx, slope));
+    append("hazard", this.level.hazards, (hazard) => this.renderHazard(ctx, hazard));
+    append("movingObject", this.runtime.movingObjects, (item) => this.renderMovingObject(ctx, item), (item) => item.objectKind === "hazard");
+    append("checkpoint", this.level.checkpoints, (checkpoint) => this.renderCheckpoint(ctx, checkpoint));
+    append("roomEntrance", this.level.roomEntrances, this.debug ? (entrance) => this.renderRoomEntrance(ctx, entrance) : null);
+    append("roomExit", this.level.roomExits, (exit) => this.renderRoomExit(ctx, exit));
+    append("sign", this.level.signs, (sign) => this.renderSign(ctx, sign));
+    append("energyOrb", this.runtime.energyOrbs, (orb) => this.renderEnergyOrb(ctx, orb), (orb) => orb.available);
+    append("dashRefill", this.runtime.dashRefills, (refill) => this.renderDashRefill(ctx, refill));
+    append("launcher", this.runtime.launchers, (launcher) => this.renderLauncher(ctx, launcher));
+    append("stateTrigger", this.runtime.stateTriggers, (trigger) => this.renderStateTrigger(ctx, trigger));
+    append("abilityPickup", this.runtime.abilityPickups, (pickup) => this.renderAbilityPickup(ctx, pickup), (pickup) => !pickup.collected);
+    append("bashTarget", this.runtime.bashTargets, (target) => this.renderBashTarget(ctx, target));
+    append("movingObject", this.runtime.movingObjects, (item) => this.renderMovingObject(ctx, item), (item) => item.objectKind === "bashTarget");
+    append("goal", this.level.goal ? [this.level.goal] : [], () => this.renderGoal(ctx));
+    append("anchor", this.level.anchors, (anchor) => this.renderAnchor(ctx, anchor));
+    append("movingObject", this.runtime.movingObjects, (item) => this.renderMovingObject(ctx, item), (item) => item.objectKind === "anchor");
+    append("rotationTrigger", this.runtime.rotationTriggers, null);
+    append("darknessZone", this.level.darknessZones, null);
+
+    const renderQueue = stableSortRenderQueue(commands);
+    this.debugStats.renderedObjects = renderQueue.length;
+    for (const command of renderQueue) this.visualRuntime.renderObject(ctx, command);
+    // Darkness affects gameplay readability, so its semantic mask remains even when a decorative image is assigned.
     for (const darkness of this.level.darknessZones || []) this.renderDarknessZone(ctx, darkness);
     this.particles.render(ctx);
 
@@ -1773,6 +1820,193 @@ class Game {
       ctx.lineWidth = 1;
       ctx.strokeRect(this.level.bounds.x, this.level.bounds.y, this.level.bounds.w, this.level.bounds.h);
     }
+  }
+
+  visualForObject(type, item, index) {
+    const objectId = item?.id || this.level.visualOrder?.[type]?.[index];
+    return this.level.visuals?.[objectId] || DEFAULT_VISUAL_CONFIG;
+  }
+
+  runtimeVisualForObject(type, item, index) {
+    const visual = this.visualForObject(type, item, index);
+    const semanticType = type === "movingObject" ? item?.objectKind : type;
+    let opacityScale = 1;
+    if (semanticType === "goal" && this.runtime.goalReached) opacityScale = 0.35;
+    else if (semanticType === "checkpoint") opacityScale = item?.id === this.currentCheckpoint?.id ? 0.95 : 0.32;
+    else if (semanticType === "dashRefill" && !item?.available) opacityScale = 0.16;
+    else if (semanticType === "bashTarget" && item?.cooldown > 0) opacityScale = 0.2;
+    else if (semanticType === "gate" && item?.open) opacityScale = 0.2;
+    else if (semanticType === "fragilePlatform" && item?.phase === "gone") opacityScale = 0.42;
+    else if (semanticType === "stateTrigger" && item?.used) opacityScale = 0.35;
+    else if (semanticType === "launcher" && item?.cooldownTimer > 0) opacityScale = 0.72;
+    return opacityScale === 1 ? visual : { ...visual, opacity: clamp(visual.opacity * opacityScale, 0, 1) };
+  }
+
+  renderAssetSemanticCue(ctx, type, item) {
+    const semanticType = type === "movingObject" ? item?.objectKind : type;
+    const offsetY = semanticType === "fragilePlatform" ? item.offsetY || 0 : 0;
+    ctx.save();
+    ctx.translate(0, offsetY);
+    if (semanticType === "hazard") {
+      const base = hazardBaseSegment(item);
+      ctx.strokeStyle = "rgba(255, 105, 131, 0.88)";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(item.x, item.y, item.w, item.h);
+      ctx.strokeStyle = "rgba(92, 22, 48, 0.92)";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(base.ax, base.ay);
+      ctx.lineTo(base.bx, base.by);
+      ctx.stroke();
+    } else if (semanticType === "slope") {
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "rgba(137, 250, 238, 0.72)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(item.ax, item.ay);
+      ctx.lineTo(item.bx, item.by);
+      ctx.stroke();
+    } else if (semanticType === "checkpoint" && item.id === this.currentCheckpoint?.id) {
+      ctx.strokeStyle = "rgba(154, 255, 239, 0.9)";
+      ctx.lineWidth = 3;
+      ctx.shadowColor = "#74fff3";
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.arc(item.x + item.w / 2, item.y + item.h / 2, 24, 0, TAU);
+      ctx.stroke();
+    } else if (semanticType === "goal") {
+      ctx.strokeStyle = this.runtime.goalReached ? "rgba(255, 233, 154, 0.35)" : "rgba(255, 233, 154, 0.9)";
+      ctx.lineWidth = 3;
+      ctx.setLineDash([7, 9]);
+      ctx.beginPath();
+      ctx.arc(item.x, item.y, item.radius + TUNING.goalActivationPadding, 0, TAU);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    } else if (semanticType === "anchor") {
+      const selected = this.ropeTarget?.kind === "anchor" && this.ropeTarget.id === item.id;
+      if (selected) {
+        ctx.strokeStyle = "#e6fffb";
+        ctx.lineWidth = 4;
+        ctx.shadowColor = "#70fff2";
+        ctx.shadowBlur = 20;
+        ctx.beginPath();
+        ctx.arc(item.x, item.y, 20, 0, TAU);
+        ctx.stroke();
+      }
+    } else if (semanticType === "bashTarget") {
+      const activeAim = this.runtime.bashAim;
+      const selected = activeAim?.target.id === item.id || (!activeAim && this.bashTarget?.id === item.id);
+      if (selected) {
+        ctx.strokeStyle = "#f3dcff";
+        ctx.lineWidth = 4;
+        ctx.shadowColor = "#cc86ff";
+        ctx.shadowBlur = 22;
+        ctx.beginPath();
+        ctx.arc(item.x, item.y, 28, 0, TAU);
+        ctx.stroke();
+      }
+    } else if (semanticType === "dashRefill") {
+      ctx.strokeStyle = item.available ? "rgba(185, 239, 255, 0.92)" : "rgba(121, 170, 184, 0.38)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(item.x, item.y, item.radius + 4, 0, TAU);
+      ctx.stroke();
+      if (item.available) {
+        ctx.fillStyle = "#e2f9ff";
+        ctx.font = "700 11px ui-monospace, SFMono-Regular, Menlo, monospace";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(item.charges), item.x, item.y + 1);
+      }
+    } else if (semanticType === "gate") {
+      ctx.globalAlpha = item.open ? 0.4 : 0.92;
+      ctx.strokeStyle = item.open ? "rgba(216, 181, 255, 0.62)" : "#d8aeff";
+      ctx.lineWidth = item.open ? 2 : 4;
+      ctx.setLineDash(item.open ? [12, 12] : []);
+      ctx.strokeRect(item.x, item.y, item.w, item.h);
+      ctx.setLineDash([]);
+    } else if (semanticType === "fragilePlatform" && item.phase === "cracking") {
+      ctx.strokeStyle = "rgba(255, 224, 154, 0.9)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      const shardWidth = Math.max(30, item.w / 5);
+      for (let x = item.x + shardWidth; x < item.x + item.w; x += shardWidth) {
+        ctx.moveTo(x, item.y);
+        ctx.lineTo(x - 12, item.y + item.h);
+      }
+      ctx.stroke();
+    } else if (semanticType === "launcher") {
+      const direction = normalize(item.launchX, item.launchY, 0, -1);
+      const centerX = item.x + item.w / 2;
+      const centerY = item.y + item.h / 2;
+      ctx.strokeStyle = item.cooldownTimer > 0 ? "rgba(255, 205, 145, 0.42)" : "#ffd293";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(centerX - direction.x * 8, centerY - direction.y * 8);
+      ctx.lineTo(centerX + direction.x * 26, centerY + direction.y * 26);
+      ctx.stroke();
+    } else if (semanticType === "roomExit") {
+      const direction = {
+        left: { x: -1, y: 0 },
+        right: { x: 1, y: 0 },
+        up: { x: 0, y: -1 },
+        down: { x: 0, y: 1 }
+      }[item.direction] || { x: 1, y: 0 };
+      const centerX = item.x + item.w / 2;
+      const centerY = item.y + item.h / 2;
+      const locked = Boolean(item.requiredAbility && !this.abilities.has(item.requiredAbility));
+      ctx.strokeStyle = locked ? "rgba(255, 119, 143, 0.88)" : "rgba(255, 223, 137, 0.88)";
+      ctx.fillStyle = locked ? "#ff8da4" : "#ffe49a";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(centerX - direction.x * 18, centerY - direction.y * 18);
+      ctx.lineTo(centerX + direction.x * 18, centerY + direction.y * 18);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(centerX + direction.x * 22, centerY + direction.y * 22);
+      ctx.lineTo(centerX + direction.x * 8 - direction.y * 8, centerY + direction.y * 8 + direction.x * 8);
+      ctx.lineTo(centerX + direction.x * 8 + direction.y * 8, centerY + direction.y * 8 - direction.x * 8);
+      ctx.closePath();
+      ctx.fill();
+      if (locked) {
+        ctx.setLineDash([8, 7]);
+        ctx.strokeRect(item.x, item.y, item.w, item.h);
+        ctx.setLineDash([]);
+      }
+    } else if (semanticType === "windZone") {
+      const direction = normalize(item.forceX, item.forceY, 0, -1);
+      const centerX = item.x + item.w / 2;
+      const centerY = item.y + item.h / 2;
+      const active = this.player.wind?.ids.includes(item.id);
+      ctx.strokeStyle = active ? "rgba(157, 236, 255, 0.88)" : "rgba(128, 222, 255, 0.62)";
+      ctx.lineWidth = active ? 4 : 3;
+      ctx.beginPath();
+      ctx.moveTo(centerX - direction.x * 26, centerY - direction.y * 26);
+      ctx.lineTo(centerX + direction.x * 30, centerY + direction.y * 30);
+      ctx.stroke();
+      if (active) ctx.strokeRect(item.x, item.y, item.w, item.h);
+    } else if (semanticType === "liquidZone" && this.player.liquid?.id === item.id) {
+      ctx.strokeStyle = "rgba(133, 216, 255, 0.82)";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(item.x, item.y, item.w, item.h);
+    } else if (semanticType === "sign" && item.text) {
+      ctx.font = "650 13px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = "rgba(4, 16, 23, 0.86)";
+      ctx.fillStyle = "rgba(231, 255, 252, 0.94)";
+      ctx.strokeText(item.text, item.x, item.y);
+      ctx.fillText(item.text, item.x, item.y);
+    }
+    ctx.restore();
+  }
+
+  renderGameplayCues(ctx) {
+    this.renderHardBar(ctx);
+    this.renderRope(ctx);
+    this.renderSurfaceTarget(ctx);
+    this.renderHardBarTarget(ctx);
   }
 
   renderBackgroundSeed(ctx, seed) {
@@ -2798,6 +3032,9 @@ class Game {
 
   renderDebug(ctx) {
     const gravity = this.gravityDirection();
+    const visualStats = this.visualRuntime.stats();
+    const decodedMiB = visualStats.estimatedDecodedBytes / (1024 * 1024);
+    const tintMiB = visualStats.estimatedTintBytes / (1024 * 1024);
     const lines = [
       `position ${formatNumber(this.player.x)} / ${formatNumber(this.player.y)}`,
       `velocity ${formatNumber(this.player.vx)} / ${formatNumber(this.player.vy)}`,
@@ -2808,17 +3045,21 @@ class Game {
       `p95 ${this.frameMetrics.p95Ms.toFixed(2)} ms  worst ${this.frameMetrics.worstMs.toFixed(2)} ms`,
       `objects active ${this.debugStats.activeObjects}  drawn ${this.debugStats.renderedObjects}`,
       `collision candidates ${this.debugStats.collisionCandidates}`,
+      `assets req ${visualStats.requests}  hit ${visualStats.cacheHits}  ready ${visualStats.ready}  load ${visualStats.loading}  err ${visualStats.error}`,
+      `asset cache ${visualStats.cacheEntries}  decoded ${decodedMiB.toFixed(2)} MiB  tint ${tintMiB.toFixed(2)} MiB/${visualStats.tintVariants}  evicted ${visualStats.evictions}`,
+      `visual scene ${visualStats.sceneDraws}  object ${visualStats.objectAssetDraws}  fallback ${visualStats.fallbackDraws}`,
+      `visual culled ${visualStats.cullCount}  quality ${visualStats.qualityTier}`,
       `grounded ${this.player.grounded}  rope ${this.player.rope?.phase || "—"}  dash ${this.player.dashCharges}/${this.player.maximumDashCharges}`,
       `checkpoint ${this.currentCheckpoint.id}`,
       `abilities ${[...this.abilities].join(", ")}`
     ];
     ctx.fillStyle = "rgba(0, 0, 0, 0.72)";
-    roundedRect(ctx, VIEWPORT.width - 340, 80, 312, lines.length * 20 + 22, 12);
+    roundedRect(ctx, VIEWPORT.width - 438, 80, 410, lines.length * 20 + 22, 12);
     ctx.fill();
     ctx.fillStyle = "#a8ebe8";
     ctx.font = "12px ui-monospace, SFMono-Regular, Menlo, monospace";
     ctx.textAlign = "left";
-    lines.forEach((line, index) => ctx.fillText(line, VIEWPORT.width - 322, 106 + index * 20));
+    lines.forEach((line, index) => ctx.fillText(line, VIEWPORT.width - 420, 106 + index * 20));
   }
 
   renderPause(ctx) {
