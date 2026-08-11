@@ -69,19 +69,19 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 7. 构建通过后发布到 Sites；记录版本和状态，再重新打开公开地址确认新入口、素材请求、编辑保存和试玩。
 8. 只有上述证据全部属于当前 commit/构建，才可把本轮发布标记为完成。
 
-## 本轮结果区（2026-08-12 本地候选构建）
+## 本轮结果区（2026-08-12 发布构建）
 
-> 当前状态：本地功能、素材、自动测试、结构检查、构建、浏览器功能巡检和性能审计已通过；Sites 发布与公开版本复验仍待主任务完成。当前工作树尚未形成发布 commit，因此本节不能单独作为线上发布完成证据。
+> 当前状态：本地功能、素材、自动测试、结构检查、构建、浏览器功能巡检和性能审计已通过；Sites v12 已公开发布并完成实际保存、v1 JSON 导入、导出、一键试玩、正式关卡与 console 复验。v12 复验后发现 Cloudflare 静态资源层覆盖了 Worker 的 WebP MIME/缓存响应头；最终同步构建启用 `run_worker_first` 并补齐图片 MIME，最终版本号、commit 与响应头复验结果以本轮交付说明为准。
 
 ### 版本、测试与构建
 
 | 项目 | 当前轮结果 | 证据 |
 | --- | --- | --- |
-| commit / 工作树指纹 | 基线 `HEAD 7b50c35e28af10d49be1b18a3f9c77afc2d7f4b7`；候选改动仍在工作树 | [`levels/art/performance-audit.json`](../levels/art/performance-audit.json) 的输入指纹为 `9051c11b7e27b042999c17f3677f662b48a7b0a447319b735a9a5f87aeb71a18`，覆盖 56 个性能相关文件；最终发布 commit 待主任务填写。 |
+| commit / 工作树指纹 | 基线 `HEAD 7b50c35e28af10d49be1b18a3f9c77afc2d7f4b7`；首个公开验收 commit `81c5d9bbcb1b3fe36080577561ae847800bcb250` | [`levels/art/performance-audit.json`](../levels/art/performance-audit.json) 的输入指纹为 `9051c11b7e27b042999c17f3677f662b48a7b0a447319b735a9a5f87aeb71a18`，覆盖 56 个性能相关文件；最终响应头同步 commit 以交付说明为准。 |
 | `npm test` | **通过：114/114，0 失败** | 2026-08-12 最终重新运行 `node --test`，总耗时 6.434 秒；包含 registry、单物件/同类型替换、重置、v1 迁移、v2 roundtrip、scene CRUD/无缝计算、回退、非法配置、16 份素材像素审计和性能证据指纹门禁。 |
 | `npm run check` | **通过：10 个正式关卡 + 908 个参考房间** | 当前命令输出 `10 built-in levels and 908 authored reference rooms passed structural validation.`；参考内容指纹 `44cb83474d66283953c299c859feb7fa22626aaef6dc3173741eaa60e26fe73e` 覆盖 930 文件（908 room + 22 runtime）。 |
 | `npm run assets:audit` | **通过：16 个生成素材，32/32 文件，0 错误** | 16 个运行时 WebP + 16 个缩略图共 391.5 KiB；像素解码估算 3129.1 KiB；残留洋红像素为 0，透明边缘最大 alpha 4/255，最差缩略图 RGB MAE 2.999。 |
-| `npm run build` | **通过** | 最终候选构建耗时 2.278 秒；`dist/` 共 980 个文件、17,687,399 bytes，包含 16 个运行时素材与 16 个缩略图；命令输出 `Cablester Sites build created in dist/.`。 |
+| `npm run build` | **通过** | 最终候选 `dist/` 共 980 个文件、17,687,790 bytes，包含 16 个运行时素材与 16 个缩略图；命令输出 `Cablester Sites build created in dist/.`。 |
 
 ### ImageGen 素材批次与授权
 
@@ -107,7 +107,7 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 | 图层新增、锁定、排序、复制、删除 | **通过** | 8 层初始 scene；新增 + undo/redo、depth 排序 + undo、复制/删除及恢复 8 层均通过；实际切换锁定时 inspector 状态为 enabled → disabled → enabled，证明锁定拦截编辑、解锁恢复编辑。 |
 | scene 素材添加/替换与无缝预览 | **通过** | scene picker 有 9 个选项，替换 + undo 和实时 canvas 通过；10 关巡检未见可见接缝、突跳或洋红边。无缝放置的确定性、范围和 draw cap 另由自动测试覆盖。 |
 | 保存、JSON roundtrip、一键试玩 | **通过** | 保存与一键试玩通过；通过内置浏览器真实 file chooser 导入 schema v1 文件 `levels/reference/celeste/prologue/a/0.json`，界面显示“已导入关卡，请确认后保存”，随后执行导出并显示“关卡 JSON 已导出”。v1→v2 迁移及文档 roundtrip 另由自动测试覆盖。 |
-| 原生 `option`/`optgroup` 可读性 | **通过** | 深色编辑器中的原生 select 弹层实测 `option` computed style：background `rgb(242, 247, 248)`（`#f2f7f8`）、color `rgb(16, 44, 53)`（`#102c35`）；选中文字色登记为 `#071b24`，明暗对比通过。公开 Sites 仍需重查系统弹层。 |
+| 原生 `option`/`optgroup` 可读性 | **本地与公开 Sites 均通过** | 深色编辑器中的原生 select 弹层实测 `option` computed style：background `rgb(242, 247, 248)`（`#f2f7f8`）、color `rgb(16, 44, 53)`（`#102c35`）；选中文字色登记为 `#071b24`。公开 v12 复验得到相同 computed style。 |
 | 缺失素材安全回退 | **自动测试通过；浏览器注错待固化** | 单元测试覆盖缺失、不适用和 loader error 回到 `builtin:procedural`；本轮正常巡检为 0 asset error，没有保留一次人为 404 注错录像。 |
 
 ### 性能、请求与内存
@@ -156,15 +156,15 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 
 ### Sites 发布与线上复验
 
-> **主任务待办：尚未发布本候选工作树，也尚未对公开版本做当前构建复验。以下字段必须在实际 Sites 保存版本、部署完成并重新打开公开地址后填写；不得沿用旧线上版本或预填版本号。**
+首个公开验收版本为 v12。它使用已推送的精确 commit 和官方 Sites 打包器生成 980 文件归档；部署成功后重新打开公开地址完成真实浏览器工作流。v12 复验发现 `/assets/*.webp` 由 Cloudflare 静态资源层直接响应为 `application/octet-stream` 且未使用项目期望的 1 小时缓存，因此后续最终同步构建增加 `run_worker_first` 和扩展名 MIME 映射；最终公开版本与头部结果见本轮交付说明。
 
 | 项目 | 当前轮结果 |
 | --- | --- |
-| 公开地址 | 待主任务发布后填写并点击复验 |
-| Sites 版本 | 待实际保存版本后填写 |
-| 发布状态与时间 | 待实际部署成功后填写 |
-| 线上入口与素材加载 | 待公开版本浏览器复验；需确认三入口、16/16 图片 ready、0 asset error |
-| 线上保存/导入导出/试玩 | 待公开版本执行真实工作流后填写 |
-| 线上无缝场景与回退 | 待公开版本检查横向延伸、注错回退和 console 后填写 |
+| 公开地址 | `https://cablester-game.visiontw.chatgpt.site`；2026-08-12 已重新打开公开版本复验。 |
+| Sites 版本 | 首个公开验收版本 v12；source commit `81c5d9bbcb1b3fe36080577561ae847800bcb250`；archive `sha256:6ccf86094befb076eb98452c5178ea29428b0fb87d82a43959d616e238656236`。 |
+| 发布状态与时间 | deployment `appgdep_6a7b57439ae4819190c4c9d934087c86` 为 `succeeded`；2026-08-12 01:09:41（Asia/Shanghai）。 |
+| 线上入口与素材加载 | **通过**：未进入素材模式时 0 张素材图；进入后 17 张卡片、16 张缩略图且路径均在 `/thumbnails/`；场景编辑器显示 8 层。正式样板加载原创场景和物件图，未见洋红边或可见接缝。 |
+| 线上保存/导入导出/试玩 | **通过**：公开版本显示“关卡已保存到这台设备”；通过真实 file chooser 导入 v1 JSON 并显示“已导入关卡，请确认后保存”；导出显示“关卡 JSON 已导出”；一键试玩正常切回游戏画布。 |
+| 线上无缝场景、控件与 console | **通过**：`combined-horizontal` 横向主题场景、玩法路线和前景层级可读；原生 option 为浅底深字；console error/warning 均为 0。缺失素材回退由自动测试覆盖，本轮线上未人为制造 404。 |
 | 遗留风险 | 当前已知：逐关静态 before/after 未入库；`combined-vertical` 有一次 66.664 ms 长帧；low-tier P95 33.332 ms、最差 66.664 ms；单字段重置和人为 404 回退的独立浏览器证据待固化；GPU 显存只有估算。 |
-| 下一轮建议 | 发布前先补上述本地证据；发布后以同一 commit/构建刷新线上验收，并把 Sites 版本、时间和最终风险写回本节。 |
+| 下一轮建议 | 固化 10 组同视口静态 before/after；在真实低端设备复测 low-tier 与偶发长帧；增加显式 404 注错录像和单字段重置浏览器步骤；如继续美术化 908 个参考白盒，应建立独立 preset 规则，不能沿用正式 10 关的验收结论。 |

@@ -39,6 +39,15 @@ await writeFile(
     if (url.pathname.startsWith("/assets/")) {
       const headers = new Headers(response.headers);
       headers.set("cache-control", "public, max-age=3600, must-revalidate");
+      const extension = url.pathname.slice(url.pathname.lastIndexOf(".")).toLowerCase();
+      const contentTypes = {
+        ".avif": "image/avif",
+        ".jpeg": "image/jpeg",
+        ".jpg": "image/jpeg",
+        ".png": "image/png",
+        ".webp": "image/webp"
+      };
+      if (contentTypes[extension]) headers.set("content-type", contentTypes[extension]);
       return new Response(response.body, { status: response.status, headers });
     }
     if (url.pathname !== "/index.html") return response;
@@ -62,7 +71,7 @@ await writeFile(
     main: "index.js",
     no_bundle: true,
     rules: [{ type: "ESModule", globs: ["**/*.js", "**/*.mjs"] }],
-    assets: { directory: "../client" },
+    assets: { directory: "../client", run_worker_first: true },
     observability: { enabled: true },
   })}\n`,
 );
