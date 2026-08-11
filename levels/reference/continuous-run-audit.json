@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "ranAt": "2026-08-10T00:49:58.938+08:00",
+  "environment": {
+    "device": "MacBook Pro Mac15,6",
+    "processor": "Apple M3 Pro 11-core",
+    "memory": "18 GB",
+    "operatingSystem": "macOS 14.4 arm64",
+    "viewport": "1280x720"
+  },
+  "contentFingerprint": {
+    "algorithm": "sha256",
+    "value": "848fda18e100da288c8aa66f0a9970bb06c4aebd200c1fd2d21d881576b4eb8c",
+    "fileCount": 926,
+    "roomFileCount": 908,
+    "runtimeFileCount": 18
+  },
+  "scope": {
+    "collections": 44,
+    "rooms": 908,
+    "sequentialTransitions": 864,
+    "routePolicy": "One manifest-ordered sequential main route per Celeste Side or Ori area. Optional and inferred side exits are outside this run."
+  },
+  "method": {
+    "input": "Progress-sensitive Cablester movement input holds right and only jumps or dashes after a stall, wall contact, fall or liquid contact.",
+    "simulation": "The real Game fixed-step update, collision, damage/death reset, room state reset and asynchronous room-exit loader are used.",
+    "teleport": false,
+    "directStateMutation": false
+  },
+  "result": {
+    "passedCollections": 44,
+    "visitedRooms": 908,
+    "transitionsCompleted": 864,
+    "deathsOrResets": 0,
+    "failedCollections": 0,
+    "elapsedSeconds": 14.9,
+    "freshConsoleErrorsOrWarnings": 0
+  },
+  "statusPolicy": {
+    "continuousRunStatusUpgraded": true,
+    "browserStatusUpgraded": false,
+    "validationStatusUpgraded": false,
+    "reason": "This proves an automated main-route traversal through every collection on the fingerprinted build. It does not prove every side exit, human feel, original-coordinate fidelity, art fidelity or room-by-room manual browser acceptance."
+  }
+}

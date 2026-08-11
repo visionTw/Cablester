@@ -1,0 +1,523 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-09T16:52:16.096Z",
+  "policy": "Graph audit only; does not upgrade playable, browser, validation, or continuousRun status.",
+  "contentFingerprint": {
+    "algorithm": "sha256",
+    "value": "848fda18e100da288c8aa66f0a9970bb06c4aebd200c1fd2d21d881576b4eb8c",
+    "fileCount": 926,
+    "roomFileCount": 908,
+    "runtimeFileCount": 18
+  },
+  "totals": {
+    "rooms": 908,
+    "collections": 44,
+    "manifestConnections": 3678,
+    "authoredManifestConnections": 3678,
+    "missingManifestConnections": 0,
+    "extraAuthoredExits": 2,
+    "invalidExitTargets": 0,
+    "weaklyConnectedCollections": 44,
+    "strongFromFirstCollections": 44
+  },
+  "collections": [
+    {
+      "id": "celeste.prologue.a",
+      "game": "celeste",
+      "rooms": 6,
+      "internalEdges": 20,
+      "weakComponents": 1,
+      "largestWeakComponent": 6,
+      "forwardReachable": 6,
+      "reverseReachable": 6,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.city.a",
+      "game": "celeste",
+      "rooms": 38,
+      "internalEdges": 178,
+      "weakComponents": 1,
+      "largestWeakComponent": 38,
+      "forwardReachable": 38,
+      "reverseReachable": 38,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.city.b",
+      "game": "celeste",
+      "rooms": 16,
+      "internalEdges": 60,
+      "weakComponents": 1,
+      "largestWeakComponent": 16,
+      "forwardReachable": 16,
+      "reverseReachable": 16,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.city.c",
+      "game": "celeste",
+      "rooms": 3,
+      "internalEdges": 8,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.site.a",
+      "game": "celeste",
+      "rooms": 45,
+      "internalEdges": 212,
+      "weakComponents": 1,
+      "largestWeakComponent": 45,
+      "forwardReachable": 45,
+      "reverseReachable": 45,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.site.b",
+      "game": "celeste",
+      "rooms": 17,
+      "internalEdges": 64,
+      "weakComponents": 1,
+      "largestWeakComponent": 17,
+      "forwardReachable": 17,
+      "reverseReachable": 17,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.site.c",
+      "game": "celeste",
+      "rooms": 3,
+      "internalEdges": 8,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.resort.a",
+      "game": "celeste",
+      "rooms": 65,
+      "internalEdges": 372,
+      "weakComponents": 1,
+      "largestWeakComponent": 65,
+      "forwardReachable": 65,
+      "reverseReachable": 65,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.resort.b",
+      "game": "celeste",
+      "rooms": 24,
+      "internalEdges": 92,
+      "weakComponents": 1,
+      "largestWeakComponent": 24,
+      "forwardReachable": 24,
+      "reverseReachable": 24,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.resort.c",
+      "game": "celeste",
+      "rooms": 3,
+      "internalEdges": 8,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.ridge.a",
+      "game": "celeste",
+      "rooms": 48,
+      "internalEdges": 208,
+      "weakComponents": 1,
+      "largestWeakComponent": 48,
+      "forwardReachable": 48,
+      "reverseReachable": 48,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.ridge.b",
+      "game": "celeste",
+      "rooms": 20,
+      "internalEdges": 76,
+      "weakComponents": 1,
+      "largestWeakComponent": 20,
+      "forwardReachable": 20,
+      "reverseReachable": 20,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.ridge.c",
+      "game": "celeste",
+      "rooms": 3,
+      "internalEdges": 8,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.temple.a",
+      "game": "celeste",
+      "rooms": 85,
+      "internalEdges": 400,
+      "weakComponents": 1,
+      "largestWeakComponent": 85,
+      "forwardReachable": 85,
+      "reverseReachable": 85,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.temple.b",
+      "game": "celeste",
+      "rooms": 25,
+      "internalEdges": 110,
+      "weakComponents": 1,
+      "largestWeakComponent": 25,
+      "forwardReachable": 25,
+      "reverseReachable": 25,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.temple.c",
+      "game": "celeste",
+      "rooms": 3,
+      "internalEdges": 8,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.reflection.a",
+      "game": "celeste",
+      "rooms": 64,
+      "internalEdges": 266,
+      "weakComponents": 1,
+      "largestWeakComponent": 64,
+      "forwardReachable": 64,
+      "reverseReachable": 64,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.reflection.b",
+      "game": "celeste",
+      "rooms": 28,
+      "internalEdges": 108,
+      "weakComponents": 1,
+      "largestWeakComponent": 28,
+      "forwardReachable": 28,
+      "reverseReachable": 28,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.reflection.c",
+      "game": "celeste",
+      "rooms": 3,
+      "internalEdges": 8,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.summit.a",
+      "game": "celeste",
+      "rooms": 95,
+      "internalEdges": 440,
+      "weakComponents": 1,
+      "largestWeakComponent": 95,
+      "forwardReachable": 95,
+      "reverseReachable": 95,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.summit.b",
+      "game": "celeste",
+      "rooms": 28,
+      "internalEdges": 108,
+      "weakComponents": 1,
+      "largestWeakComponent": 28,
+      "forwardReachable": 28,
+      "reverseReachable": 28,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.summit.c",
+      "game": "celeste",
+      "rooms": 3,
+      "internalEdges": 8,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.epilogue.a",
+      "game": "celeste",
+      "rooms": 4,
+      "internalEdges": 10,
+      "weakComponents": 1,
+      "largestWeakComponent": 4,
+      "forwardReachable": 4,
+      "reverseReachable": 4,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.core.a",
+      "game": "celeste",
+      "rooms": 39,
+      "internalEdges": 154,
+      "weakComponents": 1,
+      "largestWeakComponent": 39,
+      "forwardReachable": 39,
+      "reverseReachable": 39,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.core.b",
+      "game": "celeste",
+      "rooms": 23,
+      "internalEdges": 88,
+      "weakComponents": 1,
+      "largestWeakComponent": 23,
+      "forwardReachable": 23,
+      "reverseReachable": 23,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.core.c",
+      "game": "celeste",
+      "rooms": 4,
+      "internalEdges": 12,
+      "weakComponents": 1,
+      "largestWeakComponent": 4,
+      "forwardReachable": 4,
+      "reverseReachable": 4,
+      "strongFromFirst": true
+    },
+    {
+      "id": "celeste.farewell.a",
+      "game": "celeste",
+      "rooms": 109,
+      "internalEdges": 436,
+      "weakComponents": 1,
+      "largestWeakComponent": 109,
+      "forwardReachable": 109,
+      "reverseReachable": 109,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.swallows-nest",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 3,
+      "internalEdges": 4,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.sunken-glades",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 7,
+      "internalEdges": 12,
+      "weakComponents": 1,
+      "largestWeakComponent": 7,
+      "forwardReachable": 7,
+      "reverseReachable": 7,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.spirit-caverns",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 5,
+      "internalEdges": 8,
+      "weakComponents": 1,
+      "largestWeakComponent": 5,
+      "forwardReachable": 5,
+      "reverseReachable": 5,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.hollow-grove",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 7,
+      "internalEdges": 12,
+      "weakComponents": 1,
+      "largestWeakComponent": 7,
+      "forwardReachable": 7,
+      "reverseReachable": 7,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.moon-grotto",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 7,
+      "internalEdges": 12,
+      "weakComponents": 1,
+      "largestWeakComponent": 7,
+      "forwardReachable": 7,
+      "reverseReachable": 7,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.gumos-hideout",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 4,
+      "internalEdges": 6,
+      "weakComponents": 1,
+      "largestWeakComponent": 4,
+      "forwardReachable": 4,
+      "reverseReachable": 4,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.thornfelt-swamp",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 5,
+      "internalEdges": 8,
+      "weakComponents": 1,
+      "largestWeakComponent": 5,
+      "forwardReachable": 5,
+      "reverseReachable": 5,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.ginso-tree",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 8,
+      "internalEdges": 14,
+      "weakComponents": 1,
+      "largestWeakComponent": 8,
+      "forwardReachable": 8,
+      "reverseReachable": 8,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.black-root-burrows",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 6,
+      "internalEdges": 10,
+      "weakComponents": 1,
+      "largestWeakComponent": 6,
+      "forwardReachable": 6,
+      "reverseReachable": 6,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.lost-grove",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 6,
+      "internalEdges": 10,
+      "weakComponents": 1,
+      "largestWeakComponent": 6,
+      "forwardReachable": 6,
+      "reverseReachable": 6,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.valley-of-the-wind",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 6,
+      "internalEdges": 10,
+      "weakComponents": 1,
+      "largestWeakComponent": 6,
+      "forwardReachable": 6,
+      "reverseReachable": 6,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.misty-woods",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 7,
+      "internalEdges": 12,
+      "weakComponents": 1,
+      "largestWeakComponent": 7,
+      "forwardReachable": 7,
+      "reverseReachable": 7,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.forlorn-ruins",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 8,
+      "internalEdges": 14,
+      "weakComponents": 1,
+      "largestWeakComponent": 8,
+      "forwardReachable": 8,
+      "reverseReachable": 8,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.kuros-nest",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 3,
+      "internalEdges": 4,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.sorrow-pass",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 7,
+      "internalEdges": 12,
+      "weakComponents": 1,
+      "largestWeakComponent": 7,
+      "forwardReachable": 7,
+      "reverseReachable": 7,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.mount-horu",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 12,
+      "internalEdges": 22,
+      "weakComponents": 1,
+      "largestWeakComponent": 12,
+      "forwardReachable": 12,
+      "reverseReachable": 12,
+      "strongFromFirst": true
+    },
+    {
+      "id": "ori.spider-coves",
+      "game": "ori-blind-forest-definitive-edition",
+      "rooms": 3,
+      "internalEdges": 4,
+      "weakComponents": 1,
+      "largestWeakComponent": 3,
+      "forwardReachable": 3,
+      "reverseReachable": 3,
+      "strongFromFirst": true
+    }
+  ],
+  "missingManifestConnections": [],
+  "extraAuthoredExits": [
+    {
+      "source": "ori.sunken-glades.first-gate-hub",
+      "target": "ori.sunken-glades.western-return",
+      "exitId": "exit-upper"
+    },
+    {
+      "source": "ori.sunken-glades.western-return",
+      "target": "ori.sunken-glades.first-gate-hub",
+      "exitId": "exit-lower"
+    }
+  ],
+  "invalidExitTargets": []
+}

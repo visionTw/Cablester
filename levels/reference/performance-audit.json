@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "ranAt": "2026-08-10T00:51:05.546+08:00",
+  "environment": {
+    "device": "MacBook Pro Mac15,6",
+    "processor": "Apple M3 Pro 11-core",
+    "memory": "18 GB",
+    "operatingSystem": "macOS 14.4 arm64",
+    "browserSurface": "Codex in-app browser"
+  },
+  "contentFingerprint": {
+    "algorithm": "sha256",
+    "value": "848fda18e100da288c8aa66f0a9970bb06c4aebd200c1fd2d21d881576b4eb8c",
+    "fileCount": 926,
+    "roomFileCount": 908,
+    "runtimeFileCount": 18
+  },
+  "method": "Load the final local room through the visible menu, enable the built-in debug overlay, leave the real requestAnimationFrame loop running for 4-5 seconds, then read its rolling frame and object counters from a browser screenshot.",
+  "samples": [
+    {
+      "roomId": "celeste.temple.a.d-01",
+      "selectionReason": "Highest current document object count across the complete library",
+      "documentObjects": 54,
+      "viewport": "1280x720",
+      "averageFps": 80.2,
+      "averageFrameMs": 12.47,
+      "p95FrameMs": 17.6,
+      "worstFrameMs": 20.9,
+      "activeObjects": 53,
+      "drawnObjects": 53,
+      "collisionCandidates": 54
+    },
+    {
+      "roomId": "ori.mount-horu.central-shaft",
+      "selectionReason": "Tied highest current Ori document object count and representative large continuous-area partition",
+      "documentObjects": 28,
+      "viewport": "1280x720",
+      "averageFps": 79.0,
+      "averageFrameMs": 12.66,
+      "p95FrameMs": 17.8,
+      "worstFrameMs": 21.6,
+      "activeObjects": 27,
+      "drawnObjects": 27,
+      "collisionCandidates": 34
+    },
+    {
+      "roomId": "ori.mount-horu.central-shaft",
+      "documentObjects": 28,
+      "viewport": "1600x1000",
+      "averageFps": 71.4,
+      "averageFrameMs": 14.0,
+      "p95FrameMs": 21.0,
+      "worstFrameMs": 22.8,
+      "activeObjects": 27,
+      "drawnObjects": 27,
+      "collisionCandidates": 34
+    },
+    {
+      "roomId": "ori.mount-horu.central-shaft",
+      "documentObjects": 28,
+      "viewport": "800x900",
+      "averageFps": 77.7,
+      "averageFrameMs": 12.83,
+      "p95FrameMs": 18.6,
+      "worstFrameMs": 21.9,
+      "activeObjects": 27,
+      "drawnObjects": 27,
+      "collisionCandidates": 34
+    }
+  ],
+  "freshConsoleErrorsOrWarnings": 0,
+  "caveat": "These are short stationary whitebox samples on the stated machine. The 44-collection continuous traversal is recorded separately and checks transitions and resets, not frame-time distributions while a human explores every branch."
+}

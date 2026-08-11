@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "id": "celeste.city.a.3",
+    "name": "废城起步 · A · ST-1-03",
+    "category": "参考白盒",
+    "summary": "以分层浮台测试向右冲刺和回落容错，并连接到下一候选房。",
+    "mode": "reference-room"
+  },
+  "bounds": { "x": 0, "y": 0, "w": 1280, "h": 720 },
+  "dashCapacity": 1,
+  "startingAbilities": ["wallGrab", "dash"],
+  "reference": {
+    "manifestId": "celeste.city.a.3",
+    "intent": "连续浮台与一个清晰的高速直线。",
+    "cablesterMapping": "八向冲刺为主；绳索不开放，避免绕过浮台路线。",
+    "dimensionAdjustments": "按 Cablester 加速度扩大平台间距，同时保留下层救援落点。",
+    "mainRoute": "下方入口 → 三段浮台 → 右侧出口。",
+    "speedRoute": "中层连续水平冲刺。",
+    "knownDifferences": ["往返房间已接入本地连接图。", "浮台尺寸和高速手感仍需真人对照复核。"]
+  },
+  "statePolicy": { "deathReset": "room", "checkpointReset": "room", "offscreen": "pause-local" },
+  "objects": [
+    { "id": "entry-floor", "type": "platform", "position": { "x": 0, "y": 610 }, "properties": { "w": 250, "h": 110 } },
+    { "id": "float-a", "type": "platform", "position": { "x": 350, "y": 500 }, "properties": { "w": 150, "h": 45 } },
+    { "id": "float-b", "type": "platform", "position": { "x": 610, "y": 410 }, "properties": { "w": 170, "h": 45 } },
+    { "id": "float-c", "type": "platform", "position": { "x": 875, "y": 500 }, "properties": { "w": 160, "h": 45 } },
+    { "id": "moving-bridge", "type": "movingObject", "position": { "x": 560, "y": 540 }, "properties": { "objectKind": "platform", "w": 150, "h": 26, "damage": 1, "direction": "up", "anchorType": "both", "pathPoints": "0,0;0,-180;210,-180", "speed": 210, "acceleration": 1200, "dwellSeconds": 0.3, "easing": "smoothstep", "loopMode": "pingpong", "trigger": "auto", "offscreenPolicy": "simulate", "resetPolicy": "death", "grapple": false } },
+    { "id": "dash-refill-line", "type": "dashRefill", "position": { "x": 720, "y": 350 }, "properties": { "radius": 20, "charges": 1, "restoreMode": "fill", "oneUse": false, "respawnSeconds": 2.5, "resetOnDeath": true } },
+    { "id": "exit-floor", "type": "platform", "position": { "x": 1120, "y": 590 }, "properties": { "w": 160, "h": 130 } },
+    { "id": "wide-pit", "type": "hazard", "position": { "x": 250, "y": 680 }, "properties": { "w": 870, "h": 40, "damage": 1, "direction": "up" } },
+    { "id": "spawn", "type": "spawn", "position": { "x": 115, "y": 560 }, "properties": {} },
+    { "id": "cp-main", "type": "checkpoint", "position": { "x": 65, "y": 520 }, "properties": { "w": 90, "h": 90, "spawnOffsetX": 50, "spawnOffsetY": 40 } },
+    { "id": "entry-south", "type": "roomEntrance", "position": { "x": 20, "y": 490 }, "properties": { "w": 100, "h": 120, "spawnOffsetX": 95, "spawnOffsetY": 70, "facing": "right", "sourceRoomId": "celeste.city.a.2" } },
+    { "id": "entry-east", "type": "roomEntrance", "position": { "x": 1100, "y": 470 }, "properties": { "w": 90, "h": 120, "spawnOffsetX": 20, "spawnOffsetY": 70, "facing": "left", "sourceRoomId": "celeste.city.a.4" } },
+    { "id": "exit-south", "type": "roomExit", "position": { "x": 0, "y": 490 }, "properties": { "w": 55, "h": 120, "targetRoomId": "celeste.city.a.2", "targetEntranceId": "entry-north", "direction": "down", "exitKind": "return", "requiredAbility": "", "oneWay": false } },
+    { "id": "exit-east", "type": "roomExit", "position": { "x": 1190, "y": 470 }, "properties": { "w": 70, "h": 120, "targetRoomId": "celeste.city.a.4", "targetEntranceId": "entry-west", "direction": "right", "exitKind": "main", "requiredAbility": "", "oneWay": false } },
+    { "id": "route-note", "type": "sign", "position": { "x": 680, "y": 360 }, "properties": { "text": "白盒 ST-03 · 中层高速线" } },
+    { "id": "glow-three", "type": "backgroundSeed", "position": { "x": 640, "y": 230 }, "properties": { "size": 190 } }
+  ]
+}

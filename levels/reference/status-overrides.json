@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "celeste.city.a.1": {
+      "dataFile": "levels/reference/celeste/city/a/1.json",
+      "mechanisms": ["dash", "spikes"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["平台轮廓和间距为白盒近似。", "冲刺起步与墙抓手感仍需真人对照确认。"]
+    },
+    "celeste.city.a.2": {
+      "dataFile": "levels/reference/celeste/city/a/2.json",
+      "mechanisms": ["dash", "dash-refill", "spikes", "spring"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["弹簧使用数据化 launcher 等价机制，轨迹和高度为白盒近似。", "冲刺补充位置仍需合法实机参考复核。"]
+    },
+    "celeste.city.a.3": {
+      "dataFile": "levels/reference/celeste/city/a/3.json",
+      "mechanisms": ["dash", "dash-refill", "spikes", "moving-platform"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["浮台尺寸与移动平台轨迹仍需真人实机对照。", "候选返程入口来自公开地图邻接推定。"]
+    },
+    "celeste.city.a.4": {
+      "dataFile": "levels/reference/celeste/city/a/4.json",
+      "mechanisms": ["dash", "spikes", "traffic-block"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["移动平台轨迹、速度和平台轮廓为原创等价近似。", "等待节奏与离台冲刺手感仍需真人确认。"]
+    },
+    "celeste.city.a.3b": {
+      "dataFile": "levels/reference/celeste/city/a/3b.json",
+      "mechanisms": ["dash", "dash-refill", "spikes", "crumble-platform", "hidden-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["碎裂平台已数据化，但破裂延迟和重生节奏为近似。", "飞行收集物和奖励规则未作为主路线阻塞条件实现。"]
+    },
+    "celeste.city.a.5": {
+      "dataFile": "levels/reference/celeste/city/a/5.json",
+      "mechanisms": ["dash", "dash-refill", "spikes", "traffic-block", "branching-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["多出口拓扑包含公开地图邻接推定，置信度低于顺序主路线。", "支路间距和高速手感仍需真人确认。"]
+    },
+    "celeste.city.a.5z": {
+      "dataFile": "levels/reference/celeste/city/a/5z.json",
+      "mechanisms": ["dash", "dash-refill", "spikes", "hidden-route", "return-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["上绕隐藏路线和冲刺补充位置是白盒近似。", "隐藏路线奖励节奏仍需真人确认。"]
+    },
+    "celeste.city.a.5a": {
+      "dataFile": "levels/reference/celeste/city/a/5a.json",
+      "mechanisms": ["dash", "dash-refill", "spikes", "traffic-block"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["高速移动平台只映射发射节奏，不复制原作实体。", "离台时机和下一房衔接手感仍需真人确认。"]
+    },
+    "ori.sunken-glades.revival-basin": {
+      "dataFile": "levels/reference/ori/sunken-glades/revival-basin.json",
+      "mechanisms": ["safe-exploration", "return-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["地形为原创几何近似。", "敌人与剧情状态不复制，相关压力以危险区等价表达。"]
+    },
+    "ori.sunken-glades.sein-cavern": {
+      "dataFile": "levels/reference/ori/sunken-glades/sein-cavern.json",
+      "mechanisms": ["pushable-boulder", "return-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["洞室推石节奏使用数据化 movingObject 等价，不声称原作对应位置。", "敌人和剧情触发不复制。"]
+    },
+    "ori.sunken-glades.first-gate-hub": {
+      "dataFile": "levels/reference/ori/sunken-glades/first-gate-hub.json",
+      "mechanisms": ["ability-gate", "spirit-gate", "branching-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["跨区域候选出口和方向来自公开攻略与本地分区推定。", "能力门已数据化，石块和敌人仍使用原创等价占位。"]
+    },
+    "ori.sunken-glades.lower-ponds": {
+      "dataFile": "levels/reference/ori/sunken-glades/lower-ponds.json",
+      "mechanisms": ["poison-water", "moving-platform", "return-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["危险液体、移动根系和分区边界为原创等价近似。", "水流强度和跳台节奏仍需真人确认。"]
+    },
+    "ori.sunken-glades.spirit-well-junction": {
+      "dataFile": "levels/reference/ori/sunken-glades/spirit-well-junction.json",
+      "mechanisms": ["checkpoint-flags", "central-hub", "return-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["灵泉只映射检查点恢复与分区连接，不复制原作菜单和存档界面。", "停顿与回访节奏仍需真人确认。"]
+    },
+    "ori.sunken-glades.western-return": {
+      "dataFile": "levels/reference/ori/sunken-glades/western-return.json",
+      "mechanisms": ["ability-gate", "return-route", "branching-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["回访能力门以 wallGrab 数据门表达，世界事件被简化为持久状态。", "双层回访路线手感仍需真人确认。"]
+    },
+    "ori.sunken-glades.black-root-junction": {
+      "dataFile": "levels/reference/ori/sunken-glades/black-root-junction.json",
+      "mechanisms": ["ability-gate", "moving-platform", "return-route"],
+      "status": { "whitebox": "authored", "load": "loadable", "playable": "playable", "automation": "passed", "browser": "passed" },
+      "unknownDifferences": ["本分区只表达通往暗根洞群的能力门与连接；黑暗机制在目标区域展开。", "灯光、敌人和剧情不复制。"]
+    }
+  }
+}

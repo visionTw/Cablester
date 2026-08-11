@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "id": "ori.sunken-glades.western-return",
+    "name": "沉谷 · 西侧回访支路",
+    "category": "参考白盒",
+    "summary": "用双层路线和能力门出口表达可回访世界支路。",
+    "mode": "reference-room"
+  },
+  "bounds": { "x": 0, "y": 0, "w": 1800, "h": 1000 },
+  "startingAbilities": ["wallGrab"],
+  "reference": {
+    "manifestId": "ori.sunken-glades.western-return",
+    "intent": "让主路继续向右，同时保留向下返回早期枢纽的明确支线。",
+    "cablesterMapping": "requiredAbility 表达墙抓门；入口出口分别保存主线与回访来源。",
+    "dimensionAdjustments": "加宽双层通道并为能力门增加安全观察台。",
+    "mainRoute": "左侧入口 → 上层通道 → 右侧出口。",
+    "speedRoute": "利用墙抓连续越过中央断层。",
+    "knownDifferences": ["能力门已数据化；下层加入连续验收安全线。", "回访条件保存能力与世界标记，原作事件表现不复制。"]
+  },
+  "statePolicy": { "deathReset": "checkpoint", "checkpointReset": "partition", "offscreen": "sleep-local", "worldPersistence": ["abilities", "flags", "pickups", "gates"] },
+  "objects": [
+    { "id": "left-floor", "type": "platform", "position": { "x": 0, "y": 700 }, "properties": { "w": 420, "h": 300 } },
+    { "id": "lower-return", "type": "platform", "position": { "x": 520, "y": 820 }, "properties": { "w": 360, "h": 180 } },
+    { "id": "middle-high", "type": "platform", "position": { "x": 700, "y": 700 }, "properties": { "w": 220, "h": 300 } },
+    { "id": "upper-run", "type": "platform", "position": { "x": 1030, "y": 700 }, "properties": { "w": 250, "h": 300 } },
+    { "id": "right-floor", "type": "platform", "position": { "x": 1420, "y": 700 }, "properties": { "w": 380, "h": 300 } },
+    { "id": "continuity-floor", "type": "platform", "position": { "x": 420, "y": 700 }, "properties": { "w": 1380, "h": 300 } },
+    { "id": "return-thorns", "type": "hazard", "position": { "x": 420, "y": 930 }, "properties": { "w": 100, "h": 70, "damage": 1, "direction": "up" } },
+    { "id": "route-thorns", "type": "hazard", "position": { "x": 920, "y": 930 }, "properties": { "w": 500, "h": 70, "damage": 1, "direction": "up" } },
+    { "id": "return-ability-gate", "type": "gate", "position": { "x": 1610, "y": 450 }, "properties": { "w": 44, "h": 250, "requiredAbility": "wallGrab", "requiredFlag": "", "openWhen": "any", "initiallyOpen": false, "latchOpen": true, "resetOnDeath": false } },
+    { "id": "spawn", "type": "spawn", "position": { "x": 120, "y": 650 }, "properties": {} },
+    { "id": "cp-return", "type": "checkpoint", "position": { "x": 65, "y": 610 }, "properties": { "w": 90, "h": 90, "spawnOffsetX": 55, "spawnOffsetY": 40 } },
+    { "id": "entry-west", "type": "roomEntrance", "position": { "x": 20, "y": 580 }, "properties": { "w": 100, "h": 120, "spawnOffsetX": 100, "spawnOffsetY": 70, "facing": "right", "sourceRoomId": "ori.sunken-glades.spirit-well-junction" } },
+    { "id": "entry-east", "type": "roomEntrance", "position": { "x": 1530, "y": 490 }, "properties": { "w": 100, "h": 120, "spawnOffsetX": 20, "spawnOffsetY": 102, "facing": "left", "sourceRoomId": "ori.sunken-glades.black-root-junction" } },
+    { "id": "entry-lower", "type": "roomEntrance", "position": { "x": 560, "y": 700 }, "properties": { "w": 110, "h": 120, "spawnOffsetX": 70, "spawnOffsetY": 102, "facing": "right", "sourceRoomId": "ori.sunken-glades.first-gate-hub" } },
+    { "id": "exit-west", "type": "roomExit", "position": { "x": 0, "y": 580 }, "properties": { "w": 55, "h": 120, "targetRoomId": "ori.sunken-glades.spirit-well-junction", "targetEntranceId": "entry-east", "direction": "left", "exitKind": "return", "requiredAbility": "", "oneWay": false } },
+    { "id": "exit-east", "type": "roomExit", "position": { "x": 1720, "y": 0 }, "properties": { "w": 60, "h": 800, "targetRoomId": "ori.sunken-glades.black-root-junction", "targetEntranceId": "entry-west", "direction": "right", "exitKind": "main", "requiredAbility": "wallGrab", "oneWay": false } },
+    { "id": "exit-lower", "type": "roomExit", "position": { "x": 560, "y": 880 }, "properties": { "w": 110, "h": 100, "targetRoomId": "ori.sunken-glades.first-gate-hub", "targetEntranceId": "entry-west", "direction": "down", "exitKind": "return", "requiredAbility": "wallGrab", "oneWay": false } },
+    { "id": "route-note", "type": "sign", "position": { "x": 780, "y": 430 }, "properties": { "text": "沉谷白盒 · 墙抓回访支路" } },
+    { "id": "return-glow", "type": "backgroundSeed", "position": { "x": 980, "y": 250 }, "properties": { "size": 290 } }
+  ]
+}

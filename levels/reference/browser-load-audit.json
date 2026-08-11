@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "ranAt": "2026-08-10T00:49:42.077+08:00",
+  "environment": {
+    "device": "MacBook Pro Mac15,6",
+    "processor": "Apple M3 Pro 11-core",
+    "memory": "18 GB",
+    "operatingSystem": "macOS 14.4 arm64",
+    "viewport": "1280x720"
+  },
+  "contentFingerprint": {
+    "algorithm": "sha256",
+    "value": "848fda18e100da288c8aa66f0a9970bb06c4aebd200c1fd2d21d881576b4eb8c",
+    "fileCount": 926,
+    "roomFileCount": 908,
+    "runtimeFileCount": 18
+  },
+  "scope": {
+    "rooms": 908,
+    "stepsPerRoom": [
+      "fetch local JSON through the browser",
+      "validate and compile the level document",
+      "initialize the Game runtime at the default spawn and every authored entrance",
+      "render at least one browser frame"
+    ]
+  },
+  "result": {
+    "passed": 908,
+    "entrancesInitialized": 2326,
+    "failed": 0,
+    "elapsedSeconds": 11.4,
+    "freshConsoleErrorsOrWarnings": 0
+  },
+  "statusPolicy": {
+    "browserStatusUpgraded": false,
+    "reason": "A load sweep does not prove route completion, death/reset behavior, feel, fidelity, or chapter/area continuous play. Per-room browser and continuousRun statuses remain separate."
+  }
+}

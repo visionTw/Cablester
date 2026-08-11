@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "id": "celeste.temple.a.b-15",
+    "name": "镜暗神殿 · A · DP-2-24",
+    "category": "参考白盒",
+    "summary": "medium-scrolling-room · 独立首轮白盒 · 3 个候选连接",
+    "mode": "reference-room"
+  },
+  "bounds": {
+    "x": 0,
+    "y": 0,
+    "w": 1920,
+    "h": 1100
+  },
+  "dashCapacity": 1,
+  "startingAbilities": [
+    "wallGrab",
+    "dash",
+    "bash"
+  ],
+  "reference": {
+    "manifestId": "celeste.temple.a.b-15",
+    "intent": "使用 640×368 的公开房间尺寸比例、公开顺序与候选邻接建立可独立加载的首轮白盒。",
+    "cablesterMapping": "主路线使用 Cablester 自有移动系统；章节/区域机制族映射为 dash、dash-refill、darkness、torch-switch、key-door、red-bubble、seeker、dash-switch、carry-object。",
+    "dimensionAdjustments": "只保留比例和拓扑信号，几何、物件与文本均为原创本地实现。",
+    "mainRoute": "入口、出生点、原创挑战段与 3 个目标出口。",
+    "speedRoute": "提供连续移动安全线；候选捷径与高速线保留为独立出口，帧级手感仍需真人确认。",
+    "knownDifferences": [
+      "这是按公开净化目录自动建立的逐房首轮白盒，不是原作坐标、实体或美术的复制。",
+      "平台轮廓、机关位置、敌人、剧情和世界状态仍需合法游戏观察与逐房人工复核。",
+      "自动化可达性与连续主路线可独立验收；原作几何、节奏和主观手感仍需合法游戏体验下的真人对照。"
+    ]
+  },
+  "statePolicy": {
+    "deathReset": "room",
+    "checkpointReset": "room",
+    "offscreen": "pause-local"
+  },
+  "objects": [
+    {
+      "id": "route-platform-1",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 980
+      },
+      "properties": {
+        "w": 1920,
+        "h": 120
+      }
+    },
+    {
+      "id": "vertical-rung-1",
+      "type": "platform",
+      "position": {
+        "x": 614,
+        "y": 840
+      },
+      "properties": {
+        "w": 346,
+        "h": 28
+      }
+    },
+    {
+      "id": "vertical-rung-2",
+      "type": "platform",
+      "position": {
+        "x": 1094,
+        "y": 630
+      },
+      "properties": {
+        "w": 346,
+        "h": 28
+      }
+    },
+    {
+      "id": "vertical-rung-3",
+      "type": "platform",
+      "position": {
+        "x": 614,
+        "y": 420
+      },
+      "properties": {
+        "w": 346,
+        "h": 28
+      }
+    },
+    {
+      "id": "vertical-rung-4",
+      "type": "platform",
+      "position": {
+        "x": 1094,
+        "y": 210
+      },
+      "properties": {
+        "w": 346,
+        "h": 28
+      }
+    },
+    {
+      "id": "dash-refill-main",
+      "type": "dashRefill",
+      "position": {
+        "x": 922,
+        "y": 830
+      },
+      "properties": {
+        "radius": 22,
+        "charges": 1,
+        "restoreMode": "fill",
+        "oneUse": false,
+        "respawnSeconds": 2.5,
+        "resetOnDeath": true
+      }
+    },
+    {
+      "id": "equivalent-moving-platform",
+      "type": "movingObject",
+      "position": {
+        "x": 730,
+        "y": 594
+      },
+      "properties": {
+        "objectKind": "platform",
+        "w": 190,
+        "h": 28,
+        "damage": 1,
+        "direction": "up",
+        "anchorType": "both",
+        "pathPoints": "0,0;346,0",
+        "speed": 170,
+        "acceleration": 900,
+        "dwellSeconds": 0.25,
+        "easing": "smoothstep",
+        "loopMode": "pingpong",
+        "trigger": "auto",
+        "offscreenPolicy": "simulate",
+        "resetPolicy": "death",
+        "grapple": true
+      }
+    },
+    {
+      "id": "equivalent-launcher",
+      "type": "launcher",
+      "position": {
+        "x": 538,
+        "y": 462
+      },
+      "properties": {
+        "w": 72,
+        "h": 28,
+        "launchX": 0,
+        "launchY": -920,
+        "cooldownSeconds": 0.35,
+        "preserveMomentum": false
+      }
+    },
+    {
+      "id": "equivalent-state-trigger",
+      "type": "stateTrigger",
+      "position": {
+        "x": 1248,
+        "y": 240
+      },
+      "properties": {
+        "w": 100,
+        "h": 800,
+        "setFlag": "route-open-celeste-temple-a-b-15",
+        "clearFlag": "",
+        "oneUse": true,
+        "resetOnDeath": false
+      }
+    },
+    {
+      "id": "equivalent-gate",
+      "type": "gate",
+      "position": {
+        "x": 1459,
+        "y": 242
+      },
+      "properties": {
+        "w": 64,
+        "h": 240,
+        "requiredAbility": "",
+        "requiredFlag": "route-open-celeste-temple-a-b-15",
+        "openWhen": "any",
+        "initiallyOpen": false,
+        "latchOpen": true,
+        "resetOnDeath": false
+      }
+    },
+    {
+      "id": "equivalent-bash-target",
+      "type": "bashTarget",
+      "position": {
+        "x": 1114,
+        "y": 506
+      },
+      "properties": {}
+    },
+    {
+      "id": "equivalent-darkness",
+      "type": "darknessZone",
+      "position": {
+        "x": 346,
+        "y": 176
+      },
+      "properties": {
+        "w": 1228.8,
+        "h": 682,
+        "opacity": 0.78,
+        "revealRadius": 180,
+        "clearedByFlag": ""
+      }
+    },
+    {
+      "id": "entry-from-celeste-temple-a-b-14-1qwrcxk",
+      "type": "roomEntrance",
+      "position": {
+        "x": 10,
+        "y": 880
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "spawnOffsetX": 140,
+        "spawnOffsetY": 70,
+        "facing": "right",
+        "sourceRoomId": "celeste.temple.a.b-14"
+      }
+    },
+    {
+      "id": "entry-from-celeste-temple-a-b-14-1qwrcxk-support",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 1008
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "entry-from-celeste-temple-a-b-16-1rgqkbi",
+      "type": "roomEntrance",
+      "position": {
+        "x": 1820,
+        "y": 490
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "spawnOffsetX": -60,
+        "spawnOffsetY": 70,
+        "facing": "left",
+        "sourceRoomId": "celeste.temple.a.b-16"
+      }
+    },
+    {
+      "id": "entry-from-celeste-temple-a-b-16-1rgqkbi-support",
+      "type": "platform",
+      "position": {
+        "x": 1670,
+        "y": 618
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "exit-left-1",
+      "type": "roomExit",
+      "position": {
+        "x": 10,
+        "y": 307
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "targetRoomId": "celeste.temple.a.b-14",
+        "targetEntranceId": "entry-from-celeste-temple-a-b-15-1r6qymj",
+        "direction": "left",
+        "exitKind": "optional",
+        "requiredAbility": "",
+        "oneWay": false
+      }
+    },
+    {
+      "id": "exit-left-1-support",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 435
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "exit-right-2",
+      "type": "roomExit",
+      "position": {
+        "x": 1820,
+        "y": 280
+      },
+      "properties": {
+        "w": 90,
+        "h": 800,
+        "targetRoomId": "celeste.temple.a.b-16",
+        "targetEntranceId": "entry-from-celeste-temple-a-b-15-1r6qymj",
+        "direction": "right",
+        "exitKind": "main",
+        "requiredAbility": "",
+        "oneWay": false
+      }
+    },
+    {
+      "id": "exit-right-2-support",
+      "type": "platform",
+      "position": {
+        "x": 1670,
+        "y": 1076
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "exit-left-3",
+      "type": "roomExit",
+      "position": {
+        "x": 10,
+        "y": 673
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "targetRoomId": "celeste.temple.a.b-14",
+        "targetEntranceId": "entry-from-celeste-temple-a-b-15-1r6qymj",
+        "direction": "left",
+        "exitKind": "optional",
+        "requiredAbility": "",
+        "oneWay": false
+      }
+    },
+    {
+      "id": "exit-left-3-support",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 801
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "spawn",
+      "type": "spawn",
+      "position": {
+        "x": 140,
+        "y": 956
+      },
+      "properties": {}
+    },
+    {
+      "id": "checkpoint-main",
+      "type": "checkpoint",
+      "position": {
+        "x": 95,
+        "y": 916
+      },
+      "properties": {
+        "w": 90,
+        "h": 90,
+        "spawnOffsetX": 45,
+        "spawnOffsetY": 40
+      }
+    },
+    {
+      "id": "route-note",
+      "type": "sign",
+      "position": {
+        "x": 230,
+        "y": 956
+      },
+      "properties": {
+        "text": "镜暗神殿 · A · DP-2-24 · 首轮拓扑白盒"
+      }
+    },
+    {
+      "id": "ambient-seed",
+      "type": "backgroundSeed",
+      "position": {
+        "x": 1284,
+        "y": 363
+      },
+      "properties": {
+        "size": 198
+      }
+    }
+  ]
+}

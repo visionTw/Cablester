@@ -1,0 +1,508 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "id": "celeste.resort.a.10-c",
+    "name": "尘封旅舍 · A · HM-2-10",
+    "category": "参考白盒",
+    "summary": "compact-room · 独立首轮白盒 · 6 个候选连接",
+    "mode": "reference-room"
+  },
+  "bounds": {
+    "x": 0,
+    "y": 0,
+    "w": 1280,
+    "h": 720
+  },
+  "dashCapacity": 1,
+  "startingAbilities": [
+    "wallGrab",
+    "dash"
+  ],
+  "reference": {
+    "manifestId": "celeste.resort.a.10-c",
+    "intent": "使用 320×184 的公开房间尺寸比例、公开顺序与候选邻接建立可独立加载的首轮白盒。",
+    "cablesterMapping": "主路线使用 Cablester 自有移动系统；章节/区域机制族映射为 dash、dash-refill、dust-hazard、moving-dust、key-door、clutter-switch、one-way-route、vertical-shaft。",
+    "dimensionAdjustments": "只保留比例和拓扑信号，几何、物件与文本均为原创本地实现。",
+    "mainRoute": "入口、出生点、原创挑战段与 6 个目标出口。",
+    "speedRoute": "提供连续移动安全线；候选捷径与高速线保留为独立出口，帧级手感仍需真人确认。",
+    "knownDifferences": [
+      "这是按公开净化目录自动建立的逐房首轮白盒，不是原作坐标、实体或美术的复制。",
+      "平台轮廓、机关位置、敌人、剧情和世界状态仍需合法游戏观察与逐房人工复核。",
+      "自动化可达性与连续主路线可独立验收；原作几何、节奏和主观手感仍需合法游戏体验下的真人对照。"
+    ]
+  },
+  "statePolicy": {
+    "deathReset": "room",
+    "checkpointReset": "room",
+    "offscreen": "pause-local"
+  },
+  "objects": [
+    {
+      "id": "route-platform-1",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 600
+      },
+      "properties": {
+        "w": 1280,
+        "h": 120
+      }
+    },
+    {
+      "id": "dash-refill-main",
+      "type": "dashRefill",
+      "position": {
+        "x": 614,
+        "y": 450
+      },
+      "properties": {
+        "radius": 22,
+        "charges": 1,
+        "restoreMode": "fill",
+        "oneUse": false,
+        "respawnSeconds": 2.5,
+        "resetOnDeath": true
+      }
+    },
+    {
+      "id": "equivalent-moving-platform",
+      "type": "movingObject",
+      "position": {
+        "x": 486,
+        "y": 389
+      },
+      "properties": {
+        "objectKind": "platform",
+        "w": 190,
+        "h": 28,
+        "damage": 1,
+        "direction": "up",
+        "anchorType": "both",
+        "pathPoints": "0,0;240,0",
+        "speed": 170,
+        "acceleration": 900,
+        "dwellSeconds": 0.25,
+        "easing": "smoothstep",
+        "loopMode": "pingpong",
+        "trigger": "auto",
+        "offscreenPolicy": "simulate",
+        "resetPolicy": "death",
+        "grapple": true
+      }
+    },
+    {
+      "id": "equivalent-state-trigger",
+      "type": "stateTrigger",
+      "position": {
+        "x": 832,
+        "y": 100
+      },
+      "properties": {
+        "w": 100,
+        "h": 560,
+        "setFlag": "route-open-celeste-resort-a-10-c",
+        "clearFlag": "",
+        "oneUse": true,
+        "resetOnDeath": false
+      }
+    },
+    {
+      "id": "equivalent-gate",
+      "type": "gate",
+      "position": {
+        "x": 973,
+        "y": 158
+      },
+      "properties": {
+        "w": 64,
+        "h": 240,
+        "requiredAbility": "",
+        "requiredFlag": "route-open-celeste-resort-a-10-c",
+        "openWhen": "any",
+        "initiallyOpen": false,
+        "latchOpen": true,
+        "resetOnDeath": false
+      }
+    },
+    {
+      "id": "mechanism-hazard",
+      "type": "hazard",
+      "position": {
+        "x": 922,
+        "y": 658
+      },
+      "properties": {
+        "w": 102.4,
+        "h": 62,
+        "damage": 1,
+        "direction": "up"
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-09-b-11ypwdc",
+      "type": "roomEntrance",
+      "position": {
+        "x": 595,
+        "y": 590
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "spawnOffsetX": 45,
+        "spawnOffsetY": -60,
+        "facing": "right",
+        "sourceRoomId": "celeste.resort.a.09-b"
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-09-b-11ypwdc-support",
+      "type": "platform",
+      "position": {
+        "x": 540,
+        "y": 600
+      },
+      "properties": {
+        "w": 200,
+        "h": 24
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-10-x-1ufld3g",
+      "type": "roomEntrance",
+      "position": {
+        "x": 10,
+        "y": 500
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "spawnOffsetX": 140,
+        "spawnOffsetY": 70,
+        "facing": "right",
+        "sourceRoomId": "celeste.resort.a.10-x"
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-10-x-1ufld3g-support",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 628
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-11-c-112ripi",
+      "type": "roomEntrance",
+      "position": {
+        "x": 1180,
+        "y": 300
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "spawnOffsetX": -60,
+        "spawnOffsetY": 70,
+        "facing": "left",
+        "sourceRoomId": "celeste.resort.a.11-c"
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-11-c-112ripi-support",
+      "type": "platform",
+      "position": {
+        "x": 1030,
+        "y": 428
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-10-d-y9czs",
+      "type": "roomEntrance",
+      "position": {
+        "x": 595,
+        "y": 10
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "spawnOffsetX": 45,
+        "spawnOffsetY": 140,
+        "facing": "right",
+        "sourceRoomId": "celeste.resort.a.10-d"
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-10-d-y9czs-support",
+      "type": "platform",
+      "position": {
+        "x": 540,
+        "y": 168
+      },
+      "properties": {
+        "w": 200,
+        "h": 24
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-09-d-13mnij6",
+      "type": "roomEntrance",
+      "position": {
+        "x": 10,
+        "y": 420
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "spawnOffsetX": 140,
+        "spawnOffsetY": 70,
+        "facing": "right",
+        "sourceRoomId": "celeste.resort.a.09-d"
+      }
+    },
+    {
+      "id": "entry-from-celeste-resort-a-09-d-13mnij6-support",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 600
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "exit-left-1",
+      "type": "roomExit",
+      "position": {
+        "x": 10,
+        "y": 180
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "targetRoomId": "celeste.resort.a.10-x",
+        "targetEntranceId": "entry-from-celeste-resort-a-10-c-2w6kul",
+        "direction": "left",
+        "exitKind": "optional",
+        "requiredAbility": "",
+        "oneWay": false
+      }
+    },
+    {
+      "id": "exit-left-1-support",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 308
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "exit-right-2",
+      "type": "roomExit",
+      "position": {
+        "x": 1180,
+        "y": 20
+      },
+      "properties": {
+        "w": 90,
+        "h": 680,
+        "targetRoomId": "celeste.resort.a.11-c",
+        "targetEntranceId": "entry-from-celeste-resort-a-10-c-2w6kul",
+        "direction": "right",
+        "exitKind": "main",
+        "requiredAbility": "",
+        "oneWay": false
+      }
+    },
+    {
+      "id": "exit-right-2-support",
+      "type": "platform",
+      "position": {
+        "x": 1030,
+        "y": 696
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "exit-down-3",
+      "type": "roomExit",
+      "position": {
+        "x": 20,
+        "y": 80
+      },
+      "properties": {
+        "w": 90,
+        "h": 40,
+        "targetRoomId": "celeste.resort.a.09-b",
+        "targetEntranceId": "entry-from-celeste-resort-a-10-c-2w6kul",
+        "direction": "down",
+        "exitKind": "optional",
+        "requiredAbility": "",
+        "oneWay": false
+      }
+    },
+    {
+      "id": "exit-down-3-support",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 42
+      },
+      "properties": {
+        "w": 200,
+        "h": 24
+      }
+    },
+    {
+      "id": "exit-right-4",
+      "type": "roomExit",
+      "position": {
+        "x": 1180,
+        "y": 122
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "targetRoomId": "celeste.resort.a.11-c",
+        "targetEntranceId": "entry-from-celeste-resort-a-10-c-2w6kul",
+        "direction": "right",
+        "exitKind": "optional",
+        "requiredAbility": "",
+        "oneWay": false
+      }
+    },
+    {
+      "id": "exit-right-4-support",
+      "type": "platform",
+      "position": {
+        "x": 1030,
+        "y": 250
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "exit-up-5",
+      "type": "roomExit",
+      "position": {
+        "x": 595,
+        "y": 10
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "targetRoomId": "celeste.resort.a.10-d",
+        "targetEntranceId": "entry-from-celeste-resort-a-10-c-2w6kul",
+        "direction": "up",
+        "exitKind": "optional",
+        "requiredAbility": "",
+        "oneWay": false
+      }
+    },
+    {
+      "id": "exit-up-5-support",
+      "type": "platform",
+      "position": {
+        "x": 540,
+        "y": 168
+      },
+      "properties": {
+        "w": 200,
+        "h": 24
+      }
+    },
+    {
+      "id": "exit-left-6",
+      "type": "roomExit",
+      "position": {
+        "x": 10,
+        "y": 420
+      },
+      "properties": {
+        "w": 90,
+        "h": 120,
+        "targetRoomId": "celeste.resort.a.09-d",
+        "targetEntranceId": "entry-from-celeste-resort-a-10-c-2w6kul",
+        "direction": "left",
+        "exitKind": "optional",
+        "requiredAbility": "",
+        "oneWay": false
+      }
+    },
+    {
+      "id": "exit-left-6-support",
+      "type": "platform",
+      "position": {
+        "x": 0,
+        "y": 600
+      },
+      "properties": {
+        "w": 250,
+        "h": 24
+      }
+    },
+    {
+      "id": "spawn",
+      "type": "spawn",
+      "position": {
+        "x": 140,
+        "y": 576
+      },
+      "properties": {}
+    },
+    {
+      "id": "checkpoint-main",
+      "type": "checkpoint",
+      "position": {
+        "x": 95,
+        "y": 536
+      },
+      "properties": {
+        "w": 90,
+        "h": 90,
+        "spawnOffsetX": 45,
+        "spawnOffsetY": 40
+      }
+    },
+    {
+      "id": "route-note",
+      "type": "sign",
+      "position": {
+        "x": 230,
+        "y": 576
+      },
+      "properties": {
+        "text": "尘封旅舍 · A · HM-2-10 · 首轮拓扑白盒"
+      }
+    },
+    {
+      "id": "ambient-seed",
+      "type": "backgroundSeed",
+      "position": {
+        "x": 448,
+        "y": 292
+      },
+      "properties": {
+        "size": 130
+      }
+    }
+  ]
+}

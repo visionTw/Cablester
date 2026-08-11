@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "id": "ori.sunken-glades.sein-cavern",
+    "name": "沉谷 · 微光洞室",
+    "category": "参考白盒",
+    "summary": "由开阔洼地收紧为短洞室，测试局部重置与状态拾取挂点。",
+    "mode": "reference-room"
+  },
+  "bounds": { "x": 0, "y": 0, "w": 1500, "h": 820 },
+  "startingAbilities": ["wallGrab"],
+  "reference": {
+    "manifestId": "ori.sunken-glades.sein-cavern",
+    "intent": "紧凑洞室内先下后上，随后返回连续世界主路。",
+    "cablesterMapping": "以墙抓和短跳保持探索节奏；状态事件暂用提示牌挂点。",
+    "dimensionAdjustments": "压缩横向距离并保留中央低坑与右侧抬升出口。",
+    "mainRoute": "左侧入口 → 下层洞底 → 右侧墙跳出口。",
+    "speedRoute": "入口直接斜跳到右侧中台。",
+    "knownDifferences": ["推石节奏用数据化 movingObject 等价；下层加入连续验收安全线。", "敌人和剧情触发不复制。"]
+  },
+  "statePolicy": { "deathReset": "checkpoint", "checkpointReset": "partition", "offscreen": "sleep-local", "worldPersistence": ["abilities", "flags", "pickups", "gates"] },
+  "objects": [
+    { "id": "entry-ledge", "type": "platform", "position": { "x": 0, "y": 560 }, "properties": { "w": 340, "h": 260 } },
+    { "id": "cavern-floor", "type": "platform", "position": { "x": 420, "y": 700 }, "properties": { "w": 400, "h": 120 } },
+    { "id": "middle-ledge", "type": "platform", "position": { "x": 870, "y": 700 }, "properties": { "w": 190, "h": 120 } },
+    { "id": "cavern-lift", "type": "movingObject", "position": { "x": 720, "y": 660 }, "properties": { "objectKind": "platform", "w": 150, "h": 26, "damage": 1, "direction": "up", "anchorType": "both", "pathPoints": "0,0;180,-150", "speed": 145, "acceleration": 700, "dwellSeconds": 0.45, "easing": "ease-in-out", "loopMode": "pingpong", "trigger": "touch", "offscreenPolicy": "pause", "resetPolicy": "death", "grapple": true } },
+    { "id": "exit-ledge", "type": "platform", "position": { "x": 1190, "y": 700 }, "properties": { "w": 310, "h": 120 } },
+    { "id": "continuity-floor", "type": "platform", "position": { "x": 340, "y": 700 }, "properties": { "w": 1160, "h": 120 } },
+    { "id": "cavern-thorns", "type": "hazard", "position": { "x": 340, "y": 780 }, "properties": { "w": 80, "h": 40, "damage": 1, "direction": "up" } },
+    { "id": "spawn", "type": "spawn", "position": { "x": 105, "y": 510 }, "properties": {} },
+    { "id": "cp-cavern", "type": "checkpoint", "position": { "x": 55, "y": 470 }, "properties": { "w": 90, "h": 90, "spawnOffsetX": 50, "spawnOffsetY": 40 } },
+    { "id": "entry-west", "type": "roomEntrance", "position": { "x": 15, "y": 440 }, "properties": { "w": 100, "h": 120, "spawnOffsetX": 90, "spawnOffsetY": 70, "facing": "right", "sourceRoomId": "ori.sunken-glades.revival-basin" } },
+    { "id": "entry-east", "type": "roomEntrance", "position": { "x": 1310, "y": 320 }, "properties": { "w": 90, "h": 120, "spawnOffsetX": 20, "spawnOffsetY": 102, "facing": "left", "sourceRoomId": "ori.sunken-glades.first-gate-hub" } },
+    { "id": "exit-west", "type": "roomExit", "position": { "x": 0, "y": 440 }, "properties": { "w": 55, "h": 120, "targetRoomId": "ori.sunken-glades.revival-basin", "targetEntranceId": "entry-east", "direction": "left", "exitKind": "return", "requiredAbility": "", "oneWay": false } },
+    { "id": "exit-east", "type": "roomExit", "position": { "x": 1400, "y": 0 }, "properties": { "w": 80, "h": 800, "targetRoomId": "ori.sunken-glades.first-gate-hub", "targetEntranceId": "entry-west", "direction": "right", "exitKind": "main", "requiredAbility": "", "oneWay": false } },
+    { "id": "state-note", "type": "sign", "position": { "x": 625, "y": 650 }, "properties": { "text": "状态触发挂点 · 待通用开关" } },
+    { "id": "cavern-glow", "type": "backgroundSeed", "position": { "x": 680, "y": 360 }, "properties": { "size": 190 } }
+  ]
+}

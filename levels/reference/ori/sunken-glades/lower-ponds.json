@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "id": "ori.sunken-glades.lower-ponds",
+    "name": "沉谷 · 下层水洼",
+    "category": "参考白盒",
+    "summary": "从枢纽向下进入低洼路线，以危险水面和移动踏板连接下一分区。",
+    "mode": "reference-room"
+  },
+  "bounds": { "x": 0, "y": 0, "w": 1800, "h": 1000 },
+  "startingAbilities": ["wallGrab"],
+  "reference": {
+    "manifestId": "ori.sunken-glades.lower-ponds",
+    "intent": "保留从高位入口下落、跨越不可久留低地并重新抬升的连续世界节奏。",
+    "cablesterMapping": "危险水面用伤害区表达；移动根系用通用平台轨迹表达。",
+    "dimensionAdjustments": "扩大低洼宽度并加入两个恢复落点。",
+    "mainRoute": "左上入口 → 中央低洼 → 移动踏板 → 右侧出口。",
+    "speedRoute": "沿中层石台连续跳跃，跳过低洼停留。",
+    "knownDifferences": ["危险水面使用 liquidZone 等价；下层加入连续验收安全线。", "水流、分区边界和平台轮廓为原创近似。"]
+  },
+  "statePolicy": { "deathReset": "checkpoint", "checkpointReset": "partition", "offscreen": "sleep-local", "worldPersistence": ["abilities", "flags", "pickups", "gates"] },
+  "objects": [
+    { "id": "upper-entry", "type": "platform", "position": { "x": 0, "y": 260 }, "properties": { "w": 420, "h": 90 } },
+    { "id": "left-descent", "type": "platform", "position": { "x": 250, "y": 470 }, "properties": { "w": 250, "h": 530 } },
+    { "id": "mid-island", "type": "platform", "position": { "x": 700, "y": 700 }, "properties": { "w": 240, "h": 300 } },
+    { "id": "right-rise", "type": "platform", "position": { "x": 1220, "y": 700 }, "properties": { "w": 220, "h": 300 } },
+    { "id": "exit-floor", "type": "platform", "position": { "x": 1520, "y": 700 }, "properties": { "w": 280, "h": 300 } },
+    { "id": "continuity-floor", "type": "platform", "position": { "x": 500, "y": 700 }, "properties": { "w": 1300, "h": 300 } },
+    { "id": "pond-ferry", "type": "movingObject", "position": { "x": 960, "y": 520 }, "properties": { "objectKind": "platform", "w": 160, "h": 28, "damage": 1, "direction": "up", "anchorType": "both", "pathPoints": "0,0;210,-130", "speed": 150, "acceleration": 650, "dwellSeconds": 0.5, "easing": "ease-in-out", "loopMode": "pingpong", "trigger": "touch", "offscreenPolicy": "pause", "resetPolicy": "death", "grapple": true } },
+    { "id": "poison-water", "type": "liquidZone", "position": { "x": 500, "y": 900 }, "properties": { "w": 720, "h": 100, "liquidType": "toxic", "gravityScale": 0.3, "drag": 2.8, "currentX": -70, "currentY": 0, "swimAcceleration": 620, "contactDamage": 1 } },
+    { "id": "spawn", "type": "spawn", "position": { "x": 180, "y": 210 }, "properties": {} },
+    { "id": "cp-ponds", "type": "checkpoint", "position": { "x": 125, "y": 170 }, "properties": { "w": 90, "h": 90, "spawnOffsetX": 55, "spawnOffsetY": 40 } },
+    { "id": "entry-upper", "type": "roomEntrance", "position": { "x": 80, "y": 20 }, "properties": { "w": 110, "h": 120, "spawnOffsetX": 100, "spawnOffsetY": 190, "facing": "right", "sourceRoomId": "ori.sunken-glades.first-gate-hub" } },
+    { "id": "entry-east", "type": "roomEntrance", "position": { "x": 1570, "y": 300 }, "properties": { "w": 100, "h": 120, "spawnOffsetX": 20, "spawnOffsetY": 102, "facing": "left", "sourceRoomId": "ori.sunken-glades.spirit-well-junction" } },
+    { "id": "exit-upper", "type": "roomExit", "position": { "x": 80, "y": 0 }, "properties": { "w": 110, "h": 80, "targetRoomId": "ori.sunken-glades.first-gate-hub", "targetEntranceId": "entry-lower-ponds", "direction": "up", "exitKind": "return", "requiredAbility": "", "oneWay": false } },
+    { "id": "exit-east", "type": "roomExit", "position": { "x": 1720, "y": 0 }, "properties": { "w": 60, "h": 800, "targetRoomId": "ori.sunken-glades.spirit-well-junction", "targetEntranceId": "entry-west", "direction": "right", "exitKind": "main", "requiredAbility": "", "oneWay": false } },
+    { "id": "route-note", "type": "sign", "position": { "x": 380, "y": 420 }, "properties": { "text": "沉谷白盒 · 低洼水路" } },
+    { "id": "ponds-glow", "type": "backgroundSeed", "position": { "x": 980, "y": 330 }, "properties": { "size": 280 } }
+  ]
+}

@@ -1,7 +1,49 @@
 import { ABILITIES, KNOWN_ABILITY_IDS, TUNING, VIEWPORT } from "./config.js";
 import { syncCanvasBackingStore } from "./display.js";
+import { createLevelEditor } from "./level-editor.js";
 import { LEVELS } from "./levels.js";
 import { validateLevel } from "./level-validator.js";
+import { ReferenceLevelLibrary, ReferenceRunState } from "./reference-level-library.js";
+import { applyRightwardReferenceAutoplayInput, clearReferenceAutoplayInput } from "./reference-autoplay.js";
+import {
+  createDashRefillState,
+  leaveDashRefill,
+  resetDashRefillState,
+  tryCollectDashRefill,
+  updateDashRefillState
+} from "./dash-refill.js";
+import {
+  advanceMotionState,
+  createMotionState,
+  isPlayerStandingOnMovingPlatform,
+  movingRectSweepContact,
+  resetMotionState,
+  resolvePlayerAgainstMovingRect
+} from "./motion.js";
+import {
+  applyLiquidForces,
+  activateStateTrigger,
+  createFragilePlatformState,
+  createGateState,
+  createLauncherState,
+  createStateTriggerState,
+  evaluateGateState,
+  resetFragilePlatformState,
+  resetGateState,
+  resetStateTrigger,
+  touchFragilePlatform,
+  tryActivateLauncher,
+  updateFragilePlatformState,
+  updateLauncherState
+} from "./reference-mechanisms.js";
+import {
+  computeSoftBodyPose,
+  createPlayerAnimation,
+  triggerDashAnimation,
+  triggerJumpAnimation,
+  triggerLandingAnimation,
+  updatePlayerAnimation
+} from "./player-animation.js";
 import {
   circleIntersectsRect,
   clamp,
@@ -25,6 +67,8 @@ const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
 const startCard = document.querySelector("#start-card");
 const levelGrid = document.querySelector("#level-grid");
+const levelEditorRoot = document.querySelector("#level-editor");
+const openLevelEditorButton = document.querySelector("#open-level-editor");
 
 for (const level of LEVELS) {
   const levelErrors = validateLevel(level);
@@ -195,47 +239,92 @@ class Game {
     this.lastTimestamp = 0;
     this.toast = { text: "", time: 0, tone: "normal" };
     this.particles = new ParticleField();
+    this.onRoomExit = null;
+    this.frameMetrics = { samples: [], averageFps: 0, averageMs: 0, p95Ms: 0, worstMs: 0 };
+    this.debugStats = { activeObjects: 0, renderedObjects: 0, collisionCandidates: 0 };
     this.loadLevel(levels[0]);
     this.frameRequest = requestAnimationFrame((timestamp) => this.frame(timestamp));
   }
 
-  loadLevel(level) {
+  loadLevel(level, options = {}) {
     this.level = level;
     this.elapsed = 0;
     this.accumulator = 0;
     this.toast = { text: "", time: 0, tone: "normal" };
     this.particles = new ParticleField();
+    const entrance = options.entranceId
+      ? (level.roomEntrances || []).find((item) => item.id === options.entranceId)
+      : null;
+    const initialSpawn = entrance?.spawn || options.spawn || level.spawn;
     this.camera = {
-      x: level.spawn.x,
-      y: level.spawn.y - 30,
+      x: initialSpawn.x,
+      y: initialSpawn.y - 30,
       angle: 0,
       rotation: null
     };
     this.runtime = {
       energyOrbs: level.energyOrbs.map((orb) => ({ ...orb, available: true, respawnTimer: 0 })),
+      dashRefills: (level.dashRefills || []).map(createDashRefillState),
+      movingObjects: (level.movingObjects || []).map((item) => ({
+        ...createMotionState(item),
+        type: item.anchorType,
+        cooldown: 0
+      })),
+      launchers: (level.launchers || []).map(createLauncherState),
+      fragilePlatforms: (level.fragilePlatforms || []).map(createFragilePlatformState),
+      gates: (level.gates || []).map(createGateState),
+      stateTriggers: (level.stateTriggers || []).map(createStateTriggerState),
+      flags: new Set(options.flags || []),
       abilityPickups: level.abilityPickups.map((pickup) => ({ ...pickup, collected: false })),
       bashTargets: level.bashTargets.map((target) => ({ ...target, cooldown: 0 })),
       bashAim: null,
       rotationTriggers: level.rotationTriggers.map((trigger) => ({ ...trigger, activated: false })),
       goalReached: false,
-      hardBar: null
+      hardBar: null,
+      transitioning: false,
+      exitCooldown: entrance ? 0.35 : 0.2
     };
-    const startingAbilities = level.startingAbilities?.length
-      ? level.startingAbilities
+    const startingAbilities = options.abilities?.length
+      ? options.abilities
+      : level.startingAbilities?.length
+        ? level.startingAbilities
       : Object.values(ABILITIES).filter((ability) => ability.defaultUnlocked).map((ability) => ability.id);
     this.abilities = new Set(startingAbilities);
-    this.currentCheckpoint = level.checkpoints[0];
+    this.runtime.gates = this.runtime.gates.map((gate) => evaluateGateState(gate, this.abilities, this.runtime.flags));
+    const configuredCheckpoint = options.checkpointId
+      ? level.checkpoints.find((checkpoint) => checkpoint.id === options.checkpointId)
+      : null;
+    this.currentCheckpoint = configuredCheckpoint || {
+      ...level.checkpoints[0],
+      ...(entrance ? { spawn: { ...initialSpawn } } : {})
+    };
     this.blockingSurfaces = this.buildBlockingSurfaces();
     this.grappleSurfaces = this.blockingSurfaces.filter((surface) => surface.grapple);
     this.hardBarSurfaces = [...this.grappleSurfaces, ...this.buildHazardAttachmentSurfaces()];
-    this.player = this.createPlayer(level.spawn);
+    this.player = this.createPlayer(initialSpawn);
     this.ropeTarget = null;
     this.hardBarTarget = null;
     this.bashTarget = null;
     this.ropeWinching = false;
+    this.debugStats.activeObjects = this.countLevelObjects();
+    this.debugStats.renderedObjects = 0;
+    this.debugStats.collisionCandidates = 0;
+  }
+
+  setRoomExitHandler(handler) {
+    this.onRoomExit = typeof handler === "function" ? handler : null;
+  }
+
+  countLevelObjects() {
+    return [
+      "backgroundSeeds", "platforms", "slopes", "hazards", "anchors", "energyOrbs",
+      "dashRefills", "movingObjects", "launchers", "fragilePlatforms", "gates", "stateTriggers", "abilityPickups", "bashTargets", "windZones", "liquidZones", "darknessZones", "checkpoints", "roomEntrances",
+      "roomExits", "rotationTriggers", "signs"
+    ].reduce((sum, collection) => sum + (this.level[collection]?.length || 0), this.level.goal ? 1 : 0);
   }
 
   createPlayer(spawn) {
+    const maximumDashCharges = this.abilities?.has("dash") ? (this.level.dashCapacity ?? 1) : 0;
     return {
       x: spawn.x,
       y: spawn.y,
@@ -255,8 +344,11 @@ class Game {
       damageRecoveryJump: false,
       gliding: false,
       wind: null,
+      liquid: null,
       updraftExitTimer: 0,
-      dashAvailable: this.abilities?.has("dash") || false,
+      maximumDashCharges,
+      dashCharges: maximumDashCharges,
+      dashAvailable: maximumDashCharges > 0,
       dashTimer: 0,
       dashDirectionX: 0,
       dashDirectionY: 0,
@@ -264,14 +356,15 @@ class Game {
       respawnTimer: 0,
       visible: true,
       facing: 1,
+      animation: createPlayerAnimation(1),
       distanceTravelled: 0,
       previousX: spawn.x,
       previousY: spawn.y
     };
   }
 
-  start(level) {
-    if (level) this.loadLevel(level);
+  start(level, options = {}) {
+    if (level) this.loadLevel(level, options);
     this.running = true;
     this.paused = false;
     this.lastTimestamp = performance.now();
@@ -288,6 +381,7 @@ class Game {
   frame(timestamp) {
     const rawDelta = this.lastTimestamp ? (timestamp - this.lastTimestamp) / 1000 : 0;
     this.lastTimestamp = timestamp;
+    this.recordFrameMetric(rawDelta * 1000);
     const frameDelta = clamp(rawDelta, 0, TUNING.maxFrameDelta);
 
     if (this.running && !this.paused) {
@@ -306,7 +400,22 @@ class Game {
     this.frameRequest = requestAnimationFrame((nextTimestamp) => this.frame(nextTimestamp));
   }
 
+  recordFrameMetric(frameMs) {
+    if (!Number.isFinite(frameMs) || frameMs <= 0 || frameMs > 250) return;
+    const samples = this.frameMetrics.samples;
+    samples.push(frameMs);
+    if (samples.length > 240) samples.shift();
+    if (samples.length < 2) return;
+    const sorted = [...samples].sort((left, right) => left - right);
+    const averageMs = samples.reduce((sum, value) => sum + value, 0) / samples.length;
+    this.frameMetrics.averageMs = averageMs;
+    this.frameMetrics.averageFps = 1000 / averageMs;
+    this.frameMetrics.p95Ms = sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.95))];
+    this.frameMetrics.worstMs = sorted[sorted.length - 1];
+  }
+
   update(deltaTime) {
+    this.debugStats.collisionCandidates = 0;
     if (this.input.pressed("Escape")) {
       this.openLevelMenu();
       return;
@@ -379,7 +488,10 @@ class Game {
     player.coyoteTimer = wasGrounded ? TUNING.coyoteTime : Math.max(0, player.coyoteTimer - deltaTime);
     player.jumpBufferTimer = Math.max(0, player.jumpBufferTimer - deltaTime);
 
-    if (wasGrounded && this.abilities.has("dash")) player.dashAvailable = true;
+    if (wasGrounded && this.abilities.has("dash")) {
+      player.dashCharges = player.maximumDashCharges;
+      player.dashAvailable = player.dashCharges > 0;
+    }
 
     let moveAxis = 0;
     if (this.input.down("KeyA", "ArrowLeft")) moveAxis -= 1;
@@ -388,6 +500,8 @@ class Game {
     if (this.input.down("KeyW", "ArrowUp")) verticalAxis -= 1;
     if (this.input.down("KeyS", "ArrowDown")) verticalAxis += 1;
     if (moveAxis !== 0) player.facing = moveAxis;
+    const liquid = (this.level.liquidZones || []).find((zone) => circleIntersectsRect(player.x, player.y, player.radius, zone)) || null;
+    player.liquid = liquid;
 
     this.handleDashInput(moveAxis, verticalAxis);
     const dashing = player.dashTimer > 0;
@@ -425,6 +539,7 @@ class Game {
         player.vx = previousWall.x * TUNING.wallJumpAwaySpeed - gravity.x * TUNING.wallJumpUpSpeed;
         player.vy = previousWall.y * TUNING.wallJumpAwaySpeed - gravity.y * TUNING.wallJumpUpSpeed;
         player.jumpBufferTimer = 0;
+        triggerJumpAnimation(player.animation);
         this.particles.burst(player.x, player.y, "#87f5ef", 8, 100);
       } else if (player.damageRecoveryJump && player.damageRecoveryTimer > 0) {
         this.performJump(gravity, TUNING.jumpSpeed * 0.92);
@@ -450,9 +565,16 @@ class Game {
         player.vy -= gravity.y * (wallFallSpeed - TUNING.wallSlideSpeed);
       }
     }
+    if (liquid) gravityScale *= liquid.gravityScale;
 
     player.vx += gravity.x * TUNING.gravity * gravityScale * deltaTime;
     player.vy += gravity.y * TUNING.gravity * gravityScale * deltaTime;
+
+    if (liquid && !dashing) {
+      const fluidVelocity = applyLiquidForces(player, liquid, deltaTime, { x: moveAxis, y: verticalAxis });
+      player.vx = fluidVelocity.vx;
+      player.vy = fluidVelocity.vy;
+    }
 
     if (player.gliding) {
       const limited = limitSpeedAlongDirection(player, gravity, TUNING.glideMaximumFallSpeed);
@@ -526,6 +648,7 @@ class Game {
       player.vy = player.vy / speed * speedLimit;
     }
 
+    const impactSpeed = Math.max(0, dot(player.vx, player.vy, gravity.x, gravity.y));
     player.x += player.vx * deltaTime;
     player.y += player.vy * deltaTime;
     this.constrainRope();
@@ -534,10 +657,27 @@ class Game {
     this.constrainHardBar();
     this.updateRopeVisual(deltaTime);
 
+    if (!wasGrounded && player.grounded) {
+      triggerLandingAnimation(player.animation, gravity, impactSpeed);
+    }
+    updatePlayerAnimation(player.animation, {
+      vx: player.vx,
+      vy: player.vy,
+      gravity,
+      tangent,
+      grounded: player.grounded,
+      gliding: player.gliding,
+      constrained: Boolean(this.isRopeAttached() || this.runtime.hardBar),
+      dashing,
+      facing: player.facing,
+      distanceTravelled: player.distanceTravelled
+    }, deltaTime);
+
     player.distanceTravelled += length(player.x - player.previousX, player.y - player.previousY);
     if (player.grounded) {
       player.airJumps = this.abilities.has("doubleJump") ? 1 : 0;
-      player.dashAvailable = this.abilities.has("dash");
+      player.dashCharges = this.abilities.has("dash") ? player.maximumDashCharges : 0;
+      player.dashAvailable = player.dashCharges > 0;
     }
 
     if (player.grounded && !this.isRopeAttached() && player.timeSinceEnergyUse >= TUNING.safeEnergyDelay && player.energy < TUNING.safeEnergyFloor) {
@@ -562,12 +702,13 @@ class Game {
     player.vy -= gravity.y * speed;
     player.jumpBufferTimer = 0;
     player.grounded = false;
+    triggerJumpAnimation(player.animation);
   }
 
   handleDashInput(horizontalAxis, verticalAxis) {
     const player = this.player;
     if (!this.input.pressed("ControlLeft") && !this.input.pressed("ControlRight")) return false;
-    if (!this.abilities.has("dash") || !player.dashAvailable) {
+    if (!this.abilities.has("dash") || player.dashCharges <= 0) {
       if (this.abilities.has("dash")) this.showToast("冲刺尚未恢复 · 落地后重置", 0.9, "warning");
       return false;
     }
@@ -584,9 +725,11 @@ class Game {
     player.dashDirectionX = dash.directionX;
     player.dashDirectionY = dash.directionY;
     player.dashTimer = TUNING.dashDuration;
-    player.dashAvailable = false;
+    player.dashCharges = Math.max(0, player.dashCharges - 1);
+    player.dashAvailable = player.dashCharges > 0;
     player.grounded = false;
     player.gliding = false;
+    triggerDashAnimation(player.animation, dash.directionX, dash.directionY);
     this.particles.burst(player.x, player.y, "#a5eeff", 18, 220);
     this.showToast("冲刺 · 可在途中连接软绳或硬杆继承速度", 1.05, "ability");
     return true;
@@ -1018,7 +1161,8 @@ class Game {
       });
     }
 
-    for (const anchor of this.level.anchors) {
+    const movingAnchors = this.runtime.movingObjects.filter((item) => item.objectKind === "anchor");
+    for (const anchor of [...this.level.anchors, ...movingAnchors]) {
       const offsetX = anchor.x - this.player.x;
       const offsetY = anchor.y - this.player.y;
       const forward = dot(offsetX, offsetY, aim.x, aim.y);
@@ -1040,7 +1184,8 @@ class Game {
     this.hardBarTarget = this.abilities.has("hardBar") ? hardBarCandidates[0] || null : null;
 
     const pointerScreen = this.input.mouse;
-    const bashCandidates = this.runtime.bashTargets
+    const movingBashTargets = this.runtime.movingObjects.filter((item) => item.objectKind === "bashTarget");
+    const bashCandidates = [...this.runtime.bashTargets, ...movingBashTargets]
       .filter((target) => target.cooldown <= 0 && length(target.x - this.player.x, target.y - this.player.y) <= TUNING.bashRange)
       .map((target) => {
         const screen = this.worldToScreen(target.x, target.y);
@@ -1062,12 +1207,15 @@ class Game {
 
   buildBlockingSurfaces() {
     const surfaces = [];
-    for (const platform of this.level.platforms) {
+    const movingPlatforms = this.runtime?.movingObjects?.filter((item) => item.objectKind === "platform") || [];
+    const fragilePlatforms = this.runtime?.fragilePlatforms?.filter((item) => item.phase !== "gone") || [];
+    const closedGates = this.runtime?.gates?.filter((item) => !item.open) || [];
+    for (const platform of [...this.level.platforms, ...movingPlatforms, ...fragilePlatforms, ...closedGates]) {
       surfaces.push(
-        { id: `${platform.id}:top`, kind: "platform", grapple: true, ax: platform.x, ay: platform.y, bx: platform.x + platform.w, by: platform.y },
-        { id: `${platform.id}:right`, kind: "platform", grapple: true, ax: platform.x + platform.w, ay: platform.y, bx: platform.x + platform.w, by: platform.y + platform.h },
-        { id: `${platform.id}:bottom`, kind: "platform", grapple: true, ax: platform.x + platform.w, ay: platform.y + platform.h, bx: platform.x, by: platform.y + platform.h },
-        { id: `${platform.id}:left`, kind: "platform", grapple: true, ax: platform.x, ay: platform.y + platform.h, bx: platform.x, by: platform.y }
+        { id: `${platform.id}:top`, kind: "platform", grapple: platform.grapple !== false, ax: platform.x, ay: platform.y, bx: platform.x + platform.w, by: platform.y },
+        { id: `${platform.id}:right`, kind: "platform", grapple: platform.grapple !== false, ax: platform.x + platform.w, ay: platform.y, bx: platform.x + platform.w, by: platform.y + platform.h },
+        { id: `${platform.id}:bottom`, kind: "platform", grapple: platform.grapple !== false, ax: platform.x + platform.w, ay: platform.y + platform.h, bx: platform.x, by: platform.y + platform.h },
+        { id: `${platform.id}:left`, kind: "platform", grapple: platform.grapple !== false, ax: platform.x, ay: platform.y + platform.h, bx: platform.x, by: platform.y }
       );
     }
     for (const slope of this.level.slopes || []) {
@@ -1077,7 +1225,8 @@ class Game {
   }
 
   buildHazardAttachmentSurfaces() {
-    return this.level.hazards.map(hazardHardBarSurface);
+    const movingHazards = this.runtime?.movingObjects?.filter((item) => item.objectKind === "hazard") || [];
+    return [...this.level.hazards, ...movingHazards].map(hazardHardBarSurface);
   }
 
   resolveCollisions() {
@@ -1089,19 +1238,36 @@ class Game {
 
     for (let pass = 0; pass < 3; pass += 1) {
       let resolvedAny = false;
-      for (const platform of this.level.platforms) {
-        const contact = this.resolveCircleRect(platform);
+      const movingPlatforms = this.runtime.movingObjects.filter((item) => item.objectKind === "platform");
+      const fragilePlatforms = this.runtime.fragilePlatforms.filter((item) => item.phase !== "gone");
+      const closedGates = this.runtime.gates.filter((item) => !item.open);
+      for (const platform of [...this.level.platforms, ...movingPlatforms, ...fragilePlatforms, ...closedGates]) {
+        this.debugStats.collisionCandidates += 1;
+        let contact = this.resolveCircleRect(platform);
+        if (!contact && platform.objectKind === "platform") {
+          const swept = resolvePlayerAgainstMovingRect(this.player, platform);
+          if (swept) {
+            this.player.x = swept.x;
+            this.player.y = swept.y;
+            this.player.vx = swept.vx;
+            this.player.vy = swept.vy;
+            contact = swept.normal;
+          }
+        }
         if (!contact) continue;
         resolvedAny = true;
         this.recordContact(contact, gravity, tangent);
       }
       for (const slope of this.level.slopes || []) {
+        this.debugStats.collisionCandidates += 1;
         const contact = this.resolveCircleSegment(slope);
         if (!contact) continue;
         resolvedAny = true;
         this.recordContact(contact, gravity, tangent);
       }
-      for (const hazard of this.level.hazards) {
+      const movingHazards = this.runtime.movingObjects.filter((item) => item.objectKind === "hazard");
+      for (const hazard of [...this.level.hazards, ...movingHazards]) {
+        this.debugStats.collisionCandidates += 1;
         const contact = this.resolveHazardBase(hazard);
         if (!contact) continue;
         resolvedAny = true;
@@ -1199,10 +1365,15 @@ class Game {
 
   updateInteractions() {
     const player = this.player;
-    for (const hazard of this.level.hazards) {
-      if (circleIntersectsRect(player.x, player.y, player.radius, hazard)) {
+    const movingHazards = this.runtime.movingObjects.filter((item) => item.objectKind === "hazard");
+    for (const hazard of [...this.level.hazards, ...movingHazards]) {
+      if (circleIntersectsRect(player.x, player.y, player.radius, hazard) || (hazard.objectKind === "hazard" && movingRectSweepContact(player, hazard))) {
         this.damagePlayer(hazard.damage, hazard);
       }
+    }
+    for (const liquid of this.level.liquidZones || []) {
+      if (liquid.contactDamage <= 0 || !circleIntersectsRect(player.x, player.y, player.radius, liquid)) continue;
+      this.damagePlayer(liquid.contactDamage, liquid);
     }
 
     for (const orb of this.runtime.energyOrbs) {
@@ -1213,13 +1384,67 @@ class Game {
       this.particles.burst(orb.x, orb.y, "#63bfff", 14, 145);
     }
 
+    for (let index = 0; index < this.runtime.dashRefills.length; index += 1) {
+      const refill = this.runtime.dashRefills[index];
+      const touching = length(player.x - refill.x, player.y - refill.y) <= player.radius + refill.radius;
+      if (!touching) {
+        this.runtime.dashRefills[index] = leaveDashRefill(refill);
+        continue;
+      }
+      const result = tryCollectDashRefill(refill, {
+        dashCharges: player.dashCharges,
+        maximumDashCharges: player.maximumDashCharges
+      });
+      this.runtime.dashRefills[index] = result.state;
+      if (!result.collected) continue;
+      player.dashCharges = result.dashCharges;
+      player.dashAvailable = player.dashCharges > 0;
+      this.showToast(`冲刺已恢复 · ${player.dashCharges}/${player.maximumDashCharges}`, 1.0, "ability");
+      this.particles.burst(refill.x, refill.y, "#9be7ff", 24, 210);
+    }
+
+    for (let index = 0; index < this.runtime.launchers.length; index += 1) {
+      const launcher = this.runtime.launchers[index];
+      const touching = circleIntersectsRect(player.x, player.y, player.radius, launcher);
+      const result = tryActivateLauncher(launcher, touching, { vx: player.vx, vy: player.vy });
+      this.runtime.launchers[index] = result.state;
+      if (!result.activated) continue;
+      player.vx = result.velocity.vx;
+      player.vy = result.velocity.vy;
+      player.grounded = false;
+      this.particles.burst(launcher.x + launcher.w / 2, launcher.y + launcher.h / 2, "#ffc36f", 22, 240);
+    }
+
+    for (let index = 0; index < this.runtime.fragilePlatforms.length; index += 1) {
+      const fragile = this.runtime.fragilePlatforms[index];
+      if (fragile.phase === "gone" || !circleIntersectsRect(player.x, player.y, player.radius + 3, fragile)) continue;
+      this.runtime.fragilePlatforms[index] = touchFragilePlatform(fragile);
+    }
+
+    for (let index = 0; index < this.runtime.stateTriggers.length; index += 1) {
+      const trigger = this.runtime.stateTriggers[index];
+      const touching = circleIntersectsRect(player.x, player.y, player.radius, trigger);
+      const result = activateStateTrigger(trigger, touching, this.runtime.flags);
+      this.runtime.stateTriggers[index] = result.state;
+      if (result.changed) {
+        this.runtime.gates = this.runtime.gates.map((gate) => evaluateGateState(gate, this.abilities, this.runtime.flags));
+        this.showToast("世界状态已更新", 1.1, "ability");
+        this.particles.burst(trigger.x + trigger.w / 2, trigger.y + trigger.h / 2, "#c5a6ff", 18, 180);
+      }
+    }
+
     for (const pickup of this.runtime.abilityPickups) {
       if (pickup.collected || length(player.x - pickup.x, player.y - pickup.y) > player.radius + 24) continue;
       pickup.collected = true;
       const result = grantAbility(this.abilities, pickup.abilityId, KNOWN_ABILITY_IDS);
       if (result.granted) {
         player.airJumps = pickup.abilityId === "doubleJump" ? 1 : player.airJumps;
-        player.dashAvailable = pickup.abilityId === "dash" ? true : player.dashAvailable;
+        if (pickup.abilityId === "dash") {
+          player.maximumDashCharges = this.level.dashCapacity ?? 1;
+          player.dashCharges = player.maximumDashCharges;
+          player.dashAvailable = true;
+        }
+        this.runtime.gates = this.runtime.gates.map((gate) => evaluateGateState(gate, this.abilities, this.runtime.flags));
         this.showToast(`获得能力：${ABILITIES[pickup.abilityId].name}`, 3, "ability");
         this.particles.burst(pickup.x, pickup.y, "#d5a4ff", 34, 240);
       }
@@ -1242,7 +1467,33 @@ class Game {
       this.startRotation(trigger.delta, "空间正在重构");
     }
 
-    if (!this.runtime.goalReached && isGoalReached(player, this.level.goal, TUNING.goalActivationPadding)) {
+    if (!this.runtime.transitioning && this.runtime.exitCooldown <= 0) {
+      for (const exit of this.level.roomExits || []) {
+        if (!circleIntersectsRect(player.x, player.y, player.radius, exit)) continue;
+        if (exit.requiredAbility && !this.abilities.has(exit.requiredAbility)) {
+          this.runtime.exitCooldown = 0.8;
+          this.showToast(`出口需要能力：${exit.requiredAbility}`, 1.2, "warning");
+          break;
+        }
+        this.runtime.transitioning = true;
+        if (!this.onRoomExit) {
+          this.runtime.transitioning = false;
+          this.runtime.exitCooldown = 0.8;
+          this.showToast("目标房间加载器尚未连接", 1.2, "warning");
+          break;
+        }
+        Promise.resolve(this.onRoomExit(exit, this.level, this))
+          .catch((error) => {
+            console.error(error);
+            this.runtime.transitioning = false;
+            this.runtime.exitCooldown = 0.8;
+            this.showToast("房间切换失败，请检查本地数据", 1.6, "warning");
+          });
+        break;
+      }
+    }
+
+    if (this.level.goal && !this.runtime.goalReached && isGoalReached(player, this.level.goal, TUNING.goalActivationPadding)) {
       this.runtime.goalReached = true;
       this.showToast(`完成：${levelDisplayName(this.level)} · Esc选择其他关卡`, 5, "ability");
       this.particles.burst(this.level.goal.x, this.level.goal.y, "#fff0a4", 46, 280);
@@ -1279,14 +1530,57 @@ class Game {
   }
 
   updateRuntimeItems(deltaTime) {
+    this.runtime.exitCooldown = Math.max(0, this.runtime.exitCooldown - deltaTime);
     for (const orb of this.runtime.energyOrbs) {
       if (orb.available) continue;
       orb.respawnTimer -= deltaTime;
       if (orb.respawnTimer <= 0) orb.available = true;
     }
+    this.runtime.dashRefills = this.runtime.dashRefills.map((refill) => updateDashRefillState(refill, deltaTime));
+    this.runtime.launchers = this.runtime.launchers.map((launcher) => updateLauncherState(launcher, deltaTime));
+    this.runtime.fragilePlatforms = this.runtime.fragilePlatforms.map((fragile) => updateFragilePlatformState(fragile, deltaTime));
+    this.runtime.gates = this.runtime.gates.map((gate) => evaluateGateState(gate, this.abilities, this.runtime.flags));
     for (const target of this.runtime.bashTargets) {
       target.cooldown = Math.max(0, target.cooldown - deltaTime);
     }
+    for (let index = 0; index < this.runtime.movingObjects.length; index += 1) {
+      const item = this.runtime.movingObjects[index];
+      const pointLike = ["anchor", "bashTarget"].includes(item.objectKind);
+      const touching = pointLike
+        ? length(this.player.x - item.x, this.player.y - item.y) <= this.player.radius + 28
+        : circleIntersectsRect(this.player.x, this.player.y, this.player.radius, item);
+      const carryingPlayer = isPlayerStandingOnMovingPlatform(this.player, item);
+      const next = advanceMotionState(item, deltaTime, {
+        triggered: item.trigger === "touch" ? touching : Boolean(item.switchActive),
+        offscreen: this.isMovingObjectOffscreen(item)
+      });
+      next.cooldown = Math.max(0, (item.cooldown || 0) - deltaTime);
+      next.type = next.anchorType;
+      if (carryingPlayer) {
+        this.player.x += next.deltaX;
+        this.player.y += next.deltaY;
+      }
+      if (this.player.rope && (this.player.rope.anchorId === item.id || this.player.rope.anchorId.startsWith(`${item.id}:`))) {
+        this.player.rope.x += next.deltaX;
+        this.player.rope.y += next.deltaY;
+      }
+      if (this.runtime.hardBar && this.runtime.hardBar.anchorId.startsWith(`${item.id}:`)) {
+        this.runtime.hardBar.pivotX += next.deltaX;
+        this.runtime.hardBar.pivotY += next.deltaY;
+      }
+      this.runtime.movingObjects[index] = next;
+    }
+    this.blockingSurfaces = this.buildBlockingSurfaces();
+    this.grappleSurfaces = this.blockingSurfaces.filter((surface) => surface.grapple);
+    this.hardBarSurfaces = [...this.grappleSurfaces, ...this.buildHazardAttachmentSurfaces()];
+  }
+
+  isMovingObjectOffscreen(item) {
+    const centerX = item.x + (["platform", "hazard"].includes(item.objectKind) ? item.w / 2 : 0);
+    const centerY = item.y + (["platform", "hazard"].includes(item.objectKind) ? item.h / 2 : 0);
+    const screen = this.worldToScreen(centerX, centerY);
+    const padding = Math.max(item.w || 0, item.h || 0, 120);
+    return screen.x < -padding || screen.x > VIEWPORT.width + padding || screen.y < -padding || screen.y > VIEWPORT.height + padding;
   }
 
   beginRespawn(reason) {
@@ -1322,7 +1616,10 @@ class Game {
       damageRecoveryJump: false,
       gliding: false,
       wind: null,
+      liquid: null,
       updraftExitTimer: 0,
+      maximumDashCharges: this.abilities.has("dash") ? (this.level.dashCapacity ?? 1) : 0,
+      dashCharges: this.abilities.has("dash") ? (this.level.dashCapacity ?? 1) : 0,
       dashAvailable: this.abilities.has("dash"),
       dashTimer: 0,
       dashDirectionX: 0,
@@ -1331,6 +1628,22 @@ class Game {
       respawnTimer: 0,
       visible: true
     });
+    this.player.animation = createPlayerAnimation(this.player.facing);
+    this.runtime.dashRefills = this.runtime.dashRefills.map((refill) => resetDashRefillState(refill, "death"));
+    this.runtime.launchers = this.runtime.launchers.map((launcher) => ({ ...launcher, cooldownTimer: 0, touching: false }));
+    this.runtime.fragilePlatforms = this.runtime.fragilePlatforms.map((fragile) => resetFragilePlatformState(fragile, "death"));
+    this.runtime.gates = this.runtime.gates.map((gate) => evaluateGateState(resetGateState(gate, "death"), this.abilities, this.runtime.flags));
+    this.runtime.stateTriggers = this.runtime.stateTriggers.map((trigger) => resetStateTrigger(trigger, "death"));
+    this.runtime.movingObjects = this.runtime.movingObjects.map((item) => {
+      if (item.resetPolicy !== "death") return item;
+      const reset = resetMotionState(item);
+      reset.cooldown = 0;
+      reset.type = reset.anchorType;
+      return reset;
+    });
+    this.blockingSurfaces = this.buildBlockingSurfaces();
+    this.grappleSurfaces = this.blockingSurfaces.filter((surface) => surface.grapple);
+    this.hardBarSurfaces = [...this.grappleSurfaces, ...this.buildHazardAttachmentSurfaces()];
     this.detachHardBar(false);
     this.camera.x = spawn.x;
     this.camera.y = spawn.y - 30;
@@ -1423,22 +1736,36 @@ class Game {
   }
 
   renderWorld(ctx) {
+    this.debugStats.renderedObjects = this.countLevelObjects();
     for (const seed of this.level.backgroundSeeds) this.renderBackgroundSeed(ctx, seed);
     for (const wind of this.level.windZones) this.renderWindZone(ctx, wind);
+    for (const liquid of this.level.liquidZones || []) this.renderLiquidZone(ctx, liquid);
     for (const platform of this.level.platforms) this.renderPlatform(ctx, platform);
+    for (const item of this.runtime.movingObjects.filter((moving) => moving.objectKind === "platform")) this.renderMovingObject(ctx, item);
+    for (const fragile of this.runtime.fragilePlatforms) this.renderFragilePlatform(ctx, fragile);
+    for (const gate of this.runtime.gates) this.renderGate(ctx, gate);
     for (const slope of this.level.slopes || []) this.renderSlope(ctx, slope);
     for (const hazard of this.level.hazards) this.renderHazard(ctx, hazard);
+    for (const item of this.runtime.movingObjects.filter((moving) => moving.objectKind === "hazard")) this.renderMovingObject(ctx, item);
     for (const checkpoint of this.level.checkpoints) this.renderCheckpoint(ctx, checkpoint);
+    for (const entrance of this.level.roomEntrances || []) if (this.debug) this.renderRoomEntrance(ctx, entrance);
+    for (const exit of this.level.roomExits || []) this.renderRoomExit(ctx, exit);
     for (const sign of this.level.signs) this.renderSign(ctx, sign);
     for (const orb of this.runtime.energyOrbs) if (orb.available) this.renderEnergyOrb(ctx, orb);
+    for (const refill of this.runtime.dashRefills) this.renderDashRefill(ctx, refill);
+    for (const launcher of this.runtime.launchers) this.renderLauncher(ctx, launcher);
+    for (const trigger of this.runtime.stateTriggers) this.renderStateTrigger(ctx, trigger);
     for (const pickup of this.runtime.abilityPickups) if (!pickup.collected) this.renderAbilityPickup(ctx, pickup);
     for (const target of this.runtime.bashTargets) this.renderBashTarget(ctx, target);
-    this.renderGoal(ctx);
+    for (const item of this.runtime.movingObjects.filter((moving) => moving.objectKind === "bashTarget")) this.renderMovingObject(ctx, item);
+    if (this.level.goal) this.renderGoal(ctx);
     this.renderHardBar(ctx);
     this.renderRope(ctx);
     this.renderSurfaceTarget(ctx);
     this.renderHardBarTarget(ctx);
     for (const anchor of this.level.anchors) this.renderAnchor(ctx, anchor);
+    for (const item of this.runtime.movingObjects.filter((moving) => moving.objectKind === "anchor")) this.renderMovingObject(ctx, item);
+    for (const darkness of this.level.darknessZones || []) this.renderDarknessZone(ctx, darkness);
     this.particles.render(ctx);
 
     if (this.debug) {
@@ -1498,6 +1825,58 @@ class Game {
     ctx.restore();
   }
 
+  renderLiquidZone(ctx, liquid) {
+    const palette = liquid.liquidType === "lava"
+      ? { fill: "rgba(255, 93, 55, 0.24)", stroke: "rgba(255, 175, 91, 0.72)", line: "#ff9b58" }
+      : liquid.liquidType === "toxic"
+        ? { fill: "rgba(104, 210, 114, 0.2)", stroke: "rgba(169, 255, 157, 0.62)", line: "#8be995" }
+        : { fill: "rgba(68, 145, 205, 0.18)", stroke: "rgba(133, 216, 255, 0.52)", line: "#84d6ff" };
+    ctx.save();
+    ctx.fillStyle = palette.fill;
+    ctx.strokeStyle = palette.stroke;
+    ctx.lineWidth = this.player.liquid?.id === liquid.id ? 4 : 2;
+    ctx.fillRect(liquid.x, liquid.y, liquid.w, liquid.h);
+    ctx.beginPath();
+    const waveStep = 48;
+    ctx.moveTo(liquid.x, liquid.y);
+    for (let x = liquid.x; x <= liquid.x + liquid.w; x += waveStep) {
+      ctx.quadraticCurveTo(x + waveStep * 0.25, liquid.y - 7, x + waveStep * 0.5, liquid.y);
+      ctx.quadraticCurveTo(x + waveStep * 0.75, liquid.y + 7, x + waveStep, liquid.y);
+    }
+    ctx.strokeStyle = palette.line;
+    ctx.stroke();
+    ctx.strokeStyle = palette.stroke;
+    ctx.strokeRect(liquid.x, liquid.y, liquid.w, liquid.h);
+    ctx.restore();
+  }
+
+  renderDarknessZone(ctx, darkness) {
+    if (darkness.clearedByFlag && this.runtime.flags.has(darkness.clearedByFlag)) return;
+    const inside = circleIntersectsRect(this.player.x, this.player.y, this.player.radius, darkness);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(darkness.x, darkness.y, darkness.w, darkness.h);
+    ctx.clip();
+    if (inside) {
+      const gradient = ctx.createRadialGradient(
+        this.player.x,
+        this.player.y,
+        darkness.revealRadius * 0.35,
+        this.player.x,
+        this.player.y,
+        darkness.revealRadius
+      );
+      gradient.addColorStop(0, "rgba(1, 4, 12, 0)");
+      gradient.addColorStop(0.72, `rgba(1, 4, 12, ${darkness.opacity * 0.45})`);
+      gradient.addColorStop(1, `rgba(1, 4, 12, ${darkness.opacity})`);
+      ctx.fillStyle = gradient;
+    } else {
+      ctx.fillStyle = `rgba(1, 4, 12, ${darkness.opacity})`;
+    }
+    ctx.fillRect(darkness.x, darkness.y, darkness.w, darkness.h);
+    ctx.restore();
+  }
+
   renderPlatform(ctx, platform) {
     const gradient = ctx.createLinearGradient(platform.x, platform.y, platform.x, platform.y + Math.min(platform.h, 160));
     gradient.addColorStop(0, "#173c43");
@@ -1511,6 +1890,73 @@ class Game {
     for (let x = platform.x + 18; x < platform.x + platform.w; x += 52) {
       ctx.fillRect(x, platform.y + 14, 2, Math.max(0, platform.h - 22));
     }
+  }
+
+  renderFragilePlatform(ctx, platform) {
+    if (platform.phase === "gone" && platform.offsetY > 520) return;
+    ctx.save();
+    ctx.translate(0, platform.offsetY || 0);
+    ctx.globalAlpha = platform.phase === "gone" ? 0.42 : 1;
+    ctx.fillStyle = platform.phase === "cracking" ? "#6f5230" : "#443825";
+    ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
+    ctx.strokeStyle = platform.phase === "cracking" ? "#ffe09a" : "rgba(246, 204, 123, 0.72)";
+    ctx.lineWidth = platform.phase === "cracking" ? 4 : 2;
+    ctx.strokeRect(platform.x, platform.y, platform.w, platform.h);
+    ctx.beginPath();
+    const shardWidth = Math.max(30, platform.w / 5);
+    for (let x = platform.x + shardWidth; x < platform.x + platform.w; x += shardWidth) {
+      ctx.moveTo(x, platform.y);
+      ctx.lineTo(x - 12, platform.y + platform.h);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  renderGate(ctx, gate) {
+    ctx.save();
+    ctx.globalAlpha = gate.open ? 0.2 : 0.92;
+    ctx.fillStyle = gate.open ? "rgba(187, 148, 255, 0.12)" : "rgba(92, 48, 122, 0.72)";
+    ctx.strokeStyle = gate.open ? "rgba(216, 181, 255, 0.32)" : "#d8aeff";
+    ctx.lineWidth = gate.open ? 2 : 4;
+    ctx.setLineDash(gate.open ? [12, 12] : []);
+    ctx.fillRect(gate.x, gate.y, gate.w, gate.h);
+    ctx.strokeRect(gate.x, gate.y, gate.w, gate.h);
+    ctx.setLineDash([]);
+    if (!gate.open) {
+      ctx.fillStyle = "rgba(245, 224, 255, 0.82)";
+      for (let y = gate.y + 14; y < gate.y + gate.h; y += 32) ctx.fillRect(gate.x + 8, y, Math.max(4, gate.w - 16), 3);
+    }
+    ctx.restore();
+  }
+
+  renderLauncher(ctx, launcher) {
+    const direction = normalize(launcher.launchX, launcher.launchY, 0, -1);
+    const centerX = launcher.x + launcher.w / 2;
+    const centerY = launcher.y + launcher.h / 2;
+    ctx.save();
+    ctx.fillStyle = launcher.cooldownTimer > 0 ? "rgba(131, 85, 45, 0.72)" : "rgba(224, 137, 60, 0.82)";
+    ctx.strokeStyle = launcher.cooldownTimer > 0 ? "rgba(255, 205, 145, 0.42)" : "#ffd293";
+    ctx.lineWidth = 3;
+    ctx.fillRect(launcher.x, launcher.y, launcher.w, launcher.h);
+    ctx.strokeRect(launcher.x, launcher.y, launcher.w, launcher.h);
+    ctx.beginPath();
+    ctx.moveTo(centerX - direction.x * 8, centerY - direction.y * 8);
+    ctx.lineTo(centerX + direction.x * 26, centerY + direction.y * 26);
+    ctx.lineTo(centerX + direction.x * 16 - direction.y * 8, centerY + direction.y * 16 + direction.x * 8);
+    ctx.moveTo(centerX + direction.x * 26, centerY + direction.y * 26);
+    ctx.lineTo(centerX + direction.x * 16 + direction.y * 8, centerY + direction.y * 16 - direction.x * 8);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  renderStateTrigger(ctx, trigger) {
+    ctx.save();
+    ctx.fillStyle = trigger.used ? "rgba(185, 156, 255, 0.05)" : "rgba(185, 156, 255, 0.12)";
+    ctx.strokeStyle = trigger.used ? "rgba(185, 156, 255, 0.22)" : "rgba(214, 192, 255, 0.72)";
+    ctx.setLineDash([10, 8]);
+    ctx.fillRect(trigger.x, trigger.y, trigger.w, trigger.h);
+    ctx.strokeRect(trigger.x, trigger.y, trigger.w, trigger.h);
+    ctx.restore();
   }
 
   renderSlope(ctx, slope) {
@@ -1609,6 +2055,60 @@ class Game {
     ctx.arc(orb.x, orb.y, 7 * pulse, 0, TAU);
     ctx.fill();
     ctx.restore();
+  }
+
+  renderDashRefill(ctx, refill) {
+    const pulse = 1 + Math.sin(this.elapsed * 4.5 + refill.x * 0.02) * 0.1;
+    ctx.save();
+    ctx.translate(refill.x, refill.y);
+    ctx.globalAlpha = refill.available ? 1 : 0.16;
+    ctx.rotate(this.elapsed * 0.85);
+    ctx.shadowColor = "#79dcff";
+    ctx.shadowBlur = refill.available ? 24 : 0;
+    ctx.fillStyle = "rgba(91, 199, 255, 0.26)";
+    ctx.strokeStyle = "#b9efff";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(0, -refill.radius * pulse);
+    ctx.lineTo(refill.radius * pulse, 0);
+    ctx.lineTo(0, refill.radius * pulse);
+    ctx.lineTo(-refill.radius * pulse, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.rotate(-this.elapsed * 1.7);
+    ctx.fillStyle = "#e2f9ff";
+    ctx.font = "700 11px ui-monospace, SFMono-Regular, Menlo, monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(String(refill.charges), 0, 1);
+    ctx.restore();
+  }
+
+  renderMovingObject(ctx, item) {
+    if (this.debug) {
+      ctx.save();
+      ctx.strokeStyle = "rgba(255, 190, 117, 0.48)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([7, 7]);
+      ctx.beginPath();
+      item.path.forEach((point, index) => index === 0 ? ctx.moveTo(point.x, point.y) : ctx.lineTo(point.x, point.y));
+      if (item.loopMode === "loop") ctx.closePath();
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+    if (item.objectKind === "platform") {
+      this.renderPlatform(ctx, item);
+      ctx.fillStyle = "rgba(255, 184, 106, 0.58)";
+      ctx.fillRect(item.x, item.y, item.w, 3);
+    } else if (item.objectKind === "hazard") {
+      this.renderHazard(ctx, item);
+    } else if (item.objectKind === "anchor") {
+      this.renderAnchor(ctx, item);
+    } else if (item.objectKind === "bashTarget") {
+      this.renderBashTarget(ctx, item);
+    }
   }
 
   renderBashTarget(ctx, target) {
@@ -1714,6 +2214,54 @@ class Game {
     ctx.rect(-14 * pulse, -14 * pulse, 28 * pulse, 28 * pulse);
     ctx.fill();
     ctx.stroke();
+    ctx.restore();
+  }
+
+  renderRoomEntrance(ctx, entrance) {
+    ctx.save();
+    ctx.fillStyle = "rgba(91, 217, 255, 0.08)";
+    ctx.strokeStyle = "rgba(126, 231, 255, 0.52)";
+    ctx.setLineDash([6, 6]);
+    ctx.lineWidth = 2;
+    ctx.fillRect(entrance.x, entrance.y, entrance.w, entrance.h);
+    ctx.strokeRect(entrance.x, entrance.y, entrance.w, entrance.h);
+    ctx.setLineDash([]);
+    ctx.fillStyle = "rgba(190, 244, 255, 0.8)";
+    ctx.font = "10px ui-monospace, SFMono-Regular, Menlo, monospace";
+    ctx.textAlign = "center";
+    ctx.fillText(entrance.id, entrance.x + entrance.w / 2, entrance.y - 7);
+    ctx.restore();
+  }
+
+  renderRoomExit(ctx, exit) {
+    const locked = Boolean(exit.requiredAbility && !this.abilities.has(exit.requiredAbility));
+    const direction = {
+      left: { x: -1, y: 0 },
+      right: { x: 1, y: 0 },
+      up: { x: 0, y: -1 },
+      down: { x: 0, y: 1 }
+    }[exit.direction] || { x: 1, y: 0 };
+    const centerX = exit.x + exit.w / 2;
+    const centerY = exit.y + exit.h / 2;
+    ctx.save();
+    ctx.fillStyle = locked ? "rgba(255, 105, 129, 0.1)" : "rgba(255, 218, 126, 0.08)";
+    ctx.strokeStyle = locked ? "rgba(255, 119, 143, 0.66)" : "rgba(255, 223, 137, 0.7)";
+    ctx.lineWidth = 2;
+    ctx.setLineDash([8, 7]);
+    ctx.fillRect(exit.x, exit.y, exit.w, exit.h);
+    ctx.strokeRect(exit.x, exit.y, exit.w, exit.h);
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(centerX - direction.x * 18, centerY - direction.y * 18);
+    ctx.lineTo(centerX + direction.x * 18, centerY + direction.y * 18);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(centerX + direction.x * 22, centerY + direction.y * 22);
+    ctx.lineTo(centerX + direction.x * 8 - direction.y * 8, centerY + direction.y * 8 + direction.x * 8);
+    ctx.lineTo(centerX + direction.x * 8 + direction.y * 8, centerY + direction.y * 8 - direction.x * 8);
+    ctx.closePath();
+    ctx.fillStyle = locked ? "#ff8da4" : "#ffe49a";
+    ctx.fill();
     ctx.restore();
   }
 
@@ -1932,10 +2480,19 @@ class Game {
     if (!this.player.visible) return;
     const screen = this.worldToScreen(this.player.x, this.player.y);
     const speedScreen = rotate(this.player.vx, this.player.vy, this.camera.angle);
-    const angle = Math.atan2(speedScreen.y, speedScreen.x);
-    const movingFast = length(speedScreen.x, speedScreen.y) > 450;
+    const speed = length(speedScreen.x, speedScreen.y);
+    const animation = this.player.animation;
+    const pose = computeSoftBodyPose(animation, this.player.radius);
+    const axisAngle = pose.angle + this.camera.angle;
+    const verticalExtent = Math.sqrt(
+      Math.pow(pose.longRadius * Math.sin(axisAngle), 2)
+      + Math.pow(pose.crossRadius * Math.cos(axisAngle), 2)
+    );
+    const groundedOffset = this.player.grounded
+      ? this.player.radius - verticalExtent
+      : 0;
     ctx.save();
-    ctx.translate(screen.x, screen.y);
+    ctx.translate(screen.x, screen.y + groundedOffset);
     if (this.player.wind) {
       const windScreen = rotate(this.player.wind.forceX, this.player.wind.forceY, this.camera.angle);
       const direction = normalize(windScreen.x, windScreen.y, 0, -1);
@@ -1956,12 +2513,46 @@ class Game {
       }
       ctx.restore();
     }
-    if (movingFast && !this.player.gliding) ctx.rotate(angle);
     const flash = this.player.invulnerability > 0 && Math.floor(this.player.invulnerability * 18) % 2 === 0;
     ctx.globalAlpha = flash ? 0.35 : 1;
-    const dashing = this.player.dashTimer > 0;
-    ctx.shadowColor = dashing ? "#8fdfff" : "#a8fff5";
-    ctx.shadowBlur = dashing ? 38 : movingFast ? 26 : 17;
+    const velocityForward = normalize(speedScreen.x, speedScreen.y, this.player.facing, 0);
+    const motionBlend = animation.motionTailBlend;
+    const tailOffset = rotate(animation.tailOffsetX, animation.tailOffsetY, this.camera.angle);
+    const tailVelocity = rotate(animation.tailVelocityX, animation.tailVelocityY, this.camera.angle);
+    const tailDirection = normalize(tailOffset.x, tailOffset.y, -this.player.facing, 0);
+    const perpendicular = { x: -tailDirection.y, y: tailDirection.x };
+    const tailAngle = Math.atan2(tailDirection.y, tailDirection.x);
+    const tailAxisAngle = tailAngle - axisAngle;
+    const edgeRadius = 1 / Math.sqrt(
+      Math.pow(Math.cos(tailAxisAngle) / pose.longRadius, 2)
+      + Math.pow(Math.sin(tailAxisAngle) / pose.crossRadius, 2)
+    );
+    const tailTangentSpeed = dot(
+      tailVelocity.x,
+      tailVelocity.y,
+      perpendicular.x,
+      perpendicular.y
+    );
+    const tailBend = clamp(tailTangentSpeed * 0.026, -9, 9);
+    const tailRootX = tailDirection.x * edgeRadius * 0.7;
+    const tailRootY = tailDirection.y * edgeRadius * 0.7;
+    ctx.strokeStyle = "rgba(171, 255, 247, 0.65)";
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.shadowColor = "#a8fff5";
+    ctx.shadowBlur = 11;
+    ctx.beginPath();
+    ctx.moveTo(tailRootX, tailRootY);
+    ctx.quadraticCurveTo(
+      tailRootX + (tailOffset.x - tailRootX) * 0.5 + perpendicular.x * tailBend,
+      tailRootY + (tailOffset.y - tailRootY) * 0.5 + perpendicular.y * tailBend,
+      tailOffset.x,
+      tailOffset.y
+    );
+    ctx.stroke();
+
+    ctx.shadowColor = animation.dashBlend > 0.05 ? "#8fdfff" : "#a8fff5";
+    ctx.shadowBlur = 17 + animation.dashBlend * 21 + Math.abs(animation.stretch) * 18;
     if (this.player.gliding) {
       ctx.strokeStyle = "rgba(143, 225, 255, 0.84)";
       ctx.fillStyle = "rgba(91, 181, 235, 0.16)";
@@ -1976,22 +2567,29 @@ class Game {
       ctx.fill();
       ctx.stroke();
     }
-    ctx.fillStyle = dashing ? "#dff7ff" : "#e8fffb";
+    ctx.fillStyle = "#e8fffb";
+    ctx.save();
+    ctx.rotate(axisAngle);
     ctx.beginPath();
-    ctx.ellipse(0, 0, movingFast ? 23 : 18, movingFast ? 14 : 19, 0, 0, TAU);
+    ctx.ellipse(0, 0, pose.longRadius, pose.crossRadius, 0, 0, TAU);
     ctx.fill();
+    if (animation.dashBlend > 0.01) {
+      ctx.globalAlpha *= animation.dashBlend * 0.72;
+      ctx.fillStyle = "#d8f3ff";
+      ctx.fill();
+    }
+    ctx.restore();
     ctx.shadowBlur = 0;
     ctx.fillStyle = "#2d7278";
-    const eyeX = movingFast ? 7 : this.player.facing * 6;
+    const eyeForward = normalize(
+      this.player.facing * (1 - motionBlend) + velocityForward.x * motionBlend,
+      velocityForward.y * motionBlend,
+      this.player.facing,
+      0
+    );
     ctx.beginPath();
-    ctx.arc(eyeX, -4, 2.5, 0, TAU);
+    ctx.arc(eyeForward.x * 6, -4 + eyeForward.y * 4, 2.5, 0, TAU);
     ctx.fill();
-    ctx.strokeStyle = "rgba(171, 255, 247, 0.65)";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(-10, 11);
-    ctx.quadraticCurveTo(-22, 24, -29, 12);
-    ctx.stroke();
     ctx.restore();
   }
 
@@ -2018,14 +2616,17 @@ class Game {
     if (this.abilities.has("dash")) {
       ctx.fillStyle = "rgba(208, 247, 246, 0.5)";
       ctx.fillText("DASH", 220, 46);
-      ctx.save();
-      ctx.translate(268, 64);
-      ctx.rotate(Math.PI / 4);
-      ctx.fillStyle = this.player.dashAvailable ? "#9be7ff" : "rgba(116, 195, 218, 0.15)";
-      ctx.shadowColor = "#76d9ff";
-      ctx.shadowBlur = this.player.dashAvailable ? 12 : 0;
-      ctx.fillRect(-8, -8, 16, 16);
-      ctx.restore();
+      for (let index = 0; index < this.player.maximumDashCharges; index += 1) {
+        const available = index < this.player.dashCharges;
+        ctx.save();
+        ctx.translate(278 - index * 24, 64);
+        ctx.rotate(Math.PI / 4);
+        ctx.fillStyle = available ? "#9be7ff" : "rgba(116, 195, 218, 0.15)";
+        ctx.shadowColor = "#76d9ff";
+        ctx.shadowBlur = available ? 12 : 0;
+        ctx.fillRect(-8, -8, 16, 16);
+        ctx.restore();
+      }
     }
 
     ctx.fillStyle = "rgba(208, 247, 246, 0.5)";
@@ -2054,6 +2655,17 @@ class Game {
     ctx.fillStyle = "rgba(218, 249, 248, 0.66)";
     ctx.font = "700 12px system-ui, sans-serif";
     ctx.fillText(levelDisplayName(this.level), 28, VIEWPORT.height - 26);
+
+    if (referenceRunState?.currentRoomId === this.level.id) {
+      const collection = referenceCollections.find((item) => item.id === referenceRunState.collectionId);
+      const visitedInCollection = collection
+        ? collection.roomIds.filter((roomId) => referenceRunState.visitedRooms.has(roomId)).length
+        : referenceRunState.visitedRooms.size;
+      const total = collection?.roomIds.length || "?";
+      ctx.fillStyle = "rgba(224, 203, 255, 0.78)";
+      ctx.font = "650 11px ui-monospace, SFMono-Regular, Menlo, monospace";
+      ctx.fillText(`连续路线 ${visitedInCollection}/${total} · 标记 ${referenceRunState.flags.size}`, 28, VIEWPORT.height - 46);
+    }
 
     const speed = length(this.player.vx, this.player.vy);
     ctx.textAlign = "right";
@@ -2192,7 +2804,11 @@ class Game {
       `gravity ${formatNumber(gravity.x, 2)} / ${formatNumber(gravity.y, 2)}`,
       `camera ${(this.camera.angle * 180 / Math.PI).toFixed(0)}°`,
       `render ${this.displayMetrics?.width || canvas.width}×${this.displayMetrics?.height || canvas.height}  ${this.displayMetrics?.scale.toFixed(2) || "1.00"}x`,
-      `grounded ${this.player.grounded}  rope ${this.player.rope?.phase || "—"}  dash ${this.player.dashAvailable}`,
+      `frame ${this.frameMetrics.averageFps.toFixed(1)} fps  avg ${this.frameMetrics.averageMs.toFixed(2)} ms`,
+      `p95 ${this.frameMetrics.p95Ms.toFixed(2)} ms  worst ${this.frameMetrics.worstMs.toFixed(2)} ms`,
+      `objects active ${this.debugStats.activeObjects}  drawn ${this.debugStats.renderedObjects}`,
+      `collision candidates ${this.debugStats.collisionCandidates}`,
+      `grounded ${this.player.grounded}  rope ${this.player.rope?.phase || "—"}  dash ${this.player.dashCharges}/${this.player.maximumDashCharges}`,
       `checkpoint ${this.currentCheckpoint.id}`,
       `abilities ${[...this.abilities].join(", ")}`
     ];
@@ -2243,38 +2859,631 @@ function isGodotSyncReady(level) {
 
 const input = new Input(canvas);
 const game = new Game(context, input, LEVELS);
+const referenceLevelLibrary = new ReferenceLevelLibrary();
 
-for (const level of LEVELS) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "level-button";
-  button.dataset.category = level.category;
-  if (level.category === "单项3C") button.dataset.godotReady = String(isGodotSyncReady(level));
+let customLevels = [];
+let referenceRooms = [];
+let referenceCollections = [];
+let referenceCollectionByRoom = new Map();
+let referenceRunState = null;
+let referenceLoadError = null;
+let referenceCollectionFilter = "all";
+let referenceSearch = "";
+let referencePage = 0;
+let referenceLoadAudit = { running: false, completed: 0, total: 0, entrances: 0, failures: [], elapsedMs: 0 };
+let referenceAcceptanceAudit = {
+  running: false,
+  completed: 0,
+  total: 0,
+  entranceChecks: 0,
+  checkpointResetChecks: 0,
+  connectionChecks: 0,
+  mechanismCycles: 0,
+  menuReentries: 0,
+  renderedRooms: 0,
+  peakActiveObjects: 0,
+  peakCachedDocuments: 0,
+  finalCachedDocuments: 0,
+  failures: [],
+  elapsedMs: 0
+};
+let referenceContinuousAudit = {
+  running: false,
+  collectionsCompleted: 0,
+  totalCollections: 0,
+  transitionsCompleted: 0,
+  totalTransitions: 0,
+  deaths: 0,
+  failures: [],
+  collections: [],
+  elapsedMs: 0
+};
 
-  const category = document.createElement("span");
-  category.className = "level-category";
-  category.textContent = level.category;
-  const name = document.createElement("span");
-  name.className = "level-name";
-  name.textContent = levelDisplayName(level);
-  const acceptance = document.createElement("span");
-  acceptance.className = "level-acceptance";
-  acceptance.textContent = isGodotSyncReady(level)
-    ? "Godot 同步开发已开放"
-    : "Web 验证中 · 暂不同步 Godot";
-  const summary = document.createElement("span");
-  summary.className = "level-summary";
-  summary.textContent = level.summary;
-  button.append(category, name);
-  if (level.category === "单项3C") button.append(acceptance);
-  button.append(summary);
+const REFERENCE_PAGE_SIZE = 24;
 
-  button.addEventListener("click", () => {
+function filteredReferenceRooms() {
+  const query = referenceSearch.trim().toLocaleLowerCase("zh-CN");
+  return referenceRooms.filter((room) => {
+    if (referenceCollectionFilter !== "all" && referenceCollectionByRoom.get(room.id)?.id !== referenceCollectionFilter) return false;
+    if (!query) return true;
+    return [room.id, room.localName, room.mapType, room.hierarchy?.referenceRoomId, room.hierarchy?.partitionId]
+      .filter(Boolean)
+      .some((value) => String(value).toLocaleLowerCase("zh-CN").includes(query));
+  });
+}
+
+function nextBrowserFrame() {
+  return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+}
+
+async function runReferenceLoadAudit(rooms) {
+  if (referenceLoadAudit.running || referenceAcceptanceAudit.running || referenceContinuousAudit.running || rooms.length === 0) return;
+  referenceLoadAudit = { running: true, completed: 0, total: rooms.length, entrances: 0, failures: [], elapsedMs: 0 };
+  referenceLevelLibrary.clearRoomCache();
+  renderLevelMenu();
+  const startedAt = performance.now();
+  for (const room of rooms) {
+    try {
+      const level = await referenceLevelLibrary.loadRoom(room.id);
+      for (const entrance of level.roomEntrances) {
+        game.loadLevel(level, { entranceId: entrance.id });
+        referenceLoadAudit.entrances += 1;
+      }
+      game.loadLevel(level);
+      await nextBrowserFrame();
+    } catch (error) {
+      console.error(error);
+      referenceLoadAudit.failures.push({ roomId: room.id, message: error.message });
+    }
+    referenceLoadAudit.completed += 1;
+    referenceLoadAudit.elapsedMs = performance.now() - startedAt;
+    if (referenceLoadAudit.completed % 24 === 0) renderLevelMenu();
+  }
+  game.loadLevel(LEVELS[0]);
+  referenceLevelLibrary.clearRoomCache();
+  referenceLoadAudit.running = false;
+  referenceLoadAudit.elapsedMs = performance.now() - startedAt;
+  renderLevelMenu();
+}
+
+function assertReferenceAcceptance(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
+function pointInsideLevelBounds(point, bounds, margin = 0) {
+  return point.x >= bounds.x + margin
+    && point.x <= bounds.x + bounds.w - margin
+    && point.y >= bounds.y + margin
+    && point.y <= bounds.y + bounds.h - margin;
+}
+
+function assertFiniteRuntimeState(roomId) {
+  const playerValues = [game.player.x, game.player.y, game.player.vx, game.player.vy, game.player.health, game.player.energy];
+  assertReferenceAcceptance(playerValues.every(Number.isFinite), `${roomId} 死亡重置后角色状态出现非有限数值`);
+  for (const item of game.runtime.movingObjects) {
+    assertReferenceAcceptance([item.x, item.y, item.deltaX, item.deltaY].every(Number.isFinite), `${roomId} 移动物件 ${item.id} 状态出现非有限数值`);
+  }
+  assertReferenceAcceptance(game.runtime.dashRefills.length === game.level.dashRefills.length, `${roomId} dashRefill 重置后数量变化`);
+  assertReferenceAcceptance(game.runtime.movingObjects.length === game.level.movingObjects.length, `${roomId} 移动物件重置后数量变化`);
+  assertReferenceAcceptance(game.runtime.launchers.length === game.level.launchers.length, `${roomId} 发射器重置后数量变化`);
+  assertReferenceAcceptance(game.runtime.fragilePlatforms.length === game.level.fragilePlatforms.length, `${roomId} 碎裂平台重置后数量变化`);
+  assertReferenceAcceptance(game.runtime.gates.length === game.level.gates.length, `${roomId} 门状态重置后数量变化`);
+  assertReferenceAcceptance(game.runtime.stateTriggers.length === game.level.stateTriggers.length, `${roomId} 状态触发器重置后数量变化`);
+}
+
+async function runReferenceAcceptanceAudit(rooms) {
+  if (referenceLoadAudit.running || referenceAcceptanceAudit.running || referenceContinuousAudit.running || rooms.length === 0) return;
+  referenceAcceptanceAudit = {
+    running: true,
+    completed: 0,
+    total: rooms.length,
+    entranceChecks: 0,
+    checkpointResetChecks: 0,
+    connectionChecks: 0,
+    mechanismCycles: 0,
+    menuReentries: 0,
+    renderedRooms: 0,
+    peakActiveObjects: 0,
+    peakCachedDocuments: 0,
+    finalCachedDocuments: 0,
+    failures: [],
+    elapsedMs: 0
+  };
+  referenceLevelLibrary.clearRoomCache();
+  renderLevelMenu();
+  const startedAt = performance.now();
+
+  for (const room of rooms) {
+    try {
+      const level = await referenceLevelLibrary.loadRoom(room.id);
+      assertReferenceAcceptance(level.id === room.id, `${room.id} 编译后 ID 不一致`);
+      assertReferenceAcceptance(pointInsideLevelBounds(level.spawn, level.bounds, game.player.radius), `${room.id} 默认出生超出合法边界`);
+
+      for (const entrance of level.roomEntrances) {
+        game.loadLevel(level, { entranceId: entrance.id });
+        assertReferenceAcceptance(game.player.x === entrance.spawn.x && game.player.y === entrance.spawn.y, `${room.id} 入口 ${entrance.id} 未使用声明出生点`);
+        assertReferenceAcceptance(pointInsideLevelBounds(entrance.spawn, level.bounds, game.player.radius), `${room.id} 入口 ${entrance.id} 出生超出合法边界`);
+        referenceAcceptanceAudit.entranceChecks += 1;
+      }
+
+      for (const checkpoint of level.checkpoints) {
+        game.loadLevel(level, { checkpointId: checkpoint.id });
+        assertReferenceAcceptance(game.currentCheckpoint.id === checkpoint.id, `${room.id} 检查点 ${checkpoint.id} 未被选中`);
+        assertReferenceAcceptance(pointInsideLevelBounds(checkpoint.spawn, level.bounds, game.player.radius), `${room.id} 检查点 ${checkpoint.id} 出生超出合法边界`);
+        const resetPositions = new Map(game.runtime.movingObjects
+          .filter((item) => item.resetPolicy === "death")
+          .map((item) => [item.id, { x: item.x, y: item.y }]));
+        game.runtime.exitCooldown = 999;
+        for (let step = 0; step < 60; step += 1) game.updateRuntimeItems(TUNING.fixedStep);
+        game.player.vx = 413;
+        game.player.vy = -287;
+        game.player.energy = 0;
+        game.player.dashCharges = 0;
+        game.beginRespawn("逐房验收重置");
+        for (let step = 0; step < 240 && game.player.respawnTimer > 0; step += 1) game.update(TUNING.fixedStep);
+        assertReferenceAcceptance(game.player.respawnTimer === 0, `${room.id} 检查点 ${checkpoint.id} 重生超时`);
+        assertReferenceAcceptance(game.player.x === checkpoint.spawn.x && game.player.y === checkpoint.spawn.y, `${room.id} 检查点 ${checkpoint.id} 重生位置不一致`);
+        assertReferenceAcceptance(game.player.vx === 0 && game.player.vy === 0, `${room.id} 检查点 ${checkpoint.id} 重生保留错误速度`);
+        assertReferenceAcceptance(game.player.health === TUNING.maximumHealth && game.player.energy === TUNING.maximumEnergy, `${room.id} 检查点 ${checkpoint.id} 未恢复血量或蓝量`);
+        assertReferenceAcceptance(game.player.dashCharges === game.player.maximumDashCharges, `${room.id} 检查点 ${checkpoint.id} 未恢复冲刺次数`);
+        for (const item of game.runtime.movingObjects) {
+          const expected = resetPositions.get(item.id);
+          if (!expected) continue;
+          assertReferenceAcceptance(Math.abs(item.x - expected.x) < 0.001 && Math.abs(item.y - expected.y) < 0.001, `${room.id} 移动物件 ${item.id} 未按 death 策略重置`);
+        }
+        assertFiniteRuntimeState(room.id);
+        referenceAcceptanceAudit.checkpointResetChecks += 1;
+        referenceAcceptanceAudit.mechanismCycles += 1;
+      }
+
+      for (const exit of level.roomExits) {
+        const target = await referenceLevelLibrary.loadRoom(exit.targetRoomId);
+        const targetEntrance = target.roomEntrances.find((entrance) => entrance.id === exit.targetEntranceId);
+        assertReferenceAcceptance(Boolean(targetEntrance), `${room.id} 出口 ${exit.id} 缺少目标入口 ${exit.targetEntranceId}`);
+        game.loadLevel(target, { entranceId: exit.targetEntranceId });
+        assertReferenceAcceptance(game.level.id === exit.targetRoomId, `${room.id} 出口 ${exit.id} 目标房间加载错误`);
+        assertReferenceAcceptance(game.player.x === targetEntrance.spawn.x && game.player.y === targetEntrance.spawn.y, `${room.id} 出口 ${exit.id} 目标入口出生错误`);
+        referenceAcceptanceAudit.connectionChecks += 1;
+      }
+
+      game.loadLevel(level);
+      game.render();
+      referenceAcceptanceAudit.renderedRooms += 1;
+      referenceAcceptanceAudit.peakActiveObjects = Math.max(referenceAcceptanceAudit.peakActiveObjects, game.debugStats.activeObjects);
+      referenceAcceptanceAudit.peakCachedDocuments = Math.max(referenceAcceptanceAudit.peakCachedDocuments, referenceLevelLibrary.documentCache.size);
+      game.openLevelMenu();
+      assertReferenceAcceptance(!startCard.classList.contains("is-hidden") && game.running === false, `${room.id} 返回菜单失败`);
+      referenceLevelLibrary.clearRoomCache(room.id);
+      const reentered = await referenceLevelLibrary.loadRoom(room.id);
+      game.loadLevel(reentered);
+      assertReferenceAcceptance(game.level.id === room.id, `${room.id} 清理缓存后重新进入失败`);
+      referenceAcceptanceAudit.menuReentries += 1;
+    } catch (error) {
+      console.error(error);
+      referenceAcceptanceAudit.failures.push({ roomId: room.id, message: error.message });
+    }
+    referenceAcceptanceAudit.completed += 1;
+    referenceAcceptanceAudit.elapsedMs = performance.now() - startedAt;
+    if (referenceAcceptanceAudit.completed % 24 === 0) {
+      renderLevelMenu();
+      await nextBrowserFrame();
+    }
+  }
+
+  game.loadLevel(LEVELS[0]);
+  game.openLevelMenu();
+  referenceLevelLibrary.clearRoomCache();
+  referenceAcceptanceAudit.finalCachedDocuments = referenceLevelLibrary.documentCache.size;
+  assertReferenceAcceptance(referenceAcceptanceAudit.finalCachedDocuments === 0, "逐房验收结束后参考房间缓存未清空");
+  referenceAcceptanceAudit.running = false;
+  referenceAcceptanceAudit.elapsedMs = performance.now() - startedAt;
+  renderLevelMenu();
+}
+
+function waitForRoomTransition(targetRoomId, attempts = 120) {
+  return new Promise((resolve, reject) => {
+    let remaining = attempts;
+    const check = () => {
+      if (game.level.id === targetRoomId) {
+        resolve();
+        return;
+      }
+      remaining -= 1;
+      if (remaining <= 0) {
+        reject(new Error(`切房超时：${game.level.id} -> ${targetRoomId}`));
+        return;
+      }
+      setTimeout(check, 0);
+    };
+    check();
+  });
+}
+
+async function autoplaySequentialExit(targetRoomId, maximumSteps = 4200) {
+  const sourceRoomId = game.level.id;
+  const sequentialExit = (game.level.roomExits || []).find((exit) => exit.targetRoomId === targetRoomId);
+  if (!sequentialExit) throw new Error(`${sourceRoomId} 缺少到 ${targetRoomId} 的顺序出口`);
+  game.running = false;
+  game.paused = false;
+  game.runtime.exitCooldown = Math.min(game.runtime.exitCooldown, 0.05);
+  let deaths = 0;
+  let respawning = false;
+  let furthestX = game.player.x;
+  let previousX = game.player.x;
+  let stagnantSteps = 0;
+  for (let step = 0; step < maximumSteps; step += 1) {
+    applyRightwardReferenceAutoplayInput(input, game.player, step, { stagnantSteps });
+    game.update(TUNING.fixedStep);
+    input.finishSimulationStep();
+    stagnantSteps = game.player.x > previousX + 0.25 ? 0 : stagnantSteps + 1;
+    previousX = game.player.x;
+    furthestX = Math.max(furthestX, game.player.x);
+    if (game.player.respawnTimer > 0 && !respawning) deaths += 1;
+    respawning = game.player.respawnTimer > 0;
+    if (game.runtime.transitioning) {
+      clearReferenceAutoplayInput(input);
+      await waitForRoomTransition(targetRoomId);
+      game.running = false;
+      return { sourceRoomId, targetRoomId, steps: step + 1, deaths, furthestX };
+    }
+    if (step > 0 && step % 720 === 0) await nextBrowserFrame();
+  }
+  clearReferenceAutoplayInput(input);
+  throw new Error(`${sourceRoomId} 在 ${maximumSteps} 个固定步内未到达 ${targetRoomId}；最远 x=${furthestX.toFixed(1)}，死亡 ${deaths}`);
+}
+
+async function runReferenceContinuousAudit(collections) {
+  if (referenceContinuousAudit.running || referenceLoadAudit.running || referenceAcceptanceAudit.running || collections.length === 0) return;
+  const totalTransitions = collections.reduce((sum, collection) => sum + Math.max(0, collection.roomIds.length - 1), 0);
+  referenceContinuousAudit = {
+    running: true,
+    collectionsCompleted: 0,
+    totalCollections: collections.length,
+    transitionsCompleted: 0,
+    totalTransitions,
+    deaths: 0,
+    failures: [],
+    collections: [],
+    elapsedMs: 0
+  };
+  const startedAt = performance.now();
+  renderLevelMenu();
+  for (const collection of collections) {
+    const collectionResult = { collectionId: collection.id, transitions: 0, deaths: 0, passed: false };
+    try {
+      await startReferenceRoom(collection.roomIds[0], { collectionId: collection.id, newRun: true });
+      game.running = false;
+      for (let index = 0; index < collection.roomIds.length - 1; index += 1) {
+        const result = await autoplaySequentialExit(collection.roomIds[index + 1]);
+        collectionResult.transitions += 1;
+        collectionResult.deaths += result.deaths;
+        referenceContinuousAudit.transitionsCompleted += 1;
+        referenceContinuousAudit.deaths += result.deaths;
+      }
+      collectionResult.passed = true;
+      referenceContinuousAudit.collectionsCompleted += 1;
+    } catch (error) {
+      console.error(error);
+      referenceContinuousAudit.failures.push({
+        collectionId: collection.id,
+        roomId: game.level.id,
+        message: error.message
+      });
+    }
+    referenceContinuousAudit.collections.push(collectionResult);
+    referenceContinuousAudit.elapsedMs = performance.now() - startedAt;
+    renderLevelMenu();
+    await nextBrowserFrame();
+  }
+  clearReferenceAutoplayInput(input);
+  game.openLevelMenu();
+  referenceContinuousAudit.running = false;
+  referenceContinuousAudit.elapsedMs = performance.now() - startedAt;
+  renderLevelMenu();
+}
+
+function createReferenceMenuTools(filteredCount, pageCount) {
+  const tools = document.createElement("div");
+  tools.className = "reference-menu-tools";
+
+  const label = document.createElement("strong");
+  label.textContent = `参考白盒库 · ${filteredCount}/${referenceRooms.length}`;
+
+  const collection = document.createElement("select");
+  collection.className = "reference-collection-filter";
+  collection.setAttribute("aria-label", "按章节、Side 或区域筛选参考白盒");
+  const allOption = document.createElement("option");
+  allOption.value = "all";
+  allOption.textContent = `全部章节与区域（${referenceRooms.length}）`;
+  collection.append(allOption);
+  for (const item of referenceCollections) {
+    const option = document.createElement("option");
+    option.value = item.id;
+    option.textContent = `${item.localName}（${item.roomIds.length}）`;
+    collection.append(option);
+  }
+  collection.value = referenceCollectionFilter;
+  collection.addEventListener("change", () => {
+    referenceCollectionFilter = collection.value;
+    referencePage = 0;
+    renderLevelMenu();
+  });
+
+  const search = document.createElement("input");
+  search.className = "reference-room-search";
+  search.type = "search";
+  search.placeholder = "搜索本地名、稳定 ID、房间 ID…";
+  search.setAttribute("aria-label", "搜索参考白盒房间");
+  search.value = referenceSearch;
+  search.addEventListener("input", () => {
+    referenceSearch = search.value;
+    referencePage = 0;
+    renderLevelMenu();
+    const replacement = levelGrid.querySelector(".reference-room-search");
+    if (replacement) {
+      replacement.focus();
+      replacement.setSelectionRange(referenceSearch.length, referenceSearch.length);
+    }
+  });
+
+  const pagination = document.createElement("div");
+  pagination.className = "reference-pagination";
+  const previous = document.createElement("button");
+  previous.type = "button";
+  previous.textContent = "上一页";
+  previous.disabled = referencePage <= 0;
+  previous.addEventListener("click", () => {
+    referencePage = Math.max(0, referencePage - 1);
+    renderLevelMenu();
+  });
+  const page = document.createElement("span");
+  page.setAttribute("aria-live", "polite");
+  page.textContent = `${Math.min(referencePage + 1, Math.max(1, pageCount))} / ${Math.max(1, pageCount)}`;
+  const next = document.createElement("button");
+  next.type = "button";
+  next.textContent = "下一页";
+  next.disabled = referencePage >= pageCount - 1;
+  next.addEventListener("click", () => {
+    referencePage = Math.min(Math.max(0, pageCount - 1), referencePage + 1);
+    renderLevelMenu();
+  });
+  pagination.append(previous, page, next);
+  const audit = document.createElement("button");
+  audit.type = "button";
+  audit.className = "reference-load-audit";
+  audit.disabled = referenceLoadAudit.running || referenceAcceptanceAudit.running || referenceContinuousAudit.running;
+  audit.title = "逐房验证本地获取、编译、运行时初始化与一帧绘制；不等于可玩性或连续通关验收。";
+  if (referenceLoadAudit.running) {
+    audit.textContent = `加载审计 ${referenceLoadAudit.completed}/${referenceLoadAudit.total}`;
+  } else if (referenceLoadAudit.total > 0) {
+    const seconds = (referenceLoadAudit.elapsedMs / 1000).toFixed(1);
+    audit.textContent = referenceLoadAudit.failures.length === 0
+      ? `加载通过 ${referenceLoadAudit.completed}/${referenceLoadAudit.total} · ${referenceLoadAudit.entrances} 入口 · ${seconds}s`
+      : `加载失败 ${referenceLoadAudit.failures.length}/${referenceLoadAudit.total}`;
+  } else {
+    audit.textContent = "浏览器加载审计";
+  }
+  audit.addEventListener("click", () => runReferenceLoadAudit(filteredReferenceRooms()));
+  const acceptanceAudit = document.createElement("button");
+  acceptanceAudit.type = "button";
+  acceptanceAudit.className = "reference-acceptance-audit";
+  acceptanceAudit.disabled = referenceLoadAudit.running || referenceAcceptanceAudit.running || referenceContinuousAudit.running;
+  acceptanceAudit.title = "逐房验证入口、检查点死亡重置、机关状态数值、全部出口目标入口、渲染、返回菜单与清缓存重进；主路线通关另由连续审计证明。";
+  if (referenceAcceptanceAudit.running) {
+    acceptanceAudit.textContent = `逐房综合验收 ${referenceAcceptanceAudit.completed}/${referenceAcceptanceAudit.total}`;
+  } else if (referenceAcceptanceAudit.total > 0) {
+    const seconds = (referenceAcceptanceAudit.elapsedMs / 1000).toFixed(1);
+    acceptanceAudit.textContent = referenceAcceptanceAudit.failures.length === 0
+      ? `逐房验收通过 ${referenceAcceptanceAudit.completed}/${referenceAcceptanceAudit.total} · ${referenceAcceptanceAudit.entranceChecks} 入口 · ${referenceAcceptanceAudit.checkpointResetChecks} 重置 · ${referenceAcceptanceAudit.connectionChecks} 连接 · ${referenceAcceptanceAudit.menuReentries} 重进 · 峰值 ${referenceAcceptanceAudit.peakActiveObjects} 物件 · 缓存 ${referenceAcceptanceAudit.finalCachedDocuments} · ${seconds}s`
+      : `逐房验收失败 ${referenceAcceptanceAudit.failures.length}/${referenceAcceptanceAudit.total}`;
+  } else {
+    acceptanceAudit.textContent = "浏览器逐房综合验收";
+  }
+  acceptanceAudit.addEventListener("click", () => runReferenceAcceptanceAudit(referenceRooms));
+  const continuousAudit = document.createElement("button");
+  continuousAudit.type = "button";
+  continuousAudit.className = "reference-continuous-audit";
+  continuousAudit.disabled = referenceLoadAudit.running || referenceAcceptanceAudit.running || referenceContinuousAudit.running;
+  continuousAudit.title = "用真实移动、跳跃、冲刺、碰撞、死亡重置和切房处理器自动跑完 44 个集合的顺序主路线；不代替全部支路或保真验收。";
+  if (referenceContinuousAudit.running) {
+    continuousAudit.textContent = `自动主路线 ${referenceContinuousAudit.collections.length}/${referenceContinuousAudit.totalCollections} · ${referenceContinuousAudit.transitionsCompleted}/${referenceContinuousAudit.totalTransitions}`;
+  } else if (referenceContinuousAudit.totalCollections > 0) {
+    const seconds = (referenceContinuousAudit.elapsedMs / 1000).toFixed(1);
+    continuousAudit.textContent = referenceContinuousAudit.failures.length === 0
+      ? `自动主路线通过 ${referenceContinuousAudit.collectionsCompleted}/${referenceContinuousAudit.totalCollections} · ${referenceContinuousAudit.transitionsCompleted} 转场 · ${referenceContinuousAudit.deaths} 重置 · ${seconds}s`
+      : `自动主路线失败 ${referenceContinuousAudit.failures.length}/${referenceContinuousAudit.totalCollections}`;
+  } else {
+    continuousAudit.textContent = "自动连续验收全部主路线";
+  }
+  continuousAudit.addEventListener("click", () => runReferenceContinuousAudit(referenceCollections));
+  const continuousStart = document.createElement("button");
+  continuousStart.type = "button";
+  continuousStart.className = "reference-continuous-start";
+  const selectedCollection = referenceCollections.find((item) => item.id === referenceCollectionFilter);
+  continuousStart.disabled = !selectedCollection || referenceLoadAudit.running || referenceAcceptanceAudit.running || referenceContinuousAudit.running;
+  continuousStart.textContent = selectedCollection ? "从首房连续开始" : "选择集合后连续试玩";
+  continuousStart.title = "从所选 Side 或 Ori 区域的首房开始，切房时保留能力、世界标记和访问记录。";
+  continuousStart.addEventListener("click", async () => {
+    if (!selectedCollection) return;
+    await startReferenceRoom(selectedCollection.roomIds[0], { collectionId: selectedCollection.id, newRun: true });
+  });
+  tools.append(label, collection, search, pagination, continuousStart, audit, acceptanceAudit, continuousAudit);
+  return tools;
+}
+
+function renderLevelMenu() {
+  levelGrid.replaceChildren();
+  for (const level of [...LEVELS, ...customLevels]) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "level-button";
+    button.dataset.category = level.category;
+    if (level.category === "单项3C") button.dataset.godotReady = String(isGodotSyncReady(level));
+
+    const category = document.createElement("span");
+    category.className = "level-category";
+    category.textContent = level.category;
+    const name = document.createElement("span");
+    name.className = "level-name";
+    name.textContent = levelDisplayName(level);
+    const acceptance = document.createElement("span");
+    acceptance.className = "level-acceptance";
+    acceptance.textContent = isGodotSyncReady(level)
+      ? "Godot 同步开发已开放"
+      : "Web 验证中 · 暂不同步 Godot";
+    const summary = document.createElement("span");
+    summary.className = "level-summary";
+    summary.textContent = level.summary;
+    button.append(category, name);
+    if (level.category === "单项3C") button.append(acceptance);
+    button.append(summary);
+
+    button.addEventListener("click", () => {
+      startCard.classList.add("is-hidden");
+      canvas.focus();
+      game.start(level);
+    });
+    levelGrid.append(button);
+  }
+  if (referenceRooms.length > 0) {
+    const filtered = filteredReferenceRooms();
+    const pageCount = Math.max(1, Math.ceil(filtered.length / REFERENCE_PAGE_SIZE));
+    referencePage = Math.min(referencePage, pageCount - 1);
+    levelGrid.append(createReferenceMenuTools(filtered.length, pageCount));
+  }
+  const filtered = filteredReferenceRooms();
+  const visibleReferenceRooms = filtered.slice(referencePage * REFERENCE_PAGE_SIZE, (referencePage + 1) * REFERENCE_PAGE_SIZE);
+  for (const room of visibleReferenceRooms) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "level-button";
+    button.dataset.category = "参考白盒";
+    const category = document.createElement("span");
+    category.className = "level-category";
+    category.textContent = room.game === "celeste" ? "CELESTE 白盒" : "ORI DE 白盒";
+    const name = document.createElement("span");
+    name.className = "level-name";
+    name.textContent = room.localName;
+    const summary = document.createElement("span");
+    summary.className = "level-summary";
+    summary.textContent = `${room.mapType} · ${room.status.playable} · 按需加载本地 JSON`;
+    button.append(category, name, summary);
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      try {
+        const collection = referenceCollectionByRoom.get(room.id);
+        await startReferenceRoom(room.id, { collectionId: collection?.id, newRun: true });
+      } catch (error) {
+        console.error(error);
+        referenceLoadError = error.message;
+        renderLevelMenu();
+      } finally {
+        button.disabled = false;
+      }
+    });
+    levelGrid.append(button);
+  }
+  if (referenceLoadError) {
+    const errorCard = document.createElement("button");
+    errorCard.type = "button";
+    errorCard.className = "level-button";
+    errorCard.dataset.category = "参考白盒";
+    errorCard.disabled = true;
+    const category = document.createElement("span");
+    category.className = "level-category";
+    category.textContent = "参考库加载失败";
+    const summary = document.createElement("span");
+    summary.className = "level-summary";
+    summary.textContent = referenceLoadError;
+    errorCard.append(category, summary);
+    levelGrid.append(errorCard);
+  }
+  if (referenceRooms.length > 0 && visibleReferenceRooms.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "reference-empty-state";
+    empty.textContent = "没有匹配的参考白盒；可清空搜索或切换章节/区域。";
+    levelGrid.append(empty);
+  }
+}
+
+const levelEditor = createLevelEditor({
+  root: levelEditorRoot,
+  sourceLevels: LEVELS,
+  onPlay(level) {
+    levelEditor.close();
     startCard.classList.add("is-hidden");
     canvas.focus();
     game.start(level);
+  },
+  onSavedLevelsChange(levels) {
+    customLevels = levels;
+    renderLevelMenu();
+  }
+});
+
+async function startReferenceRoom(roomId, { collectionId = null, entranceId = null, newRun = false } = {}) {
+  const documentData = await referenceLevelLibrary.loadRoomDocument(roomId);
+  const level = await referenceLevelLibrary.loadRoom(roomId);
+  levelEditor.addSourceDocuments([documentData]);
+  if (newRun || !referenceRunState) {
+    referenceRunState = new ReferenceRunState(collectionId || "reference.unassigned", roomId, {
+      abilities: level.startingAbilities
+    });
+  } else {
+    for (const abilityId of game.abilities) referenceRunState.recordAbility(abilityId);
+    referenceRunState.replaceFlags(game.runtime.flags);
+    referenceRunState.enterRoom(roomId, entranceId);
+  }
+  startCard.classList.add("is-hidden");
+  canvas.focus();
+  game.start(level, {
+    entranceId,
+    abilities: newRun ? level.startingAbilities : [...referenceRunState.abilities],
+    flags: newRun ? [] : [...referenceRunState.flags],
+    checkpointId: newRun ? null : referenceRunState.checkpoints.get(roomId) || null
   });
-  levelGrid.append(button);
 }
 
+game.setRoomExitHandler(async (exit) => {
+  if (referenceRunState && game.currentCheckpoint?.id) {
+    referenceRunState.recordCheckpoint(game.level.id, game.currentCheckpoint.id);
+  }
+  const target = referenceLevelLibrary.roomMetadata(exit.targetRoomId);
+  if (!target) {
+    game.runtime.transitioning = false;
+    game.runtime.exitCooldown = 1;
+    game.showToast("目标房间尚未进入当前制作批次", 1.5, "warning");
+    return;
+  }
+  await startReferenceRoom(exit.targetRoomId, {
+    collectionId: referenceRunState?.collectionId,
+    entranceId: exit.targetEntranceId,
+    newRun: false
+  });
+});
+
+openLevelEditorButton.addEventListener("click", () => levelEditor.open());
+renderLevelMenu();
+
+referenceLevelLibrary.loadIndex()
+  .then((index) => {
+    referenceCollections = index.collections;
+    referenceRooms = Object.values(index.rooms);
+    referenceCollectionByRoom = new Map(referenceCollections.flatMap((collection) => collection.roomIds.map((roomId) => [roomId, collection])));
+    referenceLoadError = null;
+    renderLevelMenu();
+  })
+  .catch((error) => {
+    console.error(error);
+    referenceLoadError = error.message;
+    renderLevelMenu();
+  });
+
 window.cablester = game;
+window.cablesterReference = {
+  library: referenceLevelLibrary,
+  get runState() { return referenceRunState?.snapshot() || null; },
+  get loadAudit() { return structuredClone(referenceLoadAudit); },
+  get acceptanceAudit() { return structuredClone(referenceAcceptanceAudit); },
+  get continuousAudit() { return structuredClone(referenceContinuousAudit); }
+};

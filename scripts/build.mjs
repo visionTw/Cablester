@@ -9,11 +9,18 @@ const server = resolve(dist, "server");
 await rm(dist, { recursive: true, force: true });
 await mkdir(client, { recursive: true });
 await mkdir(server, { recursive: true });
+await mkdir(resolve(dist, ".openai"), { recursive: true });
 
 await Promise.all([
   cp(resolve(root, "index.html"), resolve(client, "index.html")),
   cp(resolve(root, "styles.css"), resolve(client, "styles.css")),
+  cp(resolve(root, "og.png"), resolve(client, "og.png")),
   cp(resolve(root, "src"), resolve(client, "src"), { recursive: true }),
+  cp(resolve(root, "levels"), resolve(client, "levels"), { recursive: true }),
+  cp(
+    resolve(root, ".openai", "hosting.json"),
+    resolve(dist, ".openai", "hosting.json"),
+  ),
 ]);
 
 await writeFile(
@@ -22,7 +29,12 @@ await writeFile(
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/") url.pathname = "/index.html";
-    return env.ASSETS.fetch(new Request(url, request));
+    const response = await env.ASSETS.fetch(new Request(url, request));
+    if (url.pathname !== "/index.html" || !response.ok) return response;
+    const headers = new Headers(response.headers);
+    headers.delete("content-length");
+    const html = (await response.text()).replaceAll("__SITE_ORIGIN__", url.origin);
+    return new Response(html, { status: response.status, headers });
   },
 };
 
@@ -43,4 +55,4 @@ await writeFile(
   })}\n`,
 );
 
-console.log("Cablester web build created in dist/.");
+console.log("Cablester Sites build created in dist/.");

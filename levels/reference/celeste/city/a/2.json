@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "id": "celeste.city.a.2",
+    "name": "废城起步 · A · ST-1-02",
+    "category": "参考白盒",
+    "summary": "通过弹簧等价跳台和阶梯平台把路线从水平移动转为右上攀升。",
+    "mode": "reference-room"
+  },
+  "bounds": { "x": 0, "y": 0, "w": 1280, "h": 720 },
+  "dashCapacity": 1,
+  "startingAbilities": ["wallGrab", "dash"],
+  "reference": {
+    "manifestId": "celeste.city.a.2",
+    "intent": "在安全落点之间引入更明显的垂直位移。",
+    "cablesterMapping": "以紧凑阶梯、冲刺和已数据化 launcher 等价弹簧建立右上动线。",
+    "dimensionAdjustments": "加宽入口落点，保留右上出口与左下入口关系。",
+    "mainRoute": "左下入口 → 中央阶梯 → 右上出口。",
+    "speedRoute": "从入口斜向冲刺接上层平台。",
+    "knownDifferences": ["launcher 的力度与触发范围仍是白盒参数。", "候选收集支路只保留拓扑出口，奖励规则不复制。"]
+  },
+  "statePolicy": { "deathReset": "room", "checkpointReset": "room", "offscreen": "pause-local" },
+  "objects": [
+    { "id": "entry-floor", "type": "platform", "position": { "x": 0, "y": 610 }, "properties": { "w": 330, "h": 110 } },
+    { "id": "step-a", "type": "platform", "position": { "x": 420, "y": 535 }, "properties": { "w": 150, "h": 185 } },
+    { "id": "step-b", "type": "platform", "position": { "x": 660, "y": 440 }, "properties": { "w": 160, "h": 280 } },
+    { "id": "step-c", "type": "platform", "position": { "x": 920, "y": 345 }, "properties": { "w": 360, "h": 375 } },
+    { "id": "lower-pit", "type": "hazard", "position": { "x": 330, "y": 680 }, "properties": { "w": 590, "h": 40, "damage": 1, "direction": "up" } },
+    { "id": "dash-refill-mid", "type": "dashRefill", "position": { "x": 285, "y": 555 }, "properties": { "radius": 20, "charges": 1, "restoreMode": "fill", "oneUse": false, "respawnSeconds": 2.5, "resetOnDeath": true } },
+    { "id": "spring-equivalent", "type": "launcher", "position": { "x": 540, "y": 507 }, "properties": { "w": 72, "h": 28, "launchX": 520, "launchY": -920, "cooldownSeconds": 0.35, "preserveMomentum": false } },
+    { "id": "spawn", "type": "spawn", "position": { "x": 110, "y": 560 }, "properties": {} },
+    { "id": "cp-main", "type": "checkpoint", "position": { "x": 55, "y": 520 }, "properties": { "w": 90, "h": 90, "spawnOffsetX": 55, "spawnOffsetY": 40 } },
+    { "id": "entry-west", "type": "roomEntrance", "position": { "x": 20, "y": 490 }, "properties": { "w": 90, "h": 120, "spawnOffsetX": 90, "spawnOffsetY": 70, "facing": "right", "sourceRoomId": "celeste.city.a.1" } },
+    { "id": "entry-north", "type": "roomEntrance", "position": { "x": 1050, "y": 225 }, "properties": { "w": 90, "h": 120, "spawnOffsetX": -30, "spawnOffsetY": 85, "facing": "left", "sourceRoomId": "celeste.city.a.3" } },
+    { "id": "exit-west", "type": "roomExit", "position": { "x": 0, "y": 490 }, "properties": { "w": 55, "h": 120, "targetRoomId": "celeste.city.a.1", "targetEntranceId": "entry-east", "direction": "left", "exitKind": "return", "requiredAbility": "", "oneWay": false } },
+    { "id": "exit-north", "type": "roomExit", "position": { "x": 1110, "y": 80 }, "properties": { "w": 120, "h": 560, "targetRoomId": "celeste.city.a.3", "targetEntranceId": "entry-south", "direction": "up", "exitKind": "main", "requiredAbility": "", "oneWay": false } },
+    { "id": "route-note", "type": "sign", "position": { "x": 560, "y": 490 }, "properties": { "text": "白盒 ST-02 · 向右上攀升" } },
+    { "id": "glow-two", "type": "backgroundSeed", "position": { "x": 820, "y": 220 }, "properties": { "size": 170 } }
+  ]
+}

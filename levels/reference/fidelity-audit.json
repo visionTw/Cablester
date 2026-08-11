@@ -1,0 +1,875 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-09T16:52:16.412Z",
+  "policy": "Gap audit only; does not upgrade validation status.",
+  "contentFingerprint": {
+    "algorithm": "sha256",
+    "value": "848fda18e100da288c8aa66f0a9970bb06c4aebd200c1fd2d21d881576b4eb8c",
+    "fileCount": 926,
+    "roomFileCount": 908,
+    "runtimeFileCount": 18
+  },
+  "totals": {
+    "entries": 908,
+    "handAuthored": 15,
+    "catalogGenerated": 893,
+    "automationPassed": 908,
+    "browserPassed": 908,
+    "validated": 908,
+    "continuousRunPassed": 908,
+    "celesteEntries": 804,
+    "celesteLayoutSignals": 804,
+    "oriEntries": 104,
+    "mechanismUses": 7114,
+    "mappedMechanismUses": 7114,
+    "mappedObjectPresent": 7114
+  },
+  "unmappedMechanisms": [],
+  "missingMappedObjects": [],
+  "mechanismMappings": [
+    {
+      "mechanism": "dash-refill",
+      "entries": 792,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "dashRefill"
+    },
+    {
+      "mechanism": "dash",
+      "entries": 619,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "seeker",
+      "entries": 239,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "bashTarget"
+    },
+    {
+      "mechanism": "feather",
+      "entries": 221,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "dust-hazard",
+      "entries": 218,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "key-door",
+      "entries": 205,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "bubble-launcher",
+      "entries": 197,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "launcher"
+    },
+    {
+      "mechanism": "wind",
+      "entries": 197,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "windZone"
+    },
+    {
+      "mechanism": "dream-block",
+      "entries": 191,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "double-dash",
+      "entries": 175,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "dashCapacity"
+    },
+    {
+      "mechanism": "moving-block",
+      "entries": 136,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "breakable-wall",
+      "entries": 127,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "fragilePlatform"
+    },
+    {
+      "mechanism": "checkpoint-flags",
+      "entries": 127,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "checkpoint"
+    },
+    {
+      "mechanism": "carry-object",
+      "entries": 121,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "darkness",
+      "entries": 119,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "darknessZone"
+    },
+    {
+      "mechanism": "moving-hazard",
+      "entries": 115,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "dash-switch",
+      "entries": 113,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "red-bubble",
+      "entries": 113,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "launcher"
+    },
+    {
+      "mechanism": "torch-switch",
+      "entries": 113,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "electric-barrier",
+      "entries": 109,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "endurance-room",
+      "entries": 109,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "jellyfish-glide",
+      "entries": 109,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "puffer-launch",
+      "entries": 109,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "bashTarget"
+    },
+    {
+      "mechanism": "wall-bounce-equivalent",
+      "entries": 109,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "wavedash-equivalent",
+      "entries": 109,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "one-way-route",
+      "entries": 99,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "badeline-orb",
+      "entries": 95,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "launcher"
+    },
+    {
+      "mechanism": "boss-pursuit",
+      "entries": 95,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "bumper",
+      "entries": 95,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "launcher"
+    },
+    {
+      "mechanism": "falling-route",
+      "entries": 95,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "kevin-block",
+      "entries": 95,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "clutter-switch",
+      "entries": 92,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "moving-dust",
+      "entries": 92,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "vertical-shaft",
+      "entries": 92,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "hidden-route",
+      "entries": 74,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "cloud-platform",
+      "entries": 71,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "fragilePlatform"
+    },
+    {
+      "mechanism": "snowball",
+      "entries": 71,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "conveyor",
+      "entries": 66,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "windZone"
+    },
+    {
+      "mechanism": "core-block",
+      "entries": 66,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "dash-state-rule",
+      "entries": 66,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "hot-cold-toggle",
+      "entries": 66,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "lava-ice-hazard",
+      "entries": 66,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "liquidZone"
+    },
+    {
+      "mechanism": "badeline-chase",
+      "entries": 65,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "seed-route",
+      "entries": 65,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "spikes",
+      "entries": 57,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "falling-platform",
+      "entries": 53,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "fragilePlatform"
+    },
+    {
+      "mechanism": "traffic-block",
+      "entries": 52,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "crumble-platform",
+      "entries": 50,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "fragilePlatform"
+    },
+    {
+      "mechanism": "spring",
+      "entries": 50,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "launcher"
+    },
+    {
+      "mechanism": "projectile-bash",
+      "entries": 49,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "bashTarget"
+    },
+    {
+      "mechanism": "return-route",
+      "entries": 38,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "moving-platform",
+      "entries": 27,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "ability-gate",
+      "entries": 23,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "escape-autoscroll",
+      "entries": 20,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "rising-liquid",
+      "entries": 20,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "liquidZone"
+    },
+    {
+      "mechanism": "one-way-state-change",
+      "entries": 16,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "central-hub",
+      "entries": 13,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "light-burst-lantern",
+      "entries": 13,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "anchor"
+    },
+    {
+      "mechanism": "vertical-ascent",
+      "entries": 13,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "falling-hazard",
+      "entries": 12,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "lava",
+      "entries": 12,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "liquidZone"
+    },
+    {
+      "mechanism": "stomp-floor",
+      "entries": 12,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "fragilePlatform"
+    },
+    {
+      "mechanism": "switch-chamber",
+      "entries": 12,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "branching-route",
+      "entries": 10,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "pursuit",
+      "entries": 9,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "crush-hazard",
+      "entries": 8,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "escape-sequence",
+      "entries": 8,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "gravity-field",
+      "entries": 8,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "windZone"
+    },
+    {
+      "mechanism": "laser",
+      "entries": 8,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "portal",
+      "entries": 8,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "projectile-hazard",
+      "entries": 8,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "safe-exploration",
+      "entries": 8,
+      "games": [
+        "Celeste",
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "key-gate",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "key-item",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "one-way-exit",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "reconfiguring-map",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "rotationTrigger"
+    },
+    {
+      "mechanism": "return-shortcut",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "trap-bridge",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "fragilePlatform"
+    },
+    {
+      "mechanism": "updraft",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "windZone"
+    },
+    {
+      "mechanism": "vertical-climb",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "vertical-descent",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "water-state",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "liquidZone"
+    },
+    {
+      "mechanism": "world-state-change",
+      "entries": 7,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "basic-movement",
+      "entries": 6,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "bridge-collapse",
+      "entries": 6,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "fragilePlatform"
+    },
+    {
+      "mechanism": "glide",
+      "entries": 6,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "jump",
+      "entries": 6,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "lantern-switch",
+      "entries": 6,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "light-orb-escort",
+      "entries": 6,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "energyOrb"
+    },
+    {
+      "mechanism": "poison-water",
+      "entries": 6,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "liquidZone"
+    },
+    {
+      "mechanism": "pushable-boulder",
+      "entries": 6,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "movingObject"
+    },
+    {
+      "mechanism": "scripted-dash-grant",
+      "entries": 6,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "strong-wind",
+      "entries": 6,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "windZone"
+    },
+    {
+      "mechanism": "ability-pickup",
+      "entries": 5,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "clean-water-state",
+      "entries": 5,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "liquidZone"
+    },
+    {
+      "mechanism": "map-stone",
+      "entries": 5,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "rotating-hazard",
+      "entries": 5,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "chase",
+      "entries": 4,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "hazard"
+    },
+    {
+      "mechanism": "future-challenge-rule",
+      "entries": 4,
+      "games": [
+        "Celeste"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "switch-door",
+      "entries": 4,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "prologue-movement",
+      "entries": 3,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "ability"
+    },
+    {
+      "mechanism": "scripted-world-state",
+      "entries": 3,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    },
+    {
+      "mechanism": "stealth-cover",
+      "entries": 3,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "connection-layout"
+    },
+    {
+      "mechanism": "spirit-gate",
+      "entries": 1,
+      "games": [
+        "Ori DE"
+      ],
+      "mapping": "gate-state"
+    }
+  ]
+}

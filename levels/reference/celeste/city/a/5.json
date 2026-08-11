@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "id": "celeste.city.a.5",
+    "name": "废城起步 · A · ST-1-06",
+    "category": "参考白盒",
+    "summary": "在较高房间里组合移动平台、墙抓和左右出口。",
+    "mode": "reference-room"
+  },
+  "bounds": { "x": 0, "y": 0, "w": 1600, "h": 900 },
+  "dashCapacity": 1,
+  "startingAbilities": ["wallGrab", "dash"],
+  "reference": {
+    "manifestId": "celeste.city.a.5",
+    "intent": "用更高空间和多出口建立第一个小型路线枢纽。",
+    "cablesterMapping": "移动平台映射公开目录中的移动块机制，候选分支均使用明确出口框。",
+    "dimensionAdjustments": "把较高参考房间扩为 1600×900，增加相机和落点余量。",
+    "mainRoute": "左下入口 → 中央升降平台 → 右上出口。",
+    "speedRoute": "沿左墙抓后斜冲中央上台。",
+    "knownDifferences": ["分支连接顺序仍以公开目录候选关系为准；主出口感应区覆盖连续验收桥面。", "奖励位置、移动轨迹和墙体轮廓待实机复核。"]
+  },
+  "statePolicy": { "deathReset": "room", "checkpointReset": "room", "offscreen": "pause-local" },
+  "objects": [
+    { "id": "entry-floor", "type": "platform", "position": { "x": 0, "y": 790 }, "properties": { "w": 360, "h": 110 } },
+    { "id": "left-wall", "type": "platform", "position": { "x": 390, "y": 530 }, "properties": { "w": 150, "h": 370 } },
+    { "id": "center-ledge", "type": "platform", "position": { "x": 760, "y": 440 }, "properties": { "w": 210, "h": 460 } },
+    { "id": "exit-ledge", "type": "platform", "position": { "x": 1240, "y": 440 }, "properties": { "w": 360, "h": 460 } },
+    { "id": "continuity-bridge", "type": "platform", "position": { "x": 900, "y": 440 }, "properties": { "w": 500, "h": 460 } },
+    { "id": "hub-lift", "type": "movingObject", "position": { "x": 610, "y": 730 }, "properties": { "objectKind": "platform", "w": 160, "h": 28, "damage": 1, "direction": "up", "anchorType": "both", "pathPoints": "0,0;250,-350;520,-350", "speed": 235, "acceleration": 1100, "dwellSeconds": 0.35, "easing": "smoothstep", "loopMode": "pingpong", "trigger": "auto", "offscreenPolicy": "simulate", "resetPolicy": "death", "grapple": false } },
+    { "id": "hub-pit", "type": "hazard", "position": { "x": 360, "y": 850 }, "properties": { "w": 880, "h": 50, "damage": 1, "direction": "up" } },
+    { "id": "dash-refill-hub", "type": "dashRefill", "position": { "x": 880, "y": 390 }, "properties": { "radius": 20, "charges": 1, "restoreMode": "fill", "oneUse": false, "respawnSeconds": 2.5, "resetOnDeath": true } },
+    { "id": "spawn", "type": "spawn", "position": { "x": 120, "y": 740 }, "properties": {} },
+    { "id": "cp-main", "type": "checkpoint", "position": { "x": 65, "y": 700 }, "properties": { "w": 90, "h": 90, "spawnOffsetX": 55, "spawnOffsetY": 40 } },
+    { "id": "entry-west", "type": "roomEntrance", "position": { "x": 20, "y": 670 }, "properties": { "w": 100, "h": 120, "spawnOffsetX": 100, "spawnOffsetY": 70, "facing": "right", "sourceRoomId": "celeste.city.a.3b" } },
+    { "id": "entry-east", "type": "roomEntrance", "position": { "x": 1330, "y": 180 }, "properties": { "w": 100, "h": 120, "spawnOffsetX": 20, "spawnOffsetY": 102, "facing": "left", "sourceRoomId": "celeste.city.a.5z" } },
+    { "id": "entry-from-5a", "type": "roomEntrance", "position": { "x": 20, "y": 420 }, "properties": { "w": 100, "h": 120, "spawnOffsetX": 140, "spawnOffsetY": 70, "facing": "right", "sourceRoomId": "celeste.city.a.5a" } },
+    { "id": "exit-west", "type": "roomExit", "position": { "x": 0, "y": 670 }, "properties": { "w": 55, "h": 120, "targetRoomId": "celeste.city.a.3b", "targetEntranceId": "entry-east", "direction": "left", "exitKind": "return", "requiredAbility": "", "oneWay": false } },
+    { "id": "exit-east", "type": "roomExit", "position": { "x": 1000, "y": 50 }, "properties": { "w": 250, "h": 800, "targetRoomId": "celeste.city.a.5z", "targetEntranceId": "entry-west", "direction": "right", "exitKind": "main", "requiredAbility": "", "oneWay": false } },
+    { "id": "exit-east-5a", "type": "roomExit", "position": { "x": 1520, "y": 420 }, "properties": { "w": 60, "h": 120, "targetRoomId": "celeste.city.a.5a", "targetEntranceId": "entry-from-5", "direction": "right", "exitKind": "optional", "requiredAbility": "", "oneWay": false } },
+    { "id": "exit-up-6", "type": "roomExit", "position": { "x": 660, "y": 0 }, "properties": { "w": 90, "h": 90, "targetRoomId": "celeste.city.a.6", "targetEntranceId": "entry-from-celeste-city-a-5", "direction": "up", "exitKind": "optional", "requiredAbility": "", "oneWay": false } },
+    { "id": "exit-up-6z", "type": "roomExit", "position": { "x": 900, "y": 0 }, "properties": { "w": 90, "h": 90, "targetRoomId": "celeste.city.a.6z", "targetEntranceId": "entry-from-celeste-city-a-5", "direction": "up", "exitKind": "optional", "requiredAbility": "", "oneWay": false } },
+    { "id": "upper-candidate-support", "type": "platform", "position": { "x": 610, "y": 150 }, "properties": { "w": 450, "h": 24 } },
+    { "id": "route-note", "type": "sign", "position": { "x": 275, "y": 745 }, "properties": { "text": "白盒 ST-06 · 进入首个路线枢纽" } },
+    { "id": "glow-six", "type": "backgroundSeed", "position": { "x": 920, "y": 230 }, "properties": { "size": 250 } }
+  ]
+}

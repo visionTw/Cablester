@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "ranAt": "2026-08-10T00:49:16.995+08:00",
+  "environment": {
+    "device": "MacBook Pro Mac15,6",
+    "processor": "Apple M3 Pro 11-core",
+    "memory": "18 GB",
+    "operatingSystem": "macOS 14.4 arm64",
+    "viewport": "1280x720"
+  },
+  "contentFingerprint": {
+    "algorithm": "sha256",
+    "value": "848fda18e100da288c8aa66f0a9970bb06c4aebd200c1fd2d21d881576b4eb8c",
+    "fileCount": 926,
+    "roomFileCount": 908,
+    "runtimeFileCount": 18
+  },
+  "scope": {
+    "rooms": 908,
+    "entrances": 2326,
+    "checkpoints": 908,
+    "authoredExitObjects": 3668,
+    "manifestCandidateConnectionsCoveredByGraphAudit": 3678,
+    "menuReentries": 908
+  },
+  "method": {
+    "surface": "Visible local browser page and the production Game runtime",
+    "perRoom": [
+      "fetch, validate and compile the authoritative local JSON",
+      "initialize every authored room entrance and verify the exact legal spawn",
+      "initialize every checkpoint, perturb velocity/resources, invoke normal death timing, and fixed-step until respawn",
+      "advance runtime mechanisms and verify finite, count-stable state plus death-reset moving-object policies",
+      "resolve every authored exit to its real target room and target entrance and initialize that entrance",
+      "render the room, return to the visible menu, clear that room cache, and fetch/compile/reenter it again"
+    ],
+    "routeCompletionEvidence": "Physical input completion is not inferred here; it is provided separately by the fingerprint-matched continuous-run audit."
+  },
+  "result": {
+    "passedRooms": 908,
+    "failedRooms": 0,
+    "entranceChecks": 2326,
+    "checkpointResetChecks": 908,
+    "connectionChecks": 3668,
+    "mechanismCycles": 908,
+    "menuReentries": 908,
+    "renderedRooms": 908,
+    "peakActiveObjects": 53,
+    "finalCachedDocuments": 0,
+    "elapsedSeconds": 19.1,
+    "freshConsoleErrorsOrWarnings": 0
+  },
+  "statusPolicy": {
+    "browserAndPlayableMayUpgrade": true,
+    "validationRequiresCombinedEvidence": true,
+    "humanConfirmation": "needed",
+    "reason": "This is deterministic engineering acceptance for every local whitebox. Subjective feel and original-game geometric comparison remain explicitly human-confirmation-needed and are not represented as automated facts."
+  }
+}
