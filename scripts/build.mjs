@@ -13,6 +13,7 @@ await mkdir(server, { recursive: true });
 await mkdir(resolve(dist, ".openai"), { recursive: true });
 
 const copyTasks = [
+  cp(resolve(root, "_headers"), resolve(client, "_headers")),
   cp(resolve(root, "index.html"), resolve(client, "index.html")),
   cp(resolve(root, "styles.css"), resolve(client, "styles.css")),
   cp(resolve(root, "og.png"), resolve(client, "og.png")),
@@ -71,7 +72,11 @@ await writeFile(
     main: "index.js",
     no_bundle: true,
     rules: [{ type: "ESModule", globs: ["**/*.js", "**/*.mjs"] }],
-    assets: { directory: "../client", run_worker_first: true },
+    assets: {
+      directory: "../client",
+      binding: "ASSETS",
+      run_worker_first: ["/", "/index.html"],
+    },
     observability: { enabled: true },
   })}\n`,
 );

@@ -1,0 +1,19 @@
+/assets/*.webp
+  Content-Type: image/webp
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/assets/*.png
+  Content-Type: image/png
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/assets/*.avif
+  Content-Type: image/avif
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/assets/*.jpg
+  Content-Type: image/jpeg
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/assets/*.jpeg
+  Content-Type: image/jpeg
+  Cache-Control: public, max-age=3600, must-revalidate

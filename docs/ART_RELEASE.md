@@ -71,7 +71,7 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 
 ## 本轮结果区（2026-08-12 发布构建）
 
-> 当前状态：本地功能、素材、自动测试、结构检查、构建、浏览器功能巡检和性能审计已通过；Sites v12 已公开发布并完成实际保存、v1 JSON 导入、导出、一键试玩、正式关卡与 console 复验。v12 复验后发现 Cloudflare 静态资源层覆盖了 Worker 的 WebP MIME/缓存响应头；最终同步构建启用 `run_worker_first` 并补齐图片 MIME，最终版本号、commit 与响应头复验结果以本轮交付说明为准。
+> 当前状态：本地功能、素材、自动测试、结构检查、构建、浏览器功能巡检和性能审计已通过；Sites v12 已公开发布并完成实际保存、v1 JSON 导入、导出、一键试玩、正式关卡与 console 复验。v12 复验后发现 Cloudflare 静态资源层覆盖了 Worker 的 WebP MIME/缓存响应头；最终同步构建在静态资源根加入 `_headers`，并把 Worker-first 限定到 HTML shell，最终版本号、commit 与响应头复验结果以本轮交付说明为准。
 
 ### 版本、测试与构建
 
@@ -81,7 +81,7 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 | `npm test` | **通过：114/114，0 失败** | 2026-08-12 最终重新运行 `node --test`，总耗时 6.434 秒；包含 registry、单物件/同类型替换、重置、v1 迁移、v2 roundtrip、scene CRUD/无缝计算、回退、非法配置、16 份素材像素审计和性能证据指纹门禁。 |
 | `npm run check` | **通过：10 个正式关卡 + 908 个参考房间** | 当前命令输出 `10 built-in levels and 908 authored reference rooms passed structural validation.`；参考内容指纹 `44cb83474d66283953c299c859feb7fa22626aaef6dc3173741eaa60e26fe73e` 覆盖 930 文件（908 room + 22 runtime）。 |
 | `npm run assets:audit` | **通过：16 个生成素材，32/32 文件，0 错误** | 16 个运行时 WebP + 16 个缩略图共 391.5 KiB；像素解码估算 3129.1 KiB；残留洋红像素为 0，透明边缘最大 alpha 4/255，最差缩略图 RGB MAE 2.999。 |
-| `npm run build` | **通过** | 最终候选 `dist/` 共 980 个文件、17,687,790 bytes，包含 16 个运行时素材与 16 个缩略图；命令输出 `Cablester Sites build created in dist/.`。 |
+| `npm run build` | **通过** | 最终候选 `dist/` 共 981 个文件、17,688,310 bytes，包含 16 个运行时素材、16 个缩略图与静态资源 `_headers`；命令输出 `Cablester Sites build created in dist/.`。 |
 
 ### ImageGen 素材批次与授权
 
@@ -156,7 +156,7 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 
 ### Sites 发布与线上复验
 
-首个公开验收版本为 v12。它使用已推送的精确 commit 和官方 Sites 打包器生成 980 文件归档；部署成功后重新打开公开地址完成真实浏览器工作流。v12 复验发现 `/assets/*.webp` 由 Cloudflare 静态资源层直接响应为 `application/octet-stream` 且未使用项目期望的 1 小时缓存，因此后续最终同步构建增加 `run_worker_first` 和扩展名 MIME 映射；最终公开版本与头部结果见本轮交付说明。
+首个公开验收版本为 v12。它使用已推送的精确 commit 和官方 Sites 打包器生成 980 文件归档；部署成功后重新打开公开地址完成真实浏览器工作流。v12 复验发现 `/assets/*.webp` 由 Cloudflare 静态资源层直接响应为 `application/octet-stream` 且未使用项目期望的 1 小时缓存，因此最终同步构建按 Cloudflare Static Assets 约定加入 `_headers`，显式登记图片 MIME 与缓存策略，并仅让 Worker 优先处理 `/` 和 `/index.html`；最终公开版本与头部结果见本轮交付说明。
 
 | 项目 | 当前轮结果 |
 | --- | --- |
