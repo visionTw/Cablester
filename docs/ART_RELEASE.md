@@ -90,7 +90,7 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 | 本地浏览器 | **通过** | 2026-08-12 22:00–22:10（Asia/Shanghai）：`combined-horizontal` 首个可见画面已是 22 ready / 0 loading / 0 error；真实右移、跳跃和冲刺 10 秒以上时请求数保持 22，九宫格试玩只出现单一顶部苔藓带；console error/warning 为 0。 |
 | 性能 | **通过** | `status: pass`；输入指纹 `41192789b335fcbd40796e092645a3b05341957cc60667af03007e35fb688023`，覆盖 72 个文件；所有正式/参考样本均 `loading=0`、`error=0`、`sceneResidencyDeficits=0`，20 次切关新增请求为 0。 |
 | 908 参考白盒 | **通过当前工程门禁** | 内容指纹 `a92443959bb2a1c140239f64a7298a8d1455499556a92e1837210fd005fc6849`，934 文件（908 room + 26 runtime）；load、逐房 acceptance 和 44 集合连续主路线均通过。主观手感与原作保真仍需人工判断。 |
-| Sites | **待发布本增量** | 现网最新为 v17（commit `a4d35bb19aaf0c0377ef70fcce8846a0fa43abac`）；当前预载/九宫格候选必须另存新版本、公开发布并在线复验后才能更新为通过。 |
+| Sites | **通过：v18 已公开发布并在线复验** | runtime commit `9aa94398f399f3cd2754cf972086c31ccdca5012`，deployment `appgdep_6a7c7fc9357881919216b5fa808cc513` 状态 `succeeded`；公开首帧、九宫格、素材响应头与控制台均复验通过。 |
 
 ### 当前本地浏览器验收
 
@@ -150,7 +150,15 @@ Codex in-app browser 在 1280×720 截图面、`http://127.0.0.1:4173/` 完成�
 
 ### 当前 Sites 发布与线上复验
 
-本节在当前预载/九宫格候选发布后填写版本、commit、归档、deployment 与公开域名复验。发布前现网最新为 v17（commit `a4d35bb19aaf0c0377ef70fcce8846a0fa43abac`）；不能把上一轮 v16/v17 的在线结果外推为本增量已发布。
+当前预载/九宫格运行时作为 Sites v18 公开发布，runtime commit 为 `9aa94398f399f3cd2754cf972086c31ccdca5012`。归档包含 997 个文件、18,728,960 bytes；deployment `appgdep_6a7c7fc9357881919216b5fa808cc513` 于 2026-08-12 22:14（Asia/Shanghai）达到 `succeeded`。公开地址为 `https://cablester-game.visiontw.chatgpt.site`。
+
+发布后重新加载正式域名并完成以下复验：
+
+- 菜单仍显示 10 个正式关、关卡工坊与 908/908 参考白盒入口；
+- `combined-horizontal` 首个可见画面直接显示完整前中后景和单一顶部苔藓平台，没有程序化占位再切图；
+- 本地与正式 CDP 证据交叉确认 10 秒真实移动期间 requests 保持 22、loading/error 为 0，20 次切关新增网络请求为 0；
+- `/media/game/terrain/moss-root-platform.webp` 与 `/media/game/scene/background/distant-trunk-grove.webp` 均返回 HTTP 200、`content-type: image/webp`、`cache-control: public, max-age=3600, must-revalidate`，复验时 `cf-cache-status: HIT`；
+- 正式域名浏览器 console error/warning 为 0。
 
 ## 上一轮证据快照（16 素材 / 8 层，仅作历史基线）
 
