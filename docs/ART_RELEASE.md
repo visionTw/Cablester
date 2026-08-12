@@ -74,7 +74,7 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 
 ## 当前增量候选（2026-08-12）
 
-当前代码与磁盘配置、浏览器验收、性能审计和参考白盒复验均已有当前证据；Sites 仍待发布新版本并在线复验：
+当前代码与磁盘配置、浏览器验收、性能审计、参考白盒复验和 Sites 公开版本均已有当前证据：
 
 - AssetRegistry 为 23 条：`builtin:procedural` + 22 个 ImageGen 透明 WebP；图片分为 8 gameplay + 14 scene，22 个主图为 456,262 bytes，22 个缩略图为 116,680 bytes。
 - 2026-08-12 新增 6 个小型场景素材：`scene:moonlit-canopy-cluster`、`scene:distant-root-spires`、`scene:root-stone-arch`、`scene:shadow-fern-cluster`、`scene:moss-root-boulders`、`scene:aqua-bell-flowers`。完整尺寸、字节、路径、提示词、生成方式和授权见 [ASSET_LIBRARY.md](ASSET_LIBRARY.md) 与 registry。
@@ -90,7 +90,7 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 | 本地浏览器 | **通过** | 2026-08-12 13:07（Asia/Shanghai），10/10 正式关加载，四模式、23 张 registry 卡/22 张图片缩略图、12 层 scene、关卡支持、九宫格、空气墙、保存、真实 v1 导入、导出和一键试玩通过；新 console error/warning 为 0。 |
 | 性能 | **通过** | `status: pass`；输入指纹 `d05022c078e108b92e11bcb5bd02eccf007211745870557040975e2b91f6aa38`，覆盖 72 个文件；三视口、垂直关、危险密集关、20 次切关和 low-tier 均通过，诊断 error/warning 为 0。 |
 | 908 参考白盒 | **通过当前工程门禁** | 内容指纹 `c56c796216b9e69fc388f79c9eb34637d649261dff4f7b6818f4d652f4e5a821`，934 文件（908 room + 26 runtime）；load、逐房 acceptance 和 44 集合连续主路线均通过。主观手感与原作保真仍需人工判断。 |
-| Sites | **待发布与线上复验** | 当前候选的新版本号、deployment ID/状态、公开地址、`/media/` 响应、编辑保存和试玩 |
+| Sites | **通过：v16 已公开发布并在线复验** | deployment `appgdep_6a7c038c8f4c819189646fd9f55c5f77` 状态 `succeeded`；公开地址、`/media/` MIME/缓存、四模式、编辑保存、v1 导入、导出和试玩均通过。 |
 
 ### 当前本地浏览器验收
 
@@ -150,7 +150,18 @@ Codex in-app browser 在 1280×720 截图面、`http://127.0.0.1:4173/` 完成�
 
 ### 当前 Sites 发布与线上复验
 
-当前 22 素材/12 层/四模式候选尚未发布新的 Sites 版本。公开地址仍为 `https://cablester-game.visiontw.chatgpt.site`，但不得把历史版本的线上结果当作本轮通过证据。待主任务填写实际版本、deployment ID/状态，并在线复验四模式、22 个缩略图、12 层 scene、关卡支持、九宫格、空气墙、`/media/` 响应、保存/导入导出和试玩。
+当前候选已作为 Sites v16 公开发布，源提交为 `410da198b778978a031378a22acd9a21d22769ac`。Sites 保存的归档为 997 个文件、18,718,720 bytes，发布 deployment `appgdep_6a7c038c8f4c819189646fd9f55c5f77` 于 2026-08-12 13:24（Asia/Shanghai）达到 `succeeded`。公开地址为 `https://cablester-game.visiontw.chatgpt.site`。
+
+发布成功后重新打开公共域名并执行真实 UI 操作，结果如下：
+
+- 工坊直接显示 `物件编辑`、`关卡支持`、`物件素材`、`场景分层` 四个入口；关卡支持面板显示 7 项能力，软绳实验场为 4/7 项出生即用且覆盖正常。
+- 素材模式显示 23 张 registry 卡和 22 张图片缩略图；正式关场景模式显示 12 层，包含深远根峰、月影树冠、盘根遗迹和水青铃花等新增层。
+- `保存` 显示“关卡已保存到这台设备”；`导出 JSON` 显示“关卡 JSON 已导出”；通过真实 file chooser 导入 v1 参考房后显示“已导入关卡，请确认后保存”，随后一键试玩正常进入 Canvas。
+- 公开样板 `combined-horizontal` 实际加载九宫格平台、物件图片和前中后景组合；空气墙没有可见杂物，关键路线、危险物、角色提示和 HUD 仍可读。
+- `/media/game/scene/background/moonlit-canopy-cluster.webp` 与 `/media/game/terrain/moss-root-platform.webp` 均返回 HTTP 200、`content-type: image/webp`、`cache-control: public, max-age=3600, must-revalidate`，复验时 `cf-cache-status: HIT`。
+- 原生 option 的线上 computed style 为浅底 `rgb(242, 247, 248)`、深字 `rgb(16, 44, 53)`；整轮公共域名操作后浏览器 console 日志为 0。
+
+发布记录是在 v16 在线验收后写入的文档性变更，不改变 `dist/`、性能输入指纹或参考内容指纹；v16 归档仍是本轮实际运行代码与资源的精确发布物。
 
 ## 上一轮证据快照（16 素材 / 8 层，仅作历史基线）
 
