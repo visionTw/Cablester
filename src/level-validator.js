@@ -1,11 +1,13 @@
 import { ACCEPTANCE_LEVELS, KNOWN_ABILITY_IDS } from "./config.js";
 import { pointInRect } from "./math.js";
 import { validateMotionDefinition } from "./motion.js";
+import { validateStartingAbilities } from "./level-support.js";
 
 export function validateLevel(level) {
   const errors = [];
   const ids = new Set();
   const collections = [
+    "boundaryWalls",
     "platforms",
     "slopes",
     "hazards",
@@ -38,6 +40,10 @@ export function validateLevel(level) {
   if (!Number.isInteger(level.dashCapacity ?? 1) || (level.dashCapacity ?? 1) < 1 || (level.dashCapacity ?? 1) > 3) {
     errors.push("Level dashCapacity must be an integer from 1 to 3");
   }
+  errors.push(...validateStartingAbilities(level.startingAbilities, {
+    path: "Level startingAbilities",
+    allowMissing: true
+  }));
 
   for (const collectionName of collections) {
     const collection = level[collectionName] || [];
@@ -50,7 +56,7 @@ export function validateLevel(level) {
         ids.add(item.id);
       }
 
-      if ((collectionName === "platforms" || collectionName === "hazards" || collectionName === "checkpoints" || collectionName === "roomEntrances" || collectionName === "roomExits" || collectionName === "rotationTriggers" || collectionName === "launchers" || collectionName === "fragilePlatforms" || collectionName === "gates" || collectionName === "stateTriggers") && (item.w <= 0 || item.h <= 0)) {
+      if ((collectionName === "boundaryWalls" || collectionName === "platforms" || collectionName === "hazards" || collectionName === "checkpoints" || collectionName === "roomEntrances" || collectionName === "roomExits" || collectionName === "rotationTriggers" || collectionName === "launchers" || collectionName === "fragilePlatforms" || collectionName === "gates" || collectionName === "stateTriggers") && (item.w <= 0 || item.h <= 0)) {
         errors.push(`${item.id || collectionName} must have positive dimensions`);
       }
       if (collectionName === "windZones" && (item.w <= 0 || item.h <= 0 || !Number.isFinite(item.forceX) || !Number.isFinite(item.forceY))) {
@@ -70,6 +76,13 @@ export function validateLevel(level) {
       }
       if (collectionName === "movingObjects") errors.push(...validateMotionDefinition(item));
     }
+  }
+
+  for (const wall of level.boundaryWalls || []) {
+    if (!["all", "left", "right", "top", "bottom"].includes(wall.blockingSide)) {
+      errors.push(`${wall.id} has unsupported boundary blocking side ${wall.blockingSide}`);
+    }
+    if (typeof wall.grapple !== "boolean") errors.push(`${wall.id} boundary grapple must be true or false`);
   }
 
   for (const movingObject of level.movingObjects || []) {
@@ -105,10 +118,6 @@ export function validateLevel(level) {
 
   for (const pickup of level.abilityPickups || []) {
     if (!KNOWN_ABILITY_IDS.has(pickup.abilityId)) errors.push(`${pickup.id} grants unknown ability ${pickup.abilityId}`);
-  }
-
-  for (const abilityId of level.startingAbilities || []) {
-    if (!KNOWN_ABILITY_IDS.has(abilityId)) errors.push(`Level starts with unknown ability ${abilityId}`);
   }
 
   for (const anchor of level.anchors || []) {

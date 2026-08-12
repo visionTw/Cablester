@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-11T17:42:52.838Z",
+  "generatedAt": "2026-08-12T05:08:13.044Z",
   "policy": "Gap audit only; does not upgrade validation status.",
   "contentFingerprint": {
     "algorithm": "sha256",
-    "value": "13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39",
-    "fileCount": 931,
+    "value": "c56c796216b9e69fc388f79c9eb34637d649261dff4f7b6818f4d652f4e5a821",
+    "fileCount": 934,
     "roomFileCount": 908,
-    "runtimeFileCount": 23
+    "runtimeFileCount": 26
   },
   "totals": {
     "entries": 908,

@@ -5,6 +5,11 @@ import {
   validateVisualConfig
 } from "./asset-library.js";
 import { createDefaultScene, validateScene } from "./scene-layers.js";
+import {
+  LEVEL_SUPPORT_ABILITY_IDS,
+  normalizeStartingAbilities,
+  validateStartingAbilities
+} from "./level-support.js";
 
 const numberProperty = (label, defaultValue, min = -100000, max = 100000, step = 1) => ({
   label,
@@ -85,6 +90,23 @@ export const LEVEL_OBJECT_LIBRARY = Object.freeze({
       exitKind: selectProperty("出口类型", "main", [["main", "主路线"], ["optional", "可选路线"], ["hidden", "隐藏路线"], ["return", "回访路线"]]),
       requiredAbility: textProperty("所需能力 ID", ""),
       oneWay: booleanProperty("单向出口", false)
+    }
+  },
+  boundaryWall: {
+    label: "空气墙",
+    category: "layout",
+    color: "#ff9bea",
+    properties: {
+      w: numberProperty("宽度", 40, 4, 4000),
+      h: numberProperty("高度", 720, 4, 4000),
+      blockingSide: selectProperty("生效面", "all", [
+        ["all", "全部面"],
+        ["left", "左侧面 · 角色留在左侧"],
+        ["right", "右侧面 · 角色留在右侧"],
+        ["top", "上侧面 · 角色留在上侧"],
+        ["bottom", "下侧面 · 角色留在下侧"]
+      ]),
+      grapple: booleanProperty("允许绳索 / 硬杆连接", false)
     }
   },
   platform: {
@@ -313,6 +335,7 @@ export const LEVEL_OBJECT_LIBRARY = Object.freeze({
 export const LEVEL_DOCUMENT_VERSION = 2;
 
 const COLLECTION_BY_TYPE = Object.freeze({
+  boundaryWall: "boundaryWalls",
   platform: "platforms",
   slope: "slopes",
   hazard: "hazards",
@@ -398,7 +421,7 @@ export function createBlankLevelDocument(name = "未命名关卡") {
     },
     bounds: { x: -500, y: -450, w: 2800, h: 1700 },
     dashCapacity: 1,
-    startingAbilities: ["rope", "hardBar", "bash", "doubleJump", "glide", "dash", "wallGrab"],
+    startingAbilities: [...LEVEL_SUPPORT_ABILITY_IDS],
     scene: createDefaultScene(),
     objects
   };
@@ -406,6 +429,7 @@ export function createBlankLevelDocument(name = "未命名关卡") {
 
 function readObjectProperties(type, item) {
   switch (type) {
+    case "boundaryWall": return { w: item.w, h: item.h, blockingSide: item.blockingSide || "all", grapple: Boolean(item.grapple) };
     case "platform": return { w: item.w, h: item.h };
     case "slope": return { dx: item.bx - item.ax, dy: item.by - item.ay, thickness: item.thickness, grapple: Boolean(item.grapple) };
     case "hazard": return { w: item.w, h: item.h, damage: item.damage ?? 1, direction: item.direction || "up" };
@@ -567,7 +591,7 @@ export function levelToDocument(level) {
     },
     bounds: clone(level.bounds),
     dashCapacity: level.dashCapacity ?? 1,
-    startingAbilities: [...(level.startingAbilities || [])],
+    startingAbilities: normalizeStartingAbilities(level.startingAbilities),
     ...(level.reference ? { reference: clone(level.reference) } : {}),
     ...(level.statePolicy ? { statePolicy: clone(level.statePolicy) } : {}),
     scene: level.scene ? clone(level.scene) : createDefaultScene(),
@@ -579,6 +603,7 @@ function compileObject(object) {
   const { x, y } = object.position;
   const p = object.properties || {};
   switch (object.type) {
+    case "boundaryWall": return { id: object.id, x, y, w: p.w, h: p.h, blockingSide: p.blockingSide, grapple: Boolean(p.grapple) };
     case "platform": return { id: object.id, x, y, w: p.w, h: p.h };
     case "slope": return { id: object.id, ax: x, ay: y, bx: x + p.dx, by: y + p.dy, thickness: p.thickness, grapple: Boolean(p.grapple) };
     case "hazard": return { id: object.id, x, y, w: p.w, h: p.h, damage: p.damage, ...(p.direction === "up" ? {} : { direction: p.direction }) };
@@ -664,13 +689,18 @@ function compileObject(object) {
 
 export function migrateLevelDocument(document) {
   if (!isRecord(document)) throw new Error("Document must be an object");
-  if (document.schemaVersion === LEVEL_DOCUMENT_VERSION) return clone(document);
-  if (document.schemaVersion !== 1) throw new Error(`Unsupported schema version: ${document.schemaVersion}`);
+  if (![1, LEVEL_DOCUMENT_VERSION].includes(document.schemaVersion)) {
+    throw new Error(`Unsupported schema version: ${document.schemaVersion}`);
+  }
   const migrated = clone(document);
-  migrated.schemaVersion = LEVEL_DOCUMENT_VERSION;
+  if (document.schemaVersion === 1) {
+    migrated.schemaVersion = LEVEL_DOCUMENT_VERSION;
+    migrated.scene = migrated.scene ? clone(migrated.scene) : createDefaultScene();
+  }
   if (Array.isArray(migrated.objects)) migrated.objects = migrated.objects.map((object) => {
     if (!isRecord(object)) return object;
     const properties = isRecord(object.properties) ? object.properties : {};
+    if (document.schemaVersion === LEVEL_DOCUMENT_VERSION && !isRecord(properties.visual)) return object;
     return {
       ...object,
       properties: {
@@ -682,7 +712,9 @@ export function migrateLevelDocument(document) {
       }
     };
   });
-  migrated.scene = migrated.scene ? clone(migrated.scene) : createDefaultScene();
+  if (migrated.startingAbilities === undefined) {
+    migrated.startingAbilities = normalizeStartingAbilities(undefined);
+  }
   return migrated;
 }
 
@@ -699,6 +731,7 @@ function validateVersionTwoDocument(document) {
   if (document.dashCapacity !== undefined && (!Number.isInteger(document.dashCapacity) || document.dashCapacity < 1 || document.dashCapacity > 3)) {
     errors.push("Document dashCapacity must be an integer from 1 to 3");
   }
+  errors.push(...validateStartingAbilities(document.startingAbilities, { path: "Document startingAbilities" }));
   errors.push(...validateScene(document.scene));
   if (!Array.isArray(document.objects)) errors.push("Document must contain an objects array");
   const objects = Array.isArray(document.objects) ? document.objects : [];
@@ -790,13 +823,14 @@ export function compileLevelDocument(document) {
     summary: document.metadata.summary || "",
     documentMode: document.metadata.mode || "standalone",
     ...(document.metadata.acceptanceLevel ? { acceptanceLevel: document.metadata.acceptanceLevel } : {}),
-    startingAbilities: [...(document.startingAbilities || [])],
+    startingAbilities: normalizeStartingAbilities(document.startingAbilities, { fallback: [] }),
     dashCapacity: document.dashCapacity ?? 1,
     bounds: clone(document.bounds),
     scene: clone(document.scene),
     visuals: {},
     visualOrder: {},
     backgroundSeeds: [],
+    boundaryWalls: [],
     platforms: [],
     slopes: [],
     hazards: [],
@@ -912,7 +946,7 @@ export function generateLevelDocument({ seed = "cablester", length = 7, difficul
 export function getLevelObjectBounds(object) {
   const { x, y } = object.position;
   const p = object.properties || {};
-  if (["platform", "hazard", "windZone", "liquidZone", "darknessZone", "checkpoint", "roomEntrance", "roomExit", "rotationTrigger", "movingObject", "launcher", "fragilePlatform", "gate", "stateTrigger"].includes(object.type)) {
+  if (["boundaryWall", "platform", "hazard", "windZone", "liquidZone", "darknessZone", "checkpoint", "roomEntrance", "roomExit", "rotationTrigger", "movingObject", "launcher", "fragilePlatform", "gate", "stateTrigger"].includes(object.type)) {
     return { x, y, w: p.w, h: p.h };
   }
   if (object.type === "slope") {

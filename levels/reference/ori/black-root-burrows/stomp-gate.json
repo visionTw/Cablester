@@ -17,7 +17,9 @@
   "startingAbilities": [
     "wallGrab",
     "dash",
-    "bash"
+    "bash",
+    "rope",
+    "hardBar"
   ],
   "reference": {
     "manifestId": "ori.black-root-burrows.stomp-gate",

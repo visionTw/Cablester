@@ -111,6 +111,8 @@ function startingAbilities(entry) {
   else mapped.push("wallGrab");
   if (entry.mechanisms.some((mechanism) => /feather|jellyfish|glide/.test(mechanism))) mapped.push("glide");
   if (entry.mechanisms.some((mechanism) => /projectile-bash|puffer|seeker/.test(mechanism))) mapped.push("bash");
+  if (entry.mechanisms.some((mechanism) => /bash|projectile|puffer|seeker/.test(mechanism))) mapped.push("bash");
+  if (entry.mechanisms.some((mechanism) => /grapple|lantern|swing|hook/.test(mechanism))) mapped.push("rope", "hardBar");
   return unique(mapped);
 }
 

@@ -1,9 +1,15 @@
 import { ABILITIES, KNOWN_ABILITY_IDS, TUNING, VIEWPORT } from "./config.js";
 import { syncCanvasBackingStore } from "./display.js";
-import { DEFAULT_ASSET_REGISTRY, DEFAULT_VISUAL_CONFIG } from "./asset-library.js";
+import {
+  BUILTIN_PROCEDURAL_ASSET_ID,
+  DEFAULT_ASSET_REGISTRY,
+  DEFAULT_VISUAL_CONFIG
+} from "./asset-library.js";
 import { createLevelEditor } from "./level-editor.js";
 import { LEVELS } from "./levels.js";
 import { validateLevel } from "./level-validator.js";
+import { resolveLevelStartingAbilities } from "./level-support.js";
+import { boundaryWallSegments, resolvePlayerAgainstBoundaryWall } from "./boundary-wall.js";
 import { ReferenceLevelLibrary, ReferenceRunState } from "./reference-level-library.js";
 import { applyRightwardReferenceAutoplayInput, clearReferenceAutoplayInput } from "./reference-autoplay.js";
 import {
@@ -63,7 +69,7 @@ import {
   TAU
 } from "./math.js";
 import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
-import { VisualRuntime, stableSortRenderQueue } from "./visual-runtime.js";
+import { VisualRuntime, isObjectVisualVisible, stableSortRenderQueue } from "./visual-runtime.js";
 
 const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
@@ -287,11 +293,7 @@ class Game {
       transitioning: false,
       exitCooldown: entrance ? 0.35 : 0.2
     };
-    const startingAbilities = options.abilities?.length
-      ? options.abilities
-      : level.startingAbilities?.length
-        ? level.startingAbilities
-      : Object.values(ABILITIES).filter((ability) => ability.defaultUnlocked).map((ability) => ability.id);
+    const startingAbilities = resolveLevelStartingAbilities(level, options.abilities);
     this.abilities = new Set(startingAbilities);
     this.runtime.gates = this.runtime.gates.map((gate) => evaluateGateState(gate, this.abilities, this.runtime.flags));
     const configuredCheckpoint = options.checkpointId
@@ -321,7 +323,7 @@ class Game {
 
   countLevelObjects() {
     return [
-      "backgroundSeeds", "platforms", "slopes", "hazards", "anchors", "energyOrbs",
+      "backgroundSeeds", "boundaryWalls", "platforms", "slopes", "hazards", "anchors", "energyOrbs",
       "dashRefills", "movingObjects", "launchers", "fragilePlatforms", "gates", "stateTriggers", "abilityPickups", "bashTargets", "windZones", "liquidZones", "darknessZones", "checkpoints", "roomEntrances",
       "roomExits", "rotationTriggers", "signs"
     ].reduce((sum, collection) => sum + (this.level[collection]?.length || 0), this.level.goal ? 1 : 0);
@@ -659,6 +661,20 @@ class Game {
     this.constrainHardBar();
     this.resolveCollisions();
     this.constrainHardBar();
+    // A hard-bar projection may move the player back across an invisible
+    // boundary after the first collision pass. Re-resolve boundaries last so
+    // authored level edges remain authoritative without turning them into
+    // grappleable platform surfaces.
+    for (const wall of this.level.boundaryWalls || []) {
+      const contact = resolvePlayerAgainstBoundaryWall(this.player, wall);
+      if (!contact) continue;
+      Object.assign(this.player, {
+        x: contact.x,
+        y: contact.y,
+        vx: contact.vx,
+        vy: contact.vy
+      });
+    }
     this.updateRopeVisual(deltaTime);
 
     if (!wasGrounded && player.grounded) {
@@ -1169,6 +1185,7 @@ class Game {
     for (const anchor of [...this.level.anchors, ...movingAnchors]) {
       const offsetX = anchor.x - this.player.x;
       const offsetY = anchor.y - this.player.y;
+      const targetDistance = length(offsetX, offsetY);
       const forward = dot(offsetX, offsetY, aim.x, aim.y);
       if (forward < TUNING.ropeMinimumTargetDistance || forward > TUNING.ropeRange) continue;
       const perpendicular = Math.sqrt(Math.max(0, offsetX * offsetX + offsetY * offsetY - forward * forward));
@@ -1179,6 +1196,18 @@ class Game {
         kind: "anchor",
         score: forward + perpendicular * 1.8 - 26
       });
+      if ((anchor.type || anchor.anchorType) === "both"
+        && targetDistance >= TUNING.hardBarMinimumLength
+        && targetDistance <= TUNING.hardBarMaximumLength) {
+        hardBarCandidates.push({
+          id: anchor.id,
+          kind: "anchor",
+          x: anchor.x,
+          y: anchor.y,
+          surface: { attachment: "anchor" },
+          score: perpendicular * 2.6 + Math.abs(targetDistance - hardBarAimDistance) * 0.35 - 18
+        });
+      }
     }
 
     candidates.sort((left, right) => left.score - right.score || left.id.localeCompare(right.id));
@@ -1225,6 +1254,7 @@ class Game {
     for (const slope of this.level.slopes || []) {
       surfaces.push({ ...slope, kind: "slope", grapple: Boolean(slope.grapple) });
     }
+    for (const wall of this.level.boundaryWalls || []) surfaces.push(...boundaryWallSegments(wall));
     return surfaces;
   }
 
@@ -1245,6 +1275,18 @@ class Game {
       const movingPlatforms = this.runtime.movingObjects.filter((item) => item.objectKind === "platform");
       const fragilePlatforms = this.runtime.fragilePlatforms.filter((item) => item.phase !== "gone");
       const closedGates = this.runtime.gates.filter((item) => !item.open);
+      for (const wall of this.level.boundaryWalls || []) {
+        this.debugStats.collisionCandidates += 1;
+        const contact = resolvePlayerAgainstBoundaryWall(this.player, wall);
+        if (!contact) continue;
+        Object.assign(this.player, {
+          x: contact.x,
+          y: contact.y,
+          vx: contact.vx,
+          vy: contact.vy
+        });
+        resolvedAny = true;
+      }
       for (const platform of [...this.level.platforms, ...movingPlatforms, ...fragilePlatforms, ...closedGates]) {
         this.debugStats.collisionCandidates += 1;
         let contact = this.resolveCircleRect(platform);
@@ -1568,7 +1610,8 @@ class Game {
         this.player.rope.x += next.deltaX;
         this.player.rope.y += next.deltaY;
       }
-      if (this.runtime.hardBar && this.runtime.hardBar.anchorId.startsWith(`${item.id}:`)) {
+      if (this.runtime.hardBar
+        && (this.runtime.hardBar.anchorId === item.id || this.runtime.hardBar.anchorId.startsWith(`${item.id}:`))) {
         this.runtime.hardBar.pivotX += next.deltaX;
         this.runtime.hardBar.pivotY += next.deltaY;
       }
@@ -1758,11 +1801,22 @@ class Game {
   renderWorld(ctx) {
     const commands = [];
     let defaultOrder = 0;
+    const visibleInViewport = (type, item, visual) => {
+      if (type === "boundaryWall" && visual.assetId === BUILTIN_PROCEDURAL_ASSET_ID) return false;
+      return isObjectVisualVisible(item, type, visual, {
+        x: this.camera.x,
+        y: this.camera.y,
+        angle: this.camera.angle,
+        width: VIEWPORT.width,
+        height: VIEWPORT.height
+      });
+    };
     const append = (type, items, fallback, visible = () => true) => {
       const order = defaultOrder++;
       (items || []).forEach((item, index) => {
         if (!visible(item, index)) return;
         const visual = this.runtimeVisualForObject(type, item, index);
+        if (!visibleInViewport(type, item, visual)) return;
         commands.push({
           type,
           item,
@@ -1779,6 +1833,7 @@ class Game {
     append("spawn", this.level.spawn ? [this.level.spawn] : [], null);
     append("windZone", this.level.windZones, (wind) => this.renderWindZone(ctx, wind));
     append("liquidZone", this.level.liquidZones, (liquid) => this.renderLiquidZone(ctx, liquid));
+    append("boundaryWall", this.level.boundaryWalls, null);
     append("platform", this.level.platforms, (platform) => this.renderPlatform(ctx, platform));
     append("movingObject", this.runtime.movingObjects, (item) => this.renderMovingObject(ctx, item), (item) => item.objectKind === "platform");
     append(
@@ -1810,6 +1865,7 @@ class Game {
 
     const renderQueue = stableSortRenderQueue(commands);
     this.debugStats.renderedObjects = renderQueue.length;
+    this.visualRuntime.frameStats.cullCount += Math.max(0, this.debugStats.activeObjects - renderQueue.length);
     for (const command of renderQueue) this.visualRuntime.renderObject(ctx, command);
     // Darkness affects gameplay readability, so its semantic mask remains even when a decorative image is assigned.
     for (const darkness of this.level.darknessZones || []) this.renderDarknessZone(ctx, darkness);
@@ -1819,6 +1875,16 @@ class Game {
       ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
       ctx.lineWidth = 1;
       ctx.strokeRect(this.level.bounds.x, this.level.bounds.y, this.level.bounds.w, this.level.bounds.h);
+      ctx.save();
+      ctx.strokeStyle = "rgba(255, 132, 224, 0.82)";
+      ctx.fillStyle = "rgba(255, 132, 224, 0.08)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([12, 8]);
+      for (const wall of this.level.boundaryWalls || []) {
+        ctx.fillRect(wall.x, wall.y, wall.w, wall.h);
+        ctx.strokeRect(wall.x, wall.y, wall.w, wall.h);
+      }
+      ctx.restore();
     }
   }
 
@@ -3047,7 +3113,7 @@ class Game {
       `collision candidates ${this.debugStats.collisionCandidates}`,
       `assets req ${visualStats.requests}  hit ${visualStats.cacheHits}  ready ${visualStats.ready}  load ${visualStats.loading}  err ${visualStats.error}`,
       `asset cache ${visualStats.cacheEntries}  decoded ${decodedMiB.toFixed(2)} MiB  tint ${tintMiB.toFixed(2)} MiB/${visualStats.tintVariants}  evicted ${visualStats.evictions}`,
-      `visual scene ${visualStats.sceneDraws}  object ${visualStats.objectAssetDraws}  fallback ${visualStats.fallbackDraws}`,
+      `visual scene ${visualStats.sceneDraws}  object ${visualStats.objectAssetDraws}/${visualStats.objectPatchDraws} patches  fallback ${visualStats.fallbackDraws}`,
       `visual culled ${visualStats.cullCount}  quality ${visualStats.qualityTier}`,
       `grounded ${this.player.grounded}  rope ${this.player.rope?.phase || "—"}  dash ${this.player.dashCharges}/${this.player.maximumDashCharges}`,
       `checkpoint ${this.currentCheckpoint.id}`,
@@ -3723,6 +3789,9 @@ referenceLevelLibrary.loadIndex()
 window.cablester = game;
 window.cablesterReference = {
   library: referenceLevelLibrary,
+  runLoadAudit: () => runReferenceLoadAudit(referenceRooms),
+  runAcceptanceAudit: () => runReferenceAcceptanceAudit(referenceRooms),
+  runContinuousAudit: () => runReferenceContinuousAudit(referenceCollections),
   get runState() { return referenceRunState?.snapshot() || null; },
   get loadAudit() { return structuredClone(referenceLoadAudit); },
   get acceptanceAudit() { return structuredClone(referenceAcceptanceAudit); },

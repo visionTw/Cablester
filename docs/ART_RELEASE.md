@@ -15,9 +15,12 @@
 每个正式 preset 当前配置：
 
 - 9 类 gameplay visual：平台、危险物、锚点、能量球、冲刺补充、猛击支点、检查点、出生点、终点；
-- 4 个基础角色层：远景树干、中景古树、玩家附近灌木、前景暗藤；
-- 4 个自定义层：发光植物、游雾、中远景树组、生物光点；
+- 4 个基础角色层：远景树干、中景古树、玩家附近灌木，以及带权重混排暗藤/暗影蕨叶的前景；
+- 8 个自定义层：深远根峰、月影树冠、盘根遗迹、水青铃花、发光植物、游雾、中远景树组、生物光点；
+- 共 12 个 scene layer，引用当前 14 个场景素材；平台默认素材 `gameplay:moss-platform` 使用九宫格保持边缘、平铺中区；
 - slope、风场、液体、黑暗、旋转、移动物件、机关门等尚无专用图片时继续使用 type/project 默认和程序化安全表现。
+
+正式关卡的能力和边界仍属于玩法数据，不由美术 preset 注入：`startingAbilities` 直接来自关卡文档；10 关都在 bounds 左右外沿配置不可抓取的单向 `boundaryWall`，`combined-vertical` 另有顶部空气墙，底部保持开放。
 
 ## 10 个正式关卡主题映射
 
@@ -30,7 +33,7 @@
 | `glide-lab` | 滑翔实验场 | 雾风树冠 | 更慢的远/中景视差、较明显游雾和冷蓝树冠。 |
 | `dash-lab` | 冲刺实验场 | 电光裂林 | 蓝紫高对比、生物光点增强和清晰高速路线。 |
 | `combined-speed` | 综合 · 高速连段 | 金萤飞径 | 暖金光点、琥珀中景和高速路径的亮暗分离。 |
-| `combined-horizontal` | 综合 · 水平穿越 | 深月长廊 | 样板关；原色资产、完整八层场景和长距离横向视差。 |
+| `combined-horizontal` | 综合 · 水平穿越 | 深月长廊 | 样板关；原色资产、完整 12 层场景和长距离横向视差。 |
 | `combined-vertical` | 综合 · 垂直升降 | 天穹古树 | 冷蓝纵深、更慢远景视差和高耸树干感。 |
 | `combined-hazards` | 综合 · 伤害走廊 | 绯荆沼泽 | 暗紫沼泽、绯红危险物和更重前景剪影。 |
 
@@ -63,21 +66,101 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 1. 重新检查 registry、最终 WebP/缩略图、关卡 preset 和 v1 迁移结果。
 2. 对 10 个正式关卡运行结构验证，并确认 908 参考房间继续可迁移和编译。
 3. 运行 `npm run assets:audit`、素材/scene/roundtrip/回退测试、`npm run check` 和 `npm run build`。
-4. 在浏览器逐项验收三个编辑模式、保存、导入导出、一键试玩和原生下拉可读性。
+4. 在浏览器逐项验收四个编辑模式、关卡支持、九宫格预览、空气墙编辑、保存、导入导出、一键试玩和原生下拉可读性。
 5. 记录正式关卡的首次加载、请求、内存、平均 FPS、P95 和最差帧；至少覆盖样板、垂直关、危险密集关和 low-tier。
 6. 对 10 关逐一保存同视口 before/after 截图或视频证据，并记录遮挡、接缝和主题一致性结论。
 7. 构建通过后发布到 Sites；记录版本和状态，再重新打开公开地址确认新入口、素材请求、编辑保存和试玩。
 8. 只有上述证据全部属于当前 commit/构建，才可把本轮发布标记为完成。
 
-## 本轮结果区（2026-08-12 发布构建）
+## 当前增量候选（2026-08-12）
 
-> 当前状态：本地功能、素材、自动测试、结构检查、构建、浏览器功能巡检和性能审计已有当前证据。Sites v12 是较早的公开验收版本，其复验发现静态资源层没有采用项目期望的 WebP MIME/缓存响应头；当前最终候选保留 registry 的真实 `assets/` 文件路径，同时让浏览器通过 `/media/` Worker 交付路由读取同一文件。最终 Sites 版本尚待主任务发布并以在线响应头复验为门禁。
+当前代码与磁盘配置、浏览器验收、性能审计和参考白盒复验均已有当前证据；Sites 仍待发布新版本并在线复验：
+
+- AssetRegistry 为 23 条：`builtin:procedural` + 22 个 ImageGen 透明 WebP；图片分为 8 gameplay + 14 scene，22 个主图为 456,262 bytes，22 个缩略图为 116,680 bytes。
+- 2026-08-12 新增 6 个小型场景素材：`scene:moonlit-canopy-cluster`、`scene:distant-root-spires`、`scene:root-stone-arch`、`scene:shadow-fern-cluster`、`scene:moss-root-boulders`、`scene:aqua-bell-flowers`。完整尺寸、字节、路径、提示词、生成方式和授权见 [ASSET_LIBRARY.md](ASSET_LIBRARY.md) 与 registry。
+- 10 个正式 `LEVELS` 各为 12 个 scene layer；开局能力通过 canonical `startingAbilities` 配置，机制缺口由“关卡支持”模式提示；每关有左右空气墙，垂直综合关另有顶部空气墙。
+- 平台类型默认素材已登记九宫格切片，物件 visual 可选 `asset`、`stretch`、`nine-slice`、`tile` 和 `tileScale`，仍不改变碰撞。
+
+当前证据文件为 [`levels/art/browser-acceptance-audit.json`](../levels/art/browser-acceptance-audit.json)、[`levels/art/performance-audit.json`](../levels/art/performance-audit.json)、[`levels/reference/browser-load-audit.json`](../levels/reference/browser-load-audit.json)、[`levels/reference/browser-acceptance-audit.json`](../levels/reference/browser-acceptance-audit.json) 和 [`levels/reference/continuous-run-audit.json`](../levels/reference/continuous-run-audit.json)。
+
+| 门禁 | 当前状态 | 当前证据或剩余门禁 |
+| --- | --- | --- |
+| `npm run assets:audit` | **通过：22 个生成素材，44/44 文件，0 错误** | 本文档更新时在当前工作树重跑；559.5 KiB on disk、4994.1 KiB decoded。若素材或 registry 再改必须重跑。 |
+| `npm test` / `npm run check` / `npm run build` | **通过** | `npm test` 143/143、0 失败（Node 2.918 秒）；`npm run check` 为 10 个正式关 + 908 个参考房；`npm run build` 生成 997 个文件、17,955,423 bytes。`node --check dist/server/index.js` 与 `git diff --check` 同时通过。 |
+| 本地浏览器 | **通过** | 2026-08-12 13:07（Asia/Shanghai），10/10 正式关加载，四模式、23 张 registry 卡/22 张图片缩略图、12 层 scene、关卡支持、九宫格、空气墙、保存、真实 v1 导入、导出和一键试玩通过；新 console error/warning 为 0。 |
+| 性能 | **通过** | `status: pass`；输入指纹 `d05022c078e108b92e11bcb5bd02eccf007211745870557040975e2b91f6aa38`，覆盖 72 个文件；三视口、垂直关、危险密集关、20 次切关和 low-tier 均通过，诊断 error/warning 为 0。 |
+| 908 参考白盒 | **通过当前工程门禁** | 内容指纹 `c56c796216b9e69fc388f79c9eb34637d649261dff4f7b6818f4d652f4e5a821`，934 文件（908 room + 26 runtime）；load、逐房 acceptance 和 44 集合连续主路线均通过。主观手感与原作保真仍需人工判断。 |
+| Sites | **待发布与线上复验** | 当前候选的新版本号、deployment ID/状态、公开地址、`/media/` 响应、编辑保存和试玩 |
+
+### 当前本地浏览器验收
+
+Codex in-app browser 在 1280×720 截图面、`http://127.0.0.1:4173/` 完成可见巡检。10 个正式关卡全部从菜单进入，12 层场景共同显示新增深远背景、中景地标、近路铃花与前景蕨叶；九宫格平台保持碰撞轮廓可读，空气墙在试玩中没有产生可见杂物，前景也未盖住 HUD 和玩法提示。
+
+| 项目 | 结果 | 当前证据 |
+| --- | --- | --- |
+| 四模式入口 | **通过** | `物件编辑`、`关卡支持`、`物件素材`、`场景分层` 均有明显入口。 |
+| 关卡支持 | **通过** | 7 项能力开关可用；软绳实验场开局为 rope、hardBar、dash、wallGrab；关闭 hardBar 会出现覆盖警告，undo 可恢复；10 个正式关和 908 个参考房间的自动能力覆盖分析均通过。 |
+| 素材与九宫格 | **通过** | 23 张 registry 卡、22 张图片缩略图；platform 有 2 张适用卡；Inspector 实时 Canvas 可见 `nine-slice`，切线为 L96/R96/T32/B34 px，`tileScale` 范围为 0.1–8，编辑器和运行时变换一致。 |
+| 空气墙 | **通过** | 工坊以虚线 bounds 显示空气墙；10 关试玩未产生运行时视觉杂物。 |
+| 场景分层 | **通过** | 初始 12 层，picker 15 个选项；实时画布、新建/undo 和恢复 12 层通过；可见深远根峰、月影树冠、盘根遗迹和水青铃花层。 |
+| 文档工作流 | **通过** | 设备内保存、真实 file chooser 导入 `levels/reference/celeste/prologue/a/0.json`（v1→v2）、导出和一键试玩均通过。 |
+| 原生控件与日志 | **通过** | 关卡、分类、缩放模式、scene role/asset、blend 和 seamless 下拉均可读；本轮新 console error/warning 为 0。 |
+
+### 当前性能、请求与内存
+
+标准性能审计生成于 2026-08-12 13:10（Asia/Shanghai），Chrome 119 headless 通过 CDP 注入真实按键并记录连续 `requestAnimationFrame`。冷启动从空缓存到 10 个正式关 interactive 为 299.4 ms：49 请求、21 个 Image、2,498,238 transfer bytes、2,487,333 decoded bytes、0 失败和 0 应用错误。warm reload 为 112.0 ms：48 请求、21 个 Image 且 21 个均命中缓存、2,052,048 transfer bytes、2,487,324 decoded bytes、0 失败和 0 应用错误。
+
+| 场景 / 视口 / 档位 | 测量窗口 | 平均 FPS | 平均 / P95 / 最差帧时 | 运行时结论 |
+| --- | ---: | ---: | ---: | --- |
+| `combined-horizontal` / 1280×720 / high | 10 秒 | 119.499 | 8.368 / 8.333 / 16.666 ms | 19 scene draw，104 object patch，0 降级。 |
+| `combined-horizontal` / 1600×1000 / high | 10 秒 | 117.348 | 8.522 / 8.333 / 16.666 ms | 19 scene draw，104 object patch，0 降级。 |
+| `combined-horizontal` / 800×900 / high | 10 秒 | 119.999 | 8.333 / 8.333 / 8.806 ms | 19 scene draw，104 object patch，0 降级。 |
+| `combined-vertical` / 1280×720 / high | 10 秒 | 119.949 | 8.337 / 8.333 / 16.666 ms | 19 scene draw，75 object patch，0 降级。 |
+| `combined-hazards` / 1280×720 / high | 10 秒 | 119.298 | 8.382 / 8.333 / 16.666 ms | 19 scene draw，89 object patch，0 降级。 |
+| `combined-horizontal` / 1280×720 / low + 4× CPU throttle | 5 秒 | 115.594 | 8.651 / 8.333 / 24.999 ms | 15 scene draw；patch cap 32，实际 32；`objectQualityDegrades=1`，证明降级路径生效。 |
+
+20/20 次正式关卡切换后没有新增网络请求；VisualRuntime 为 22 ready / 0 loading / 0 error、22 cache entries、0 eviction。强制 GC 后 CDP retained JS heap 相对切换前减少 1,697,912 bytes（约 1.62 MiB）。纹理估算为 decoded 4,489,808 bytes + tint 25,905,504 bytes = 30,395,312 bytes（约 28.99 MiB）；这是按图片/Canvas 尺寸乘 RGBA 4 bytes 的 VisualRuntime 估算，不是实测 GPU 显存。
+
+### 当前 10 关视觉验收
+
+当前浏览器 sweep 为 10 passed / 0 failed；下表全部是 12 层正式 preset，而不是上一轮 8 层快照。没有为每关提交静态 before/after 文件，因此“程序化基线 → 主题”仍是配置关系；可见巡检与固定时长性能数据是当前证据。
+
+| 关卡 | before → after | 当前 12 层构图 | 帧率证据 | 当前结论 |
+| --- | --- | --- | --- | --- |
+| `movement-lab-01` | 程序化基线 → 月绳幽径 | 冷青月色、远根/树冠、盘根地标与亮绳索 | 10/10 可见 sweep | 通过；rope/hardBar/dash/wallGrab 开局支持已核对。 |
+| `hard-bar-lab` | 程序化基线 → 琥珀根庭 | 暖金根木、低雾、铃花和暗蕨前景 | 10/10 可见 sweep | 通过；hardBar 能力支持与九宫格平台可读。 |
+| `bash-lab` | 程序化基线 → 紫辉花林 | 紫罗兰树层、盘根遗迹与高亮猛击核心 | 10/10 可见 sweep | 通过；关键猛击支点未被新前景遮挡。 |
+| `double-jump-lab` | 程序化基线 → 青苔跃谷 | 绿苔平台、远根纵深和清爽中景 | 10/10 可见 sweep | 通过；路线和平台轮廓可读。 |
+| `glide-lab` | 程序化基线 → 雾风树冠 | 慢视差树冠、游雾、铃花与深远根峰 | 10/10 可见 sweep | 通过；风场路线与 HUD 保持可读。 |
+| `dash-lab` | 程序化基线 → 电光裂林 | 蓝紫高对比、光点和中景遗迹 | 10/10 可见 sweep | 通过；高速路线与空气墙无可见穿帮。 |
+| `combined-speed` | 程序化基线 → 金萤飞径 | 暖金点、根石地标与前中后景分离 | 10/10 可见 sweep | 通过；能力覆盖和关键交互可读。 |
+| `combined-horizontal` | 程序化基线 → 深月长廊 | 样板 12 层；完整长距离横向视差 | 10 秒 × 3 视口 + low-tier | 视觉与性能通过；三视口最差帧不高于 16.666 ms。 |
+| `combined-vertical` | 程序化基线 → 天穹古树 | 冷蓝纵深、高耸树干与顶部空气墙 | 119.949 FPS；P95 8.333 ms；最差 16.666 ms | 视觉与性能通过。 |
+| `combined-hazards` | 程序化基线 → 绯荆沼泽 | 暗紫沼泽、绯红危险物与暗蕨压边 | 119.298 FPS；P95 8.333 ms；最差 16.666 ms | 视觉与性能通过；危险物和提示未被遮挡。 |
+
+### 当前 908 个参考白盒复验
+
+三份审计共享内容指纹 `c56c796216b9e69fc388f79c9eb34637d649261dff4f7b6818f4d652f4e5a821`，覆盖 934 个文件（908 room + 26 runtime）：
+
+- load：908/908 房、2326 个 entrance，11.1 秒，0 failure，0 新日志；
+- acceptance：908/908 房、3668 个 connection、908 次 checkpoint reset 和 908 次 menu re-entry，16.0 秒，0 failure，0 新日志；
+- continuous run：44/44 集合、908 房、864 次顺序 transition、0 death/reset，18.1 秒，0 failure，0 新日志。
+
+这些结果证明当前指纹下的参考白盒可加载、可重置、可连通，并能完成每个集合的一条顺序主路线；它们不证明所有支路的人工手感、原作坐标或逐房美术保真。参考房间仍不计入“全部房间已原创美术化”。
+
+### 当前 Sites 发布与线上复验
+
+当前 22 素材/12 层/四模式候选尚未发布新的 Sites 版本。公开地址仍为 `https://cablester-game.visiontw.chatgpt.site`，但不得把历史版本的线上结果当作本轮通过证据。待主任务填写实际版本、deployment ID/状态，并在线复验四模式、22 个缩略图、12 层 scene、关卡支持、九宫格、空气墙、`/media/` 响应、保存/导入导出和试玩。
+
+## 上一轮证据快照（16 素材 / 8 层，仅作历史基线）
+
+> 以下记录对应新增 6 项场景素材、12 层 preset、九宫格、关卡支持和空气墙之前的 16 素材/8 层工作树。保留它只为前后比较；其中任何“当前”“通过”或线上结果都只描述该历史快照，不得外推到上面的当前增量候选。仓库中的 active audit JSON 已由本轮证据覆盖，所以下方旧数值是历史抄录，不再声称由当前 JSON 支持。
 
 ### 版本、测试与构建
 
-| 项目 | 当前轮结果 | 证据 |
+| 项目 | 历史快照结果 | 证据 |
 | --- | --- | --- |
-| commit / 工作树指纹 | 基线 `HEAD 7b50c35e28af10d49be1b18a3f9c77afc2d7f4b7`；首个公开验收 commit `81c5d9bbcb1b3fe36080577561ae847800bcb250` | [`levels/art/performance-audit.json`](../levels/art/performance-audit.json) 的输入指纹为 `95f58ed35e51b841e61ed8c574a00057c76b293733bec2a96bde22fa5bb36844`，覆盖 57 个性能相关文件；最终发布 commit 待主任务填写。 |
+| commit / 工作树指纹 | 基线 `HEAD 7b50c35e28af10d49be1b18a3f9c77afc2d7f4b7`；首个公开验收 commit `81c5d9bbcb1b3fe36080577561ae847800bcb250` | 当时记录的性能输入指纹为 `95f58ed35e51b841e61ed8c574a00057c76b293733bec2a96bde22fa5bb36844`，覆盖 57 个性能相关文件；active JSON 现已是本轮 `d05022…` 证据。 |
 | `npm test` | **通过：116/116，0 失败** | 2026-08-12 在最终工作树重新运行 `node --test`，总耗时 4.658 秒；包含 registry、canonical asset path、实际本地素材交付服务、单物件/同类型替换、v1/v2 roundtrip、scene、回退、素材像素审计和性能证据指纹门禁。 |
 | `npm run check` | **通过：10 个正式关卡 + 908 个参考房间** | 当前命令输出 `10 built-in levels and 908 authored reference rooms passed structural validation.`；参考内容指纹 `13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39` 覆盖 931 文件（908 room + 23 runtime）。 |
 | `npm run assets:audit` | **通过：16 个生成素材，32/32 文件，0 错误** | 16 个运行时 WebP + 16 个缩略图共 391.5 KiB；像素解码估算 3129.1 KiB；残留洋红像素为 0，透明边缘最大 alpha 4/255，最差缩略图 RGB MAE 2.999。 |
@@ -85,18 +168,18 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 
 ### ImageGen 素材批次与授权
 
-当前 registry 为 17 条：`builtin:procedural` 安全回退 + 16 个 ImageGen 透明 WebP。完整文件路径、真实尺寸/字节数、提示词、适用物件类型、生成方式和 license 均登记在 [`src/asset-library.js`](../src/asset-library.js)，缩略图与处理规范见 [`docs/ASSET_LIBRARY.md`](ASSET_LIBRARY.md)。
+该历史快照的 registry 为 17 条：`builtin:procedural` 安全回退 + 16 个 ImageGen 透明 WebP。其当时的完整文件路径、真实尺寸/字节数、提示词、适用物件类型、生成方式和 license 均登记在对应源码快照；当前机器可读清单见 [`src/asset-library.js`](../src/asset-library.js)，当前处理规范见 [`docs/ASSET_LIBRARY.md`](ASSET_LIBRARY.md)。
 
 | 分组 | 已接入素材 ID | 生产与 QA 结果 |
 | --- | --- | --- |
 | 玩法物件（8） | `gameplay:moss-platform`、`gameplay:thorn-hazard`、`gameplay:rope-anchor`、`gameplay:energy-orb`、`gameplay:bash-blossom`、`gameplay:checkpoint-lantern`、`gameplay:spawn-gate`、`gameplay:goal-gate` | 均由内置 ImageGen `gpt-image-2` 生成纯 `#ff00ff` 背景源图，再本地去色键污染、裁切、缩放并以 WebP quality 88 输出；已进入 type default、编辑器缩略图和正式关卡 preset。 |
 | 场景层（8） | `scene:moss-bush-cluster`、`scene:cyan-seed-plant`、`scene:overhang-vine-branch`、`scene:ancient-amber-tree`、`scene:distant-trunk-grove`、`scene:mid-tree-cluster`、`scene:cyan-mist-band`、`scene:forest-light-motes` | 已进入场景素材选择器和 10 关八层 scene preset；本地巡检未见洋红边、明显接缝或遮挡关键 HUD/提示。 |
 
-16 项素材的 registry license 统一记录为 `Original AI-generated project asset`，使用范围仅声明为 **Cablester 项目运行时、编辑器、文档和公开 Sites 部署**；来源记录为 2026-08-11 使用 OpenAI 内置 ImageGen 为 Cablester 生成，未使用第三方游戏资源。该项目内记录不替代发布主体对 OpenAI 条款、商标、版权或其他适用法律的审查，registry 也没有声明独立素材包再分发范围。提示词只使用梦幻森林、生物光、手绘质感、剪影层次、冷暖色彩和空间纵深等通用语言，没有要求复制《Ori》原画、角色、标志或具体场景构图。
+该快照的 16 项素材把 registry license 统一记录为 `Original AI-generated project asset`，使用范围仅声明为 **Cablester 项目运行时、编辑器、文档和公开 Sites 部署**；来源记录为 2026-08-11 使用 OpenAI 内置 ImageGen 为 Cablester 生成，未使用第三方游戏资源。该项目内记录不替代发布主体对 OpenAI 条款、商标、版权或其他适用法律的审查，registry 也没有声明独立素材包再分发范围。提示词只使用梦幻森林、生物光、手绘质感、剪影层次、冷暖色彩和空间纵深等通用语言，没有要求复制《Ori》原画、角色、标志或具体场景构图。
 
-### 本地浏览器验收
+### 历史本地浏览器验收
 
-证据为 2026-08-12 00:54（Asia/Shanghai）在 1280×720 Codex in-app browser 对 `http://127.0.0.1:4175/` 的巡检，结构化结果保存在 [`levels/art/browser-acceptance-audit.json`](../levels/art/browser-acceptance-audit.json)。该文件记录 10/10 正式关卡加载、16/16 图片 ready、0 asset error 和 0 新 console error/warning。
+历史证据为 2026-08-12 00:54（Asia/Shanghai）在 1280×720 Codex in-app browser 对 `http://127.0.0.1:4175/` 的巡检：当时记录 10/10 正式关卡加载、16/16 图片 ready、0 asset error 和 0 新 console error/warning；active browser audit JSON 现已由本轮 22 素材/12 层结果覆盖。
 
 | 项目 | 结果 | 证据或边界 |
 | --- | --- | --- |
@@ -110,9 +193,9 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 | 原生 `option`/`optgroup` 可读性 | **本地与公开 Sites 均通过** | 深色编辑器中的原生 select 弹层实测 `option` computed style：background `rgb(242, 247, 248)`（`#f2f7f8`）、color `rgb(16, 44, 53)`（`#102c35`）；选中文字色登记为 `#071b24`。公开 v12 复验得到相同 computed style。 |
 | 缺失素材安全回退 | **自动测试通过；浏览器注错待固化** | 单元测试覆盖缺失、不适用和 loader error 回到 `builtin:procedural`；本轮正常巡检为 0 asset error，没有保留一次人为 404 注错录像。 |
 
-### 性能、请求与内存
+### 历史性能、请求与内存
 
-可重复证据为 [`levels/art/performance-audit.json`](../levels/art/performance-audit.json)，生成于 2026-08-12 01:43（Asia/Shanghai），状态 `pass`。Chrome 119 headless 通过 CDP 注入真实按键并记录连续 `requestAnimationFrame`；正式样板每个视口测 10 秒，`combined-vertical` 与 `combined-hazards` 各补测 10 秒，low-tier 测 5 秒。可见浏览器另记录同视口 6.5 秒 warm rolling sample，二者不能混作同一测量面。
+该历史性能记录生成于 2026-08-12 01:43（Asia/Shanghai），状态为 `pass`；active performance audit JSON 现已由本轮指纹 `d05022…` 覆盖。Chrome 119 headless 当时通过 CDP 注入真实按键并记录连续 `requestAnimationFrame`；正式样板每个视口测 10 秒，`combined-vertical` 与 `combined-hazards` 各补测 10 秒，low-tier 测 5 秒。可见浏览器另记录同视口 6.5 秒 warm rolling sample，二者不能混作同一测量面。
 
 首次冷启动从空缓存到正式关卡 interactive 为 588.4 ms；共 40 请求、2,284,679 transfer bytes、2,275,763 decoded bytes、0 失败和 0 应用错误。warm reload 到 interactive 为 178.8 ms；共 39 请求、1,978,301 transfer bytes、2,275,754 decoded bytes、0 失败和 0 应用错误。冷/暖启动均只有 15 个 `Image` 请求，15/15 都使用 `/media/` 路由，素材库 thumbnail 请求均为 0；进入玩法后运行时图片 loader 最终发出 16 个去重素材请求，16 ready、0 error。
 
@@ -133,7 +216,7 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 
 跨内容性能抽样还覆盖最重 Celeste 白盒 `celeste.temple.a.d-01`（1280×720：119.249 FPS，P95 8.333 ms，最差 24.999 ms）和最重 Ori 白盒 `ori.mount-horu.central-shaft`（1280×720：119.999 / 8.333 / 8.808；1600×1000：120.049 / 8.333 / 8.333；800×900：119.949 / 8.333 / 16.666）。这些仅证明选定白盒在迁移、公共素材默认和程序化回退下的性能，不代表 908 个参考房间已完成逐房美术。
 
-### 10 关视觉验收
+### 历史 10 关视觉验收
 
 浏览器 JSON 的 `formalLevelSweep.loadedLevelIds` 明确列出以下 10 关，汇总结果为 10 passed / 0 failed：各主题 palette 可区分，路线与碰撞 cue 可读，前景未遮住关键提示/HUD，scene/object 图片未见可见接缝或洋红边。表中“程序化基线 → 主题”是配置前后关系；本轮没有把 10 组同视口静态截图提交进仓库。固定时长 trace 已覆盖样板三视口、垂直关、危险密集关和 low-tier，其余正式关卡保留可见巡检证据。
 
@@ -150,21 +233,21 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 | `combined-vertical` | 程序化基线 → 天穹古树 | 8 层；冷蓝纵深与高耸树干 | 汇总巡检通过 | 10 秒 1280×720：117.050 FPS，P95 8.333 ms，最差 24.999 ms | 视觉与性能通过；静态 before/after 待固化。 |
 | `combined-hazards` | 程序化基线 → 绯荆沼泽 | 8 层；暗紫沼泽与绯红危险物 | 汇总巡检通过 | 10 秒 1280×720：105.887 FPS，P95 16.666 ms，最差 24.999 ms | 视觉与性能通过；静态 before/after 待固化。 |
 
-### 908 个参考白盒复验
+### 历史 908 个参考白盒复验
 
-本轮不仅执行 `npm run check`，还在参考内容指纹 `13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39` 上刷新浏览器审计：908/908 load、2326 个 entrance、8.2 秒、0 failure/0 新日志；908/908 acceptance、3668 个 connection、908 次 re-entry、20.5 秒、0 failure/0 新日志；continuous run 44/44 collection、864 transitions、28.7 秒、0 reset/0 failure/0 新日志。它们证明参考白盒在当前统一文档、迁移和运行时链路中继续可加载、可连通、可安全回退；其边界仍是白盒而不是逐房原创场景美术，不能计入“全部房间已美术化”。具体证据见 `levels/reference/browser-load-audit.json`、`browser-acceptance-audit.json` 和 `continuous-run-audit.json`。
+历史快照当时在参考内容指纹 `13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39` 上记录：908/908 load、2326 个 entrance、8.2 秒、0 failure/0 新日志；908/908 acceptance、3668 个 connection、908 次 re-entry、20.5 秒、0 failure/0 新日志；continuous run 44/44 collection、864 transitions、28.7 秒、0 reset/0 failure/0 新日志。active reference audit JSON 已由上文指纹 `c56c796…` 的本轮结果覆盖；这些旧数值只用于前后比较。
 
-### Sites 发布与线上复验
+### 历史 Sites 发布与线上复验
 
-首个公开验收版本为 v12。它使用已推送的精确 commit 和官方 Sites 打包器生成 980 文件归档；部署成功后重新打开公开地址完成真实浏览器工作流。v12 复验发现直接 `/assets/*.webp` 由 Sites 静态资源层响应为 `application/octet-stream` 且未使用项目期望的一小时缓存；静态 `_headers` 在该托管包装层也未改变线上响应。当前最终候选因此让浏览器请求 `/media/*`，由 Worker 映射到同一 `/assets/*` 文件并显式设置 MIME 与缓存头；registry、素材审计和归档仍以真实 `assets/` 文件为准。**该最终候选尚待主任务保存为新的 Sites 版本、部署并复验，不预填版本号。**
+首个公开验收版本为 v12。它使用已推送的精确 commit 和官方 Sites 打包器生成 980 文件归档；部署成功后重新打开公开地址完成真实浏览器工作流。v12 复验发现直接 `/assets/*.webp` 由 Sites 静态资源层响应为 `application/octet-stream` 且未使用项目期望的一小时缓存；静态 `_headers` 在该托管包装层也未改变线上响应。当时的后续候选因此改为让浏览器请求 `/media/*`，由 Worker 映射到同一 `/assets/*` 文件并显式设置 MIME 与缓存头；这段历史不代表当前 22 素材/12 层候选已经部署。
 
-| 项目 | 当前轮结果 |
+| 项目 | 历史快照结果 |
 | --- | --- |
 | 公开地址 | `https://cablester-game.visiontw.chatgpt.site`；2026-08-12 已重新打开公开版本复验。 |
-| Sites 版本 | 历史验收版本 v12；当前 982 文件最终候选待主任务保存版本后填写，**不预设版本号**。 |
-| 发布状态与时间 | v12 历史 deployment `appgdep_6a7b57439ae4819190c4c9d934087c86` 为 `succeeded`；当前最终候选的 deployment ID、状态与时间待主任务发布后填写。 |
+| Sites 版本 | 历史验收版本 v12；当时 982 文件的后续候选未在这份快照中填写版本号。 |
+| 发布状态与时间 | v12 历史 deployment `appgdep_6a7b57439ae4819190c4c9d934087c86` 为 `succeeded`。 |
 | 线上入口与素材加载 | **通过**：未进入素材模式时 0 张素材图；进入后 17 张卡片、16 张缩略图且路径均在 `/thumbnails/`；场景编辑器显示 8 层。正式样板加载原创场景和物件图，未见洋红边或可见接缝。 |
 | 线上保存/导入导出/试玩 | **通过**：公开版本显示“关卡已保存到这台设备”；通过真实 file chooser 导入 v1 JSON 并显示“已导入关卡，请确认后保存”；导出显示“关卡 JSON 已导出”；一键试玩正常切回游戏画布。 |
 | 线上无缝场景、控件与 console | **通过**：`combined-horizontal` 横向主题场景、玩法路线和前景层级可读；原生 option 为浅底深字；console error/warning 均为 0。缺失素材回退由自动测试覆盖，本轮线上未人为制造 404。 |
-| 遗留风险 | 当前已知：Sites `/media/` 响应头复验待主任务完成；逐关静态 before/after 未入库；1600×1000 样板最差 49.998 ms；单字段重置和人为 404 回退的独立浏览器证据待固化；GPU 显存只有估算。 |
-| 下一轮建议 | 固化 10 组同视口静态 before/after；在真实低端设备复测 low-tier 与偶发长帧；增加显式 404 注错录像和单字段重置浏览器步骤；如继续美术化 908 个参考白盒，应建立独立 preset 规则，不能沿用正式 10 关的验收结论。 |
+| 当时遗留风险 | Sites `/media/` 响应头复验待完成；逐关静态 before/after 未入库；1600×1000 样板最差 49.998 ms；单字段重置和人为 404 回退的独立浏览器证据待固化；GPU 显存只有估算。 |
+| 当时下一轮建议 | 固化 10 组同视口静态 before/after；在真实低端设备复测 low-tier 与偶发长帧；增加显式 404 注错录像和单字段重置浏览器步骤；如继续美术化 908 个参考白盒，应建立独立 preset 规则，不能沿用正式 10 关的验收结论。 |

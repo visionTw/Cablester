@@ -64,7 +64,7 @@ test("all ten formal levels enter runtime through a valid v2 art document", () =
   }
 });
 
-test("all ten formal levels have distinct themes, registered object art and eight registered scene layers", () => {
+test("all ten formal levels have distinct themes, registered object art and twelve registered scene layers", () => {
   const themeLabels = new Set();
   const themeSignatures = new Set();
   const expectedSceneAssetIds = Object.values(SCENE_ASSET_IDS).sort();
@@ -95,8 +95,8 @@ test("all ten formal levels have distinct themes, registered object art and eigh
       assert.ok(objects.every((object) => object.properties.visual.assetId === assetId), `${level.id}.${type} theme mapping`);
     }
 
-    assert.equal(level.scene.layers.length, 8, `${level.id} scene layer count`);
-    assert.equal(new Set(level.scene.layers.map((layer) => layer.id)).size, 8, `${level.id} scene layer ids`);
+    assert.equal(level.scene.layers.length, 12, `${level.id} scene layer count`);
+    assert.equal(new Set(level.scene.layers.map((layer) => layer.id)).size, 12, `${level.id} scene layer ids`);
     assert.equal(level.scene.layers.filter((layer) => layer.role === "player").length, 1, `${level.id} player layer count`);
     assert.deepEqual(
       [...new Set(level.scene.layers.flatMap((layer) => layer.assets.map((asset) => asset.assetId)))].sort(),
@@ -154,7 +154,11 @@ test("representative scene references reusable assets in canonical v2 layers", (
   const level = LEVELS.find((candidate) => candidate.id === REPRESENTATIVE_LEVEL_ID);
   const sceneAssetIds = new Set(level.scene.layers.flatMap((layer) => layer.assets.map((asset) => asset.assetId)));
   assert.ok(Object.values(SCENE_ASSET_IDS).every((assetId) => sceneAssetIds.has(assetId)));
-  assert.equal(level.scene.layers.length, 8);
+  assert.equal(level.scene.layers.length, 12);
+  assert.equal(level.scene.layers.find((layer) => layer.id === "scene-deep-root-spires").depth, -124);
+  assert.equal(level.scene.layers.find((layer) => layer.id === "scene-far-canopy").depth, -56);
+  assert.equal(level.scene.layers.find((layer) => layer.id === "scene-mid-landmarks").depth, -8);
+  assert.equal(level.scene.layers.find((layer) => layer.id === "scene-near-bell-flowers").depth, -3);
   assert.equal(level.scene.layers.find((layer) => layer.id === "scene-near-luminous-plants").depth, -2);
   assert.equal(level.scene.layers.find((layer) => layer.role === "player").depth, 0);
   assert.equal(level.scene.layers.find((layer) => layer.role === "player").parallax, 1);

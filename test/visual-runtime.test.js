@@ -14,6 +14,8 @@ import {
   VisualRuntime,
   collectLevelAssetIds,
   detectVisualQualityTier,
+  isObjectVisualVisible,
+  objectVisualBounds,
   scenePassForLayer,
   stableSortRenderQueue,
   visualQualityProfile
@@ -188,6 +190,54 @@ test("level asset collection and stable draw sorting preserve default order", ()
   assert.deepEqual(queue.map((item) => item.id), ["back", "default-a", "default-b", "same-a", "same-b", "front"]);
 });
 
+test("object visibility uses actual offset, anchor, flip, fragile offset and camera rotation", () => {
+  const camera = { x: 0, y: 0, angle: 0, width: 640, height: 360 };
+  const farGameplay = { x: 1200, y: 140, w: 200, h: 40 };
+  const offsetVisual = createVisualConfig({ offsetX: -1000, anchorX: 0, scaleX: 2 });
+  const offsetBounds = objectVisualBounds(farGameplay, "platform", offsetVisual);
+  assert.equal(offsetBounds.x, 300);
+  assert.equal(isObjectVisualVisible(farGameplay, "platform", offsetVisual, camera, 0), true);
+
+  const flipped = objectVisualBounds(
+    { x: 700, y: 140, w: 100, h: 40 },
+    "platform",
+    createVisualConfig({ anchorX: 0, flipX: true, scaleX: 4 })
+  );
+  assert.equal(flipped.x, 350);
+  assert.equal(flipped.width, 450);
+
+  const fragile = objectVisualBounds(
+    { x: 220, y: -500, w: 120, h: 30, offsetY: 620 },
+    "fragilePlatform",
+    createVisualConfig({ anchorY: 1 })
+  );
+  assert.equal(fragile.y, 105);
+  assert.equal(fragile.y + fragile.height, 150);
+  assert.equal(isObjectVisualVisible(
+    { x: 220, y: -500, w: 120, h: 30, offsetY: 620 },
+    "fragilePlatform",
+    createVisualConfig({ anchorY: 1 }),
+    camera,
+    0
+  ), true);
+
+  const rotatedCamera = { ...camera, angle: Math.PI / 2 };
+  assert.equal(isObjectVisualVisible(
+    { x: 0, y: -300, w: 40, h: 40 },
+    "platform",
+    createVisualConfig(),
+    rotatedCamera,
+    0
+  ), true);
+  assert.equal(isObjectVisualVisible(
+    { x: 0, y: -900, w: 40, h: 40 },
+    "platform",
+    createVisualConfig(),
+    rotatedCamera,
+    0
+  ), false);
+});
+
 test("object image rendering matches editor bounds while loading and errors use procedural fallback", async () => {
   const asset = imageAsset("test:platform", ["platform"]);
   const registry = registryWith(asset);
@@ -234,6 +284,96 @@ test("object image rendering matches editor bounds while loading and errors use 
   assert.equal(runtime.stats().fallbackDraws, 1);
 });
 
+test("nine-slice platform rendering remains compatible with flip, tint and opacity", async () => {
+  const asset = imageAsset("test:nine-platform", ["platform"]);
+  asset.width = 100;
+  asset.height = 50;
+  asset.scaling = {
+    defaultMode: "nine-slice",
+    allowedModes: ["stretch", "nine-slice", "tile"],
+    nineSlice: { left: 20, right: 20, top: 10, bottom: 10, edgeMode: "tile", centerMode: "tile" },
+    tile: { width: 50, height: 25 }
+  };
+  const registry = registryWith(asset);
+  const loader = new AssetImageLoader({ registry, loadImage: async () => ({ width: 100, height: 50 }) });
+  await loader.preload([asset.id]);
+  const previousOffscreenCanvas = globalThis.OffscreenCanvas;
+  class TestOffscreenCanvas {
+    constructor(width, height) {
+      this.width = width;
+      this.height = height;
+    }
+
+    getContext() {
+      return {
+        globalAlpha: 1,
+        globalCompositeOperation: "source-over",
+        fillStyle: "#000000",
+        drawImage() {},
+        fillRect() {}
+      };
+    }
+  }
+  globalThis.OffscreenCanvas = TestOffscreenCanvas;
+  try {
+    const runtime = new VisualRuntime({ registry, loader, qualityTier: "high" });
+    const ctx = fakeContext();
+    const result = runtime.renderObject(ctx, {
+      type: "platform",
+      item: { x: 10, y: 20, w: 600, h: 120 },
+      visual: createVisualConfig({
+        assetId: asset.id,
+        scaleMode: "nine-slice",
+        tileScale: 1.5,
+        flipX: true,
+        flipY: true,
+        tint: "#77ccaa",
+        opacity: 0.45
+      }),
+      fallback() {}
+    });
+    const imageDraws = ctx.calls.filter((call) => call[0] === "drawImage");
+    assert.equal(result.drawn, true);
+    assert.ok(imageDraws.length > 9);
+    assert.ok(imageDraws.every((call) => call[1] instanceof TestOffscreenCanvas));
+    assert.deepEqual(ctx.calls.find((call) => call[0] === "scale"), ["scale", -1, -1]);
+    assert.equal(ctx.globalAlpha, 0.45);
+    assert.equal(loader.peek(asset.id).tintCache.has("#77ccaa"), true);
+    assert.equal(runtime.stats().objectAssetDraws, 1);
+  } finally {
+    if (previousOffscreenCanvas === undefined) delete globalThis.OffscreenCanvas;
+    else globalThis.OffscreenCanvas = previousOffscreenCanvas;
+  }
+});
+
+test("low quality caps object nine-slice patches and reports degradation", async () => {
+  const asset = imageAsset("test:low-nine-platform", ["platform"]);
+  asset.width = 100;
+  asset.height = 50;
+  asset.scaling = {
+    defaultMode: "nine-slice",
+    allowedModes: ["stretch", "nine-slice", "tile"],
+    nineSlice: { left: 20, right: 20, top: 10, bottom: 10, edgeMode: "tile", centerMode: "tile" },
+    tile: { width: 50, height: 25 }
+  };
+  const registry = registryWith(asset);
+  const loader = new AssetImageLoader({ registry, loadImage: async () => ({ width: 100, height: 50 }) });
+  await loader.preload([asset.id]);
+  const runtime = new VisualRuntime({ registry, loader, qualityTier: "low" });
+  const ctx = fakeContext();
+  runtime.renderObject(ctx, {
+    type: "platform",
+    item: { x: 0, y: 0, w: 5000, h: 700 },
+    visual: createVisualConfig({ assetId: asset.id, scaleMode: "nine-slice", tileScale: 1 }),
+    fallback() {}
+  });
+  const stats = runtime.stats();
+  assert.equal(stats.objectAssetDraws, 1);
+  assert.equal(stats.objectPatchDraws, 1);
+  assert.equal(stats.objectQualityDegrades, 1);
+  assert.equal(ctx.calls.filter((call) => call[0] === "drawImage").length, 1);
+});
+
 test("procedural object rendering uses the zero-request fast path", () => {
   const runtime = new VisualRuntime({ qualityTier: "high" });
   let fallbacks = 0;
@@ -247,6 +387,41 @@ test("procedural object rendering uses the zero-request fast path", () => {
   assert.equal(fallbacks, 1);
   assert.equal(runtime.stats().requests, 0);
   assert.equal(runtime.stats().fallbackDraws, 1);
+});
+
+test("boundary walls stay invisible by default but render an explicit compatible image", async () => {
+  const asset = imageAsset("test:visible-boundary", ["boundaryWall"]);
+  const registry = registryWith(asset);
+  const loader = new AssetImageLoader({ registry, loadImage: async () => ({ width: 64, height: 32 }) });
+  await loader.preload([asset.id]);
+  const runtime = new VisualRuntime({ registry, loader, qualityTier: "high" });
+  const ctx = fakeContext();
+  const wall = { x: 20, y: 10, w: 30, h: 200 };
+  const hidden = runtime.renderObject(ctx, {
+    type: "boundaryWall",
+    item: wall,
+    visual: createVisualConfig(),
+    fallback: null
+  });
+  assert.equal(hidden.drawn, false);
+  assert.equal(ctx.calls.some((call) => call[0] === "drawImage"), false);
+
+  const visible = runtime.renderObject(ctx, {
+    type: "boundaryWall",
+    item: wall,
+    visual: createVisualConfig({ assetId: asset.id }),
+    fallback: null
+  });
+  assert.equal(visible.drawn, true);
+  assert.equal(ctx.calls.some((call) => call[0] === "drawImage"), true);
+
+  const missing = runtime.renderObject(ctx, {
+    type: "boundaryWall",
+    item: wall,
+    visual: createVisualConfig({ assetId: "missing:boundary" }),
+    fallback: null
+  });
+  assert.equal(missing.drawn, false);
 });
 
 test("scene rendering uses canonical placements, pass selection and low-tier caps", async () => {

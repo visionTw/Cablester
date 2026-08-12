@@ -18,7 +18,8 @@
     "wallGrab",
     "dash",
     "bash",
-    "rope"
+    "rope",
+    "hardBar"
   ],
   "reference": {
     "manifestId": "ori.lost-grove.return-loop",

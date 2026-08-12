@@ -7,12 +7,14 @@ import {
   resolveAssetReference,
   resolveVisualAsset
 } from "./asset-library.js";
+import { drawScaledAssetImage } from "./asset-scaling.js";
 import { calculateSeamlessPlacements, validateScene } from "./scene-layers.js";
+import { rotate } from "./math.js";
 
 const QUALITY_PROFILES = Object.freeze({
-  high: Object.freeze({ maxLayers: 48, maxLayerDraws: 256, maxSceneDraws: 1024, densityScale: 1, maxBlur: 12 }),
-  balanced: Object.freeze({ maxLayers: 24, maxLayerDraws: 128, maxSceneDraws: 512, densityScale: 0.72, maxBlur: 6 }),
-  low: Object.freeze({ maxLayers: 12, maxLayerDraws: 48, maxSceneDraws: 192, densityScale: 0.42, maxBlur: 2 })
+  high: Object.freeze({ maxLayers: 48, maxLayerDraws: 256, maxSceneDraws: 1024, maxObjectPatches: 256, densityScale: 1, maxBlur: 12 }),
+  balanced: Object.freeze({ maxLayers: 24, maxLayerDraws: 128, maxSceneDraws: 512, maxObjectPatches: 96, densityScale: 0.72, maxBlur: 6 }),
+  low: Object.freeze({ maxLayers: 12, maxLayerDraws: 48, maxSceneDraws: 192, maxObjectPatches: 32, densityScale: 0.42, maxBlur: 2 })
 });
 
 const SCENE_PASSES = new Set(["background", "midground", "player", "foreground"]);
@@ -248,7 +250,7 @@ export function stableSortRenderQueue(commands = []) {
     .map(({ __queueIndex, ...command }) => command);
 }
 
-function objectBounds(item, type) {
+export function objectBounds(item, type) {
   if (Number.isFinite(item?.ax) && Number.isFinite(item?.ay) && Number.isFinite(item?.bx) && Number.isFinite(item?.by)) {
     const half = Math.max(8, (Number(item.thickness) || 0) / 2);
     return {
@@ -269,6 +271,76 @@ function objectBounds(item, type) {
       ? Number(item?.radius) || 22
       : 22;
   return { x: x - radius, y: y - radius, width: radius * 2, height: radius * 2 };
+}
+
+function unionBounds(first, second) {
+  const x = Math.min(first.x, second.x);
+  const y = Math.min(first.y, second.y);
+  const right = Math.max(first.x + first.width, second.x + second.width);
+  const bottom = Math.max(first.y + first.height, second.y + second.height);
+  return { x, y, width: right - x, height: bottom - y };
+}
+
+/**
+ * Returns the same world-space rectangle used by drawObjectImage, unioned with
+ * the gameplay bounds so a loading/error procedural fallback cannot be culled
+ * while it is still visible. Anchor and flip alter which side of the transform
+ * origin receives the scaled image, and fragile platforms include runtime fall
+ * offset through objectBounds().
+ */
+export function objectVisualBounds(item, type, visual = DEFAULT_VISUAL_CONFIG) {
+  const gameplay = objectBounds(item, type);
+  const scaleX = Number.isFinite(visual?.scaleX) ? Math.abs(visual.scaleX) : 1;
+  const scaleY = Number.isFinite(visual?.scaleY) ? Math.abs(visual.scaleY) : 1;
+  const anchorX = Number.isFinite(visual?.anchorX) ? visual.anchorX : 0.5;
+  const anchorY = Number.isFinite(visual?.anchorY) ? visual.anchorY : 0.5;
+  const offsetX = Number.isFinite(visual?.offsetX) ? visual.offsetX : 0;
+  const offsetY = Number.isFinite(visual?.offsetY) ? visual.offsetY : 0;
+  const width = Math.max(1, gameplay.width * scaleX);
+  const height = Math.max(1, gameplay.height * scaleY);
+  const originX = gameplay.x + gameplay.width / 2 + offsetX;
+  const originY = gameplay.y + gameplay.height / 2 + offsetY;
+  const image = {
+    x: originX - width * (visual?.flipX ? 1 - anchorX : anchorX),
+    y: originY - height * (visual?.flipY ? 1 - anchorY : anchorY),
+    width,
+    height
+  };
+  return unionBounds(gameplay, image);
+}
+
+/** Project a visual/gameplay union through the rotating camera and test its
+ * exact screen-space AABB against the viewport plus a small overscan margin. */
+export function isObjectVisualVisible(item, type, visual, camera, overscan = 160) {
+  const viewportWidth = Number(camera?.width);
+  const viewportHeight = Number(camera?.height);
+  if (!(viewportWidth > 0 && viewportHeight > 0)) return true;
+  const bounds = objectVisualBounds(item, type, visual);
+  const cameraX = Number(camera?.x) || 0;
+  const cameraY = Number(camera?.y) || 0;
+  const angle = Number(camera?.angle) || 0;
+  const corners = [
+    [bounds.x, bounds.y],
+    [bounds.x + bounds.width, bounds.y],
+    [bounds.x + bounds.width, bounds.y + bounds.height],
+    [bounds.x, bounds.y + bounds.height]
+  ];
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (const [x, y] of corners) {
+    const projected = rotate(x - cameraX, y - cameraY, angle);
+    const screenX = viewportWidth / 2 + projected.x;
+    const screenY = viewportHeight / 2 + projected.y;
+    minX = Math.min(minX, screenX);
+    minY = Math.min(minY, screenY);
+    maxX = Math.max(maxX, screenX);
+    maxY = Math.max(maxY, screenY);
+  }
+  const margin = Math.max(0, Number(overscan) || 0);
+  return maxX >= -margin && minX <= viewportWidth + margin
+    && maxY >= -margin && minY <= viewportHeight + margin;
 }
 
 function createTintCanvas(width, height) {
@@ -309,7 +381,7 @@ function tintedDrawable(entry, tint) {
   return canvas;
 }
 
-function drawObjectImage(ctx, entry, item, type, visual) {
+function drawObjectImage(ctx, entry, item, type, visual, maximumPatches = 256) {
   const source = tintedDrawable(entry, visual.tint);
   if (!source) return false;
   const bounds = objectBounds(item, type);
@@ -321,9 +393,14 @@ function drawObjectImage(ctx, entry, item, type, visual) {
   ctx.globalAlpha *= visual.opacity;
   ctx.translate(originX, originY);
   ctx.scale(visual.flipX ? -1 : 1, visual.flipY ? -1 : 1);
-  ctx.drawImage(source, -width * visual.anchorX, -height * visual.anchorY, width, height);
+  const result = drawScaledAssetImage(ctx, source, entry.asset, visual, {
+    x: -width * visual.anchorX,
+    y: -height * visual.anchorY,
+    width,
+    height
+  }, { maximumPatches });
   ctx.restore();
-  return true;
+  return result;
 }
 
 export function scenePassForLayer(layer) {
@@ -434,7 +511,7 @@ export class VisualRuntime {
   }
 
   beginFrame() {
-    this.frameStats = { sceneDraws: 0, objectAssetDraws: 0, fallbackDraws: 0, cullCount: 0 };
+    this.frameStats = { sceneDraws: 0, objectAssetDraws: 0, objectPatchDraws: 0, objectQualityDegrades: 0, fallbackDraws: 0, cullCount: 0 };
     this.frameScenes = new WeakSet();
   }
 
@@ -473,9 +550,14 @@ export class VisualRuntime {
     });
     if (resolved.asset?.kind === "image") {
       const entry = this.loader.request(resolved.asset);
-      if (entry?.status === "ready" && drawObjectImage(ctx, entry, item, type, resolved.visual)) {
+      const drawn = entry?.status === "ready"
+        ? drawObjectImage(ctx, entry, item, type, resolved.visual, this.quality.maxObjectPatches)
+        : null;
+      if (drawn?.drawn) {
         if (typeof overlay === "function") overlay();
         this.frameStats.objectAssetDraws += 1;
+        this.frameStats.objectPatchDraws += drawn.drawCalls || 1;
+        if (drawn.qualityDegraded) this.frameStats.objectQualityDegrades += 1;
         return { drawn: true, fallback: false, status: "ready", resolved };
       }
     }

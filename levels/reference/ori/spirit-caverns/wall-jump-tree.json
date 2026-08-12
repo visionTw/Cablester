@@ -15,7 +15,8 @@
   },
   "dashCapacity": 1,
   "startingAbilities": [
-    "wallGrab"
+    "wallGrab",
+    "bash"
   ],
   "reference": {
     "manifestId": "ori.spirit-caverns.wall-jump-tree",

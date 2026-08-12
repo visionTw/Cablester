@@ -95506,10 +95506,10 @@
   "auditEvidence": {
     "contentFingerprint": {
       "algorithm": "sha256",
-      "value": "13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39",
-      "fileCount": 931,
+      "value": "c56c796216b9e69fc388f79c9eb34637d649261dff4f7b6818f4d652f4e5a821",
+      "fileCount": 934,
       "roomFileCount": 908,
-      "runtimeFileCount": 23
+      "runtimeFileCount": 26
     },
     "browserLoad": {
       "artifact": "levels/reference/browser-load-audit.json",
@@ -95523,7 +95523,7 @@
     },
     "continuousRun": {
       "artifact": "levels/reference/continuous-run-audit.json",
-      "ranAt": "2026-08-12T01:42:07.703+08:00",
+      "ranAt": "2026-08-12T13:05:49+08:00",
       "fresh": true,
       "passed": true
     },

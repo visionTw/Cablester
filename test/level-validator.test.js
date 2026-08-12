@@ -65,6 +65,23 @@ test("validator catches duplicate ids and unknown ability grants", () => {
   assert.ok(errors.some((error) => error.includes("acceptance level")));
 });
 
+test("validator rejects malformed runtime air-wall configuration", () => {
+  const broken = structuredClone(PROTOTYPE_LEVEL);
+  broken.boundaryWalls = [{
+    id: "bad-edge",
+    x: broken.bounds.x,
+    y: broken.bounds.y,
+    w: 0,
+    h: broken.bounds.h,
+    blockingSide: "diagonal",
+    grapple: "yes"
+  }];
+  const errors = validateLevel(broken);
+  assert.ok(errors.some((error) => error.includes("positive dimensions")));
+  assert.ok(errors.some((error) => error.includes("unsupported boundary blocking side")));
+  assert.ok(errors.some((error) => error.includes("grapple must be true or false")));
+});
+
 test("validator rejects unreachable or malformed goal placement", () => {
   const embedded = structuredClone(PROTOTYPE_LEVEL);
   embedded.goal = { id: "embedded-goal", x: 0, y: 700, radius: 34 };

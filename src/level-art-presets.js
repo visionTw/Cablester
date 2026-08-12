@@ -65,7 +65,10 @@ const REPRESENTATIVE_SCENE_LAYERS_BY_ROLE = Object.freeze({
   foreground: Object.freeze({
     name: "暗藤前景",
     depth: 90,
-    assets: Object.freeze([{ assetId: SCENE_ASSET_IDS.foregroundBranch, weight: 1 }]),
+    assets: Object.freeze([
+      { assetId: SCENE_ASSET_IDS.foregroundBranch, weight: 1 },
+      { assetId: SCENE_ASSET_IDS.shadowFern, weight: 1.35 }
+    ]),
     parallax: 1.15,
     opacity: 0.46,
     tint: "#789f9b",
@@ -80,6 +83,105 @@ const REPRESENTATIVE_SCENE_LAYERS_BY_ROLE = Object.freeze({
 });
 
 const REPRESENTATIVE_ADDITIONAL_SCENE_LAYERS = Object.freeze([
+  Object.freeze({
+    id: "scene-deep-root-spires",
+    name: "深远根峰",
+    role: "custom",
+    depth: -124,
+    assets: Object.freeze([{ assetId: SCENE_ASSET_IDS.distantRootSpires, weight: 1 }]),
+    visible: true,
+    locked: false,
+    parallax: 0.07,
+    scale: 1,
+    opacity: 0.2,
+    tint: "#7897aa",
+    blur: 1.5,
+    fog: 0.04,
+    blendMode: "source-over",
+    repeatX: true,
+    seamless: Object.freeze({ mode: "mirror", tileWidth: 430, overlap: 28 }),
+    seed: "combined-horizontal-deep-root-spires",
+    range: Object.freeze({ startX: null, endX: null }),
+    originX: -120,
+    spacing: 210,
+    density: 1,
+    drawCap: 2
+  }),
+  Object.freeze({
+    id: "scene-far-canopy",
+    name: "远景月影树冠",
+    role: "custom",
+    depth: -56,
+    assets: Object.freeze([{ assetId: SCENE_ASSET_IDS.moonlitCanopy, weight: 1 }]),
+    visible: true,
+    locked: false,
+    parallax: 0.3,
+    scale: 1,
+    opacity: 0.34,
+    tint: "#82a8b2",
+    blur: 0.5,
+    fog: 0.03,
+    blendMode: "source-over",
+    repeatX: true,
+    seamless: Object.freeze({ mode: "random", tileWidth: 540, overlap: 32 }),
+    seed: "combined-horizontal-far-canopy",
+    range: Object.freeze({ startX: null, endX: null }),
+    originX: 60,
+    spacing: 250,
+    density: 1,
+    drawCap: 2
+  }),
+  Object.freeze({
+    id: "scene-mid-landmarks",
+    name: "中景盘根遗迹",
+    role: "custom",
+    depth: -8,
+    assets: Object.freeze([
+      { assetId: SCENE_ASSET_IDS.rootStoneArch, weight: 0.85 },
+      { assetId: SCENE_ASSET_IDS.mossRootBoulders, weight: 1.15 }
+    ]),
+    visible: true,
+    locked: false,
+    parallax: 0.76,
+    scale: 1,
+    opacity: 0.46,
+    tint: "#9ac7b8",
+    blur: 0,
+    fog: 0,
+    blendMode: "source-over",
+    repeatX: true,
+    seamless: Object.freeze({ mode: "random", tileWidth: 390, overlap: 0 }),
+    seed: "combined-horizontal-mid-landmarks",
+    range: Object.freeze({ startX: null, endX: null }),
+    originX: 260,
+    spacing: 520,
+    density: 1,
+    drawCap: 2
+  }),
+  Object.freeze({
+    id: "scene-near-bell-flowers",
+    name: "近路水青铃花",
+    role: "custom",
+    depth: -3,
+    assets: Object.freeze([{ assetId: SCENE_ASSET_IDS.aquaBellFlowers, weight: 1 }]),
+    visible: true,
+    locked: false,
+    parallax: 0.93,
+    scale: 0.9,
+    opacity: 0.72,
+    tint: "#d8fff2",
+    blur: 0,
+    fog: 0,
+    blendMode: "source-over",
+    repeatX: true,
+    seamless: Object.freeze({ mode: "random", tileWidth: 170, overlap: 0 }),
+    seed: "combined-horizontal-near-bell-flowers",
+    range: Object.freeze({ startX: null, endX: null }),
+    originX: 150,
+    spacing: 420,
+    density: 0.86,
+    drawCap: 1
+  }),
   Object.freeze({
     id: "scene-near-luminous-plants",
     name: "近路发光种荚",
@@ -284,7 +386,26 @@ function themedSceneLayersByRole(levelId, theme) {
 function themedAdditionalSceneLayers(levelId, theme) {
   return clone(REPRESENTATIVE_ADDITIONAL_SCENE_LAYERS).map((layer) => {
     const next = { ...layer, seed: `${levelId}-${layer.id}` };
-    if (layer.id === "scene-near-luminous-plants") {
+    if (layer.id === "scene-deep-root-spires") {
+      next.name = `${theme.label} · 深远根峰`;
+      next.tint = theme.backgroundTint;
+      next.opacity = (theme.backgroundOpacity ?? 0.26) * 0.72;
+      next.parallax = Math.max(0.04, (theme.backgroundParallax ?? 0.14) * 0.5);
+    } else if (layer.id === "scene-far-canopy") {
+      next.name = `${theme.label} · 月影树冠`;
+      next.tint = theme.backgroundTint;
+      next.opacity = (theme.backgroundOpacity ?? 0.26) * 1.18;
+      next.parallax = Math.max(0.2, (theme.midParallax ?? 0.46) * 0.64);
+    } else if (layer.id === "scene-mid-landmarks") {
+      next.name = `${theme.label} · 盘根遗迹`;
+      next.tint = theme.midTint;
+      next.opacity = (theme.midOpacity ?? 0.58) * 0.78;
+      next.parallax = Math.min(0.84, (theme.midParallax ?? 0.46) + 0.28);
+    } else if (layer.id === "scene-near-bell-flowers") {
+      next.name = `${theme.label} · 水青铃花`;
+      next.tint = theme.playerTint;
+      next.opacity = (theme.playerOpacity ?? 0.82) * 0.88;
+    } else if (layer.id === "scene-near-luminous-plants") {
       next.name = `${theme.label} · 发光种荚`;
       next.tint = theme.playerTint;
       next.opacity = theme.plantOpacity ?? layer.opacity;

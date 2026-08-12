@@ -17,7 +17,7 @@ import { addSceneLayer } from "../src/scene-layers.js";
 
 test("object library exposes every editable runtime collection", () => {
   for (const type of [
-    "spawn", "goal", "checkpoint", "roomEntrance", "roomExit", "platform", "slope", "hazard", "windZone", "liquidZone", "darknessZone",
+    "spawn", "goal", "checkpoint", "roomEntrance", "roomExit", "boundaryWall", "platform", "slope", "hazard", "windZone", "liquidZone", "darknessZone",
     "rotationTrigger", "anchor", "bashTarget", "energyOrb", "dashRefill", "movingObject", "launcher", "fragilePlatform",
     "gate", "stateTrigger", "abilityPickup", "sign", "backgroundSeed"
   ]) {
@@ -133,6 +133,35 @@ test("launchers, fragile platforms, gates and state triggers round-trip through 
   }
 });
 
+test("air walls preserve dimensions, blocking side and grapple policy through document round-trip", () => {
+  const document = createBlankLevelDocument("边界阻挡往返");
+  const wall = createLevelObject("boundaryWall", 1200, -400, document.objects, {
+    id: "edge-right",
+    properties: { w: 40, h: 1700, blockingSide: "left", grapple: false }
+  });
+  document.objects.push(wall);
+
+  assert.deepEqual(validateLevelDocument(document), []);
+  const level = compileLevelDocument(document);
+  assert.deepEqual(level.boundaryWalls, [{
+    id: "edge-right",
+    x: 1200,
+    y: -400,
+    w: 40,
+    h: 1700,
+    blockingSide: "left",
+    grapple: false
+  }]);
+  assert.deepEqual(validateLevel(level), []);
+  assert.deepEqual(compileLevelDocument(levelToDocument(level)).boundaryWalls, level.boundaryWalls);
+
+  wall.properties.blockingSide = "diagonal";
+  wall.properties.w = 0;
+  const errors = validateLevelDocument(document);
+  assert.ok(errors.some((error) => error.includes("blockingSide")));
+  assert.ok(errors.some((error) => error.includes("edge-right.w")));
+});
+
 test("schema v1 documents migrate without mutation and receive visual and scene defaults", () => {
   const versionTwo = createBlankLevelDocument("旧关卡迁移");
   const versionOne = structuredClone(versionTwo);
@@ -150,6 +179,22 @@ test("schema v1 documents migrate without mutation and receive visual and scene 
   assert.deepEqual(migrated.scene.layers.map((layer) => layer.role), ["background", "midground", "player", "foreground"]);
   assert.deepEqual(validateLevelDocument(versionOne), []);
   assert.deepEqual(validateLevelDocument(migrated), []);
+});
+
+test("older schema v2 visual objects receive newly added scaling defaults without mutation", () => {
+  const original = createBlankLevelDocument("旧 v2 缩放字段");
+  const legacy = structuredClone(original);
+  for (const object of legacy.objects) {
+    delete object.properties.visual.scaleMode;
+    delete object.properties.visual.tileScale;
+  }
+  const migrated = migrateLevelDocument(legacy);
+  assert.notEqual(migrated, legacy);
+  assert.equal(legacy.objects[0].properties.visual.scaleMode, undefined);
+  assert.ok(migrated.objects.every((object) => object.properties.visual.scaleMode === "asset"));
+  assert.ok(migrated.objects.every((object) => object.properties.visual.tileScale === 1));
+  assert.deepEqual(validateLevelDocument(legacy), []);
+  assert.equal(compileLevelDocument(legacy).visuals[legacy.objects[0].id].scaleMode, "asset");
 });
 
 test("visual mappings and scene layers survive compile and document round-trip without changing gameplay arrays", () => {

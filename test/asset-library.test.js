@@ -104,6 +104,9 @@ test("asset registry supports search, applicability and project/type defaults", 
   assert.equal(getTypeDefaultAssetId("checkpoint", DEFAULT_ASSET_REGISTRY), GAME_ASSET_IDS.checkpointLantern);
   assert.equal(getTypeDefaultAssetId("spawn", DEFAULT_ASSET_REGISTRY), GAME_ASSET_IDS.spawnGate);
   assert.equal(getTypeDefaultAssetId("goal", DEFAULT_ASSET_REGISTRY), GAME_ASSET_IDS.goalGate);
+  const platformAsset = DEFAULT_ASSET_REGISTRY.assets.find((asset) => asset.id === GAME_ASSET_IDS.mossPlatform);
+  assert.equal(platformAsset.scaling.defaultMode, "nine-slice");
+  assert.deepEqual(platformAsset.scaling.allowedModes, ["stretch", "nine-slice", "tile"]);
   assert.ok(BUILTIN_LEVEL_OBJECT_TYPES
     .filter((type) => ![
       "platform", "hazard", "anchor", "energyOrb", "dashRefill",
@@ -115,7 +118,7 @@ test("asset registry supports search, applicability and project/type defaults", 
 test("generated project assets have complete metadata and files matching the registry", () => {
   assert.deepEqual(validateAssetRegistry(DEFAULT_ASSET_REGISTRY), []);
   assert.deepEqual(createAssetRegistry(), structuredClone(DEFAULT_ASSET_REGISTRY));
-  assert.equal(GENERATED_GAME_ASSETS.length, 16);
+  assert.equal(GENERATED_GAME_ASSETS.length, 22);
   assert.deepEqual(
     searchAssets(DEFAULT_ASSET_REGISTRY, { objectType: "scene", kind: "image" }).map((asset) => asset.id),
     Object.values(SCENE_ASSET_IDS)
@@ -153,6 +156,8 @@ test("visual update, full replacement and property reset keep one canonical conf
   const platform = document.objects.find((object) => object.type === "platform");
   const updated = updateObjectVisual(document, platform.id, {
     assetId: "test:platform-stone",
+    scaleMode: "stretch",
+    tileScale: 1.5,
     scaleX: 1.75,
     offsetY: -12,
     opacity: 0.65,
@@ -161,6 +166,8 @@ test("visual update, full replacement and property reset keep one canonical conf
   const visual = updated.objects.find((object) => object.id === platform.id).properties.visual;
   assert.equal(visual.scaleX, 1.75);
   assert.equal(visual.scaleY, 1);
+  assert.equal(visual.scaleMode, "stretch");
+  assert.equal(visual.tileScale, 1.5);
   assert.equal(visual.opacity, 0.65);
 
   const resetScale = resetObjectVisualProperty(updated, platform.id, "scaleX", registry);
@@ -195,6 +202,14 @@ test("type-wide and document-wide reset restore canonical defaults", () => {
 
 test("missing, inapplicable and failed assets resolve to the procedural fallback", () => {
   const registry = testRegistry();
+  const legacyVisual = createVisualConfig({ assetId: "test:platform-stone" });
+  delete legacyVisual.scaleMode;
+  delete legacyVisual.tileScale;
+  const legacyResolved = resolveVisualAsset(legacyVisual, "platform", registry);
+  assert.equal(legacyResolved.assetId, "test:platform-stone");
+  assert.equal(legacyResolved.visual.scaleMode, "asset");
+  assert.equal(legacyResolved.visual.tileScale, 1);
+  assert.equal(legacyResolved.usedFallback, false);
   const missing = resolveVisualAsset(createVisualConfig({ assetId: "missing:asset" }), "platform", registry);
   assert.equal(missing.assetId, "test:platform-moss");
   assert.equal(missing.usedFallback, true);
@@ -216,8 +231,10 @@ test("missing, inapplicable and failed assets resolve to the procedural fallback
 });
 
 test("visual and registry validation reject malformed configuration", () => {
-  const invalidVisual = { ...createVisualConfig(), scaleX: 0, opacity: 2, tint: "blue", extra: true };
+  const invalidVisual = { ...createVisualConfig(), scaleMode: "cover", tileScale: 0, scaleX: 0, opacity: 2, tint: "blue", extra: true };
   const visualErrors = validateVisualConfig(invalidVisual);
+  assert.ok(visualErrors.some((error) => error.includes("scaleMode")));
+  assert.ok(visualErrors.some((error) => error.includes("tileScale")));
   assert.ok(visualErrors.some((error) => error.includes("scaleX")));
   assert.ok(visualErrors.some((error) => error.includes("opacity")));
   assert.ok(visualErrors.some((error) => error.includes("tint")));
@@ -234,4 +251,24 @@ test("visual and registry validation reject malformed configuration", () => {
   const encodedSeparatorRegistry = testRegistry();
   encodedSeparatorRegistry.assets[1].thumbnailPath = "./assets/game/test%2Fthumb.webp";
   assert.ok(validateAssetRegistry(encodedSeparatorRegistry).some((error) => error.includes("thumbnailPath")));
+
+  const impossibleSliceRegistry = testRegistry();
+  impossibleSliceRegistry.assets[1].scaling = {
+    defaultMode: "nine-slice",
+    allowedModes: ["stretch", "nine-slice"],
+    nineSlice: { left: 180, right: 76, top: 10, bottom: 10, edgeMode: "tile", centerMode: "tile" },
+    tile: { width: 128, height: 64 }
+  };
+  const sliceErrors = validateAssetRegistry(impossibleSliceRegistry);
+  assert.ok(sliceErrors.some((error) => error.includes("positive center width")));
+
+  const registeredModeErrors = validateVisualConfig(createVisualConfig({
+    assetId: "test:platform-stone",
+    scaleMode: "nine-slice"
+  }), {
+    registry: testRegistry(),
+    objectType: "platform",
+    requireRegisteredAsset: true
+  });
+  assert.ok(registeredModeErrors.some((error) => error.includes("not supported")));
 });

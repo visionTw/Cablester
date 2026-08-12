@@ -456,6 +456,50 @@ const HAZARD_LAB = labLevel({
   ]
 });
 
+export function createEdgeBoundaryWalls(level, { top = level.id === "combined-vertical" } = {}) {
+  const { x, y, w, h } = level.bounds;
+  const thickness = 40;
+  const walls = [
+    {
+      id: `${level.id}-edge-left`,
+      x: x - thickness,
+      y,
+      w: thickness,
+      h,
+      blockingSide: "right",
+      grapple: false
+    },
+    {
+      id: `${level.id}-edge-right`,
+      x: x + w,
+      y,
+      w: thickness,
+      h,
+      blockingSide: "left",
+      grapple: false
+    }
+  ];
+  if (top) {
+    walls.push({
+      id: `${level.id}-edge-top`,
+      x,
+      y: y - thickness,
+      w,
+      h: thickness,
+      blockingSide: "bottom",
+      grapple: false
+    });
+  }
+  return walls;
+}
+
+function withEdgeBoundaryWalls(level) {
+  return {
+    ...level,
+    boundaryWalls: [...(level.boundaryWalls || []), ...createEdgeBoundaryWalls(level)]
+  };
+}
+
 export const LEGACY_LEVELS = Object.freeze([
   PROTOTYPE_LEVEL,
   HARD_BAR_LAB,
@@ -467,7 +511,7 @@ export const LEGACY_LEVELS = Object.freeze([
   HORIZONTAL_LAB,
   VERTICAL_LAB,
   HAZARD_LAB
-]);
+].map(withEdgeBoundaryWalls));
 
 export const LEVELS = Object.freeze(LEGACY_LEVELS.map((level) => compileLevelWithArtPreset(level)));
 

@@ -55,6 +55,7 @@
         </div>
         <nav class="editor-mode-tabs" aria-label="关卡工坊模式">
           <button id="editor-mode-objects" type="button" data-mode="objects" data-active="true" aria-pressed="true">物件编辑</button>
+          <button id="editor-mode-support" type="button" data-mode="support" data-active="false" aria-pressed="false">关卡支持</button>
           <button id="editor-mode-assets" type="button" data-mode="assets" data-active="false" aria-pressed="false">物件素材</button>
           <button id="editor-mode-scene" type="button" data-mode="scene" data-active="false" aria-pressed="false">场景分层</button>
         </nav>
@@ -99,6 +100,22 @@
           </div>
           <input id="object-search" class="object-search" type="search" placeholder="搜索物件…" aria-label="搜索关卡物件" />
           <div id="object-library" class="object-library"></div>
+        </aside>
+
+        <aside id="support-panel" class="library-panel support-panel" aria-label="关卡支持与3C能力" hidden>
+          <div class="panel-title">
+            <span>关卡支持</span>
+            <small>配置出生即用的 3C 能力</small>
+          </div>
+          <div id="support-list" class="support-list" role="group" aria-label="开局能力列表"></div>
+          <div id="support-warning-summary" class="support-warning-summary" aria-live="polite"></div>
+          <div class="support-actions" aria-label="能力快捷操作">
+            <button id="support-auto-enable" class="editor-play" type="button">补齐机制所需</button>
+            <button id="support-enable-all" type="button">启用全部</button>
+            <button id="support-reset-default" type="button">恢复项目默认</button>
+            <button id="support-clear" class="danger-subtle" type="button">全部关闭</button>
+          </div>
+          <p class="support-panel-hint">能力拾取也计入覆盖；警告只提示潜在不可玩组合，不会改变物件或路线。</p>
         </aside>
 
         <aside id="asset-panel" class="library-panel asset-panel" aria-label="物件素材库" hidden>

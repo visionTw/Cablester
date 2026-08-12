@@ -4,7 +4,7 @@ export const PROTOTYPE_LEVEL = {
   category: "单项3C",
   acceptanceLevel: "L1",
   summary: "方向吸附、物理摆荡、空中加速收绳和连续换绳。",
-  startingAbilities: ["rope", "dash", "wallGrab"],
+  startingAbilities: ["rope", "hardBar", "dash", "wallGrab"],
   bounds: { x: -500, y: -350, w: 4100, h: 1700 },
   spawn: { x: 160, y: 590 },
   backgroundSeeds: [

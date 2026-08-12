@@ -1,13 +1,20 @@
 import { assetDeliveryUrl, isCanonicalAssetPath } from "./asset-paths.js";
+import {
+  ASSET_SCALE_MODES,
+  assetScalingProfile,
+  resolveAssetScaleMode,
+  validateAssetScaling
+} from "./asset-scaling.js";
 
 export { assetDeliveryUrl, isCanonicalAssetPath } from "./asset-paths.js";
+export { ASSET_SCALE_MODES, assetScalingProfile, resolveAssetScaleMode } from "./asset-scaling.js";
 
 export const ASSET_REGISTRY_VERSION = 1;
 export const BUILTIN_PROCEDURAL_ASSET_ID = "builtin:procedural";
 
 export const BUILTIN_LEVEL_OBJECT_TYPES = Object.freeze([
   "spawn", "goal", "checkpoint", "roomEntrance", "roomExit",
-  "platform", "slope", "hazard", "windZone", "liquidZone", "darknessZone", "rotationTrigger",
+  "platform", "slope", "boundaryWall", "hazard", "windZone", "liquidZone", "darknessZone", "rotationTrigger",
   "anchor", "bashTarget", "energyOrb", "dashRefill", "movingObject", "launcher", "fragilePlatform",
   "gate", "stateTrigger", "abilityPickup", "sign", "backgroundSeed"
 ]);
@@ -31,7 +38,13 @@ export const SCENE_ASSET_IDS = Object.freeze({
   distantTrunks: "scene:distant-trunk-grove",
   midTreeCluster: "scene:mid-tree-cluster",
   mistBand: "scene:cyan-mist-band",
-  lightMotes: "scene:forest-light-motes"
+  lightMotes: "scene:forest-light-motes",
+  moonlitCanopy: "scene:moonlit-canopy-cluster",
+  distantRootSpires: "scene:distant-root-spires",
+  rootStoneArch: "scene:root-stone-arch",
+  shadowFern: "scene:shadow-fern-cluster",
+  mossRootBoulders: "scene:moss-root-boulders",
+  aquaBellFlowers: "scene:aqua-bell-flowers"
 });
 
 export const DEFAULT_TYPE_ASSET_IDS = Object.freeze(Object.fromEntries(
@@ -50,6 +63,8 @@ export const DEFAULT_TYPE_ASSET_IDS = Object.freeze(Object.fromEntries(
 
 export const VISUAL_CONFIG_KEYS = Object.freeze([
   "assetId",
+  "scaleMode",
+  "tileScale",
   "scaleX",
   "scaleY",
   "anchorX",
@@ -65,6 +80,8 @@ export const VISUAL_CONFIG_KEYS = Object.freeze([
 
 export const DEFAULT_VISUAL_CONFIG = Object.freeze({
   assetId: BUILTIN_PROCEDURAL_ASSET_ID,
+  scaleMode: "asset",
+  tileScale: 1,
   scaleX: 1,
   scaleY: 1,
   anchorX: 0.5,
@@ -93,6 +110,7 @@ const ASSET_KEYS = Object.freeze([
   "width",
   "height",
   "fileSizeBytes",
+  "scaling",
   "license"
 ]);
 
@@ -133,6 +151,10 @@ export function validateVisualConfig(config, {
   if (typeof config.assetId !== "string" || config.assetId.trim().length === 0 || config.assetId.length > 256) {
     errors.push(`${path}.assetId must be a non-empty string no longer than 256 characters`);
   }
+  if (!ASSET_SCALE_MODES.includes(config.scaleMode)) {
+    errors.push(`${path}.scaleMode must be asset, stretch, nine-slice, or tile`);
+  }
+  if (!finiteInRange(config.tileScale, 0.1, 8)) errors.push(`${path}.tileScale must be a number from 0.1 to 8`);
   for (const key of ["scaleX", "scaleY"]) {
     if (!finiteInRange(config[key], 0.01, 16)) errors.push(`${path}.${key} must be a number from 0.01 to 16`);
   }
@@ -156,6 +178,9 @@ export function validateVisualConfig(config, {
     if (!asset) errors.push(`${path}.assetId references a missing asset: ${config.assetId}`);
     else if (objectType && !isAssetApplicable(asset, objectType)) {
       errors.push(`${path}.assetId ${config.assetId} does not apply to ${objectType}`);
+    } else if (config.scaleMode !== "asset") {
+      const resolution = resolveAssetScaleMode(asset, config);
+      if (resolution.fallbackReason) errors.push(`${path}.scaleMode ${config.scaleMode} is not supported by ${config.assetId}`);
     }
   }
   return [...new Set(errors)];
@@ -194,6 +219,11 @@ function validateAsset(asset, index) {
   if (typeof asset.generationMethod !== "string" || !asset.generationMethod.trim()) errors.push(`${path}.generationMethod must be a non-empty string`);
   for (const key of ["width", "height", "fileSizeBytes"]) {
     if (asset[key] !== null && (!Number.isInteger(asset[key]) || asset[key] <= 0)) errors.push(`${path}.${key} must be a positive integer or null`);
+  }
+  if (asset.kind === "procedural" && asset.scaling !== undefined) {
+    errors.push(`${path}.scaling is only supported for image assets`);
+  } else if (asset.kind === "image") {
+    errors.push(...validateAssetScaling(asset.scaling, asset, `${path}.scaling`));
   }
   if (!isRecord(asset.license)) {
     errors.push(`${path}.license must be an object`);
@@ -284,6 +314,12 @@ const GENERATED_ASSET_LICENSE = Object.freeze({
   source: "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
 });
 
+const GENERATED_SCENE_EXPANSION_LICENSE = Object.freeze({
+  name: "Original AI-generated project asset",
+  scope: "Cablester project runtime, editor, documentation, and public Sites deployment",
+  source: "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+});
+
 export const GENERATED_GAME_ASSETS = Object.freeze([
   Object.freeze({
     id: GAME_ASSET_IDS.mossPlatform,
@@ -293,13 +329,26 @@ export const GENERATED_GAME_ASSETS = Object.freeze([
     kind: "image",
     path: "./assets/game/terrain/moss-root-platform.webp",
     thumbnailPath: "./assets/game/thumbnails/moss-root-platform-thumb.webp",
-    applicableTypes: Object.freeze(["platform"]),
+    applicableTypes: Object.freeze(["platform", "boundaryWall"]),
     tags: Object.freeze(["平台", "根木", "苔藓", "生物光", "forest", "moss", "rootwood"]),
     prompt: "Create one original reusable 2D game sprite for a side-scrolling fantasy forest platform. A long horizontal rootwood platform slab, approximately 4:1 silhouette, with a crisp moss-covered top edge, dark navy-teal hand-painted wood underside, small turquoise bioluminescent sprouts, two restrained warm amber accents. Painterly gouache texture, strong readable collision silhouette, details remain clear when downscaled to 256x64. Single isolated object, centered, generous margin, exact flat solid #ff00ff background for chroma key removal. No text, no character, no logo, no interface, no scenery, no existing game IP, not a concept painting.",
     generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
     width: 512,
     height: 120,
     fileSizeBytes: 20168,
+    scaling: Object.freeze({
+      defaultMode: "nine-slice",
+      allowedModes: Object.freeze(["stretch", "nine-slice", "tile"]),
+      nineSlice: Object.freeze({
+        left: 96,
+        right: 96,
+        top: 32,
+        bottom: 34,
+        edgeMode: "tile",
+        centerMode: "tile"
+      }),
+      tile: Object.freeze({ width: 256, height: 60 })
+    }),
     license: GENERATED_ASSET_LICENSE
   }),
   Object.freeze({
@@ -556,6 +605,108 @@ export const GENERATED_GAME_ASSETS = Object.freeze([
     height: 146,
     fileSizeBytes: 17432,
     license: GENERATED_ASSET_LICENSE
+  }),
+  Object.freeze({
+    id: SCENE_ASSET_IDS.moonlitCanopy,
+    label: "月影远景树冠",
+    description: "四组不规则冷色树冠与细远干组成的宽幅远景剪影，用于稀疏镜像和慢速视差。",
+    category: "background",
+    kind: "image",
+    path: "./assets/game/scene/background/moonlit-canopy-cluster.webp",
+    thumbnailPath: "./assets/game/thumbnails/moonlit-canopy-cluster-thumb.webp",
+    applicableTypes: Object.freeze(["scene"]),
+    tags: Object.freeze(["场景", "远景", "树冠", "剪影", "scene", "background", "canopy"]),
+    prompt: "Use case: stylized-concept. Asset type: reusable small 2D game scene sprite for Cablester far-background layer. Primary request: an original panoramic cluster of layered fantasy forest canopy silhouettes, with four irregular rounded tree crowns and a few thin distant trunks, designed to enrich horizontal parallax depth without covering gameplay. Style/medium: hand-painted gouache game sprite, dreamlike bioluminescent forest visual language, entirely original, not based on or copying any existing game artwork. Composition/framing: one isolated wide cluster, approximately 3:1 silhouette; all foliage fully inside frame; generous clean padding; asymmetrical and suitable for mirror/random repetition; readable when reduced to 384x128. Lighting/mood: very subdued moonlit cyan rim light, deep desaturated navy-teal masses, faint cool mist gaps. Color palette: dark blue-green, muted slate cyan, tiny restrained pale turquoise accents. Do not use magenta in the subject. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background, uniform corner-to-corner with no shadow, gradient, texture, floor, reflection, or lighting variation. Constraints: reusable sprite only; no full scenery; no ground platform; no character; no text; no logo; no UI; no watermark; no cast shadow; crisp separated outer silhouette; avoid recognizable existing-game designs or IP.",
+    generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
+    width: 499,
+    height: 220,
+    fileSizeBytes: 32596,
+    license: GENERATED_SCENE_EXPANSION_LICENSE
+  }),
+  Object.freeze({
+    id: SCENE_ASSET_IDS.distantRootSpires,
+    label: "雾化远根尖塔",
+    description: "三组低细节古根与岩峰剪影，作为树干之后的最远空间层。",
+    category: "background",
+    kind: "image",
+    path: "./assets/game/scene/background/distant-root-spires.webp",
+    thumbnailPath: "./assets/game/thumbnails/distant-root-spires-thumb.webp",
+    applicableTypes: Object.freeze(["scene"]),
+    tags: Object.freeze(["场景", "远景", "古根", "岩峰", "scene", "background", "spires"]),
+    prompt: "Use case: stylized-concept. Asset type: reusable small 2D game scene sprite for Cablester deep-background layer. Primary request: an original distant root-and-mountain silhouette cluster: three tapering ancient roots or rock spires rising at varied heights with a soft organic contour and sparse tiny branches, used behind forest trunks to create another depth plane. Style/medium: hand-painted gouache game sprite with simplified low-detail silhouette, dreamy atmospheric forest language, entirely original and not derived from any existing game artwork. Composition/framing: one isolated wide cluster, approximately 2:1 silhouette, strong asymmetry and generous padding, all tips fully contained, suitable for mirror/random repetition at 320x180. Lighting/mood: very distant, fog-softened, cool moonlit. Color palette: desaturated blue-gray, deep muted teal, subtle pale cyan edge only. Do not use magenta in the subject. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background, uniform with no shadow, gradient, texture, floor, reflection, or lighting variation. Constraints: reusable sprite only, no complete background scene, no character, no text, no logo, no UI, no watermark, no recognizable existing-game motifs or IP, clean isolated silhouette.",
+    generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
+    width: 375,
+    height: 240,
+    fileSizeBytes: 19798,
+    license: GENERATED_SCENE_EXPANSION_LICENSE
+  }),
+  Object.freeze({
+    id: SCENE_ASSET_IDS.rootStoneArch,
+    label: "盘根石拱",
+    description: "根系缠绕的破损石拱与明确中央留空，作为中景地标而不暗示碰撞。",
+    category: "structures",
+    kind: "image",
+    path: "./assets/game/scene/structures/root-stone-arch.webp",
+    thumbnailPath: "./assets/game/thumbnails/root-stone-arch-thumb.webp",
+    applicableTypes: Object.freeze(["scene"]),
+    tags: Object.freeze(["场景", "中景", "石拱", "盘根", "scene", "structure", "arch"]),
+    prompt: "Use case: stylized-concept. Asset type: reusable small 2D game scene sprite for Cablester midground layer. Primary request: an original natural stone-and-root forest arch fragment: two mossy root-wrapped stone columns joined by a broken curved arch, with open negative space through the center, designed as a midground landmark behind the player. Style/medium: hand-painted gouache game sprite, richly textured but readable, dreamlike bioluminescent forest language, completely original and not copying any existing game art. Composition/framing: one isolated medium-wide arch, about 5:3 silhouette; entire object inside frame with generous padding; center opening remains clear; reusable at 256x180 and compatible with tinting. Lighting/mood: cool teal ambient light, modest warm amber mineral seams, a few small cyan moss lights. Color palette: deep charcoal stone, teal roots and moss, restrained amber and cyan accents. Do not use magenta in the subject. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background, uniform with no shadow, gradient, texture, floor, reflection, or lighting variation. Constraints: sprite only, no full scenery, no platform collision implication, no character, no text, no logo, no UI, no watermark, no existing-game IP, crisp isolated silhouette.",
+    generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
+    width: 320,
+    height: 227,
+    fileSizeBytes: 21244,
+    license: GENERATED_SCENE_EXPANSION_LICENSE
+  }),
+  Object.freeze({
+    id: SCENE_ASSET_IDS.shadowFern,
+    label: "暗影蕨叶组",
+    description: "低矮宽幅的深色蕨叶、阔叶与卷藤，用作不会遮挡主路线的前景压边。",
+    category: "foliage",
+    kind: "image",
+    path: "./assets/game/scene/foreground/shadow-fern-cluster.webp",
+    thumbnailPath: "./assets/game/thumbnails/shadow-fern-cluster-thumb.webp",
+    applicableTypes: Object.freeze(["scene"]),
+    tags: Object.freeze(["场景", "前景", "蕨叶", "藤蔓", "scene", "foreground", "fern"]),
+    prompt: "Use case: stylized-concept. Asset type: reusable small 2D game scene sprite for Cablester foreground layer. Primary request: an original dense foreground foliage cluster made of sweeping dark fern fronds, broad leaves, thin curling vines, and two small hanging seed pods, designed to frame a screen edge without hiding the main route. Style/medium: hand-painted gouache side-scroller sprite, bold layered silhouette, dreamlike bioluminescent forest language, fully original and not copying any existing game artwork. Composition/framing: one isolated wide low cluster, approximately 2.5:1 silhouette, directional crescent shape with most visual mass along the lower edge and open upper negative space; entire object inside frame, generous padding; suitable for flip/mirror repetition and 320x140 use. Lighting/mood: near-black indigo and deep teal foliage with a restrained cyan rim and tiny dim violet-blue specks. Color palette: dark navy, petrol teal, muted blue-violet. Do not use magenta in the subject. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background, uniform with no shadow, gradient, texture, floor, reflection, or lighting variation. Constraints: foreground decoration only; no scenery, no platform, no character, no text, no logo, no UI, no watermark, no existing-game IP, crisp isolated outline.",
+    generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
+    width: 384,
+    height: 170,
+    fileSizeBytes: 28064,
+    license: GENERATED_SCENE_EXPANSION_LICENSE
+  }),
+  Object.freeze({
+    id: SCENE_ASSET_IDS.mossRootBoulders,
+    label: "苔根岩组",
+    description: "三枚矮岩与盘根、苔台和细小菌簇构成的中景深度地标。",
+    category: "structures",
+    kind: "image",
+    path: "./assets/game/scene/structures/moss-root-boulders.webp",
+    thumbnailPath: "./assets/game/thumbnails/moss-root-boulders-thumb.webp",
+    applicableTypes: Object.freeze(["scene"]),
+    tags: Object.freeze(["场景", "中景", "岩石", "盘根", "苔藓", "scene", "boulders"]),
+    prompt: "Use case: stylized-concept. Asset type: reusable small 2D game scene sprite for Cablester midground layer. Primary request: an original cluster of three rounded forest boulders interlocked with exposed roots, moss ledges, a few small shelf fungi, and two dim bioluminescent buds, used as a midground depth landmark behind playable terrain. Style/medium: hand-painted gouache side-scroller game sprite, organic texture and strong readable silhouette, dreamlike forest atmosphere, entirely original and not copying existing game artwork. Composition/framing: one isolated horizontal cluster approximately 2:1, all stones and roots fully inside frame with generous padding; low enough not to resemble a blocking gameplay wall; reusable at 300x160 and compatible with tinting and mirroring. Lighting/mood: soft cool teal ambient shade with restrained warm amber stone seams and tiny cyan glow. Color palette: charcoal stone, moss green-teal, muted amber, cyan points. Do not use magenta in the subject. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background, uniform corner-to-corner, no shadows, gradient, texture, floor, reflection, or lighting variation. Constraints: decoration sprite only, no full scenery, no character, no text, no logo, no UI, no watermark, no recognizable existing-game IP, crisp separated silhouette.",
+    generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
+    width: 360,
+    height: 164,
+    fileSizeBytes: 18460,
+    license: GENERATED_SCENE_EXPANSION_LICENSE
+  }),
+  Object.freeze({
+    id: SCENE_ASSET_IDS.aquaBellFlowers,
+    label: "水青铃花",
+    description: "三株高低错落的半透明铃形花与卷草叶，作为玩家附近的轻量生物光点缀。",
+    category: "vegetation",
+    kind: "image",
+    path: "./assets/game/scene/vegetation/aqua-bell-flowers.webp",
+    thumbnailPath: "./assets/game/thumbnails/aqua-bell-flowers-thumb.webp",
+    applicableTypes: Object.freeze(["scene"]),
+    tags: Object.freeze(["场景", "近景", "铃花", "发光植物", "scene", "flower", "bioluminescent"]),
+    prompt: "Use case: stylized-concept. Asset type: reusable small 2D game scene sprite for Cablester near-player decoration layer. Primary request: an original cluster of translucent bell-shaped forest flowers and curling grass blades, three varied-height stems rising from a compact moss base, with softly glowing turquoise petals and small warm seed centers. Style/medium: hand-painted gouache game sprite, clear readable shapes at small scale, dreamlike bioluminescent forest language, fully original and not copying any existing game artwork. Composition/framing: one isolated compact plant cluster approximately 4:3, entirely inside frame with generous padding, open gaps between stems, suitable for random placement and horizontal flipping at about 140x110. Lighting/mood: luminous but bounded glow, calm cool moonlight. Color palette: deep teal leaves, aqua and pale cyan petals, tiny amber centers. Do not use magenta in the subject. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background, uniform with no shadows, gradient, texture, floor, reflection, or lighting variation. Constraints: small decoration only, no full scene, no character, no text, no logo, no UI, no watermark, no existing-game IP, clean opaque-enough edges for chroma removal.",
+    generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
+    width: 160,
+    height: 177,
+    fileSizeBytes: 18306,
+    license: GENERATED_SCENE_EXPANSION_LICENSE
   })
 ]);
 
@@ -645,8 +796,11 @@ export function resolveAssetReference(assetId, objectType, registry = DEFAULT_AS
 export function resolveVisualAsset(visual, objectType, registry = DEFAULT_ASSET_REGISTRY, {
   unavailableAssetIds = []
 } = {}) {
-  const visualErrors = validateVisualConfig(visual);
-  const normalizedVisual = visualErrors.length ? createVisualConfig() : clone(visual);
+  const compatibleVisual = isRecord(visual)
+    ? { scaleMode: DEFAULT_VISUAL_CONFIG.scaleMode, tileScale: DEFAULT_VISUAL_CONFIG.tileScale, ...clone(visual) }
+    : visual;
+  const visualErrors = validateVisualConfig(compatibleVisual);
+  const normalizedVisual = visualErrors.length ? createVisualConfig() : compatibleVisual;
   const requestedAssetId = normalizedVisual.assetId;
   const reference = resolveAssetReference(requestedAssetId, objectType, registry, { unavailableAssetIds });
   const fallbackReason = visualErrors.length ? "invalid-visual" : reference.fallbackReason;

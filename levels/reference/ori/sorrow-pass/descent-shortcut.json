@@ -19,7 +19,8 @@
     "glide",
     "rope",
     "doubleJump",
-    "wallGrab"
+    "wallGrab",
+    "hardBar"
   ],
   "reference": {
     "manifestId": "ori.sorrow-pass.descent-shortcut",

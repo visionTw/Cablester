@@ -27,6 +27,7 @@ import {
 import {
   BUILTIN_PROCEDURAL_ASSET_ID,
   DEFAULT_ASSET_REGISTRY,
+  assetScalingProfile,
   assetDeliveryUrl,
   createVisualConfig,
   getAssetById,
@@ -45,6 +46,14 @@ import {
   searchAssets,
   updateObjectVisual
 } from "./asset-library.js";
+import { drawScaledAssetImage } from "./asset-scaling.js";
+import {
+  DEFAULT_LEVEL_STARTING_ABILITIES,
+  LEVEL_SUPPORT_ABILITY_IDS,
+  analyzeLevelAbilitySupport,
+  replaceStartingAbilities,
+  setStartingAbility
+} from "./level-support.js";
 
 const STORAGE_KEY = "cablester.level-editor.documents.v2";
 const LEGACY_STORAGE_KEY = "cablester.level-editor.documents.v1";
@@ -52,6 +61,7 @@ const GRID_SIZE = 20;
 const PROCEDURAL_ASSET_ID = BUILTIN_PROCEDURAL_ASSET_ID;
 const EDITOR_MODE_LABELS = Object.freeze({
   objects: "物件编辑",
+  support: "关卡支持",
   assets: "物件素材",
   scene: "场景分层"
 });
@@ -169,9 +179,12 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   const canvas = root.querySelector("#editor-canvas");
   const ctx = canvas.getContext("2d");
   const objectPanel = root.querySelector("#object-panel");
+  const supportPanel = root.querySelector("#support-panel");
   const assetPanel = root.querySelector("#asset-panel");
   const scenePanel = root.querySelector("#scene-panel");
   const library = root.querySelector("#object-library");
+  const supportList = root.querySelector("#support-list");
+  const supportWarningSummary = root.querySelector("#support-warning-summary");
   const assetLibrary = root.querySelector("#asset-library");
   const assetSearch = root.querySelector("#asset-search");
   const assetCategory = root.querySelector("#asset-category");
@@ -262,19 +275,27 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
 
   function updateModeChrome() {
     objectPanel.hidden = editorMode !== "objects";
+    supportPanel.hidden = editorMode !== "support";
     assetPanel.hidden = editorMode !== "assets";
     scenePanel.hidden = editorMode !== "scene";
+    const supportWarningCount = analyzeLevelAbilitySupport(activeDocument).warnings.length;
     for (const button of root.querySelectorAll(".editor-mode-tabs [data-mode]")) {
       const active = button.dataset.mode === editorMode;
       button.dataset.active = String(active);
       button.setAttribute("aria-pressed", String(active));
+      if (button.dataset.mode === "support") {
+        button.dataset.warning = String(supportWarningCount > 0);
+        button.title = supportWarningCount ? `${supportWarningCount} 项能力覆盖提示` : "开局能力与机制覆盖正常";
+      }
     }
     root.querySelector("#editor-mode-label").textContent = EDITOR_MODE_LABELS[editorMode];
     root.querySelector("#editor-canvas-help").textContent = editorMode === "scene"
       ? "场景实时预览 · 滚轮缩放 · 左键、右键或 ⌥ 拖动画布"
       : editorMode === "assets"
         ? "左键选择物件 · 素材加载失败时显示程序化回退 · 滚轮缩放"
-        : "左键选择/拖动 · 滚轮缩放 · 右键或 ⌥ 拖动画布";
+        : editorMode === "support"
+          ? "能力支持只改变开局能力 · 玩法物件与碰撞保持不变"
+          : "左键选择/拖动 · 滚轮缩放 · 右键或 ⌥ 拖动画布";
   }
 
   function setEditorMode(mode) {
@@ -285,6 +306,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     if (mode === "scene" && selectedLayer()?.assets?.[0]?.assetId) selectedAssetId = selectedLayer().assets[0].assetId;
     updateModeChrome();
     renderLibrary();
+    renderSupportPanel();
     renderAssetLibrary();
     renderSceneLayers();
     renderInspector();
@@ -294,6 +316,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
 
   function defaultStatusText() {
     if (placingType) return `放置模式 · ${LEVEL_OBJECT_LIBRARY[placingType].label}`;
+    if (editorMode === "support") return "设置出生即用能力，并检查能力物件覆盖警告";
     if (editorMode === "assets") return "选择物件和素材后可单独或同类型批量应用";
     if (editorMode === "scene") return "场景图层与关卡文档共同保存，玩家基准层受保护";
     return "选择物件后可拖动，滚轮缩放画布";
@@ -345,6 +368,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
       selectedLayerId = activeDocument.scene.layers.find((layer) => layer.role === "player")?.id || activeDocument.scene.layers[0]?.id || null;
     }
     renderLibrary();
+    renderSupportPanel();
     renderAssetLibrary();
     renderSceneLayers();
     renderInspector();
@@ -362,6 +386,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     callback();
     pushHistory();
     renderLibrary();
+    renderSupportPanel();
     renderAssetLibrary();
     renderSceneLayers();
     renderInspector();
@@ -480,6 +505,27 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
         ctx.fill();
         ctx.stroke();
       }
+    } else if (object.type === "boundaryWall") {
+      ctx.setLineDash([12 / view.zoom, 8 / view.zoom]);
+      drawRectObject(object, "18", "dd");
+      ctx.setLineDash([]);
+      ctx.strokeStyle = definition.color;
+      ctx.lineWidth = 4 / view.zoom;
+      ctx.beginPath();
+      if (p.blockingSide === "left") {
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y + p.h);
+      } else if (p.blockingSide === "right") {
+        ctx.moveTo(x + p.w, y);
+        ctx.lineTo(x + p.w, y + p.h);
+      } else if (p.blockingSide === "top") {
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + p.w, y);
+      } else if (p.blockingSide === "bottom") {
+        ctx.moveTo(x, y + p.h);
+        ctx.lineTo(x + p.w, y + p.h);
+      }
+      if (p.blockingSide !== "all") ctx.stroke();
     } else if (object.type === "platform") {
       drawRectObject(object, "42", "bb");
       ctx.fillStyle = `${definition.color}77`;
@@ -546,7 +592,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
       ctx.stroke();
     }
     if (view.zoom >= 0.34 && object.type !== "backgroundSeed") {
-      const rectangular = ["platform", "movingObject", "launcher", "fragilePlatform", "gate", "stateTrigger"].includes(object.type);
+      const rectangular = ["boundaryWall", "platform", "movingObject", "launcher", "fragilePlatform", "gate", "stateTrigger"].includes(object.type);
       const labelX = rectangular ? x + 7 : x + 20 / view.zoom;
       const labelY = rectangular ? y + 18 / view.zoom : y - 10 / view.zoom;
       ctx.fillStyle = "rgba(230, 255, 252, 0.78)";
@@ -595,9 +641,14 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     ctx.globalAlpha = visual.opacity;
     ctx.translate(anchorX, anchorY);
     ctx.scale(visual.flipX ? -1 : 1, visual.flipY ? -1 : 1);
-    ctx.drawImage(source, -width * visual.anchorX, -height * visual.anchorY, width, height);
+    const result = drawScaledAssetImage(ctx, source, asset, visual, {
+      x: -width * visual.anchorX,
+      y: -height * visual.anchorY,
+      width,
+      height
+    });
     ctx.restore();
-    return true;
+    return result.drawn;
   }
 
   function createInspectorVisualCanvas(selected, asset, entry, visual) {
@@ -634,16 +685,39 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     );
     previewContext.restore();
     const source = tintedImageSource(asset, entry.image, visual.tint);
-    const width = configuredWidth * previewScale;
-    const height = configuredHeight * previewScale;
     previewContext.save();
     previewContext.globalAlpha = visual.opacity;
     previewContext.translate(
       centerX + visual.offsetX * previewScale,
       centerY + visual.offsetY * previewScale
     );
-    previewContext.scale(visual.flipX ? -1 : 1, visual.flipY ? -1 : 1);
-    previewContext.drawImage(source, -width * visual.anchorX, -height * visual.anchorY, width, height);
+    // Plan in world units and scale the context like the main canvas so
+    // nine-slice borders and tile cadence keep the same proportions here.
+    previewContext.scale(
+      previewScale * (visual.flipX ? -1 : 1),
+      previewScale * (visual.flipY ? -1 : 1)
+    );
+    const result = drawScaledAssetImage(previewContext, source, asset, visual, {
+      x: -configuredWidth * visual.anchorX,
+      y: -configuredHeight * visual.anchorY,
+      width: configuredWidth,
+      height: configuredHeight
+    });
+    if (result.plan?.resolvedMode === "nine-slice" && result.plan.guides) {
+      previewContext.strokeStyle = "rgba(255, 230, 135, 0.68)";
+      previewContext.lineWidth = 1 / previewScale;
+      previewContext.setLineDash([4 / previewScale, 3 / previewScale]);
+      previewContext.beginPath();
+      for (const guideX of result.plan.guides.vertical) {
+        previewContext.moveTo(guideX, result.plan.target.y);
+        previewContext.lineTo(guideX, result.plan.target.y + result.plan.target.height);
+      }
+      for (const guideY of result.plan.guides.horizontal) {
+        previewContext.moveTo(result.plan.target.x, guideY);
+        previewContext.lineTo(result.plan.target.x + result.plan.target.width, guideY);
+      }
+      previewContext.stroke();
+    }
     previewContext.restore();
     return previewCanvas;
   }
@@ -853,6 +927,55 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     }
   }
 
+  function renderSupportPanel() {
+    if (!supportList || !supportWarningSummary) return;
+    const analysis = analyzeLevelAbilitySupport(activeDocument);
+    const modeButton = root.querySelector("#editor-mode-support");
+    modeButton.dataset.warning = String(analysis.warnings.length > 0);
+    modeButton.title = analysis.warnings.length ? `${analysis.warnings.length} 项能力覆盖提示` : "开局能力与机制覆盖正常";
+    const warningAbilityIds = new Set(analysis.warnings.map((warning) => warning.abilityId));
+    supportList.replaceChildren();
+    for (const item of analysis.coverage) {
+      const row = documentBody().createElement("label");
+      row.className = "support-ability-row";
+      row.dataset.enabled = String(item.enabledAtStart);
+      row.dataset.warning = String(warningAbilityIds.has(item.abilityId));
+      const input = documentBody().createElement("input");
+      input.type = "checkbox";
+      input.checked = item.enabledAtStart;
+      input.dataset.abilityId = item.abilityId;
+      input.addEventListener("change", () => {
+        commitMutation(() => {
+          activeDocument = setStartingAbility(activeDocument, item.abilityId, input.checked);
+        });
+        setStatus(`${item.label}已${input.checked ? "加入" : "移出"}开局能力`, "success");
+      });
+      const copy = documentBody().createElement("span");
+      copy.className = "support-ability-copy";
+      const name = documentBody().createElement("strong");
+      name.textContent = item.label;
+      const detail = documentBody().createElement("small");
+      const mechanismText = item.requirementSources.length ? ` · ${item.requirementSources.length} 处相关机制` : "";
+      detail.textContent = `${item.input} · ${item.description}${mechanismText}`;
+      copy.append(name, detail);
+      const badge = documentBody().createElement("span");
+      badge.className = "support-ability-badge";
+      badge.textContent = item.enabledAtStart
+        ? "开局可用"
+        : item.pickupIds.length
+          ? "关内获取"
+          : item.required
+            ? "未覆盖"
+            : "未启用";
+      row.append(input, copy, badge);
+      supportList.append(row);
+    }
+    supportWarningSummary.dataset.tone = analysis.warnings.length ? "warning" : "normal";
+    supportWarningSummary.textContent = analysis.warnings.length
+      ? `${analysis.warnings.length} 项能力覆盖提示 · ${analysis.warnings.map((warning) => warning.message).join(" ")}`
+      : `能力覆盖正常 · ${analysis.startingAbilities.length}/${LEVEL_SUPPORT_ABILITY_IDS.length} 项出生即用`;
+  }
+
   function renderAssetCategoryOptions() {
     const current = assetCategory.value || "all";
     const categories = [...new Set(assetRecords.map((asset) => asset.category))].sort();
@@ -932,7 +1055,9 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
       id.textContent = asset.id;
       const types = documentBody().createElement("span");
       types.className = "asset-card-types";
-      types.textContent = asset.applicableTypes.includes("*") ? "适用：全部类型" : `适用：${asset.applicableTypes.join(" · ")}`;
+      const scaling = assetScalingProfile(asset);
+      const scaleLabel = scaling.defaultMode === "nine-slice" ? "九宫格" : scaling.defaultMode === "tile" ? "平铺" : "拉伸";
+      types.textContent = `${asset.applicableTypes.includes("*") ? "适用：全部类型" : `适用：${asset.applicableTypes.join(" · ")}`} · ${scaleLabel}`;
       copy.append(name, id, types);
       button.append(thumbnail, copy);
       button.title = compatible ? asset.description || asset.name : `不适用于 ${selected?.type}`;
@@ -1145,6 +1270,62 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     inspector.append(hint);
   }
 
+  function renderSupportInspector() {
+    const analysis = analyzeLevelAbilitySupport(activeDocument);
+    appendInspectorHeading(
+      "关卡支持",
+      activeDocument.metadata.name,
+      `${analysis.startingAbilities.length}/${LEVEL_SUPPORT_ABILITY_IDS.length} starting`
+    );
+    const summary = appendInspectorSection("开局能力", "canonical: startingAbilities");
+    const coverageList = documentBody().createElement("div");
+    coverageList.className = "support-coverage-list";
+    for (const item of analysis.coverage) {
+      const row = documentBody().createElement("div");
+      row.className = "support-coverage-item";
+      row.dataset.covered = String(!item.required || item.available);
+      const name = documentBody().createElement("strong");
+      name.textContent = item.label;
+      const state = documentBody().createElement("span");
+      state.textContent = item.enabledAtStart
+        ? "出生即用"
+        : item.pickupIds.length
+          ? `关内拾取 ×${item.pickupIds.length}`
+          : "未提供";
+      const detail = documentBody().createElement("small");
+      detail.textContent = item.requirementSources.length
+        ? `相关机制：${item.requirementSources.map((source) => source.objectId).join("、")}`
+        : `${item.input} · ${item.description}`;
+      row.append(name, state, detail);
+      coverageList.append(row);
+    }
+    summary.append(coverageList);
+    summary.append(fieldRow("冲刺容量", makeInput(activeDocument.dashCapacity ?? 1, (input) => commitMutation(() => {
+      activeDocument.dashCapacity = Math.max(1, Math.min(3, Math.round(Number(input.value) || 1)));
+    }), { type: "number", min: 1, max: 3, step: 1 })));
+
+    const warnings = appendInspectorSection("机制覆盖检查", analysis.warnings.length ? `${analysis.warnings.length} 项提示` : "已覆盖");
+    if (analysis.warnings.length) {
+      const list = documentBody().createElement("ul");
+      list.className = "support-warning-list";
+      for (const warning of analysis.warnings) {
+        const item = documentBody().createElement("li");
+        item.textContent = `${warning.message} 物件：${warning.objectIds.join("、")}`;
+        list.append(item);
+      }
+      warnings.append(list);
+    } else {
+      const hint = documentBody().createElement("p");
+      hint.className = "inspector-hint";
+      hint.textContent = "锚点、猛击支点、冲刺补充、风场及能力门都有开局能力或关内拾取覆盖。";
+      warnings.append(hint);
+    }
+    const hint = documentBody().createElement("p");
+    hint.className = "inspector-hint";
+    hint.textContent = "startingAbilities 是唯一开局能力数据源；切换能力不会修改 objects[]、碰撞或关卡路线。能力拾取只表示关内可获得，仍需试玩确认拾取顺序可达。";
+    inspector.append(hint);
+  }
+
   function renderGameplayObjectInspector(selected) {
     appendInspectorHeading("已选择", LEVEL_OBJECT_LIBRARY[selected.type].label, selected.id);
     inspector.append(fieldRow("物件 ID", makeInput(selected.id, (input) => {
@@ -1211,7 +1392,31 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
       if (commitSelectedVisualProperty("assetId", assetId)) selectedAssetId = assetId;
     }, { placeholder: "素材 ID" });
     section.append(fieldRowWithReset("素材 ID", assetIdInput, () => commitMutation(() => resetSelectedVisualKey("assetId"))));
+    const scaling = assetScalingProfile(asset);
+    const scaleOptions = [
+      ["asset", `遵循素材默认（${scaling.defaultMode === "nine-slice" ? "九宫格" : scaling.defaultMode === "tile" ? "平铺" : "拉伸"}）`],
+      ...scaling.allowedModes.map((mode) => [mode, ({
+        stretch: "整图拉伸",
+        "nine-slice": "九宫格延伸",
+        tile: "整图平铺"
+      })[mode]])
+    ];
+    section.append(fieldRowWithReset(
+      "缩放策略",
+      makeSelect(scaleOptions, visual.scaleMode, (element) => commitSelectedVisualProperty("scaleMode", element.value)),
+      () => commitMutation(() => resetSelectedVisualKey("scaleMode"))
+    ));
+    const scalingHint = documentBody().createElement("p");
+    scalingHint.className = "inspector-hint asset-scaling-hint";
+    if (scaling.nineSlice) {
+      const slice = scaling.nineSlice;
+      scalingHint.textContent = `九宫格切片 L${slice.left} / R${slice.right} / T${slice.top} / B${slice.bottom} px；黄虚线为固定边角范围。`;
+    } else {
+      scalingHint.textContent = "此素材未登记切片，保持整图拉伸；切片缺失时运行时也会安全降级为拉伸。";
+    }
+    section.append(scalingHint);
     const numericFields = [
+      ["tileScale", "图块倍率", 0.1, 8, 0.1],
       ["scaleX", "横向缩放", 0.01, 16, 0.05],
       ["scaleY", "纵向缩放", 0.01, 16, 0.05],
       ["anchorX", "锚点 X", 0, 1, 0.05],
@@ -1378,6 +1583,10 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   function renderInspector() {
     inspector.replaceChildren();
     const selected = selectedObject();
+    if (editorMode === "support") {
+      renderSupportInspector();
+      return;
+    }
     if (editorMode === "scene") {
       const layer = selectedLayer();
       if (layer) renderSceneInspector(layer);
@@ -1410,6 +1619,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
 
   function updateToolbarState() {
     const selected = selectedObject();
+    const supportAnalysis = analyzeLevelAbilitySupport(activeDocument);
     const asset = assetRecord(selectedAssetId);
     const compatible = Boolean(selected && asset && assetAppliesTo(asset, selected.type));
     const layer = selectedLayer();
@@ -1423,6 +1633,11 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     root.querySelector("#asset-reset-selected").disabled = !selected;
     root.querySelector("#asset-reset-type").disabled = !selected;
     root.querySelector("#asset-reset-all").disabled = activeDocument.objects.length === 0;
+    root.querySelector("#support-auto-enable").disabled = supportAnalysis.uncoveredAbilityIds.length === 0;
+    root.querySelector("#support-enable-all").disabled = supportAnalysis.startingAbilities.length === LEVEL_SUPPORT_ABILITY_IDS.length;
+    root.querySelector("#support-reset-default").disabled = supportAnalysis.startingAbilities.length === DEFAULT_LEVEL_STARTING_ABILITIES.length
+      && supportAnalysis.startingAbilities.every((abilityId) => DEFAULT_LEVEL_STARTING_ABILITIES.includes(abilityId));
+    root.querySelector("#support-clear").disabled = supportAnalysis.startingAbilities.length === 0;
     root.querySelector("#scene-move-up").disabled = !layer || layer.locked || isProtectedPlayerLayer(layer) || layerIndex <= 0 || activeDocument.scene.layers[layerIndex - 1]?.locked || isProtectedPlayerLayer(activeDocument.scene.layers[layerIndex - 1]);
     root.querySelector("#scene-move-down").disabled = !layer || layer.locked || isProtectedPlayerLayer(layer) || layerIndex < 0 || layerIndex >= activeDocument.scene.layers.length - 1 || activeDocument.scene.layers[layerIndex + 1]?.locked || isProtectedPlayerLayer(activeDocument.scene.layers[layerIndex + 1]);
     root.querySelector("#scene-duplicate").disabled = !layer;
@@ -1461,6 +1676,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     placingType = null;
     resetHistory();
     renderLibrary();
+    renderSupportPanel();
     renderAssetLibrary();
     renderSceneLayers();
     renderInspector();
@@ -1493,7 +1709,10 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     else savedDocuments.push(clone(activeDocument));
     persistDocuments();
     documentSelect.value = `custom:${activeDocument.metadata.id}`;
-    setStatus("关卡已保存到这台设备", "success");
+    const warningCount = analyzeLevelAbilitySupport(activeDocument).warnings.length;
+    setStatus(warningCount
+      ? `关卡已保存 · 仍有 ${warningCount} 项能力覆盖提示`
+      : "关卡已保存到这台设备", warningCount ? "normal" : "success");
     return true;
   }
 
@@ -1730,6 +1949,35 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     });
     setStatus("全部物件已恢复项目默认素材", "success");
   });
+  root.querySelector("#support-auto-enable").addEventListener("click", () => {
+    const analysis = analyzeLevelAbilitySupport(activeDocument);
+    if (!analysis.uncoveredAbilityIds.length) return;
+    commitMutation(() => {
+      activeDocument = replaceStartingAbilities(activeDocument, [
+        ...activeDocument.startingAbilities,
+        ...analysis.uncoveredAbilityIds
+      ]);
+    });
+    setStatus(`已补齐 ${analysis.uncoveredAbilityIds.length} 项机制所需能力`, "success");
+  });
+  root.querySelector("#support-enable-all").addEventListener("click", () => {
+    commitMutation(() => {
+      activeDocument = replaceStartingAbilities(activeDocument, LEVEL_SUPPORT_ABILITY_IDS);
+    });
+    setStatus("全部 3C 能力已设为出生即用", "success");
+  });
+  root.querySelector("#support-reset-default").addEventListener("click", () => {
+    commitMutation(() => {
+      activeDocument = replaceStartingAbilities(activeDocument, DEFAULT_LEVEL_STARTING_ABILITIES);
+    });
+    setStatus("已恢复项目默认开局能力", "success");
+  });
+  root.querySelector("#support-clear").addEventListener("click", () => {
+    commitMutation(() => {
+      activeDocument = replaceStartingAbilities(activeDocument, []);
+    });
+    setStatus("开局能力已全部关闭；关内拾取仍会生效", "success");
+  });
   root.querySelector("#scene-add").addEventListener("click", () => {
     const role = root.querySelector("#scene-new-role").value;
     commitMutation(() => {
@@ -1842,6 +2090,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   observer.observe(canvas);
   updateModeChrome();
   renderLibrary();
+  renderSupportPanel();
   renderAssetCategoryOptions();
   renderAssetLibrary();
   renderSceneLayers();

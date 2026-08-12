@@ -18,17 +18,17 @@ test("all registered game assets pass reproducible decode and pixel QA", { timeo
   const report = JSON.parse(result.stdout);
 
   assert.equal(report.status, "pass");
-  assert.equal(report.summary.assetCount, 16);
-  assert.equal(report.summary.expectedFileCount, 32);
-  assert.equal(report.summary.auditedFileCount, 32);
-  assert.equal(report.summary.passedAssets, 16);
+  assert.equal(report.summary.assetCount, 22);
+  assert.equal(report.summary.expectedFileCount, 44);
+  assert.equal(report.summary.auditedFileCount, 44);
+  assert.equal(report.summary.passedAssets, 22);
   assert.equal(report.summary.failedAssets, 0);
   assert.equal(report.summary.errorCount, 0);
   assert.deepEqual(report.globalErrors, []);
   assert.deepEqual(report.unregisteredFiles, []);
   assert.deepEqual(report.missingRegisteredFiles, []);
 
-  assert.equal(new Set(report.assets.map((asset) => asset.id)).size, 16);
+  assert.equal(new Set(report.assets.map((asset) => asset.id)).size, 22);
   for (const asset of report.assets) {
     assert.equal(asset.status, "pass", `${asset.id}: ${JSON.stringify(asset.errors)}`);
     assert.equal(asset.main.format, "WEBP");
