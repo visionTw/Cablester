@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "ranAt": "2026-08-12T13:04:31+08:00",
+  "ranAt": "2026-08-12T22:02:54+08:00",
   "environment": {
     "device": "MacBook Pro Mac15,6",
     "processor": "Apple M3 Pro 11-core",
@@ -11,7 +11,7 @@
   },
   "contentFingerprint": {
     "algorithm": "sha256",
-    "value": "c56c796216b9e69fc388f79c9eb34637d649261dff4f7b6818f4d652f4e5a821",
+    "value": "a92443959bb2a1c140239f64a7298a8d1455499556a92e1837210fd005fc6849",
     "fileCount": 934,
     "roomFileCount": 908,
     "runtimeFileCount": 26
@@ -29,7 +29,7 @@
     "passed": 908,
     "entrancesInitialized": 2326,
     "failed": 0,
-    "elapsedSeconds": 11.1,
+    "elapsedSeconds": 29.2,
     "freshConsoleErrorsOrWarnings": 0
   },
   "statusPolicy": {

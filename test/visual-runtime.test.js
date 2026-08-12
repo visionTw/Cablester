@@ -7,15 +7,18 @@ import {
   createAssetRegistry,
   createVisualConfig
 } from "../src/asset-library.js";
-import { createDefaultScene } from "../src/scene-layers.js";
+import { calculateSeamlessPlacements, createDefaultScene } from "../src/scene-layers.js";
 import {
   AssetImageLoader,
+  LatestRequestCoordinator,
   MAX_TINT_VARIANTS_PER_ASSET,
+  PreparedVisualLoadCoordinator,
   VisualRuntime,
   collectLevelAssetIds,
   detectVisualQualityTier,
   isObjectVisualVisible,
   objectVisualBounds,
+  requiredSceneResidencyDraws,
   scenePassForLayer,
   stableSortRenderQueue,
   visualQualityProfile
@@ -98,6 +101,7 @@ test("AssetImageLoader deduplicates requests, records decoded bytes and contains
     estimatedTintBytes: 0,
     tintVariants: 0,
     cacheEntries: 1,
+    residentEntries: 0,
     evictions: 0
   });
 
@@ -170,6 +174,87 @@ test("AssetImageLoader retains an inspectable error state without rejecting prel
   assert.equal(loader.stats().requests, 1);
 });
 
+test("prepared visual loads wait for decode, pin the active neighborhood and ignore stale completions", async () => {
+  const assetA = imageAsset("test:prepared-a");
+  const assetB = imageAsset("test:prepared-b");
+  const releases = new Map();
+  const loader = new AssetImageLoader({
+    registry: registryWith(assetA, assetB),
+    loadImage: (url, asset) => new Promise((resolve) => releases.set(asset.id, () => resolve({ width: 64, height: 32 })))
+  });
+  const runtime = new VisualRuntime({ registry: registryWith(assetA, assetB), loader, qualityTier: "high" });
+  const coordinator = new PreparedVisualLoadCoordinator(runtime);
+  const levelA = { visuals: { platform: { assetId: assetA.id } }, scene: { layers: [] } };
+  const levelB = { visuals: { platform: { assetId: assetB.id } }, scene: { layers: [] } };
+  const first = coordinator.prepare(levelA);
+  await Promise.resolve();
+  const second = coordinator.prepare(levelB);
+  await Promise.resolve();
+  assert.equal(loader.stats().ready, 0);
+  releases.get(assetB.id)();
+  const preparedB = await second;
+  assert.equal(preparedB.current, true);
+  releases.get(assetA.id)();
+  const preparedA = await first;
+  assert.equal(preparedA.current, false);
+  assert.equal(loader.stats().ready, 2);
+  assert.equal(loader.stats().residentEntries, 1);
+  const requestCount = loader.stats().requests;
+  await coordinator.prepare(levelB);
+  assert.equal(loader.stats().requests, requestCount);
+});
+
+test("a later level entry cancels an earlier request before its async neighborhood is ready", async () => {
+  const coordinator = new LatestRequestCoordinator();
+  let releaseReference;
+  const committed = [];
+  const startReference = async () => {
+    const generation = coordinator.begin();
+    await new Promise((resolve) => { releaseReference = resolve; });
+    if (coordinator.isCurrent(generation)) committed.push("reference");
+  };
+  const pendingReference = startReference();
+  await Promise.resolve();
+  const formalGeneration = coordinator.begin();
+  if (coordinator.isCurrent(formalGeneration)) committed.push("formal");
+  releaseReference();
+  await pendingReference;
+  assert.deepEqual(committed, ["formal"]);
+});
+
+test("prepared visual loads settle broken assets for a stable procedural fallback", async () => {
+  const asset = imageAsset("test:prepared-broken");
+  const loader = new AssetImageLoader({
+    registry: registryWith(asset),
+    loadImage: async () => { throw new Error("decode failed"); }
+  });
+  const runtime = new VisualRuntime({ registry: registryWith(asset), loader, qualityTier: "high" });
+  const coordinator = new PreparedVisualLoadCoordinator(runtime);
+  const prepared = await coordinator.prepare({ visuals: { platform: { assetId: asset.id } }, scene: { layers: [] } });
+  assert.equal(prepared.current, true);
+  assert.equal(loader.peek(asset.id).status, "error");
+  assert.equal(loader.stats().loading, 0);
+});
+
+test("scene residency budget covers every placement phase without exceeding declared caps", () => {
+  const layer = createDefaultScene().layers.find((candidate) => candidate.role === "background");
+  layer.assets = [{ assetId: "test:scene", weight: 1 }];
+  layer.seamless = { mode: "mirror", tileWidth: 400, overlap: 50 };
+  layer.scale = 1;
+  layer.spacing = 0;
+  layer.density = 1;
+  layer.drawCap = 64;
+  const viewportWidth = 1280;
+  const overscan = 400;
+  const required = requiredSceneResidencyDraws(layer, viewportWidth, overscan);
+  for (let cameraX = 0; cameraX < 350; cameraX += 7) {
+    const result = calculateSeamlessPlacements(layer, { cameraX, viewportWidth, overscan });
+    assert.ok(required >= result.candidateCount, `${cameraX}: ${required} < ${result.candidateCount}`);
+    assert.ok(required - result.candidateCount <= 1, `${cameraX}: budget is needlessly high`);
+  }
+  assert.equal(requiredSceneResidencyDraws({ ...layer, repeatX: false }, viewportWidth, overscan), 1);
+});
+
 test("level asset collection and stable draw sorting preserve default order", () => {
   assert.deepEqual(collectLevelAssetIds({
     visuals: {
@@ -178,6 +263,24 @@ test("level asset collection and stable draw sorting preserve default order", ()
     },
     scene: { layers: [{ assets: [{ assetId: "test:mist" }, { assetId: "test:platform" }] }] }
   }).sort(), ["test:mist", "test:platform"]);
+
+  const fallback = imageAsset("test:platform-fallback", ["platform"]);
+  const custom = imageAsset("test:platform-custom", ["platform"]);
+  const fallbackRegistry = createAssetRegistry({
+    assets: [structuredClone(DEFAULT_ASSET_REGISTRY.assets[0]), fallback, custom],
+    typeDefaults: { platform: fallback.id },
+    projectDefaultAssetId: BUILTIN_PROCEDURAL_ASSET_ID
+  });
+  assert.deepEqual(collectLevelAssetIds({
+    visualOrder: { platform: ["ground"] },
+    visuals: { ground: { ...createVisualConfig(), assetId: "missing:ground" } },
+    scene: { layers: [] }
+  }, fallbackRegistry).sort(), ["missing:ground", fallback.id].sort());
+  assert.deepEqual(collectLevelAssetIds({
+    visualOrder: { platform: ["ground"] },
+    visuals: { ground: { ...createVisualConfig(), assetId: custom.id } },
+    scene: { layers: [] }
+  }, fallbackRegistry).sort(), [custom.id, fallback.id].sort());
 
   const queue = stableSortRenderQueue([
     { id: "default-b", drawLayer: 0, defaultOrder: 2 },
@@ -448,6 +551,7 @@ test("scene rendering uses canonical placements, pass selection and low-tier cap
   assert.ok(stats.sceneDraws > 0);
   assert.ok(stats.sceneDraws <= visualQualityProfile("low").maxLayerDraws + 1);
   assert.ok(stats.cullCount > 0);
+  assert.ok(stats.sceneResidencyDeficits > 0);
   assert.equal(stats.objectAssetDraws, 0);
   assert.equal(ctx.calls.filter((call) => call[0] === "drawImage").length + 1, stats.sceneDraws);
 });

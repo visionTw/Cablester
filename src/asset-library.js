@@ -344,8 +344,8 @@ export const GENERATED_GAME_ASSETS = Object.freeze([
         right: 96,
         top: 32,
         bottom: 34,
-        edgeMode: "tile",
-        centerMode: "tile"
+        edgeMode: "stretch",
+        centerMode: "stretch"
       }),
       tile: Object.freeze({ width: 256, height: 60 })
     }),

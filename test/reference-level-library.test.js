@@ -29,6 +29,23 @@ test("generated reference playable index is structurally valid and lists authore
   }
 });
 
+test("reference index validation rejects malformed and dangling connections", () => {
+  const base = {
+    schemaVersion: 1,
+    collections: [{ id: "test", roomIds: ["a"] }],
+    rooms: { a: { id: "a", dataFile: "a.json", connections: [] } }
+  };
+  const missingConnections = structuredClone(base);
+  delete missingConnections.rooms.a.connections;
+  assert.ok(validateReferencePlayableIndex(missingConnections).some((error) => error.includes("connections[]")));
+  const malformedTarget = structuredClone(base);
+  malformedTarget.rooms.a.connections = [{ target: "" }];
+  assert.ok(validateReferencePlayableIndex(malformedTarget).some((error) => error.includes("target room id")));
+  const danglingTarget = structuredClone(base);
+  danglingTarget.rooms.a.connections = [{ target: "missing" }];
+  assert.ok(validateReferencePlayableIndex(danglingTarget).some((error) => error.includes("targets missing room")));
+});
+
 test("reference library loads and compiles an indexed reference room on demand", async () => {
   const index = {
     schemaVersion: 1,
@@ -72,6 +89,95 @@ test("reference library loads and compiles an indexed reference room on demand",
   assert.equal(level.roomEntrances[0].id, "entry-main");
   assert.equal(level.roomExits[0].targetRoomId, "test.next");
   assert.equal(level.goal, undefined);
+});
+
+test("reference neighborhood preload is one hop, deduplicates inflight fetches and survives adjacent failures", async () => {
+  const roomDocument = (roomId, targetRoomId) => ({
+    schemaVersion: 1,
+    metadata: { id: roomId, name: roomId, category: "参考白盒", mode: "reference-room" },
+    bounds: { x: 0, y: 0, w: 1280, h: 720 },
+    startingAbilities: ["dash"],
+    objects: [
+      { id: "ground", type: "platform", position: { x: 0, y: 640 }, properties: { w: 1280, h: 80 } },
+      { id: "spawn", type: "spawn", position: { x: 100, y: 590 }, properties: {} },
+      { id: "checkpoint", type: "checkpoint", position: { x: 60, y: 550 }, properties: { w: 90, h: 90, spawnOffsetX: 45, spawnOffsetY: 40 } },
+      { id: "entry", type: "roomEntrance", position: { x: 20, y: 520 }, properties: { w: 80, h: 120, spawnOffsetX: 80, spawnOffsetY: 70, facing: "right", sourceRoomId: "" } },
+      { id: "exit", type: "roomExit", position: { x: 1180, y: 520 }, properties: { w: 80, h: 120, targetRoomId, targetEntranceId: "entry", direction: "right", exitKind: "main", requiredAbility: "", oneWay: false } }
+    ]
+  });
+  const index = {
+    schemaVersion: 1,
+    collections: [{ id: "test", game: "test", localName: "test", roomIds: ["a", "b", "c"] }],
+    rooms: {
+      a: { id: "a", dataFile: "a.json", connections: [{ target: "b" }] },
+      b: { id: "b", dataFile: "b.json", connections: [{ target: "c" }] },
+      c: { id: "c", dataFile: "c.json", connections: [] }
+    }
+  };
+  const responses = new Map([
+    ["index.json", index],
+    ["a.json", roomDocument("a", "b")],
+    ["b.json", roomDocument("b", "c")],
+    ["c.json", roomDocument("c", "b")]
+  ]);
+  const fetchCounts = new Map();
+  const library = new ReferenceLevelLibrary({
+    indexUrl: "index.json",
+    fetchImpl: async (url) => {
+      fetchCounts.set(url, (fetchCounts.get(url) || 0) + 1);
+      if (url === "b.json") return { ok: false, status: 503, async json() { return null; } };
+      return { ok: responses.has(url), status: responses.has(url) ? 200 : 404, async json() { return structuredClone(responses.get(url)); } };
+    }
+  });
+  await library.loadIndex();
+  assert.deepEqual(library.adjacentRoomIds("a"), ["b"]);
+  const neighborhood = await library.preloadRoomNeighborhood("a");
+  assert.deepEqual(neighborhood.roomIds, ["a", "b"]);
+  assert.equal(neighborhood.levels.has("a"), true);
+  assert.equal(neighborhood.levels.has("b"), false);
+  assert.equal(neighborhood.errors.length, 1);
+  assert.equal(fetchCounts.get("c.json") || 0, 0);
+  library.clearRoomCache("a");
+  await Promise.all([library.loadRoomDocument("a"), library.loadRoomDocument("a")]);
+  assert.equal(fetchCounts.get("a.json"), 2);
+});
+
+test("clearing a reference cache prevents an older inflight request from repopulating it", async () => {
+  const index = {
+    schemaVersion: 1,
+    collections: [{ id: "test", game: "test", localName: "test", roomIds: ["a"] }],
+    rooms: { a: { id: "a", dataFile: "a.json", connections: [] } }
+  };
+  let release;
+  const documentData = {
+    schemaVersion: 1,
+    metadata: { id: "a", name: "a", category: "参考白盒", mode: "reference-room" },
+    bounds: { x: 0, y: 0, w: 1280, h: 720 },
+    startingAbilities: [],
+    objects: [
+      { id: "ground", type: "platform", position: { x: 0, y: 640 }, properties: { w: 1280, h: 80 } },
+      { id: "spawn", type: "spawn", position: { x: 100, y: 590 }, properties: {} },
+      { id: "checkpoint", type: "checkpoint", position: { x: 60, y: 550 }, properties: { w: 90, h: 90, spawnOffsetX: 45, spawnOffsetY: 40 } },
+      { id: "entry", type: "roomEntrance", position: { x: 20, y: 520 }, properties: { w: 80, h: 120, spawnOffsetX: 80, spawnOffsetY: 70, facing: "right", sourceRoomId: "" } },
+      { id: "exit", type: "roomExit", position: { x: 1180, y: 520 }, properties: { w: 80, h: 120, targetRoomId: "a", targetEntranceId: "entry", direction: "right", exitKind: "main", requiredAbility: "", oneWay: false } }
+    ]
+  };
+  const library = new ReferenceLevelLibrary({
+    indexUrl: "index.json",
+    fetchImpl: async (url) => {
+      if (url === "index.json") return { ok: true, status: 200, async json() { return structuredClone(index); } };
+      await new Promise((resolve) => { release = resolve; });
+      return { ok: true, status: 200, async json() { return structuredClone(documentData); } };
+    }
+  });
+  await library.loadIndex();
+  const pending = library.loadRoomDocument("a");
+  await Promise.resolve();
+  library.clearRoomCache();
+  release();
+  const loaded = await pending;
+  assert.equal(loaded.metadata.id, "a");
+  assert.equal(library.documentCache.size, 0);
 });
 
 test("every authored reference room file compiles and its authored transitions resolve", async () => {

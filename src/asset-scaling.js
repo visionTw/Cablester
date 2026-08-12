@@ -25,8 +25,13 @@ function copyNineSlice(value) {
     right: value.right,
     top: value.top,
     bottom: value.bottom,
-    edgeMode: value.edgeMode,
-    centerMode: value.centerMode
+    // Cocos Sliced Sprite and Godot NinePatchRect both default to one
+    // nine-patch draw: fixed corners, single-axis stretched edges and a
+    // two-axis stretched center. Keep the explicit tile values as a legacy
+    // extension, but make interoperable nine-slice documents work without
+    // Cablester-only region-mode fields.
+    edgeMode: value.edgeMode ?? "stretch",
+    centerMode: value.centerMode ?? "stretch"
   };
 }
 
@@ -83,7 +88,9 @@ export function validateAssetScaling(scaling, asset, path = "asset.scaling") {
         if (!inset(slice[key])) errors.push(`${path}.nineSlice.${key} must be a non-negative number`);
       }
       for (const key of ["edgeMode", "centerMode"]) {
-        if (!ASSET_REGION_FILL_MODES.includes(slice[key])) errors.push(`${path}.nineSlice.${key} must be stretch or tile`);
+        if (slice[key] !== undefined && !ASSET_REGION_FILL_MODES.includes(slice[key])) {
+          errors.push(`${path}.nineSlice.${key} must be stretch or tile`);
+        }
       }
       if (positive(asset?.width) && inset(slice.left) && inset(slice.right) && slice.left + slice.right >= asset.width) {
         errors.push(`${path}.nineSlice left and right insets must leave a positive center width`);
@@ -218,12 +225,14 @@ function createNineSlicePlan(sourceWidth, sourceHeight, target, profile, tileSca
   const destinationYs = [target.y, target.y + destinationTop, target.y + target.height - destinationBottom];
   const patches = [];
   let degraded = false;
+  const edgeMode = slice.edgeMode ?? "stretch";
+  const centerMode = slice.centerMode ?? "stretch";
   for (let row = 0; row < 3; row += 1) {
     for (let column = 0; column < 3; column += 1) {
       const sourceRect = { x: sourceXs[column], y: sourceYs[row], width: sourceColumns[column], height: sourceRows[row] };
       const destinationRect = { x: destinationXs[column], y: destinationYs[row], width: destinationColumns[column], height: destinationRows[row] };
       const corner = row !== 1 && column !== 1;
-      const fillMode = corner ? "stretch" : row === 1 && column === 1 ? slice.centerMode : slice.edgeMode;
+      const fillMode = corner ? "stretch" : row === 1 && column === 1 ? centerMode : edgeMode;
       if (fillMode === "stretch") {
         addStretchPatch(patches, sourceRect, destinationRect);
       } else {

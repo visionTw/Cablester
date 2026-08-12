@@ -569,19 +569,29 @@ async function startFormalLevel(cdp, levelId) {
     const game = window.cablester;
     const level = game.levels.find((candidate) => candidate.id === ${JSON.stringify(levelId)});
     if (!level) throw new Error("Unknown formal level: " + ${JSON.stringify(levelId)});
-    game.start(level);
-    await game.visualRuntime.preloadLevel(level);
-    return { id: level.id, name: level.name, category: level.category, assetStats: { ...game.visualRuntime.stats() } };
+    const levelIndex = game.levels.indexOf(level);
+    const adjacentLevels = [game.levels[levelIndex - 1], game.levels[levelIndex + 1]].filter(Boolean);
+    const started = await game.startPrepared(level, {}, adjacentLevels);
+    const assetStats = { ...game.visualRuntime.stats() };
+    if (!started || assetStats.loading !== 0) throw new Error("Prepared formal level committed before visual assets settled");
+    return { id: level.id, name: level.name, category: level.category, prepared: true, assetStats };
   })()`);
 }
 
 async function startReferenceLevel(cdp, roomId) {
   return evaluate(cdp, `(async () => {
-    const level = await window.cablesterReference.library.loadRoom(${JSON.stringify(roomId)});
+    const library = window.cablesterReference.library;
+    const neighborhood = await library.preloadRoomNeighborhood(${JSON.stringify(roomId)});
+    const level = neighborhood.levels.get(${JSON.stringify(roomId)});
+    if (!level) throw neighborhood.errors[0]?.error || new Error("Unable to prepare reference level");
+    const adjacentLevels = [...neighborhood.levels.entries()]
+      .filter(([candidateId]) => candidateId !== ${JSON.stringify(roomId)})
+      .map(([, candidateLevel]) => candidateLevel);
     window.cablester.setRoomExitHandler(null);
-    window.cablester.start(level);
-    await window.cablester.visualRuntime.preloadLevel(level);
-    return { id: level.id, name: level.name, category: level.category, assetStats: { ...window.cablester.visualRuntime.stats() } };
+    const started = await window.cablester.startPrepared(level, {}, adjacentLevels);
+    const assetStats = { ...window.cablester.visualRuntime.stats() };
+    if (!started || assetStats.loading !== 0) throw new Error("Prepared reference level committed before visual assets settled");
+    return { id: level.id, name: level.name, category: level.category, prepared: true, assetStats };
   })()`);
 }
 
@@ -741,9 +751,11 @@ async function runSwitchStress(cdp, network, switchCount) {
     const game = window.cablester;
     const sequence = [];
     for (let index = 0; index < ${JSON.stringify(switchCount)}; index += 1) {
-      const level = game.levels[index % game.levels.length];
-      game.start(level);
-      await game.visualRuntime.preloadLevel(level);
+      const levelIndex = index % game.levels.length;
+      const level = game.levels[levelIndex];
+      const adjacentLevels = [game.levels[levelIndex - 1], game.levels[levelIndex + 1]].filter(Boolean);
+      const started = await game.startPrepared(level, {}, adjacentLevels);
+      if (!started || game.visualRuntime.stats().loading !== 0) throw new Error("Switch stress committed an unprepared level");
       await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       sequence.push({
         index: index + 1,

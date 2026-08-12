@@ -4,6 +4,8 @@ import {
   DEFAULT_VISUAL_CONFIG,
   assetDeliveryUrl,
   getAssetById,
+  getProjectDefaultAssetId,
+  getTypeDefaultAssetId,
   resolveAssetReference,
   resolveVisualAsset
 } from "./asset-library.js";
@@ -95,6 +97,7 @@ export class AssetImageLoader {
     this.requests = 0;
     this.cacheHits = 0;
     this.evictions = 0;
+    this.residentAssetIds = new Set();
   }
 
   resolveAsset(assetOrId) {
@@ -180,10 +183,16 @@ export class AssetImageLoader {
     return entries;
   }
 
+  setResidentAssetIds(assetIds = []) {
+    this.residentAssetIds = new Set(assetIds.filter((assetId) => typeof assetId === "string" && assetId));
+    this.prune();
+    return new Set(this.residentAssetIds);
+  }
+
   prune() {
     if (this.entries.size <= this.maxEntries) return;
     const candidates = [...this.entries.values()]
-      .filter((entry) => entry.status !== "loading")
+      .filter((entry) => entry.status !== "loading" && !this.residentAssetIds.has(entry.assetId))
       .sort((left, right) => left.lastUsed - right.lastUsed);
     while (this.entries.size > this.maxEntries && candidates.length) {
       const entry = candidates.shift();
@@ -200,6 +209,7 @@ export class AssetImageLoader {
       for (const drawable of entry.tintCache.values()) closeDrawable(drawable);
     }
     this.entries.clear();
+    this.residentAssetIds.clear();
   }
 
   unavailableAssetIds() {
@@ -223,6 +233,7 @@ export class AssetImageLoader {
       estimatedTintBytes,
       tintVariants,
       cacheEntries: values.length,
+      residentEntries: values.filter((entry) => this.residentAssetIds.has(entry.assetId)).length,
       evictions: this.evictions
     };
   }
@@ -232,13 +243,71 @@ function addAssetId(target, assetId) {
   if (typeof assetId === "string" && assetId && assetId !== BUILTIN_PROCEDURAL_ASSET_ID) target.add(assetId);
 }
 
-export function collectLevelAssetIds(level) {
+export function collectLevelAssetIds(level, registry = DEFAULT_ASSET_REGISTRY) {
   const ids = new Set();
-  for (const visual of Object.values(level?.visuals || {})) addAssetId(ids, visual?.assetId);
+  const objectTypesById = new Map();
+  for (const [objectType, objectIds] of Object.entries(level?.visualOrder || {})) {
+    for (const objectId of objectIds || []) objectTypesById.set(objectId, objectType);
+  }
+  for (const [objectId, visual] of Object.entries(level?.visuals || {})) {
+    addAssetId(ids, visual?.assetId);
+    const objectType = objectTypesById.get(objectId);
+    if (!objectType) continue;
+    addAssetId(ids, resolveVisualAsset(visual, objectType, registry).assetId);
+    addAssetId(ids, getTypeDefaultAssetId(objectType, registry));
+    addAssetId(ids, getProjectDefaultAssetId(registry));
+  }
   for (const layer of level?.scene?.layers || []) {
     for (const reference of layer.assets || []) addAssetId(ids, typeof reference === "string" ? reference : reference?.assetId);
   }
   return [...ids];
+}
+
+export function collectLevelsAssetIds(levels = [], registry = DEFAULT_ASSET_REGISTRY) {
+  return [...new Set(levels.flatMap((level) => collectLevelAssetIds(level, registry)))];
+}
+
+export class LatestRequestCoordinator {
+  constructor() {
+    this.generation = 0;
+  }
+
+  begin() {
+    this.generation += 1;
+    return this.generation;
+  }
+
+  cancel() {
+    this.generation += 1;
+  }
+
+  isCurrent(generation) {
+    return generation === this.generation;
+  }
+}
+
+export class PreparedVisualLoadCoordinator {
+  constructor(runtime) {
+    if (!runtime || typeof runtime.preloadLevels !== "function") throw new Error("PreparedVisualLoadCoordinator requires a visual runtime");
+    this.runtime = runtime;
+    this.generation = 0;
+  }
+
+  invalidate() {
+    this.generation += 1;
+  }
+
+  async prepare(level, adjacentLevels = []) {
+    const generation = ++this.generation;
+    const levels = [level, ...adjacentLevels].filter(Boolean);
+    const entries = await this.runtime.preloadLevels(levels, { retain: true });
+    return {
+      current: generation === this.generation,
+      generation,
+      entries,
+      assetIds: collectLevelsAssetIds(levels, this.runtime.registry)
+    };
+  }
 }
 
 export function stableSortRenderQueue(commands = []) {
@@ -422,6 +491,15 @@ export function selectSceneLayersForQuality(scene, profile) {
     .sort((a, b) => a.layer.depth - b.layer.depth || a.index - b.index);
 }
 
+export function requiredSceneResidencyDraws(layer, viewportWidth, overscan) {
+  if (!layer.repeatX) return 1;
+  const tileWidth = layer.seamless.tileWidth * layer.scale;
+  const overlap = layer.seamless.overlap * layer.scale;
+  const step = Math.max(1, (tileWidth - overlap + layer.spacing) / layer.density);
+  const residentWidth = viewportWidth + overscan * 2;
+  return Math.max(1, Math.floor((residentWidth + tileWidth) / step) + 1);
+}
+
 function drawSceneImage(ctx, entry, asset, layer, placement, camera, profile) {
   const source = tintedDrawable(entry, layer.tint);
   const dimensions = imageDimensions(source, asset);
@@ -511,7 +589,7 @@ export class VisualRuntime {
   }
 
   beginFrame() {
-    this.frameStats = { sceneDraws: 0, objectAssetDraws: 0, objectPatchDraws: 0, objectQualityDegrades: 0, fallbackDraws: 0, cullCount: 0 };
+    this.frameStats = { sceneDraws: 0, sceneResidencyDeficits: 0, objectAssetDraws: 0, objectPatchDraws: 0, objectQualityDegrades: 0, fallbackDraws: 0, cullCount: 0 };
     this.frameScenes = new WeakSet();
   }
 
@@ -521,7 +599,13 @@ export class VisualRuntime {
   }
 
   async preloadLevel(level) {
-    return this.loader.preload(collectLevelAssetIds(level));
+    return this.preloadLevels([level]);
+  }
+
+  async preloadLevels(levels = [], { retain = true } = {}) {
+    const assetIds = collectLevelsAssetIds(levels.filter(Boolean), this.registry);
+    if (retain) this.loader.setResidentAssetIds(assetIds);
+    return this.loader.preload(assetIds);
   }
 
   renderObject(ctx, { type, item, visual = DEFAULT_VISUAL_CONFIG, fallback, overlay }) {
@@ -597,14 +681,26 @@ export class VisualRuntime {
       const effectiveLayer = {
         ...layer,
         density: Math.max(0.01, layer.density * this.quality.densityScale),
-        drawCap: Math.min(layer.drawCap, this.quality.maxLayerDraws, remainingFrameDraws)
+        drawCap: layer.drawCap
       };
+      const overscan = Math.min(100000, Math.max(
+        Math.min(camera.width * 0.25, 320),
+        effectiveLayer.seamless.tileWidth * effectiveLayer.scale,
+        effectiveLayer.blur * 4
+      ));
+      const residencyDraws = requiredSceneResidencyDraws(effectiveLayer, camera.width, overscan);
+      effectiveLayer.drawCap = Math.min(
+        layer.drawCap,
+        this.quality.maxLayerDraws,
+        remainingFrameDraws
+      );
+      if (residencyDraws > effectiveLayer.drawCap) this.frameStats.sceneResidencyDeficits += 1;
       let result;
       try {
         result = calculateSeamlessPlacements(effectiveLayer, {
           cameraX: camera.x,
           viewportWidth: camera.width,
-          overscan: Math.min(camera.width, effectiveLayer.seamless.tileWidth * effectiveLayer.scale),
+          overscan,
           maxDraws: effectiveLayer.drawCap
         });
       } catch {

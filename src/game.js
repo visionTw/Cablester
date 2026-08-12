@@ -69,7 +69,7 @@ import {
   TAU
 } from "./math.js";
 import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
-import { VisualRuntime, isObjectVisualVisible, stableSortRenderQueue } from "./visual-runtime.js";
+import { LatestRequestCoordinator, PreparedVisualLoadCoordinator, VisualRuntime, isObjectVisualVisible, stableSortRenderQueue } from "./visual-runtime.js";
 
 const canvas = document.querySelector("#game");
 const context = canvas.getContext("2d");
@@ -248,6 +248,7 @@ class Game {
     this.toast = { text: "", time: 0, tone: "normal" };
     this.particles = new ParticleField();
     this.visualRuntime = new VisualRuntime({ registry: DEFAULT_ASSET_REGISTRY });
+    this.visualLoadCoordinator = new PreparedVisualLoadCoordinator(this.visualRuntime);
     this.onRoomExit = null;
     this.frameMetrics = { samples: [], averageFps: 0, averageMs: 0, p95Ms: 0, worstMs: 0 };
     this.debugStats = { activeObjects: 0, renderedObjects: 0, collisionCandidates: 0 };
@@ -314,7 +315,7 @@ class Game {
     this.debugStats.activeObjects = this.countLevelObjects();
     this.debugStats.renderedObjects = 0;
     this.debugStats.collisionCandidates = 0;
-    void this.visualRuntime.preloadLevel(level);
+    if (!options.visualsPrepared) void this.visualRuntime.preloadLevel(level);
   }
 
   setRoomExitHandler(handler) {
@@ -377,7 +378,23 @@ class Game {
     this.showToast(`${levelDisplayName(this.level)} · 先观察，再连续通过`, 3.2);
   }
 
+  async startPrepared(level, options = {}, adjacentLevels = []) {
+    if (!level) throw new Error("A level is required before starting a prepared load");
+    this.running = false;
+    this.paused = false;
+    const prepared = await this.visualLoadCoordinator.prepare(level, adjacentLevels);
+    if (!prepared.current) return false;
+    this.loadLevel(level, { ...options, visualsPrepared: true });
+    this.running = true;
+    this.paused = false;
+    this.lastTimestamp = performance.now();
+    this.showToast(`${levelDisplayName(this.level)} · 当前与相邻场景已准备`, 3.2);
+    return true;
+  }
+
   openLevelMenu() {
+    globalThis.cablesterCancelPendingLevelStart?.();
+    this.visualLoadCoordinator.invalidate();
     this.running = false;
     this.paused = false;
     this.input.keys.clear();
@@ -3167,6 +3184,8 @@ function isGodotSyncReady(level) {
 const input = new Input(canvas);
 const game = new Game(context, input, LEVELS);
 const referenceLevelLibrary = new ReferenceLevelLibrary();
+const levelStartCoordinator = new LatestRequestCoordinator();
+globalThis.cablesterCancelPendingLevelStart = () => levelStartCoordinator.cancel();
 
 let customLevels = [];
 let referenceRooms = [];
@@ -3645,10 +3664,24 @@ function renderLevelMenu() {
     if (level.category === "单项3C") button.append(acceptance);
     button.append(summary);
 
-    button.addEventListener("click", () => {
-      startCard.classList.add("is-hidden");
-      canvas.focus();
-      game.start(level);
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      const generation = levelStartCoordinator.begin();
+      game.visualLoadCoordinator.invalidate();
+      const index = LEVELS.indexOf(level);
+      const adjacentLevels = index >= 0 ? [LEVELS[index - 1], LEVELS[index + 1]].filter(Boolean) : [];
+      try {
+        if (await game.startPrepared(level, {}, adjacentLevels) && levelStartCoordinator.isCurrent(generation)) {
+          startCard.classList.add("is-hidden");
+          canvas.focus();
+        }
+      } catch (error) {
+        console.error(error);
+        game.openLevelMenu();
+        game.showToast("关卡视觉素材准备失败，请重试", 1.8, "warning");
+      } finally {
+        button.disabled = false;
+      }
     });
     levelGrid.append(button);
   }
@@ -3717,10 +3750,20 @@ const levelEditor = createLevelEditor({
   root: levelEditorRoot,
   sourceLevels: LEVELS,
   onPlay(level) {
-    levelEditor.close();
-    startCard.classList.add("is-hidden");
-    canvas.focus();
-    game.start(level);
+    const generation = levelStartCoordinator.begin();
+    game.visualLoadCoordinator.invalidate();
+    void game.startPrepared(level)
+      .then((started) => {
+        if (!started || !levelStartCoordinator.isCurrent(generation)) return;
+        levelEditor.close();
+        startCard.classList.add("is-hidden");
+        canvas.focus();
+      })
+      .catch((error) => {
+        console.error(error);
+        game.openLevelMenu();
+        game.showToast("试玩素材准备失败，请重试", 1.8, "warning");
+      });
   },
   onSavedLevelsChange(levels) {
     customLevels = levels;
@@ -3729,26 +3772,60 @@ const levelEditor = createLevelEditor({
 });
 
 async function startReferenceRoom(roomId, { collectionId = null, entranceId = null, newRun = false } = {}) {
-  const documentData = await referenceLevelLibrary.loadRoomDocument(roomId);
-  const level = await referenceLevelLibrary.loadRoom(roomId);
-  levelEditor.addSourceDocuments([documentData]);
-  if (newRun || !referenceRunState) {
-    referenceRunState = new ReferenceRunState(collectionId || "reference.unassigned", roomId, {
-      abilities: level.startingAbilities
-    });
-  } else {
-    for (const abilityId of game.abilities) referenceRunState.recordAbility(abilityId);
-    referenceRunState.replaceFlags(game.runtime.flags);
-    referenceRunState.enterRoom(roomId, entranceId);
+  const generation = levelStartCoordinator.begin();
+  const wasRunning = game.running;
+  const wasTransitioning = Boolean(game.runtime?.transitioning);
+  const previousAbilities = [...(game.abilities || [])];
+  const previousFlags = [...(game.runtime?.flags || [])];
+  const previousRunState = referenceRunState;
+  game.visualLoadCoordinator.invalidate();
+  game.running = false;
+  try {
+    const neighborhood = await referenceLevelLibrary.preloadRoomNeighborhood(roomId);
+    if (!levelStartCoordinator.isCurrent(generation)) return false;
+    const level = neighborhood.levels.get(roomId);
+    if (!level) {
+      const failure = neighborhood.errors.find((item) => item.roomId === roomId)?.error;
+      throw failure || new Error(`Unable to prepare reference room: ${roomId}`);
+    }
+    const documentData = await referenceLevelLibrary.loadRoomDocument(roomId);
+    const adjacentLevels = [...neighborhood.levels.entries()]
+      .filter(([candidateId]) => candidateId !== roomId)
+      .map(([, candidateLevel]) => candidateLevel);
+    const startsNewRun = newRun || !previousRunState;
+    const preparedAbilities = startsNewRun
+      ? level.startingAbilities
+      : [...new Set([...previousRunState.abilities, ...previousAbilities])];
+    const preparedFlags = startsNewRun ? [] : previousFlags;
+    const started = await game.startPrepared(level, {
+      entranceId,
+      abilities: preparedAbilities,
+      flags: preparedFlags,
+      checkpointId: startsNewRun ? null : previousRunState.checkpoints.get(roomId) || null
+    }, adjacentLevels);
+    if (started) {
+      if (startsNewRun) {
+        referenceRunState = new ReferenceRunState(collectionId || "reference.unassigned", roomId, {
+          abilities: level.startingAbilities
+        });
+      } else {
+        referenceRunState = previousRunState;
+        for (const abilityId of previousAbilities) referenceRunState.recordAbility(abilityId);
+        referenceRunState.replaceFlags(previousFlags);
+        referenceRunState.enterRoom(roomId, entranceId);
+      }
+      levelEditor.addSourceDocuments([documentData]);
+      startCard.classList.add("is-hidden");
+      canvas.focus();
+    }
+    return started;
+  } catch (error) {
+    if (levelStartCoordinator.isCurrent(generation)) {
+      game.running = wasRunning;
+      if (game.runtime) game.runtime.transitioning = wasTransitioning;
+    }
+    throw error;
   }
-  startCard.classList.add("is-hidden");
-  canvas.focus();
-  game.start(level, {
-    entranceId,
-    abilities: newRun ? level.startingAbilities : [...referenceRunState.abilities],
-    flags: newRun ? [] : [...referenceRunState.flags],
-    checkpointId: newRun ? null : referenceRunState.checkpoints.get(roomId) || null
-  });
 }
 
 game.setRoomExitHandler(async (exit) => {

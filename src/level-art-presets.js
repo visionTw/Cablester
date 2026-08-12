@@ -34,7 +34,7 @@ const REPRESENTATIVE_SCENE_LAYERS_BY_ROLE = Object.freeze({
     seed: "combined-horizontal-distant-trunks",
     spacing: 0,
     density: 1,
-    drawCap: 2
+    drawCap: 8
   }),
   midground: Object.freeze({
     name: "月影古树林",
@@ -49,7 +49,7 @@ const REPRESENTATIVE_SCENE_LAYERS_BY_ROLE = Object.freeze({
     seed: "combined-horizontal-ancient-trees",
     spacing: 420,
     density: 1,
-    drawCap: 1
+    drawCap: 4
   }),
   player: Object.freeze({
     name: "近路荧光植被",
@@ -60,7 +60,7 @@ const REPRESENTATIVE_SCENE_LAYERS_BY_ROLE = Object.freeze({
     seed: "combined-horizontal-player-vegetation",
     spacing: 300,
     density: 1,
-    drawCap: 2
+    drawCap: 5
   }),
   foreground: Object.freeze({
     name: "暗藤前景",
@@ -78,7 +78,7 @@ const REPRESENTATIVE_SCENE_LAYERS_BY_ROLE = Object.freeze({
     seed: "combined-horizontal-foreground-vines",
     spacing: 760,
     density: 1,
-    drawCap: 1
+    drawCap: 3
   })
 });
 
@@ -105,7 +105,7 @@ const REPRESENTATIVE_ADDITIONAL_SCENE_LAYERS = Object.freeze([
     originX: -120,
     spacing: 210,
     density: 1,
-    drawCap: 2
+    drawCap: 5
   }),
   Object.freeze({
     id: "scene-far-canopy",
@@ -129,7 +129,7 @@ const REPRESENTATIVE_ADDITIONAL_SCENE_LAYERS = Object.freeze([
     originX: 60,
     spacing: 250,
     density: 1,
-    drawCap: 2
+    drawCap: 4
   }),
   Object.freeze({
     id: "scene-mid-landmarks",
@@ -156,7 +156,7 @@ const REPRESENTATIVE_ADDITIONAL_SCENE_LAYERS = Object.freeze([
     originX: 260,
     spacing: 520,
     density: 1,
-    drawCap: 2
+    drawCap: 3
   }),
   Object.freeze({
     id: "scene-near-bell-flowers",
@@ -180,7 +180,7 @@ const REPRESENTATIVE_ADDITIONAL_SCENE_LAYERS = Object.freeze([
     originX: 150,
     spacing: 420,
     density: 0.86,
-    drawCap: 1
+    drawCap: 4
   }),
   Object.freeze({
     id: "scene-near-luminous-plants",
@@ -204,7 +204,7 @@ const REPRESENTATIVE_ADDITIONAL_SCENE_LAYERS = Object.freeze([
     originX: 90,
     spacing: 430,
     density: 1,
-    drawCap: 1
+    drawCap: 4
   }),
   Object.freeze({
     id: "scene-far-mist-band",
@@ -252,7 +252,7 @@ const REPRESENTATIVE_ADDITIONAL_SCENE_LAYERS = Object.freeze([
     originX: 180,
     spacing: 560,
     density: 1,
-    drawCap: 1
+    drawCap: 3
   }),
   Object.freeze({
     id: "scene-player-light-motes",

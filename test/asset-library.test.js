@@ -107,6 +107,8 @@ test("asset registry supports search, applicability and project/type defaults", 
   const platformAsset = DEFAULT_ASSET_REGISTRY.assets.find((asset) => asset.id === GAME_ASSET_IDS.mossPlatform);
   assert.equal(platformAsset.scaling.defaultMode, "nine-slice");
   assert.deepEqual(platformAsset.scaling.allowedModes, ["stretch", "nine-slice", "tile"]);
+  assert.equal(platformAsset.scaling.nineSlice.edgeMode, "stretch");
+  assert.equal(platformAsset.scaling.nineSlice.centerMode, "stretch");
   assert.ok(BUILTIN_LEVEL_OBJECT_TYPES
     .filter((type) => ![
       "platform", "hazard", "anchor", "energyOrb", "dashRefill",

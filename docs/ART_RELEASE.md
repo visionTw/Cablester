@@ -17,7 +17,7 @@
 - 9 类 gameplay visual：平台、危险物、锚点、能量球、冲刺补充、猛击支点、检查点、出生点、终点；
 - 4 个基础角色层：远景树干、中景古树、玩家附近灌木，以及带权重混排暗藤/暗影蕨叶的前景；
 - 8 个自定义层：深远根峰、月影树冠、盘根遗迹、水青铃花、发光植物、游雾、中远景树组、生物光点；
-- 共 12 个 scene layer，引用当前 14 个场景素材；平台默认素材 `gameplay:moss-platform` 使用九宫格保持边缘、平铺中区；
+- 共 12 个 scene layer，引用当前 14 个场景素材；平台默认素材 `gameplay:moss-platform` 使用标准九宫格：四角固定、四边单轴拉伸、中心双轴拉伸；
 - slope、风场、液体、黑暗、旋转、移动物件、机关门等尚无专用图片时继续使用 type/project 默认和程序化安全表现。
 
 正式关卡的能力和边界仍属于玩法数据，不由美术 preset 注入：`startingAbilities` 直接来自关卡文档；10 关都在 bounds 左右外沿配置不可抓取的单向 `boundaryWall`，`combined-vertical` 另有顶部空气墙，底部保持开放。
@@ -86,11 +86,11 @@ canonical 映射在 [`src/level-art-presets.js`](../src/level-art-presets.js)。
 | 门禁 | 当前状态 | 当前证据或剩余门禁 |
 | --- | --- | --- |
 | `npm run assets:audit` | **通过：22 个生成素材，44/44 文件，0 错误** | 本文档更新时在当前工作树重跑；559.5 KiB on disk、4994.1 KiB decoded。若素材或 registry 再改必须重跑。 |
-| `npm test` / `npm run check` / `npm run build` | **通过** | `npm test` 143/143、0 失败（Node 2.918 秒）；`npm run check` 为 10 个正式关 + 908 个参考房；`npm run build` 生成 997 个文件、17,955,423 bytes。`node --check dist/server/index.js` 与 `git diff --check` 同时通过。 |
-| 本地浏览器 | **通过** | 2026-08-12 13:07（Asia/Shanghai），10/10 正式关加载，四模式、23 张 registry 卡/22 张图片缩略图、12 层 scene、关卡支持、九宫格、空气墙、保存、真实 v1 导入、导出和一键试玩通过；新 console error/warning 为 0。 |
-| 性能 | **通过** | `status: pass`；输入指纹 `d05022c078e108b92e11bcb5bd02eccf007211745870557040975e2b91f6aa38`，覆盖 72 个文件；三视口、垂直关、危险密集关、20 次切关和 low-tier 均通过，诊断 error/warning 为 0。 |
-| 908 参考白盒 | **通过当前工程门禁** | 内容指纹 `c56c796216b9e69fc388f79c9eb34637d649261dff4f7b6818f4d652f4e5a821`，934 文件（908 room + 26 runtime）；load、逐房 acceptance 和 44 集合连续主路线均通过。主观手感与原作保真仍需人工判断。 |
-| Sites | **通过：v16 已公开发布并在线复验** | deployment `appgdep_6a7c038c8f4c819189646fd9f55c5f77` 状态 `succeeded`；公开地址、`/media/` MIME/缓存、四模式、编辑保存、v1 导入、导出和试玩均通过。 |
+| `npm test` / `npm run check` / `npm run build` | **通过** | `npm test` 152/152、0 失败（Node 2.913 秒）；`npm run check` 为 10 个正式关 + 908 个参考房；`npm run build` 生成 997 个文件、17,970,537 bytes，`node --check dist/server/index.js` 与 `git diff --check` 通过。 |
+| 本地浏览器 | **通过** | 2026-08-12 22:00–22:10（Asia/Shanghai）：`combined-horizontal` 首个可见画面已是 22 ready / 0 loading / 0 error；真实右移、跳跃和冲刺 10 秒以上时请求数保持 22，九宫格试玩只出现单一顶部苔藓带；console error/warning 为 0。 |
+| 性能 | **通过** | `status: pass`；输入指纹 `41192789b335fcbd40796e092645a3b05341957cc60667af03007e35fb688023`，覆盖 72 个文件；所有正式/参考样本均 `loading=0`、`error=0`、`sceneResidencyDeficits=0`，20 次切关新增请求为 0。 |
+| 908 参考白盒 | **通过当前工程门禁** | 内容指纹 `a92443959bb2a1c140239f64a7298a8d1455499556a92e1837210fd005fc6849`，934 文件（908 room + 26 runtime）；load、逐房 acceptance 和 44 集合连续主路线均通过。主观手感与原作保真仍需人工判断。 |
+| Sites | **待发布本增量** | 现网最新为 v17（commit `a4d35bb19aaf0c0377ef70fcce8846a0fa43abac`）；当前预载/九宫格候选必须另存新版本、公开发布并在线复验后才能更新为通过。 |
 
 ### 当前本地浏览器验收
 
@@ -108,18 +108,18 @@ Codex in-app browser 在 1280×720 截图面、`http://127.0.0.1:4173/` 完成�
 
 ### 当前性能、请求与内存
 
-标准性能审计生成于 2026-08-12 13:10（Asia/Shanghai），Chrome 119 headless 通过 CDP 注入真实按键并记录连续 `requestAnimationFrame`。冷启动从空缓存到 10 个正式关 interactive 为 299.4 ms：49 请求、21 个 Image、2,498,238 transfer bytes、2,487,333 decoded bytes、0 失败和 0 应用错误。warm reload 为 112.0 ms：48 请求、21 个 Image 且 21 个均命中缓存、2,052,048 transfer bytes、2,487,324 decoded bytes、0 失败和 0 应用错误。
+标准性能审计生成于 2026-08-12 22:00（Asia/Shanghai），Chrome 119 headless 通过真实 `startPrepared` 门禁和 CDP 按键记录连续 `requestAnimationFrame`。冷启动从空缓存到 10 个正式关 interactive 为 217.1 ms：49 请求、21 个 Image、0 失败和 0 应用错误；warm reload 为 141.1 ms：48 请求、21 个 Image 且全部命中缓存、0 失败和 0 应用错误。
 
 | 场景 / 视口 / 档位 | 测量窗口 | 平均 FPS | 平均 / P95 / 最差帧时 | 运行时结论 |
 | --- | ---: | ---: | ---: | --- |
-| `combined-horizontal` / 1280×720 / high | 10 秒 | 119.499 | 8.368 / 8.333 / 16.666 ms | 19 scene draw，104 object patch，0 降级。 |
-| `combined-horizontal` / 1600×1000 / high | 10 秒 | 117.348 | 8.522 / 8.333 / 16.666 ms | 19 scene draw，104 object patch，0 降级。 |
-| `combined-horizontal` / 800×900 / high | 10 秒 | 119.999 | 8.333 / 8.333 / 8.806 ms | 19 scene draw，104 object patch，0 降级。 |
-| `combined-vertical` / 1280×720 / high | 10 秒 | 119.949 | 8.337 / 8.333 / 16.666 ms | 19 scene draw，75 object patch，0 降级。 |
-| `combined-hazards` / 1280×720 / high | 10 秒 | 119.298 | 8.382 / 8.333 / 16.666 ms | 19 scene draw，89 object patch，0 降级。 |
-| `combined-horizontal` / 1280×720 / low + 4× CPU throttle | 5 秒 | 115.594 | 8.651 / 8.333 / 24.999 ms | 15 scene draw；patch cap 32，实际 32；`objectQualityDegrades=1`，证明降级路径生效。 |
+| `combined-horizontal` / 1280×720 / high | 10 秒 | 76.099 | 13.141 / 24.999 / 24.999 ms | camera range 1656.080；开始/结束均 22 ready、0 loading/error/驻留缺口。 |
+| `combined-horizontal` / 1600×1000 / high | 10 秒 | 61.828 | 16.174 / 24.999 / 33.332 ms | 0 loading/error/驻留缺口。 |
+| `combined-horizontal` / 800×900 / high | 10 秒 | 83.434 | 11.985 / 16.666 / 24.999 ms | 0 loading/error/驻留缺口。 |
+| `combined-vertical` / 1280×720 / high | 10 秒 | 74.824 | 13.365 / 16.666 / 24.999 ms | 0 loading/error/驻留缺口。 |
+| `combined-hazards` / 1280×720 / high | 10 秒 | 70.641 | 14.156 / 24.999 / 24.999 ms | 0 loading/error/驻留缺口。 |
+| `combined-horizontal` / 1280×720 / low + 4× CPU throttle | 5 秒 | 95.955 | 10.422 / 16.666 / 24.999 ms | 16 scene draw；0 loading/error/驻留缺口，camera range 1230.811。 |
 
-20/20 次正式关卡切换后没有新增网络请求；VisualRuntime 为 22 ready / 0 loading / 0 error、22 cache entries、0 eviction。强制 GC 后 CDP retained JS heap 相对切换前减少 1,697,912 bytes（约 1.62 MiB）。纹理估算为 decoded 4,489,808 bytes + tint 25,905,504 bytes = 30,395,312 bytes（约 28.99 MiB）；这是按图片/Canvas 尺寸乘 RGBA 4 bytes 的 VisualRuntime 估算，不是实测 GPU 显存。
+20/20 次正式关卡切换后没有新增网络请求；VisualRuntime 为 22 ready / 0 loading / 0 error、0 驻留缺口、22 cache entries、0 eviction。强制 GC 后 CDP retained JS heap 相对切换前减少 1,438,544 bytes（约 1.37 MiB）。纹理估算仍为 decoded 4,489,808 bytes + tint 25,905,504 bytes = 30,395,312 bytes（约 28.99 MiB）；这是按图片/Canvas 尺寸乘 RGBA 4 bytes 的 VisualRuntime 估算，不是实测 GPU 显存。
 
 ### 当前 10 关视觉验收
 
@@ -134,34 +134,23 @@ Codex in-app browser 在 1280×720 截图面、`http://127.0.0.1:4173/` 完成�
 | `glide-lab` | 程序化基线 → 雾风树冠 | 慢视差树冠、游雾、铃花与深远根峰 | 10/10 可见 sweep | 通过；风场路线与 HUD 保持可读。 |
 | `dash-lab` | 程序化基线 → 电光裂林 | 蓝紫高对比、光点和中景遗迹 | 10/10 可见 sweep | 通过；高速路线与空气墙无可见穿帮。 |
 | `combined-speed` | 程序化基线 → 金萤飞径 | 暖金点、根石地标与前中后景分离 | 10/10 可见 sweep | 通过；能力覆盖和关键交互可读。 |
-| `combined-horizontal` | 程序化基线 → 深月长廊 | 样板 12 层；完整长距离横向视差 | 10 秒 × 3 视口 + low-tier | 视觉与性能通过；三视口最差帧不高于 16.666 ms。 |
-| `combined-vertical` | 程序化基线 → 天穹古树 | 冷蓝纵深、高耸树干与顶部空气墙 | 119.949 FPS；P95 8.333 ms；最差 16.666 ms | 视觉与性能通过。 |
-| `combined-hazards` | 程序化基线 → 绯荆沼泽 | 暗紫沼泽、绯红危险物与暗蕨压边 | 119.298 FPS；P95 8.333 ms；最差 16.666 ms | 视觉与性能通过；危险物和提示未被遮挡。 |
+| `combined-horizontal` | 程序化基线 → 深月长廊 | 样板 12 层；完整长距离横向视差 | 10 秒 × 3 视口 + low-tier | 视觉与性能通过；三视口最差帧不高于 33.332 ms。 |
+| `combined-vertical` | 程序化基线 → 天穹古树 | 冷蓝纵深、高耸树干与顶部空气墙 | 74.824 FPS；P95 16.666 ms；最差 24.999 ms | 视觉与性能通过。 |
+| `combined-hazards` | 程序化基线 → 绯荆沼泽 | 暗紫沼泽、绯红危险物与暗蕨压边 | 70.641 FPS；P95 24.999 ms；最差 24.999 ms | 视觉与性能通过；危险物和提示未被遮挡。 |
 
 ### 当前 908 个参考白盒复验
 
-三份审计共享内容指纹 `c56c796216b9e69fc388f79c9eb34637d649261dff4f7b6818f4d652f4e5a821`，覆盖 934 个文件（908 room + 26 runtime）：
+三份审计共享内容指纹 `a92443959bb2a1c140239f64a7298a8d1455499556a92e1837210fd005fc6849`，覆盖 934 个文件（908 room + 26 runtime）：
 
-- load：908/908 房、2326 个 entrance，11.1 秒，0 failure，0 新日志；
-- acceptance：908/908 房、3668 个 connection、908 次 checkpoint reset 和 908 次 menu re-entry，16.0 秒，0 failure，0 新日志；
-- continuous run：44/44 集合、908 房、864 次顺序 transition、0 death/reset，18.1 秒，0 failure，0 新日志。
+- load：908/908 房、2326 个 entrance，29.2 秒，0 failure，0 新日志；
+- acceptance：908/908 房、3668 个 connection、908 次 checkpoint reset 和 908 次 menu re-entry，48.3 秒，0 failure，0 新日志；
+- continuous run：44/44 集合、908 房、864 次顺序 transition、0 death/reset，18.8 秒，0 failure，0 新日志。
 
 这些结果证明当前指纹下的参考白盒可加载、可重置、可连通，并能完成每个集合的一条顺序主路线；它们不证明所有支路的人工手感、原作坐标或逐房美术保真。参考房间仍不计入“全部房间已原创美术化”。
 
 ### 当前 Sites 发布与线上复验
 
-当前候选已作为 Sites v16 公开发布，源提交为 `410da198b778978a031378a22acd9a21d22769ac`。Sites 保存的归档为 997 个文件、18,718,720 bytes，发布 deployment `appgdep_6a7c038c8f4c819189646fd9f55c5f77` 于 2026-08-12 13:24（Asia/Shanghai）达到 `succeeded`。公开地址为 `https://cablester-game.visiontw.chatgpt.site`。
-
-发布成功后重新打开公共域名并执行真实 UI 操作，结果如下：
-
-- 工坊直接显示 `物件编辑`、`关卡支持`、`物件素材`、`场景分层` 四个入口；关卡支持面板显示 7 项能力，软绳实验场为 4/7 项出生即用且覆盖正常。
-- 素材模式显示 23 张 registry 卡和 22 张图片缩略图；正式关场景模式显示 12 层，包含深远根峰、月影树冠、盘根遗迹和水青铃花等新增层。
-- `保存` 显示“关卡已保存到这台设备”；`导出 JSON` 显示“关卡 JSON 已导出”；通过真实 file chooser 导入 v1 参考房后显示“已导入关卡，请确认后保存”，随后一键试玩正常进入 Canvas。
-- 公开样板 `combined-horizontal` 实际加载九宫格平台、物件图片和前中后景组合；空气墙没有可见杂物，关键路线、危险物、角色提示和 HUD 仍可读。
-- `/media/game/scene/background/moonlit-canopy-cluster.webp` 与 `/media/game/terrain/moss-root-platform.webp` 均返回 HTTP 200、`content-type: image/webp`、`cache-control: public, max-age=3600, must-revalidate`，复验时 `cf-cache-status: HIT`。
-- 原生 option 的线上 computed style 为浅底 `rgb(242, 247, 248)`、深字 `rgb(16, 44, 53)`；整轮公共域名操作后浏览器 console 日志为 0。
-
-发布记录是在 v16 在线验收后写入的文档性变更，不改变 `dist/`、性能输入指纹或参考内容指纹；v16 归档仍是本轮实际运行代码与资源的精确发布物。
+本节在当前预载/九宫格候选发布后填写版本、commit、归档、deployment 与公开域名复验。发布前现网最新为 v17（commit `a4d35bb19aaf0c0377ef70fcce8846a0fa43abac`）；不能把上一轮 v16/v17 的在线结果外推为本增量已发布。
 
 ## 上一轮证据快照（16 素材 / 8 层，仅作历史基线）
 
@@ -171,7 +160,7 @@ Codex in-app browser 在 1280×720 截图面、`http://127.0.0.1:4173/` 完成�
 
 | 项目 | 历史快照结果 | 证据 |
 | --- | --- | --- |
-| commit / 工作树指纹 | 基线 `HEAD 7b50c35e28af10d49be1b18a3f9c77afc2d7f4b7`；首个公开验收 commit `81c5d9bbcb1b3fe36080577561ae847800bcb250` | 当时记录的性能输入指纹为 `95f58ed35e51b841e61ed8c574a00057c76b293733bec2a96bde22fa5bb36844`，覆盖 57 个性能相关文件；active JSON 现已是本轮 `d05022…` 证据。 |
+| commit / 工作树指纹 | 基线 `HEAD 7b50c35e28af10d49be1b18a3f9c77afc2d7f4b7`；首个公开验收 commit `81c5d9bbcb1b3fe36080577561ae847800bcb250` | 当时记录的性能输入指纹为 `95f58ed35e51b841e61ed8c574a00057c76b293733bec2a96bde22fa5bb36844`，覆盖 57 个性能相关文件；active JSON 现已是本轮 `41192789…` 证据。 |
 | `npm test` | **通过：116/116，0 失败** | 2026-08-12 在最终工作树重新运行 `node --test`，总耗时 4.658 秒；包含 registry、canonical asset path、实际本地素材交付服务、单物件/同类型替换、v1/v2 roundtrip、scene、回退、素材像素审计和性能证据指纹门禁。 |
 | `npm run check` | **通过：10 个正式关卡 + 908 个参考房间** | 当前命令输出 `10 built-in levels and 908 authored reference rooms passed structural validation.`；参考内容指纹 `13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39` 覆盖 931 文件（908 room + 23 runtime）。 |
 | `npm run assets:audit` | **通过：16 个生成素材，32/32 文件，0 错误** | 16 个运行时 WebP + 16 个缩略图共 391.5 KiB；像素解码估算 3129.1 KiB；残留洋红像素为 0，透明边缘最大 alpha 4/255，最差缩略图 RGB MAE 2.999。 |
@@ -206,7 +195,7 @@ Codex in-app browser 在 1280×720 截图面、`http://127.0.0.1:4173/` 完成�
 
 ### 历史性能、请求与内存
 
-该历史性能记录生成于 2026-08-12 01:43（Asia/Shanghai），状态为 `pass`；active performance audit JSON 现已由本轮指纹 `d05022…` 覆盖。Chrome 119 headless 当时通过 CDP 注入真实按键并记录连续 `requestAnimationFrame`；正式样板每个视口测 10 秒，`combined-vertical` 与 `combined-hazards` 各补测 10 秒，low-tier 测 5 秒。可见浏览器另记录同视口 6.5 秒 warm rolling sample，二者不能混作同一测量面。
+该历史性能记录生成于 2026-08-12 01:43（Asia/Shanghai），状态为 `pass`；active performance audit JSON 现已由本轮指纹 `41192789…` 覆盖。Chrome 119 headless 当时通过 CDP 注入真实按键并记录连续 `requestAnimationFrame`；正式样板每个视口测 10 秒，`combined-vertical` 与 `combined-hazards` 各补测 10 秒，low-tier 测 5 秒。可见浏览器另记录同视口 6.5 秒 warm rolling sample，二者不能混作同一测量面。
 
 首次冷启动从空缓存到正式关卡 interactive 为 588.4 ms；共 40 请求、2,284,679 transfer bytes、2,275,763 decoded bytes、0 失败和 0 应用错误。warm reload 到 interactive 为 178.8 ms；共 39 请求、1,978,301 transfer bytes、2,275,754 decoded bytes、0 失败和 0 应用错误。冷/暖启动均只有 15 个 `Image` 请求，15/15 都使用 `/media/` 路由，素材库 thumbnail 请求均为 0；进入玩法后运行时图片 loader 最终发出 16 个去重素材请求，16 ready、0 error。
 
@@ -246,7 +235,7 @@ Codex in-app browser 在 1280×720 截图面、`http://127.0.0.1:4173/` 完成�
 
 ### 历史 908 个参考白盒复验
 
-历史快照当时在参考内容指纹 `13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39` 上记录：908/908 load、2326 个 entrance、8.2 秒、0 failure/0 新日志；908/908 acceptance、3668 个 connection、908 次 re-entry、20.5 秒、0 failure/0 新日志；continuous run 44/44 collection、864 transitions、28.7 秒、0 reset/0 failure/0 新日志。active reference audit JSON 已由上文指纹 `c56c796…` 的本轮结果覆盖；这些旧数值只用于前后比较。
+历史快照当时在参考内容指纹 `13ca025a74bdb299db7314c9a31011bc7f6be6b93e30c72aff07f03dfc39da39` 上记录：908/908 load、2326 个 entrance、8.2 秒、0 failure/0 新日志；908/908 acceptance、3668 个 connection、908 次 re-entry、20.5 秒、0 failure/0 新日志；continuous run 44/44 collection、864 transitions、28.7 秒、0 reset/0 failure/0 新日志。active reference audit JSON 已由上文指纹 `a9244395…` 的本轮结果覆盖；这些旧数值只用于前后比较。
 
 ### 历史 Sites 发布与线上复验
 

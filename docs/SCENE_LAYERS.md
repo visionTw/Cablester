@@ -119,7 +119,7 @@ center    = cameraX × parallax
 - 多素材按 weight 和相同确定性 hash 选择；
 - 候选过多时，以相机中心为基准截取到 `min(layer.drawCap, maxDraws)`。
 
-相同 layer、seed、相机和视口输入始终得到相同 placement，不应在镜头移动时随机跳变。接缝是否视觉可接受仍取决于素材本身的边缘、tileWidth、overlap、spacing 和 mode，必须在编辑器与浏览器中实测。
+相同 layer、seed、相机和视口输入始终得到相同 placement，不应在镜头移动时随机跳变。运行时还会在视口两侧保留一个完整 tile，或 `min(视口宽度 × 0.25, 320 px)`（取较大值）的驻留带，让 placement 在进入屏幕前已经绘制、离开屏幕后才回收；`drawCap` 不足以覆盖驻留带时会计入 `sceneResidencyDeficits` 诊断。接缝是否视觉可接受仍取决于素材本身的边缘、tileWidth、overlap、spacing 和 mode，必须在编辑器与浏览器中实测。
 
 ## 排序与渲染 pass
 
@@ -140,7 +140,15 @@ center    = cameraX × parallax
 
 ## 运行时加载与缓存
 
-`VisualRuntime` 在加载关卡时收集 object visuals 和 scene layers 引用的非程序化素材，并以默认并发 6 预加载：
+`VisualRuntime` 在加载关卡时收集 object visuals 和 scene layers 引用的非程序化素材，并以默认并发 6 预加载。菜单、编辑器试玩和参考房切换都使用 prepared-load gate：当前关卡与一跳相邻关卡的图片全部完成 decode（或明确进入 error 回退态）以后，才原子切换关卡；准备期间菜单保持可见，真实切房则冻结旧房玩法并保留旧画面。
+
+- 正式关卡按菜单顺序预取前后相邻关；参考房按 `connections` 预取一跳出入邻居，不递归扩展到整个 908 房库；
+- reference document fetch 使用 in-flight Promise 去重，当前房与一跳邻房文档固定驻留；
+- 快速 A → B 请求使用 generation token，晚完成的 A 不会反向覆盖 B；
+- 当前关与邻关的素材 ID 会在图片 LRU 中固定驻留，下一次 prepared load 再原子替换驻留集合；
+- 图片失败会等待到稳定 error 状态后使用程序化回退，不会让加载门控死锁。
+
+基础缓存行为仍为：
 
 - 相同素材请求去重；图片使用异步 decode；
 - 默认最多 96 个 cache entry，非 loading 项按 LRU 淘汰；
@@ -148,7 +156,7 @@ center    = cameraX × parallax
 - scene validation 与质量档选择结果按 scene 对象存入 `WeakMap`；
 - `stats()` 暴露请求、命中、ready/loading/error、估算 decoded bytes、tint bytes、淘汰、scene/object/fallback draw 和 cull 数。
 
-图片加载中或失败时不会阻塞游戏。物件回到原程序化 renderer；场景解析到 `builtin:procedural` 后，非玩家层绘制轻量程序化剪影，玩家层不额外绘制占位物。只引用 `builtin:procedural` 的默认 scene 在正式运行时跳过，因此 908 个参考白盒仍保留基础 Canvas 背景，不会凭空套用正式关卡森林层。
+兼容旧的同步 `loadLevel()` 调用时，图片加载中仍可即时使用程序化 renderer；面向玩家的入口统一走 prepared-load，因此不会先显示程序化占位、随后突然替换图片。加载失败时物件持续使用原程序化 renderer；场景解析到 `builtin:procedural` 后，非玩家层绘制轻量程序化剪影，玩家层不额外绘制占位物。只引用 `builtin:procedural` 的默认 scene 在正式运行时跳过，因此 908 个参考白盒仍保留基础 Canvas 背景，不会凭空套用正式关卡森林层。
 
 ## 自动质量降级
 

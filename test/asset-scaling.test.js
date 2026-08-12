@@ -7,6 +7,7 @@ import {
   resolveAssetScaleMode,
   validateAssetScaling
 } from "../src/asset-scaling.js";
+import { DEFAULT_ASSET_REGISTRY, GAME_ASSET_IDS } from "../src/asset-library.js";
 
 function scalableAsset() {
   return {
@@ -29,21 +30,55 @@ function scalableAsset() {
   };
 }
 
-test("nine-slice plan preserves corners and covers arbitrary target bounds with bounded patches", () => {
-  const asset = scalableAsset();
+function cocosStyleAsset() {
+  return {
+    id: "test:cocos-nine-slice-platform",
+    width: 100,
+    height: 50,
+    scaling: {
+      defaultMode: "nine-slice",
+      allowedModes: ["stretch", "nine-slice"],
+      nineSlice: { left: 20, right: 20, top: 10, bottom: 10 },
+      tile: null
+    }
+  };
+}
+
+test("Cocos-style nine-slice keeps corners fixed, stretches edges on one axis and center on both", () => {
+  const asset = cocosStyleAsset();
+  assert.deepEqual(validateAssetScaling(asset.scaling, asset), []);
   const target = { x: -150, y: -40, width: 300, height: 80 };
   const plan = createAssetDrawPlan(asset, { scaleMode: "asset", tileScale: 1 }, { width: 100, height: 50 }, target);
   assert.equal(plan.resolvedMode, "nine-slice");
   assert.equal(plan.fallbackReason, null);
-  assert.deepEqual(plan.guides, { vertical: [-140, 140], horizontal: [-35, 35] });
-  assert.ok(plan.patches.length > 9);
-  assert.ok(plan.patches.length <= MAX_ASSET_DRAW_PATCHES);
-  assert.ok(plan.patches.every((patch) => patch.sx >= 0 && patch.sy >= 0));
-  assert.ok(plan.patches.every((patch) => patch.sx + patch.sw <= 100 && patch.sy + patch.sh <= 50));
-  assert.equal(Math.min(...plan.patches.map((patch) => patch.dx)), target.x);
-  assert.equal(Math.max(...plan.patches.map((patch) => patch.dx + patch.dw)), target.x + target.width);
-  assert.equal(Math.min(...plan.patches.map((patch) => patch.dy)), target.y);
-  assert.equal(Math.max(...plan.patches.map((patch) => patch.dy + patch.dh)), target.y + target.height);
+  assert.equal(plan.patches.length, 9);
+  assert.deepEqual(plan.guides, { vertical: [-130, 130], horizontal: [-30, 30] });
+
+  const [topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight] = plan.patches;
+  assert.deepEqual(topLeft, { sx: 0, sy: 0, sw: 20, sh: 10, dx: -150, dy: -40, dw: 20, dh: 10 });
+  assert.deepEqual(topRight, { sx: 80, sy: 0, sw: 20, sh: 10, dx: 130, dy: -40, dw: 20, dh: 10 });
+  assert.deepEqual(bottomLeft, { sx: 0, sy: 40, sw: 20, sh: 10, dx: -150, dy: 30, dw: 20, dh: 10 });
+  assert.deepEqual(bottomRight, { sx: 80, sy: 40, sw: 20, sh: 10, dx: 130, dy: 30, dw: 20, dh: 10 });
+  assert.deepEqual(top, { sx: 20, sy: 0, sw: 60, sh: 10, dx: -130, dy: -40, dw: 260, dh: 10 });
+  assert.deepEqual(bottom, { sx: 20, sy: 40, sw: 60, sh: 10, dx: -130, dy: 30, dw: 260, dh: 10 });
+  assert.deepEqual(left, { sx: 0, sy: 10, sw: 20, sh: 30, dx: -150, dy: -30, dw: 20, dh: 60 });
+  assert.deepEqual(right, { sx: 80, sy: 10, sw: 20, sh: 30, dx: 130, dy: -30, dw: 20, dh: 60 });
+  assert.deepEqual(center, { sx: 20, sy: 10, sw: 60, sh: 30, dx: -130, dy: -30, dw: 260, dh: 60 });
+  assert.equal(plan.degraded, false);
+});
+
+test("the shipped moss platform stays a single nine-patch at tall gameplay sizes", () => {
+  const asset = DEFAULT_ASSET_REGISTRY.assets.find((candidate) => candidate.id === GAME_ASSET_IDS.mossPlatform);
+  const plan = createAssetDrawPlan(asset, { scaleMode: "asset", tileScale: 1 }, asset, {
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 300
+  });
+  assert.equal(plan.resolvedMode, "nine-slice");
+  assert.equal(plan.patches.length, 9);
+  assert.equal(new Set(plan.patches.map((patch) => `${patch.dy}:${patch.dh}`)).size, 3);
+  assert.equal(plan.patches[4].dh, 267);
 });
 
 test("nine-slice insets compress safely when a target is smaller than both fixed borders", () => {
@@ -84,6 +119,20 @@ test("stretch-only nine-slice draws without tile metadata", () => {
   });
   assert.equal(plan.resolvedMode, "nine-slice");
   assert.equal(plan.patches.length, 9);
+  assert.equal(plan.degraded, false);
+});
+
+test("legacy tiled nine-slice documents remain supported as an explicit extension", () => {
+  const asset = scalableAsset();
+  assert.deepEqual(validateAssetScaling(asset.scaling, asset), []);
+  const plan = createAssetDrawPlan(asset, { scaleMode: "nine-slice", tileScale: 1 }, asset, {
+    x: 0,
+    y: 0,
+    width: 300,
+    height: 80
+  });
+  assert.equal(plan.resolvedMode, "nine-slice");
+  assert.ok(plan.patches.length > 9);
   assert.equal(plan.degraded, false);
 });
 

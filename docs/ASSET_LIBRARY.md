@@ -50,8 +50,8 @@ Registry validation 会拒绝重复 ID、未知字段、缺失路径、非法尺
       "right": 96,
       "top": 32,
       "bottom": 34,
-      "edgeMode": "tile",
-      "centerMode": "tile"
+      "edgeMode": "stretch",
+      "centerMode": "stretch"
     },
     "tile": { "width": 256, "height": 60 }
   }
@@ -59,8 +59,9 @@ Registry validation 会拒绝重复 ID、未知字段、缺失路径、非法尺
 ```
 
 - `scaleMode: "asset"` 遵循素材默认；也可逐物件选择 `stretch`、`nine-slice` 或 `tile`，但显式策略必须在素材的 `allowedModes` 中。
-- `tileScale`（`0.1–8`）控制九宫格和平铺的纹理密度，不改变碰撞。`scaleX` / `scaleY` 继续控制相对玩法 bounds 的最终绘制尺寸。
-- 九宫格四角保持比例；上下边横向平铺、左右边纵向平铺，中区按登记方式填充。目标小于固定边角之和时会等比压缩边角，避免负尺寸。
+- `tileScale`（`0.1–8`）控制九宫格固定边角的显示倍率和独立 `tile` 模式的纹理密度，不改变碰撞。`scaleX` / `scaleY` 继续控制相对玩法 bounds 的最终绘制尺寸。
+- 标准九宫格与 [Cocos Creator Sliced Sprite](https://docs.cocos.com/creator3d/1.1/manual/zh/ui-system/components/engine/sliced-sprite.html) 的拉伸语义一致：四角不变形，上下边只横向拉伸，左右边只纵向拉伸，中心双向拉伸，完整目标始终只绘制 9 个 patch。目标小于固定边角之和时会等比压缩边角，避免负尺寸。
+- 旧文档显式登记的 `edgeMode: "tile"` / `centerMode: "tile"` 仍作为兼容扩展保留；它不再是 `gameplay:moss-platform` 的默认行为。未来迁移 Godot 时，四个切边可直接映射到 [`NinePatchRect.patch_margin_*`](https://docs.godotengine.org/en/stable/classes/class_ninepatchrect.html)，横纵轴模式使用 `STRETCH`。
 - 单物件最多生成 256 个绘制 patch；极端尺寸或密度超过预算时，该区域安全降级为一次拉伸。缺失或不支持的切片策略同样降级为拉伸；图片本身加载失败仍回退到程序化表现。
 - 当前 `gameplay:moss-platform` 已登记 96/96/32/34 px 切片，类型默认采用九宫格；关卡中不同宽高平台会实际走此路径。
 
