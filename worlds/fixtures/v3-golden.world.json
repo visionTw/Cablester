@@ -1,0 +1,3060 @@
+{
+  "assetRegistry": {
+    "entries": [
+      {
+        "applicableTypes": [
+          "*"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": null,
+        "id": "builtin:procedural",
+        "kind": "procedural",
+        "label": "原有程序化表现",
+        "license": {
+          "name": "Cablester project source",
+          "scope": "Cablester project runtime and editor",
+          "source": "builtin"
+        },
+        "platforms": {
+          "godot": {
+            "path": null
+          },
+          "web": {
+            "path": null,
+            "thumbnailPath": null
+          }
+        },
+        "tags": [
+          "builtin",
+          "procedural",
+          "fallback"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "platform",
+          "boundaryWall"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "gameplay:moss-platform",
+        "kind": "image",
+        "label": "荧光苔藓根木平台",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/terrain/moss-root-platform.webp"
+          },
+          "web": {
+            "path": "./assets/game/terrain/moss-root-platform.webp",
+            "thumbnailPath": "./assets/game/thumbnails/moss-root-platform-thumb.webp"
+          }
+        },
+        "scaling": {
+          "allowedModes": [
+            "stretch",
+            "nine-slice",
+            "tile"
+          ],
+          "defaultMode": "nine-slice",
+          "nineSlice": {
+            "bottom": 34,
+            "centerMode": "stretch",
+            "edgeMode": "stretch",
+            "left": 96,
+            "right": 96,
+            "top": 32
+          },
+          "tile": {
+            "height": 60,
+            "width": 256
+          }
+        },
+        "tags": [
+          "平台",
+          "根木",
+          "苔藓",
+          "生物光",
+          "forest",
+          "moss",
+          "rootwood"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "hazard"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "gameplay:thorn-hazard",
+        "kind": "image",
+        "label": "绯红荆棘藤",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/gameplay/crimson-thorn-vine.webp"
+          },
+          "web": {
+            "path": "./assets/game/gameplay/crimson-thorn-vine.webp",
+            "thumbnailPath": "./assets/game/thumbnails/crimson-thorn-vine-thumb.webp"
+          }
+        },
+        "tags": [
+          "危险物",
+          "荆棘",
+          "藤蔓",
+          "crimson",
+          "thorn",
+          "hazard"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "anchor"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "gameplay:rope-anchor",
+        "kind": "image",
+        "label": "水晶种荚锚点",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/gameplay/crystal-rope-anchor.webp"
+          },
+          "web": {
+            "path": "./assets/game/gameplay/crystal-rope-anchor.webp",
+            "thumbnailPath": "./assets/game/thumbnails/crystal-rope-anchor-thumb.webp"
+          }
+        },
+        "tags": [
+          "锚点",
+          "水晶",
+          "抓取",
+          "rope",
+          "anchor",
+          "crystal"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "energyOrb",
+          "dashRefill"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "gameplay:energy-orb",
+        "kind": "image",
+        "label": "叶环能量种子",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/gameplay/leaf-energy-orb.webp"
+          },
+          "web": {
+            "path": "./assets/game/gameplay/leaf-energy-orb.webp",
+            "thumbnailPath": "./assets/game/thumbnails/leaf-energy-orb-thumb.webp"
+          }
+        },
+        "tags": [
+          "能量",
+          "拾取物",
+          "种子",
+          "energy",
+          "orb",
+          "refill"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "bashTarget"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "gameplay:bash-blossom",
+        "kind": "image",
+        "label": "紫辉猛击花",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/gameplay/violet-bash-blossom.webp"
+          },
+          "web": {
+            "path": "./assets/game/gameplay/violet-bash-blossom.webp",
+            "thumbnailPath": "./assets/game/thumbnails/violet-bash-blossom-thumb.webp"
+          }
+        },
+        "tags": [
+          "猛击",
+          "花朵",
+          "支点",
+          "bash",
+          "blossom",
+          "violet"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "checkpoint"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "gameplay:checkpoint-lantern",
+        "kind": "image",
+        "label": "种灯检查点",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/gameplay/seed-lantern-checkpoint.webp"
+          },
+          "web": {
+            "path": "./assets/game/gameplay/seed-lantern-checkpoint.webp",
+            "thumbnailPath": "./assets/game/thumbnails/seed-lantern-checkpoint-thumb.webp"
+          }
+        },
+        "tags": [
+          "检查点",
+          "灯笼",
+          "火种",
+          "checkpoint",
+          "lantern",
+          "memory"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "spawn"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "gameplay:spawn-gate",
+        "kind": "image",
+        "label": "根木出生门",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/layout/root-spawn-gate.webp"
+          },
+          "web": {
+            "path": "./assets/game/layout/root-spawn-gate.webp",
+            "thumbnailPath": "./assets/game/thumbnails/root-spawn-gate-thumb.webp"
+          }
+        },
+        "tags": [
+          "出生点",
+          "入口",
+          "拱门",
+          "spawn",
+          "entrance",
+          "root"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "goal"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "gameplay:goal-gate",
+        "kind": "image",
+        "label": "金辉终点门",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/layout/golden-goal-gate.webp"
+          },
+          "web": {
+            "path": "./assets/game/layout/golden-goal-gate.webp",
+            "thumbnailPath": "./assets/game/thumbnails/golden-goal-gate-thumb.webp"
+          }
+        },
+        "tags": [
+          "终点",
+          "目标",
+          "拱门",
+          "goal",
+          "destination",
+          "gold"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:moss-bush-cluster",
+        "kind": "image",
+        "label": "苔藓草灌丛",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/vegetation/moss-bush-cluster.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/vegetation/moss-bush-cluster.webp",
+            "thumbnailPath": "./assets/game/thumbnails/moss-bush-cluster-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "草丛",
+          "灌木",
+          "苔藓",
+          "scene",
+          "bush",
+          "moss"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:cyan-seed-plant",
+        "kind": "image",
+        "label": "青露发光植物",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/vegetation/cyan-seed-plant.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/vegetation/cyan-seed-plant.webp",
+            "thumbnailPath": "./assets/game/thumbnails/cyan-seed-plant-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "发光植物",
+          "种荚",
+          "scene",
+          "plant",
+          "bioluminescent"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:overhang-vine-branch",
+        "kind": "image",
+        "label": "前景垂藤暗枝",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/foreground/overhang-vine-branch.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/foreground/overhang-vine-branch.webp",
+            "thumbnailPath": "./assets/game/thumbnails/overhang-vine-branch-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "前景",
+          "藤蔓",
+          "暗枝",
+          "scene",
+          "foreground",
+          "vine"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:ancient-amber-tree",
+        "kind": "image",
+        "label": "琥珀树洞古树",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/trees/ancient-amber-tree.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/trees/ancient-amber-tree.webp",
+            "thumbnailPath": "./assets/game/thumbnails/ancient-amber-tree-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "古树",
+          "中景",
+          "树洞",
+          "scene",
+          "tree",
+          "midground"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:distant-trunk-grove",
+        "kind": "image",
+        "label": "远景高干林影",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/background/distant-trunk-grove.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/background/distant-trunk-grove.webp",
+            "thumbnailPath": "./assets/game/thumbnails/distant-trunk-grove-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "远景",
+          "树干",
+          "剪影",
+          "scene",
+          "background",
+          "trunks"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:mid-tree-cluster",
+        "kind": "image",
+        "label": "中远景三树组",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/trees/mid-tree-cluster.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/trees/mid-tree-cluster.webp",
+            "thumbnailPath": "./assets/game/thumbnails/mid-tree-cluster-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "树群",
+          "中远景",
+          "scene",
+          "trees",
+          "cluster"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:cyan-mist-band",
+        "kind": "image",
+        "label": "青蓝游雾带",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/atmosphere/cyan-mist-band.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/atmosphere/cyan-mist-band.webp",
+            "thumbnailPath": "./assets/game/thumbnails/cyan-mist-band-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "雾气",
+          "气氛",
+          "scene",
+          "mist",
+          "fog"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:forest-light-motes",
+        "kind": "image",
+        "label": "林间生物光点",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/atmosphere/forest-light-motes.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/atmosphere/forest-light-motes.webp",
+            "thumbnailPath": "./assets/game/thumbnails/forest-light-motes-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "光点",
+          "生物光",
+          "scene",
+          "motes",
+          "bioluminescent"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:moonlit-canopy-cluster",
+        "kind": "image",
+        "label": "月影远景树冠",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/background/moonlit-canopy-cluster.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/background/moonlit-canopy-cluster.webp",
+            "thumbnailPath": "./assets/game/thumbnails/moonlit-canopy-cluster-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "远景",
+          "树冠",
+          "剪影",
+          "scene",
+          "background",
+          "canopy"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:distant-root-spires",
+        "kind": "image",
+        "label": "雾化远根尖塔",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/background/distant-root-spires.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/background/distant-root-spires.webp",
+            "thumbnailPath": "./assets/game/thumbnails/distant-root-spires-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "远景",
+          "古根",
+          "岩峰",
+          "scene",
+          "background",
+          "spires"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:root-stone-arch",
+        "kind": "image",
+        "label": "盘根石拱",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/structures/root-stone-arch.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/structures/root-stone-arch.webp",
+            "thumbnailPath": "./assets/game/thumbnails/root-stone-arch-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "中景",
+          "石拱",
+          "盘根",
+          "scene",
+          "structure",
+          "arch"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:shadow-fern-cluster",
+        "kind": "image",
+        "label": "暗影蕨叶组",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/foreground/shadow-fern-cluster.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/foreground/shadow-fern-cluster.webp",
+            "thumbnailPath": "./assets/game/thumbnails/shadow-fern-cluster-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "前景",
+          "蕨叶",
+          "藤蔓",
+          "scene",
+          "foreground",
+          "fern"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:moss-root-boulders",
+        "kind": "image",
+        "label": "苔根岩组",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/structures/moss-root-boulders.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/structures/moss-root-boulders.webp",
+            "thumbnailPath": "./assets/game/thumbnails/moss-root-boulders-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "中景",
+          "岩石",
+          "盘根",
+          "苔藓",
+          "scene",
+          "boulders"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "scene:aqua-bell-flowers",
+        "kind": "image",
+        "label": "水青铃花",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/vegetation/aqua-bell-flowers.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/vegetation/aqua-bell-flowers.webp",
+            "thumbnailPath": "./assets/game/thumbnails/aqua-bell-flowers-thumb.webp"
+          }
+        },
+        "tags": [
+          "场景",
+          "近景",
+          "铃花",
+          "发光植物",
+          "scene",
+          "flower",
+          "bioluminescent"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "landmark:duskseed-gate",
+        "kind": "image",
+        "label": "暮种灯门",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/landmarks/duskseed-gate.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/landmarks/duskseed-gate.webp",
+            "thumbnailPath": "./assets/game/thumbnails/duskseed-gate-thumb.webp"
+          }
+        },
+        "tags": [
+          "地标",
+          "入口",
+          "种灯",
+          "盘根",
+          "landmark",
+          "gate",
+          "duskseed"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "landmark:twin-root-bells",
+        "kind": "image",
+        "label": "双根钟",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/landmarks/twin-root-bells.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/landmarks/twin-root-bells.webp",
+            "thumbnailPath": "./assets/game/thumbnails/twin-root-bells-thumb.webp"
+          }
+        },
+        "tags": [
+          "地标",
+          "根钟",
+          "猛击",
+          "钟庭",
+          "landmark",
+          "bell",
+          "bash"
+        ]
+      },
+      {
+        "applicableTypes": [
+          "scene"
+        ],
+        "fallbackAllowed": true,
+        "fallbackAssetId": "builtin:procedural",
+        "id": "landmark:heartwood-core",
+        "kind": "image",
+        "label": "心木核环",
+        "license": {
+          "name": "Original AI-generated project asset",
+          "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+          "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+        },
+        "platforms": {
+          "godot": {
+            "path": "res://assets/game/scene/landmarks/heartwood-core.webp"
+          },
+          "web": {
+            "path": "./assets/game/scene/landmarks/heartwood-core.webp",
+            "thumbnailPath": "./assets/game/thumbnails/heartwood-core-thumb.webp"
+          }
+        },
+        "tags": [
+          "地标",
+          "心木",
+          "种心",
+          "环庭",
+          "landmark",
+          "heartwood",
+          "core"
+        ]
+      }
+    ],
+    "version": "1"
+  },
+  "gameplayTuning": {
+    "approved": {
+      "abilities": {
+        "bash": {
+          "id": "bash"
+        },
+        "dash": {
+          "id": "dash"
+        },
+        "doubleJump": {
+          "id": "doubleJump"
+        },
+        "glide": {
+          "id": "glide"
+        },
+        "hardBar": {
+          "id": "hardBar"
+        },
+        "rope": {
+          "id": "rope"
+        },
+        "wallGrab": {
+          "id": "wallGrab"
+        }
+      },
+      "inputDefinitions": {},
+      "resourceCosts": {},
+      "stateSemantics": {},
+      "tolerances": {}
+    },
+    "draft": {},
+    "version": "approved-1"
+  },
+  "manifest": {
+    "assetRegistryVersion": "1",
+    "contentHash": "sha256:75784f4660a2202243324a2eb79fe60c768bf24802a9cac4288168e84aedb7a2",
+    "contentVersion": "1.0.0",
+    "gameplayTuningVersion": "approved-1",
+    "namespace": "labs",
+    "prefabRegistryVersion": "1",
+    "title": "Golden Grove",
+    "typeRegistryVersion": "1",
+    "worldId": "fixture.golden-grove"
+  },
+  "prefabRegistry": {
+    "entries": [
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:spawn",
+        "required": true,
+        "type": "spawn"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:goal",
+        "required": true,
+        "type": "goal"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:checkpoint",
+        "required": true,
+        "type": "checkpoint"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:roomEntrance",
+        "required": true,
+        "type": "roomEntrance"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:roomExit",
+        "required": true,
+        "type": "roomExit"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:boundaryWall",
+        "required": true,
+        "type": "boundaryWall"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:platform",
+        "required": true,
+        "type": "platform"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:slope",
+        "required": true,
+        "type": "slope"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:hazard",
+        "required": true,
+        "type": "hazard"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:windZone",
+        "required": true,
+        "type": "windZone"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:liquidZone",
+        "required": true,
+        "type": "liquidZone"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:darknessZone",
+        "required": true,
+        "type": "darknessZone"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:rotationTrigger",
+        "required": true,
+        "type": "rotationTrigger"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:anchor",
+        "required": true,
+        "type": "anchor"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:bashTarget",
+        "required": true,
+        "type": "bashTarget"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:energyOrb",
+        "required": true,
+        "type": "energyOrb"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:dashRefill",
+        "required": true,
+        "type": "dashRefill"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:movingObject",
+        "required": true,
+        "type": "movingObject"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:launcher",
+        "required": true,
+        "type": "launcher"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:fragilePlatform",
+        "required": true,
+        "type": "fragilePlatform"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:gate",
+        "required": true,
+        "type": "gate"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:stateTrigger",
+        "required": true,
+        "type": "stateTrigger"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:abilityPickup",
+        "required": true,
+        "type": "abilityPickup"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:sign",
+        "required": true,
+        "type": "sign"
+      },
+      {
+        "godotScene": "res://godot/prefabs/canonical_object.tscn",
+        "id": "prefab:backgroundSeed",
+        "required": true,
+        "type": "backgroundSeed"
+      }
+    ],
+    "version": "1"
+  },
+  "regions": [
+    {
+      "bounds": {
+        "h": 1700,
+        "w": 2800,
+        "x": -500,
+        "y": -450
+      },
+      "chunks": [
+        {
+          "bounds": {
+            "h": 1700,
+            "w": 2800,
+            "x": -500,
+            "y": -450
+          },
+          "connections": [],
+          "extensions": {
+            "legacyDocument": {
+              "customExtension": {
+                "nested": {
+                  "value": 1.234568
+                },
+                "preserved": true
+              }
+            },
+            "legacyMetadata": {
+              "authoringNote": "preserve metadata extension"
+            }
+          },
+          "gameplay": {
+            "acceptanceLevel": "L1",
+            "category": "Fixture",
+            "dashCapacity": 1,
+            "startingAbilities": [
+              "rope",
+              "dash",
+              "wallGrab"
+            ],
+            "summary": "Canonical migration golden"
+          },
+          "id": "fixture.golden-grove:chunk",
+          "name": "Golden Grove",
+          "objects": [
+            {
+              "editorExtension": {
+                "lockedBy": "fixture"
+              },
+              "id": "platform-1",
+              "links": [],
+              "properties": {
+                "h": 180,
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:moss-platform",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                },
+                "w": 760
+              },
+              "tags": [],
+              "transform": {
+                "position": {
+                  "x": -260,
+                  "y": 640
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "platform"
+            },
+            {
+              "id": "spawn-1",
+              "links": [],
+              "properties": {
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:spawn-gate",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                }
+              },
+              "tags": [],
+              "transform": {
+                "position": {
+                  "x": 120,
+                  "y": 590
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "spawn"
+            },
+            {
+              "id": "checkpoint-1",
+              "links": [],
+              "properties": {
+                "h": 90,
+                "spawnOffsetX": 45,
+                "spawnOffsetY": 40,
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:checkpoint-lantern",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                },
+                "w": 90
+              },
+              "tags": [],
+              "transform": {
+                "position": {
+                  "x": 75,
+                  "y": 550
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "checkpoint"
+            },
+            {
+              "id": "goal-1",
+              "links": [],
+              "properties": {
+                "radius": 34,
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:goal-gate",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                }
+              },
+              "tags": [],
+              "transform": {
+                "position": {
+                  "x": 420,
+                  "y": 585
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "goal"
+            }
+          ],
+          "reference": {
+            "notes": [
+              "preserve reference"
+            ],
+            "source": "fixture"
+          },
+          "scene": {
+            "layers": [
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 3,
+                "density": 1,
+                "depth": -100,
+                "drawCap": 256,
+                "fog": 0.45,
+                "id": "scene-background",
+                "locked": false,
+                "name": "背景",
+                "opacity": 0.72,
+                "originX": 0,
+                "parallax": 0.18,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "background",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "background-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              },
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 1,
+                "density": 1,
+                "depth": -20,
+                "drawCap": 256,
+                "fog": 0.18,
+                "id": "scene-midground",
+                "locked": false,
+                "name": "中景",
+                "opacity": 0.9,
+                "originX": 0,
+                "parallax": 0.58,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "midground",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "midground-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              },
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 0,
+                "density": 1,
+                "depth": 0,
+                "drawCap": 256,
+                "fog": 0,
+                "id": "scene-player",
+                "locked": true,
+                "name": "玩家层",
+                "opacity": 1,
+                "originX": 0,
+                "parallax": 1,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "player",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "player-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              },
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 0,
+                "density": 1,
+                "depth": 100,
+                "drawCap": 256,
+                "fog": 0.08,
+                "id": "scene-foreground",
+                "locked": false,
+                "name": "前景",
+                "opacity": 0.82,
+                "originX": 0,
+                "parallax": 1.22,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "foreground",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "foreground-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              }
+            ],
+            "schemaVersion": 1
+          },
+          "statePolicy": {
+            "checkpointReset": "chunk",
+            "deathReset": "checkpoint",
+            "offscreen": "sleep-local",
+            "worldPersistence": [
+              "flags"
+            ]
+          },
+          "streaming": {
+            "hysteresis": 256,
+            "keepAlive": false,
+            "memoryEstimateBytes": 0,
+            "prefetchDistance": 960,
+            "unloadDelaySeconds": 2
+          },
+          "tags": [],
+          "transform": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "rotationDegrees": 0,
+            "scale": {
+              "x": 1,
+              "y": 1
+            }
+          }
+        }
+      ],
+      "id": "fixture.golden-grove:region",
+      "landmarks": [],
+      "name": "Golden Grove",
+      "routes": [],
+      "tags": [],
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "rotationDegrees": 0,
+        "scale": {
+          "x": 1,
+          "y": 1
+        }
+      }
+    }
+  ],
+  "schemaVersion": 3,
+  "typeRegistry": {
+    "entries": [
+      {
+        "boundsAdapter": {
+          "kind": "point",
+          "radius": 12
+        },
+        "category": "layout",
+        "collisionSemantics": "none",
+        "defaultAssetId": "gameplay:spawn-gate",
+        "defaultPrefabId": "prefab:spawn",
+        "editableProperties": {},
+        "godotRuntimeHandler": "spawn",
+        "id": "spawn",
+        "label": "出生点",
+        "pivot": {
+          "mode": "center",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "required": true,
+        "scaleSemantics": "transform-only"
+      },
+      {
+        "boundsAdapter": {
+          "kind": "circle",
+          "radiusProperty": "radius"
+        },
+        "category": "layout",
+        "collisionSemantics": "none",
+        "defaultAssetId": "gameplay:goal-gate",
+        "defaultPrefabId": "prefab:goal",
+        "editableProperties": {
+          "radius": {
+            "default": 34,
+            "kind": "number",
+            "label": "触发半径",
+            "max": 120,
+            "min": 12,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "goal",
+        "id": "goal",
+        "label": "终点",
+        "pivot": {
+          "mode": "center",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "required": true,
+        "scaleSemantics": "transform-only"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "layout",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "gameplay:checkpoint-lantern",
+        "defaultPrefabId": "prefab:checkpoint",
+        "editableProperties": {
+          "h": {
+            "default": 90,
+            "kind": "number",
+            "label": "高度",
+            "max": 800,
+            "min": 20,
+            "step": 1
+          },
+          "spawnOffsetX": {
+            "default": 45,
+            "kind": "number",
+            "label": "复活点 X 偏移",
+            "max": 1000,
+            "min": -1000,
+            "step": 1
+          },
+          "spawnOffsetY": {
+            "default": 40,
+            "kind": "number",
+            "label": "复活点 Y 偏移",
+            "max": 1000,
+            "min": -1000,
+            "step": 1
+          },
+          "w": {
+            "default": 90,
+            "kind": "number",
+            "label": "宽度",
+            "max": 800,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "checkpoint",
+        "id": "checkpoint",
+        "label": "检查点",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "layout",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:roomEntrance",
+        "editableProperties": {
+          "facing": {
+            "default": "right",
+            "kind": "select",
+            "label": "进入后朝向",
+            "options": [
+              [
+                "left",
+                "向左"
+              ],
+              [
+                "right",
+                "向右"
+              ]
+            ]
+          },
+          "h": {
+            "default": 120,
+            "kind": "number",
+            "label": "入口高度",
+            "max": 800,
+            "min": 20,
+            "step": 1
+          },
+          "sourceRoomId": {
+            "default": "",
+            "kind": "text",
+            "label": "来源房间 ID"
+          },
+          "spawnOffsetX": {
+            "default": 45,
+            "kind": "number",
+            "label": "出生点 X 偏移",
+            "max": 1000,
+            "min": -1000,
+            "step": 1
+          },
+          "spawnOffsetY": {
+            "default": 60,
+            "kind": "number",
+            "label": "出生点 Y 偏移",
+            "max": 1000,
+            "min": -1000,
+            "step": 1
+          },
+          "w": {
+            "default": 80,
+            "kind": "number",
+            "label": "入口宽度",
+            "max": 800,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "roomEntrance",
+        "id": "roomEntrance",
+        "label": "房间入口",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "layout",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:roomExit",
+        "editableProperties": {
+          "direction": {
+            "default": "right",
+            "kind": "select",
+            "label": "移动方向",
+            "options": [
+              [
+                "left",
+                "向左"
+              ],
+              [
+                "right",
+                "向右"
+              ],
+              [
+                "up",
+                "向上"
+              ],
+              [
+                "down",
+                "向下"
+              ]
+            ]
+          },
+          "exitKind": {
+            "default": "main",
+            "kind": "select",
+            "label": "出口类型",
+            "options": [
+              [
+                "main",
+                "主路线"
+              ],
+              [
+                "optional",
+                "可选路线"
+              ],
+              [
+                "hidden",
+                "隐藏路线"
+              ],
+              [
+                "return",
+                "回访路线"
+              ]
+            ]
+          },
+          "h": {
+            "default": 120,
+            "kind": "number",
+            "label": "出口高度",
+            "max": 800,
+            "min": 20,
+            "step": 1
+          },
+          "oneWay": {
+            "default": false,
+            "kind": "boolean",
+            "label": "单向出口"
+          },
+          "requiredAbility": {
+            "default": "",
+            "kind": "text",
+            "label": "所需能力 ID"
+          },
+          "targetEntranceId": {
+            "default": "entry-main",
+            "kind": "text",
+            "label": "目标入口 ID"
+          },
+          "targetRoomId": {
+            "default": "",
+            "kind": "text",
+            "label": "目标房间 ID"
+          },
+          "w": {
+            "default": 80,
+            "kind": "number",
+            "label": "出口宽度",
+            "max": 800,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "roomExit",
+        "id": "roomExit",
+        "label": "房间出口",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "layout",
+        "collisionSemantics": "solid",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:boundaryWall",
+        "editableProperties": {
+          "blockingSide": {
+            "default": "all",
+            "kind": "select",
+            "label": "生效面",
+            "options": [
+              [
+                "all",
+                "全部面"
+              ],
+              [
+                "left",
+                "左侧面 · 角色留在左侧"
+              ],
+              [
+                "right",
+                "右侧面 · 角色留在右侧"
+              ],
+              [
+                "top",
+                "上侧面 · 角色留在上侧"
+              ],
+              [
+                "bottom",
+                "下侧面 · 角色留在下侧"
+              ]
+            ]
+          },
+          "grapple": {
+            "default": false,
+            "kind": "boolean",
+            "label": "允许绳索 / 硬杆连接"
+          },
+          "h": {
+            "default": 720,
+            "kind": "number",
+            "label": "高度",
+            "max": 4000,
+            "min": 4,
+            "step": 1
+          },
+          "w": {
+            "default": 40,
+            "kind": "number",
+            "label": "宽度",
+            "max": 4000,
+            "min": 4,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "boundaryWall",
+        "id": "boundaryWall",
+        "label": "空气墙",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "terrain",
+        "collisionSemantics": "solid",
+        "defaultAssetId": "gameplay:moss-platform",
+        "defaultPrefabId": "prefab:platform",
+        "editableProperties": {
+          "h": {
+            "default": 80,
+            "kind": "number",
+            "label": "高度",
+            "max": 1200,
+            "min": 20,
+            "step": 1
+          },
+          "w": {
+            "default": 240,
+            "kind": "number",
+            "label": "宽度",
+            "max": 3000,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "platform",
+        "id": "platform",
+        "label": "平台",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "dxProperty": "dx",
+          "dyProperty": "dy",
+          "kind": "slope",
+          "thicknessProperty": "thickness"
+        },
+        "category": "terrain",
+        "collisionSemantics": "solid",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:slope",
+        "editableProperties": {
+          "dx": {
+            "default": 220,
+            "kind": "number",
+            "label": "终点 X 偏移",
+            "max": 2000,
+            "min": -2000,
+            "step": 1
+          },
+          "dy": {
+            "default": -80,
+            "kind": "number",
+            "label": "终点 Y 偏移",
+            "max": 2000,
+            "min": -2000,
+            "step": 1
+          },
+          "grapple": {
+            "default": true,
+            "kind": "boolean",
+            "label": "可连接绳索"
+          },
+          "thickness": {
+            "default": 14,
+            "kind": "number",
+            "label": "厚度",
+            "max": 120,
+            "min": 2,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "slope",
+        "id": "slope",
+        "label": "斜面",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "danger",
+        "collisionSemantics": "trigger-and-contact",
+        "defaultAssetId": "gameplay:thorn-hazard",
+        "defaultPrefabId": "prefab:hazard",
+        "editableProperties": {
+          "damage": {
+            "default": 1,
+            "kind": "number",
+            "label": "伤害",
+            "max": 20,
+            "min": 0.1,
+            "step": 0.1
+          },
+          "direction": {
+            "default": "up",
+            "kind": "select",
+            "label": "尖刺方向",
+            "options": [
+              [
+                "up",
+                "向上"
+              ],
+              [
+                "down",
+                "向下"
+              ],
+              [
+                "left",
+                "向左"
+              ],
+              [
+                "right",
+                "向右"
+              ]
+            ]
+          },
+          "h": {
+            "default": 70,
+            "kind": "number",
+            "label": "高度",
+            "max": 1000,
+            "min": 20,
+            "step": 1
+          },
+          "w": {
+            "default": 180,
+            "kind": "number",
+            "label": "宽度",
+            "max": 2000,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "hazard",
+        "id": "hazard",
+        "label": "伤害区",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "danger",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:windZone",
+        "editableProperties": {
+          "forceX": {
+            "default": 0,
+            "kind": "number",
+            "label": "水平风力",
+            "max": 2000,
+            "min": -2000,
+            "step": 10
+          },
+          "forceY": {
+            "default": -520,
+            "kind": "number",
+            "label": "垂直风力",
+            "max": 2000,
+            "min": -2000,
+            "step": 10
+          },
+          "h": {
+            "default": 320,
+            "kind": "number",
+            "label": "高度",
+            "max": 2000,
+            "min": 20,
+            "step": 1
+          },
+          "w": {
+            "default": 220,
+            "kind": "number",
+            "label": "宽度",
+            "max": 2000,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "windZone",
+        "id": "windZone",
+        "label": "风场",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "danger",
+        "collisionSemantics": "trigger-and-contact",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:liquidZone",
+        "editableProperties": {
+          "contactDamage": {
+            "default": 0,
+            "kind": "number",
+            "label": "接触伤害",
+            "max": 20,
+            "min": 0,
+            "step": 0.5
+          },
+          "currentX": {
+            "default": 0,
+            "kind": "number",
+            "label": "水平水流",
+            "max": 2000,
+            "min": -2000,
+            "step": 10
+          },
+          "currentY": {
+            "default": 0,
+            "kind": "number",
+            "label": "垂直水流",
+            "max": 2000,
+            "min": -2000,
+            "step": 10
+          },
+          "drag": {
+            "default": 2.4,
+            "kind": "number",
+            "label": "阻力",
+            "max": 20,
+            "min": 0,
+            "step": 0.1
+          },
+          "gravityScale": {
+            "default": 0.24,
+            "kind": "number",
+            "label": "重力倍率",
+            "max": 2,
+            "min": 0,
+            "step": 0.05
+          },
+          "h": {
+            "default": 220,
+            "kind": "number",
+            "label": "高度",
+            "max": 2000,
+            "min": 20,
+            "step": 1
+          },
+          "liquidType": {
+            "default": "water",
+            "kind": "select",
+            "label": "液体类型",
+            "options": [
+              [
+                "water",
+                "水"
+              ],
+              [
+                "toxic",
+                "危险液体"
+              ],
+              [
+                "lava",
+                "熔岩"
+              ]
+            ]
+          },
+          "swimAcceleration": {
+            "default": 680,
+            "kind": "number",
+            "label": "游动加速度",
+            "max": 3000,
+            "min": 0,
+            "step": 10
+          },
+          "w": {
+            "default": 320,
+            "kind": "number",
+            "label": "宽度",
+            "max": 3000,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "liquidZone",
+        "id": "liquidZone",
+        "label": "液体区域",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "danger",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:darknessZone",
+        "editableProperties": {
+          "clearedByFlag": {
+            "default": "",
+            "kind": "text",
+            "label": "解除黑暗的世界标记"
+          },
+          "h": {
+            "default": 420,
+            "kind": "number",
+            "label": "高度",
+            "max": 3000,
+            "min": 20,
+            "step": 1
+          },
+          "opacity": {
+            "default": 0.78,
+            "kind": "number",
+            "label": "黑暗强度",
+            "max": 1,
+            "min": 0,
+            "step": 0.05
+          },
+          "revealRadius": {
+            "default": 170,
+            "kind": "number",
+            "label": "玩家照明半径",
+            "max": 1000,
+            "min": 20,
+            "step": 1
+          },
+          "w": {
+            "default": 520,
+            "kind": "number",
+            "label": "宽度",
+            "max": 4000,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "darknessZone",
+        "id": "darknessZone",
+        "label": "黑暗区域",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "danger",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:rotationTrigger",
+        "editableProperties": {
+          "deltaDegrees": {
+            "default": 90,
+            "kind": "number",
+            "label": "旋转角度",
+            "max": 360,
+            "min": -360,
+            "step": 15
+          },
+          "h": {
+            "default": 120,
+            "kind": "number",
+            "label": "高度",
+            "max": 2000,
+            "min": 20,
+            "step": 1
+          },
+          "w": {
+            "default": 120,
+            "kind": "number",
+            "label": "宽度",
+            "max": 2000,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "rotationTrigger",
+        "id": "rotationTrigger",
+        "label": "旋转触发区",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "kind": "point",
+          "radius": 12
+        },
+        "category": "interaction",
+        "collisionSemantics": "solid",
+        "defaultAssetId": "gameplay:rope-anchor",
+        "defaultPrefabId": "prefab:anchor",
+        "editableProperties": {
+          "anchorType": {
+            "default": "rope",
+            "kind": "select",
+            "label": "锚点模式",
+            "options": [
+              [
+                "rope",
+                "软绳"
+              ],
+              [
+                "both",
+                "软绳与硬杆"
+              ]
+            ]
+          }
+        },
+        "godotRuntimeHandler": "anchor",
+        "id": "anchor",
+        "label": "绳索锚点",
+        "pivot": {
+          "mode": "center",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "kind": "point",
+          "radius": 12
+        },
+        "category": "interaction",
+        "collisionSemantics": "solid",
+        "defaultAssetId": "gameplay:bash-blossom",
+        "defaultPrefabId": "prefab:bashTarget",
+        "editableProperties": {},
+        "godotRuntimeHandler": "bashTarget",
+        "id": "bashTarget",
+        "label": "猛击支点",
+        "pivot": {
+          "mode": "center",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "kind": "point",
+          "radius": 16
+        },
+        "category": "interaction",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "gameplay:energy-orb",
+        "defaultPrefabId": "prefab:energyOrb",
+        "editableProperties": {
+          "amount": {
+            "default": 1,
+            "kind": "number",
+            "label": "恢复量",
+            "max": 20,
+            "min": 0.1,
+            "step": 0.1
+          }
+        },
+        "godotRuntimeHandler": "energyOrb",
+        "id": "energyOrb",
+        "label": "能量球",
+        "pivot": {
+          "mode": "center",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "kind": "circle",
+          "radiusProperty": "radius"
+        },
+        "category": "interaction",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "gameplay:energy-orb",
+        "defaultPrefabId": "prefab:dashRefill",
+        "editableProperties": {
+          "charges": {
+            "default": 1,
+            "kind": "number",
+            "label": "补充冲刺数",
+            "max": 3,
+            "min": 1,
+            "step": 1
+          },
+          "oneUse": {
+            "default": false,
+            "kind": "boolean",
+            "label": "单次使用"
+          },
+          "radius": {
+            "default": 20,
+            "kind": "number",
+            "label": "触发半径",
+            "max": 120,
+            "min": 8,
+            "step": 1
+          },
+          "resetOnDeath": {
+            "default": true,
+            "kind": "boolean",
+            "label": "死亡时重置"
+          },
+          "respawnSeconds": {
+            "default": 2.5,
+            "kind": "number",
+            "label": "重生秒数",
+            "max": 60,
+            "min": 0.1,
+            "step": 0.1
+          },
+          "restoreMode": {
+            "default": "fill",
+            "kind": "select",
+            "label": "恢复方式",
+            "options": [
+              [
+                "fill",
+                "补满"
+              ],
+              [
+                "add",
+                "增加指定次数"
+              ]
+            ]
+          }
+        },
+        "godotRuntimeHandler": "dashRefill",
+        "id": "dashRefill",
+        "label": "冲刺补充",
+        "pivot": {
+          "mode": "center",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "terrain",
+        "collisionSemantics": "solid",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:movingObject",
+        "editableProperties": {
+          "acceleration": {
+            "default": 900,
+            "kind": "number",
+            "label": "加速度",
+            "max": 10000,
+            "min": 0,
+            "step": 1
+          },
+          "anchorType": {
+            "default": "both",
+            "kind": "select",
+            "label": "锚点模式",
+            "options": [
+              [
+                "rope",
+                "软绳"
+              ],
+              [
+                "both",
+                "软绳与硬杆"
+              ]
+            ]
+          },
+          "damage": {
+            "default": 1,
+            "kind": "number",
+            "label": "危险伤害",
+            "max": 20,
+            "min": 0.1,
+            "step": 0.1
+          },
+          "direction": {
+            "default": "up",
+            "kind": "select",
+            "label": "危险方向",
+            "options": [
+              [
+                "up",
+                "向上"
+              ],
+              [
+                "down",
+                "向下"
+              ],
+              [
+                "left",
+                "向左"
+              ],
+              [
+                "right",
+                "向右"
+              ]
+            ]
+          },
+          "dwellSeconds": {
+            "default": 0.2,
+            "kind": "number",
+            "label": "节点停留秒数",
+            "max": 30,
+            "min": 0,
+            "step": 0.05
+          },
+          "easing": {
+            "default": "smoothstep",
+            "kind": "select",
+            "label": "缓动",
+            "options": [
+              [
+                "linear",
+                "线性"
+              ],
+              [
+                "smoothstep",
+                "平滑"
+              ],
+              [
+                "ease-in-out",
+                "三次缓入缓出"
+              ]
+            ]
+          },
+          "grapple": {
+            "default": true,
+            "kind": "boolean",
+            "label": "平台表面可抓取"
+          },
+          "h": {
+            "default": 28,
+            "kind": "number",
+            "label": "高度",
+            "max": 1000,
+            "min": 12,
+            "step": 1
+          },
+          "loopMode": {
+            "default": "pingpong",
+            "kind": "select",
+            "label": "循环模式",
+            "options": [
+              [
+                "loop",
+                "循环"
+              ],
+              [
+                "pingpong",
+                "往返"
+              ],
+              [
+                "once",
+                "单次"
+              ]
+            ]
+          },
+          "objectKind": {
+            "default": "platform",
+            "kind": "select",
+            "label": "物件类型",
+            "options": [
+              [
+                "platform",
+                "移动平台"
+              ],
+              [
+                "hazard",
+                "移动危险物"
+              ],
+              [
+                "anchor",
+                "移动锚点"
+              ],
+              [
+                "bashTarget",
+                "移动猛击支点"
+              ]
+            ]
+          },
+          "offscreenPolicy": {
+            "default": "simulate",
+            "kind": "select",
+            "label": "屏幕外策略",
+            "options": [
+              [
+                "simulate",
+                "继续模拟"
+              ],
+              [
+                "pause",
+                "暂停"
+              ],
+              [
+                "reset",
+                "复位"
+              ]
+            ]
+          },
+          "pathPoints": {
+            "default": "0,0;320,0",
+            "kind": "text",
+            "label": "相对路径点"
+          },
+          "resetPolicy": {
+            "default": "death",
+            "kind": "select",
+            "label": "重置策略",
+            "options": [
+              [
+                "death",
+                "死亡重置"
+              ],
+              [
+                "room",
+                "切房重置"
+              ],
+              [
+                "persistent",
+                "保持状态"
+              ]
+            ]
+          },
+          "speed": {
+            "default": 160,
+            "kind": "number",
+            "label": "最高速度",
+            "max": 3000,
+            "min": 1,
+            "step": 1
+          },
+          "trigger": {
+            "default": "auto",
+            "kind": "select",
+            "label": "触发方式",
+            "options": [
+              [
+                "auto",
+                "自动"
+              ],
+              [
+                "touch",
+                "接触"
+              ],
+              [
+                "switch",
+                "外部开关"
+              ]
+            ]
+          },
+          "w": {
+            "default": 180,
+            "kind": "number",
+            "label": "宽度",
+            "max": 1600,
+            "min": 16,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "movingObject",
+        "id": "movingObject",
+        "label": "路径移动物件",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "interaction",
+        "collisionSemantics": "solid",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:launcher",
+        "editableProperties": {
+          "cooldownSeconds": {
+            "default": 0.35,
+            "kind": "number",
+            "label": "冷却秒数",
+            "max": 10,
+            "min": 0.05,
+            "step": 0.05
+          },
+          "h": {
+            "default": 28,
+            "kind": "number",
+            "label": "高度",
+            "max": 500,
+            "min": 16,
+            "step": 1
+          },
+          "launchX": {
+            "default": 0,
+            "kind": "number",
+            "label": "水平发射速度",
+            "max": 3000,
+            "min": -3000,
+            "step": 10
+          },
+          "launchY": {
+            "default": -900,
+            "kind": "number",
+            "label": "垂直发射速度",
+            "max": 3000,
+            "min": -3000,
+            "step": 10
+          },
+          "preserveMomentum": {
+            "default": false,
+            "kind": "boolean",
+            "label": "叠加原有动量"
+          },
+          "w": {
+            "default": 70,
+            "kind": "number",
+            "label": "宽度",
+            "max": 800,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "launcher",
+        "id": "launcher",
+        "label": "发射器",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "terrain",
+        "collisionSemantics": "solid",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:fragilePlatform",
+        "editableProperties": {
+          "breakDelaySeconds": {
+            "default": 0.35,
+            "kind": "number",
+            "label": "破裂延迟",
+            "max": 10,
+            "min": 0,
+            "step": 0.05
+          },
+          "fallSpeed": {
+            "default": 80,
+            "kind": "number",
+            "label": "初始下落速度",
+            "max": 3000,
+            "min": 0,
+            "step": 10
+          },
+          "grapple": {
+            "default": true,
+            "kind": "boolean",
+            "label": "表面可抓取"
+          },
+          "h": {
+            "default": 28,
+            "kind": "number",
+            "label": "高度",
+            "max": 500,
+            "min": 16,
+            "step": 1
+          },
+          "oneUse": {
+            "default": false,
+            "kind": "boolean",
+            "label": "单次使用"
+          },
+          "resetOnDeath": {
+            "default": true,
+            "kind": "boolean",
+            "label": "死亡时重置"
+          },
+          "respawnSeconds": {
+            "default": 2.2,
+            "kind": "number",
+            "label": "重生秒数",
+            "max": 60,
+            "min": 0.1,
+            "step": 0.1
+          },
+          "w": {
+            "default": 180,
+            "kind": "number",
+            "label": "宽度",
+            "max": 1600,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "fragilePlatform",
+        "id": "fragilePlatform",
+        "label": "碎裂平台",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "interaction",
+        "collisionSemantics": "solid",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:gate",
+        "editableProperties": {
+          "h": {
+            "default": 240,
+            "kind": "number",
+            "label": "高度",
+            "max": 1400,
+            "min": 20,
+            "step": 1
+          },
+          "initiallyOpen": {
+            "default": false,
+            "kind": "boolean",
+            "label": "初始开启"
+          },
+          "latchOpen": {
+            "default": true,
+            "kind": "boolean",
+            "label": "开启后保持"
+          },
+          "openWhen": {
+            "default": "any",
+            "kind": "select",
+            "label": "多条件规则",
+            "options": [
+              [
+                "any",
+                "任一满足"
+              ],
+              [
+                "all",
+                "全部满足"
+              ]
+            ]
+          },
+          "requiredAbility": {
+            "default": "",
+            "kind": "text",
+            "label": "所需能力 ID"
+          },
+          "requiredFlag": {
+            "default": "",
+            "kind": "text",
+            "label": "所需世界标记"
+          },
+          "resetOnDeath": {
+            "default": false,
+            "kind": "boolean",
+            "label": "死亡时复位"
+          },
+          "w": {
+            "default": 70,
+            "kind": "number",
+            "label": "宽度",
+            "max": 1000,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "gate",
+        "id": "gate",
+        "label": "能力 / 状态门",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "heightProperty": "h",
+          "kind": "rect",
+          "widthProperty": "w"
+        },
+        "category": "interaction",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:stateTrigger",
+        "editableProperties": {
+          "clearFlag": {
+            "default": "",
+            "kind": "text",
+            "label": "清除世界标记"
+          },
+          "h": {
+            "default": 120,
+            "kind": "number",
+            "label": "高度",
+            "max": 1400,
+            "min": 20,
+            "step": 1
+          },
+          "oneUse": {
+            "default": true,
+            "kind": "boolean",
+            "label": "单次触发"
+          },
+          "resetOnDeath": {
+            "default": false,
+            "kind": "boolean",
+            "label": "死亡时复位"
+          },
+          "setFlag": {
+            "default": "route-open",
+            "kind": "text",
+            "label": "设置世界标记"
+          },
+          "w": {
+            "default": 100,
+            "kind": "number",
+            "label": "宽度",
+            "max": 1600,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "stateTrigger",
+        "id": "stateTrigger",
+        "label": "世界状态触发区",
+        "pivot": {
+          "mode": "top-left",
+          "x": 0,
+          "y": 0
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "kind": "point",
+          "radius": 12
+        },
+        "category": "interaction",
+        "collisionSemantics": "trigger",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:abilityPickup",
+        "editableProperties": {
+          "abilityId": {
+            "default": "doubleJump",
+            "kind": "select",
+            "label": "能力",
+            "options": [
+              [
+                "rope",
+                "软绳"
+              ],
+              [
+                "hardBar",
+                "硬杆"
+              ],
+              [
+                "bash",
+                "猛击"
+              ],
+              [
+                "doubleJump",
+                "二段跳"
+              ],
+              [
+                "glide",
+                "滑翔"
+              ],
+              [
+                "dash",
+                "冲刺"
+              ],
+              [
+                "wallGrab",
+                "墙抓"
+              ]
+            ]
+          },
+          "source": {
+            "default": "level-editor",
+            "kind": "text",
+            "label": "来源标记"
+          }
+        },
+        "godotRuntimeHandler": "abilityPickup",
+        "id": "abilityPickup",
+        "label": "能力拾取",
+        "pivot": {
+          "mode": "center",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "required": true,
+        "scaleSemantics": "gameplay-and-collision"
+      },
+      {
+        "boundsAdapter": {
+          "kind": "point",
+          "radius": 12
+        },
+        "category": "guidance",
+        "collisionSemantics": "none",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:sign",
+        "editableProperties": {
+          "text": {
+            "default": "在这里输入提示",
+            "kind": "text",
+            "label": "提示文字"
+          }
+        },
+        "godotRuntimeHandler": "sign",
+        "id": "sign",
+        "label": "提示牌",
+        "pivot": {
+          "mode": "center",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "required": true,
+        "scaleSemantics": "transform-only"
+      },
+      {
+        "boundsAdapter": {
+          "kind": "circle",
+          "radiusProperty": "size"
+        },
+        "category": "guidance",
+        "collisionSemantics": "none",
+        "defaultAssetId": "builtin:procedural",
+        "defaultPrefabId": "prefab:backgroundSeed",
+        "editableProperties": {
+          "size": {
+            "default": 150,
+            "kind": "number",
+            "label": "尺寸",
+            "max": 800,
+            "min": 20,
+            "step": 1
+          }
+        },
+        "godotRuntimeHandler": "backgroundSeed",
+        "id": "backgroundSeed",
+        "label": "背景光晕",
+        "pivot": {
+          "mode": "center",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "required": true,
+        "scaleSemantics": "transform-only"
+      }
+    ],
+    "version": "1"
+  }
+}

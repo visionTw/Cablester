@@ -1,0 +1,544 @@
+{
+  "assetRegistryVersion": "1",
+  "contentVersion": "1.0.0",
+  "errors": [],
+  "gameplayTuningVersion": "approved-1",
+  "prefabRegistryVersion": "1",
+  "regions": [
+    {
+      "aabb": {
+        "h": 1700,
+        "w": 2800,
+        "x": -500,
+        "y": -450
+      },
+      "bounds": {
+        "h": 1700,
+        "w": 2800,
+        "x": -500,
+        "y": -450
+      },
+      "chunks": [
+        {
+          "aabb": {
+            "h": 1700,
+            "w": 2800,
+            "x": -500,
+            "y": -450
+          },
+          "bounds": {
+            "h": 1700,
+            "w": 2800,
+            "x": -500,
+            "y": -450
+          },
+          "connections": [],
+          "gameplay": {
+            "acceptanceLevel": "L1",
+            "category": "Fixture",
+            "dashCapacity": 1,
+            "startingAbilities": [
+              "rope",
+              "dash",
+              "wallGrab"
+            ],
+            "summary": "Canonical migration golden"
+          },
+          "id": "fixture.golden-grove:chunk",
+          "name": "Golden Grove",
+          "objects": [
+            {
+              "assetResolution": {
+                "fallbackAssetId": "builtin:procedural",
+                "godotPath": "res://assets/game/terrain/moss-root-platform.webp",
+                "id": "gameplay:moss-platform",
+                "status": "resolved",
+                "webPath": "./assets/game/terrain/moss-root-platform.webp"
+              },
+              "collisionBounds": {
+                "h": 180,
+                "w": 760,
+                "x": -260,
+                "y": 640
+              },
+              "id": "platform-1",
+              "links": [],
+              "prefabResolution": {
+                "godotScene": "res://godot/prefabs/canonical_object.tscn",
+                "id": "prefab:platform",
+                "status": "resolved"
+              },
+              "properties": {
+                "h": 180,
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:moss-platform",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                },
+                "w": 760
+              },
+              "resolvedTransform": {
+                "position": {
+                  "x": -260,
+                  "y": 640
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "stateReferences": [],
+              "tags": [],
+              "transform": {
+                "position": {
+                  "x": -260,
+                  "y": 640
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "platform"
+            },
+            {
+              "assetResolution": {
+                "fallbackAssetId": "builtin:procedural",
+                "godotPath": "res://assets/game/layout/root-spawn-gate.webp",
+                "id": "gameplay:spawn-gate",
+                "status": "resolved",
+                "webPath": "./assets/game/layout/root-spawn-gate.webp"
+              },
+              "collisionBounds": {
+                "h": 24,
+                "w": 24,
+                "x": 108,
+                "y": 578
+              },
+              "id": "spawn-1",
+              "links": [],
+              "prefabResolution": {
+                "godotScene": "res://godot/prefabs/canonical_object.tscn",
+                "id": "prefab:spawn",
+                "status": "resolved"
+              },
+              "properties": {
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:spawn-gate",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                }
+              },
+              "resolvedTransform": {
+                "position": {
+                  "x": 120,
+                  "y": 590
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "stateReferences": [],
+              "tags": [],
+              "transform": {
+                "position": {
+                  "x": 120,
+                  "y": 590
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "spawn"
+            },
+            {
+              "assetResolution": {
+                "fallbackAssetId": "builtin:procedural",
+                "godotPath": "res://assets/game/gameplay/seed-lantern-checkpoint.webp",
+                "id": "gameplay:checkpoint-lantern",
+                "status": "resolved",
+                "webPath": "./assets/game/gameplay/seed-lantern-checkpoint.webp"
+              },
+              "collisionBounds": {
+                "h": 90,
+                "w": 90,
+                "x": 75,
+                "y": 550
+              },
+              "id": "checkpoint-1",
+              "links": [],
+              "prefabResolution": {
+                "godotScene": "res://godot/prefabs/canonical_object.tscn",
+                "id": "prefab:checkpoint",
+                "status": "resolved"
+              },
+              "properties": {
+                "h": 90,
+                "spawnOffsetX": 45,
+                "spawnOffsetY": 40,
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:checkpoint-lantern",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                },
+                "w": 90
+              },
+              "resolvedTransform": {
+                "position": {
+                  "x": 75,
+                  "y": 550
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "stateReferences": [],
+              "tags": [],
+              "transform": {
+                "position": {
+                  "x": 75,
+                  "y": 550
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "checkpoint"
+            },
+            {
+              "assetResolution": {
+                "fallbackAssetId": "builtin:procedural",
+                "godotPath": "res://assets/game/layout/golden-goal-gate.webp",
+                "id": "gameplay:goal-gate",
+                "status": "resolved",
+                "webPath": "./assets/game/layout/golden-goal-gate.webp"
+              },
+              "collisionBounds": {
+                "h": 68,
+                "w": 68,
+                "x": 386,
+                "y": 551
+              },
+              "id": "goal-1",
+              "links": [],
+              "prefabResolution": {
+                "godotScene": "res://godot/prefabs/canonical_object.tscn",
+                "id": "prefab:goal",
+                "status": "resolved"
+              },
+              "properties": {
+                "radius": 34,
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:goal-gate",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                }
+              },
+              "resolvedTransform": {
+                "position": {
+                  "x": 420,
+                  "y": 585
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "stateReferences": [],
+              "tags": [],
+              "transform": {
+                "position": {
+                  "x": 420,
+                  "y": 585
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "goal"
+            }
+          ],
+          "resolvedTransform": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "rotationDegrees": 0,
+            "scale": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          "scene": {
+            "layers": [
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 3,
+                "density": 1,
+                "depth": -100,
+                "drawCap": 256,
+                "fog": 0.45,
+                "id": "scene-background",
+                "locked": false,
+                "name": "背景",
+                "opacity": 0.72,
+                "originX": 0,
+                "parallax": 0.18,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "background",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "background-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              },
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 1,
+                "density": 1,
+                "depth": -20,
+                "drawCap": 256,
+                "fog": 0.18,
+                "id": "scene-midground",
+                "locked": false,
+                "name": "中景",
+                "opacity": 0.9,
+                "originX": 0,
+                "parallax": 0.58,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "midground",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "midground-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              },
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 0,
+                "density": 1,
+                "depth": 0,
+                "drawCap": 256,
+                "fog": 0,
+                "id": "scene-player",
+                "locked": true,
+                "name": "玩家层",
+                "opacity": 1,
+                "originX": 0,
+                "parallax": 1,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "player",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "player-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              },
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 0,
+                "density": 1,
+                "depth": 100,
+                "drawCap": 256,
+                "fog": 0.08,
+                "id": "scene-foreground",
+                "locked": false,
+                "name": "前景",
+                "opacity": 0.82,
+                "originX": 0,
+                "parallax": 1.22,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "foreground",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "foreground-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              }
+            ],
+            "schemaVersion": 1
+          },
+          "statePolicy": {
+            "checkpointReset": "chunk",
+            "deathReset": "checkpoint",
+            "offscreen": "sleep-local",
+            "worldPersistence": [
+              "flags"
+            ]
+          },
+          "streaming": {
+            "hysteresis": 256,
+            "keepAlive": false,
+            "memoryEstimateBytes": 0,
+            "prefetchDistance": 960,
+            "unloadDelaySeconds": 2
+          },
+          "tags": [],
+          "transform": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "rotationDegrees": 0,
+            "scale": {
+              "x": 1,
+              "y": 1
+            }
+          }
+        }
+      ],
+      "id": "fixture.golden-grove:region",
+      "landmarks": [],
+      "name": "Golden Grove",
+      "resolvedTransform": {
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "rotationDegrees": 0,
+        "scale": {
+          "x": 1,
+          "y": 1
+        }
+      },
+      "routes": [],
+      "tags": [],
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "rotationDegrees": 0,
+        "scale": {
+          "x": 1,
+          "y": 1
+        }
+      }
+    }
+  ],
+  "schemaVersion": 3,
+  "snapshotVersion": 1,
+  "sourceContentHash": "sha256:75784f4660a2202243324a2eb79fe60c768bf24802a9cac4288168e84aedb7a2",
+  "typeRegistryVersion": "1",
+  "warnings": [],
+  "generatedAt": "2026-08-12T00:00:00.000Z",
+  "godotBuildId": "4.7.1.stable.official.a13da4feb",
+  "importerVersion": "world-importer-v1"
+}

@@ -7,11 +7,25 @@ const root = process.cwd();
 const dist = resolve(root, "dist");
 const client = resolve(dist, "client");
 const server = resolve(dist, "server");
+const isGodotDerivative = (source) => source.endsWith(".import") || source.includes("/.godot/");
+const isPublishedGodotArtifact = (source) => {
+  if (source.includes("/artifacts/godot/test/")) return false;
+  if (source.endsWith("/artifacts/godot")) return true;
+  return source.endsWith(".json") || source.endsWith(".png");
+};
+const isPublishedWebArtifact = (source) => (
+  source.endsWith("/artifacts/web")
+  || source.endsWith("/artifacts/web/world-studio-performance.json")
+);
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(client, { recursive: true });
 await mkdir(server, { recursive: true });
 await mkdir(resolve(dist, ".openai"), { recursive: true });
+await writeFile(
+  resolve(dist, ".gdignore"),
+  "# Generated Sites output. Keep Godot's project scanner out of copied Web assets.\n",
+);
 
 const copyTasks = [
   cp(resolve(root, "_headers"), resolve(client, "_headers")),
@@ -20,13 +34,31 @@ const copyTasks = [
   cp(resolve(root, "og.png"), resolve(client, "og.png")),
   cp(resolve(root, "src"), resolve(client, "src"), { recursive: true }),
   cp(resolve(root, "levels"), resolve(client, "levels"), { recursive: true }),
+  cp(resolve(root, "worlds", "formal"), resolve(client, "worlds", "formal"), { recursive: true }),
+  cp(resolve(root, "worlds", "labs"), resolve(client, "worlds", "labs"), { recursive: true }),
+  cp(resolve(root, "worlds", "registries"), resolve(client, "worlds", "registries"), { recursive: true }),
   cp(
     resolve(root, ".openai", "hosting.json"),
     resolve(dist, ".openai", "hosting.json"),
   ),
 ];
 if (existsSync(resolve(root, "assets"))) {
-  copyTasks.push(cp(resolve(root, "assets"), resolve(client, "assets"), { recursive: true }));
+  copyTasks.push(cp(resolve(root, "assets"), resolve(client, "assets"), {
+    recursive: true,
+    filter: (source) => !isGodotDerivative(source)
+  }));
+}
+if (existsSync(resolve(root, "artifacts", "godot"))) {
+  copyTasks.push(cp(resolve(root, "artifacts", "godot"), resolve(client, "artifacts", "godot"), {
+    recursive: true,
+    filter: isPublishedGodotArtifact
+  }));
+}
+if (existsSync(resolve(root, "artifacts", "web", "world-studio-performance.json"))) {
+  copyTasks.push(cp(resolve(root, "artifacts", "web"), resolve(client, "artifacts", "web"), {
+    recursive: true,
+    filter: isPublishedWebArtifact
+  }));
 }
 await Promise.all(copyTasks);
 
@@ -35,6 +67,26 @@ await writeFile(
   `const worker = {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname === "/__cablester/world-repository") {
+      if (request.method !== "GET") {
+        return Response.json({
+          mode: "read-only",
+          writable: false,
+          local: false,
+          reason: "线上版本为只读；请在 localhost 开发服务器中保存仓库文件。"
+        }, { status: 403, headers: { "cache-control": "no-store" } });
+      }
+      return Response.json({
+        mode: "read-only",
+        writable: false,
+        local: false,
+        worlds: [
+          { path: "worlds/formal/first-forest.world.json" },
+          { path: "worlds/labs/cablester-3c-labs.world.json" }
+        ],
+        reason: "线上版本为只读；请在 localhost 开发服务器中保存仓库文件。"
+      }, { headers: { "cache-control": "no-store" } });
+    }
     if (url.pathname === "/") url.pathname = "/index.html";
     const rawPath = request.url.slice(url.origin.length).split(/[?#]/, 1)[0];
     const requestedAssetDelivery = /^\\/media\\//i.test(rawPath);
@@ -83,7 +135,7 @@ await writeFile(
     assets: {
       directory: "../client",
       binding: "ASSETS",
-      run_worker_first: ["/", "/index.html", "/media/*"],
+      run_worker_first: ["/", "/index.html", "/media/*", "/__cablester/world-repository"],
     },
     observability: { enabled: true },
   })}\n`,

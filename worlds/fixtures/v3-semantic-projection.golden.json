@@ -1,0 +1,408 @@
+{
+  "assetRegistryVersion": "1",
+  "contentHash": "sha256:75784f4660a2202243324a2eb79fe60c768bf24802a9cac4288168e84aedb7a2",
+  "contentVersion": "1.0.0",
+  "counts": {
+    "chunks": 1,
+    "connections": 0,
+    "objects": 4,
+    "regions": 1
+  },
+  "gameplayTuningVersion": "approved-1",
+  "prefabRegistryVersion": "1",
+  "projectionVersion": 2,
+  "regions": [
+    {
+      "bounds": {
+        "h": 1700,
+        "w": 2800,
+        "x": -500,
+        "y": -450
+      },
+      "chunks": [
+        {
+          "bounds": {
+            "h": 1700,
+            "w": 2800,
+            "x": -500,
+            "y": -450
+          },
+          "connections": [],
+          "gameplay": {
+            "acceptanceLevel": "L1",
+            "category": "Fixture",
+            "dashCapacity": 1,
+            "startingAbilities": [
+              "rope",
+              "dash",
+              "wallGrab"
+            ],
+            "summary": "Canonical migration golden"
+          },
+          "id": "fixture.golden-grove:chunk",
+          "name": "Golden Grove",
+          "objects": [
+            {
+              "abilityGates": [],
+              "assetId": "gameplay:checkpoint-lantern",
+              "id": "checkpoint-1",
+              "links": [],
+              "prefabId": "prefab:checkpoint",
+              "properties": {
+                "h": 90,
+                "spawnOffsetX": 45,
+                "spawnOffsetY": 40,
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:checkpoint-lantern",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                },
+                "w": 90
+              },
+              "resolvedTransform": {
+                "position": {
+                  "x": 75,
+                  "y": 550
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "stateKeys": [],
+              "tags": [],
+              "type": "checkpoint"
+            },
+            {
+              "abilityGates": [],
+              "assetId": "gameplay:goal-gate",
+              "id": "goal-1",
+              "links": [],
+              "prefabId": "prefab:goal",
+              "properties": {
+                "radius": 34,
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:goal-gate",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                }
+              },
+              "resolvedTransform": {
+                "position": {
+                  "x": 420,
+                  "y": 585
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "stateKeys": [],
+              "tags": [],
+              "type": "goal"
+            },
+            {
+              "abilityGates": [],
+              "assetId": "gameplay:moss-platform",
+              "id": "platform-1",
+              "links": [],
+              "prefabId": "prefab:platform",
+              "properties": {
+                "h": 180,
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:moss-platform",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                },
+                "w": 760
+              },
+              "resolvedTransform": {
+                "position": {
+                  "x": -260,
+                  "y": 640
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "stateKeys": [],
+              "tags": [],
+              "type": "platform"
+            },
+            {
+              "abilityGates": [],
+              "assetId": "gameplay:spawn-gate",
+              "id": "spawn-1",
+              "links": [],
+              "prefabId": "prefab:spawn",
+              "properties": {
+                "visual": {
+                  "anchorX": 0.5,
+                  "anchorY": 0.5,
+                  "assetId": "gameplay:spawn-gate",
+                  "drawLayer": 0,
+                  "flipX": false,
+                  "flipY": false,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "opacity": 1,
+                  "scaleMode": "asset",
+                  "scaleX": 1,
+                  "scaleY": 1,
+                  "tileScale": 1,
+                  "tint": "#ffffff"
+                }
+              },
+              "resolvedTransform": {
+                "position": {
+                  "x": 120,
+                  "y": 590
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "stateKeys": [],
+              "tags": [],
+              "type": "spawn"
+            }
+          ],
+          "resolvedTransform": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "rotationDegrees": 0,
+            "scale": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          "scene": {
+            "layers": [
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 3,
+                "density": 1,
+                "depth": -100,
+                "drawCap": 256,
+                "fog": 0.45,
+                "id": "scene-background",
+                "locked": false,
+                "name": "背景",
+                "opacity": 0.72,
+                "originX": 0,
+                "parallax": 0.18,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "background",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "background-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              },
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 1,
+                "density": 1,
+                "depth": -20,
+                "drawCap": 256,
+                "fog": 0.18,
+                "id": "scene-midground",
+                "locked": false,
+                "name": "中景",
+                "opacity": 0.9,
+                "originX": 0,
+                "parallax": 0.58,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "midground",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "midground-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              },
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 0,
+                "density": 1,
+                "depth": 0,
+                "drawCap": 256,
+                "fog": 0,
+                "id": "scene-player",
+                "locked": true,
+                "name": "玩家层",
+                "opacity": 1,
+                "originX": 0,
+                "parallax": 1,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "player",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "player-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              },
+              {
+                "assets": [
+                  {
+                    "assetId": "builtin:procedural",
+                    "weight": 1
+                  }
+                ],
+                "blendMode": "source-over",
+                "blur": 0,
+                "density": 1,
+                "depth": 100,
+                "drawCap": 256,
+                "fog": 0.08,
+                "id": "scene-foreground",
+                "locked": false,
+                "name": "前景",
+                "opacity": 0.82,
+                "originX": 0,
+                "parallax": 1.22,
+                "range": {
+                  "endX": null,
+                  "startX": null
+                },
+                "repeatX": true,
+                "role": "foreground",
+                "scale": 1,
+                "seamless": {
+                  "mode": "tile",
+                  "overlap": 0,
+                  "tileWidth": 1280
+                },
+                "seed": "foreground-default",
+                "spacing": 0,
+                "tint": "#ffffff",
+                "visible": true
+              }
+            ],
+            "schemaVersion": 1
+          },
+          "stateKeys": [],
+          "statePolicy": {
+            "checkpointReset": "chunk",
+            "deathReset": "checkpoint",
+            "offscreen": "sleep-local",
+            "worldPersistence": [
+              "flags"
+            ]
+          },
+          "streaming": {
+            "hysteresis": 256,
+            "keepAlive": false,
+            "memoryEstimateBytes": 0,
+            "prefetchDistance": 960,
+            "unloadDelaySeconds": 2
+          },
+          "tags": []
+        }
+      ],
+      "id": "fixture.golden-grove:region",
+      "landmarks": [],
+      "name": "Golden Grove",
+      "resolvedTransform": {
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "rotationDegrees": 0,
+        "scale": {
+          "x": 1,
+          "y": 1
+        }
+      },
+      "routes": [],
+      "tags": []
+    }
+  ],
+  "schemaVersion": 3,
+  "typeRegistryVersion": "1"
+}

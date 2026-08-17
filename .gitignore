@@ -3,3 +3,7 @@ node_modules/
 *.tgz
 .DS_Store
 tmp/
+/.godot/
+*.import
+/artifacts/godot/test/
+/build/

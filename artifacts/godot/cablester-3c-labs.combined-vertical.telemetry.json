@@ -1,0 +1,2346 @@
+{
+  "chunkEvents": [
+    {
+      "chunkId": "combined-vertical",
+      "kind": "load",
+      "timeUsec": 699898
+    },
+    {
+      "chunkId": "combined-vertical",
+      "kind": "state",
+      "state": "active",
+      "timeUsec": 699907
+    }
+  ],
+  "counters": {
+    "checkpoints": 1,
+    "chunkLoads": 1,
+    "chunkUnloads": 0,
+    "deaths": 1,
+    "exits": 0,
+    "physicsTicks": 601
+  },
+  "deaths": 1,
+  "durationSeconds": 0.479268,
+  "expectations": {
+    "abilities": [
+      "rope",
+      "hardBar",
+      "bash",
+      "doubleJump",
+      "glide",
+      "dash",
+      "wallGrab"
+    ],
+    "maxDeaths": 8.0,
+    "maxDurationSeconds": 5.0,
+    "visitedChunks": [
+      "combined-vertical"
+    ]
+  },
+  "finalPlayer": {
+    "airJumps": 1,
+    "attachedMode": "",
+    "attachmentLength": 0,
+    "attachmentTargetId": "",
+    "bashTargetId": "",
+    "checkpointId": "combined-vertical:vert-cp-start",
+    "dashCharges": 1,
+    "energy": 6,
+    "gravityDirection": {
+      "x": 0,
+      "y": 1
+    },
+    "health": 5,
+    "maximumDashCharges": 1,
+    "position": {
+      "x": 19303.6875,
+      "y": 4268.822754
+    },
+    "ropePhase": "",
+    "velocity": {
+      "x": 350,
+      "y": 374.583282
+    },
+    "visualState": {
+      "collisionRadius": 18.0,
+      "renderOnly": true,
+      "rope": {
+        "active": false,
+        "animationSag": 0.0,
+        "authoredLength": 0.0,
+        "bend": "(0.0, 1.0)",
+        "displayLength": 0.0,
+        "end": "(0.0, 0.0)",
+        "id": "",
+        "maximumSlackSag": 0.0,
+        "phase": "",
+        "physicalSag": 0.0,
+        "start": "(0.0, 0.0)",
+        "targetSag": 0.0,
+        "targetTension": 0.0,
+        "visualSag": 0.0,
+        "visualTension": 0.0
+      },
+      "softBody": {
+        "axisAngle": 1.6126566734242267,
+        "dashBlend": 0.0,
+        "jumpTimer": 0.0,
+        "landingSquash": 0.1393518541124132,
+        "landingTimer": 0.0,
+        "motionTailBlend": 0.0,
+        "pose": {
+          "angle": 1.6126566734242267,
+          "areaRatio": 1.0,
+          "crossRadius": 16.288406744452157,
+          "longRadius": 19.891448260300514
+        },
+        "stretch": 0.10508045890558408,
+        "stretchVelocity": 0.6422941051627816,
+        "targetAxis": 1.5707963705062866,
+        "targetStretch": 0.15237286066604872
+      },
+      "tail": {
+        "bodyAcceleration": "(0.0, 1549.999)",
+        "desiredLength": 47.51239276188676,
+        "facing": 1.0,
+        "facingVelocity": 0.0,
+        "offset": "(-42.85698, -13.98151)",
+        "relativeForce": "(0.0, 0.000242)",
+        "velocity": "(42.53702, -149.4504)"
+      },
+      "timing": {
+        "accumulator": 0.0,
+        "fixedStep": 0.008333333333333333,
+        "maxFrameDelta": 0.1
+      }
+    }
+  },
+  "finalPosition": {
+    "x": 19303.6875,
+    "y": 4268.822754
+  },
+  "finalResources": {
+    "airJumps": 1,
+    "dashCharges": 1,
+    "energy": 6,
+    "health": 5
+  },
+  "finalState": {
+    "abilities": {
+      "bash": true,
+      "dash": true,
+      "doubleJump": true,
+      "glide": true,
+      "hardBar": true,
+      "rope": true,
+      "wallGrab": true
+    },
+    "activeChunkId": "combined-vertical",
+    "checkpoint": {
+      "chunkId": "combined-vertical",
+      "id": "combined-vertical:vert-cp-start",
+      "position": {
+        "x": 18715.0,
+        "y": 4190.0
+      }
+    },
+    "checkpointState": {},
+    "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+    "flags": {
+      "bellroot-bells-rung": false,
+      "cistern-sluice-open": false,
+      "crown-route-open": false,
+      "echo-seed-lit": false,
+      "heartwood-awake": false,
+      "nursery-restored": false
+    },
+    "objectStates": {},
+    "saveVersion": 1,
+    "savedAt": "2026-08-17T13:27:06",
+    "visitedChunks": [
+      "combined-vertical"
+    ],
+    "worldId": "cablester-3c-labs"
+  },
+  "fixedPhysicsHz": 120,
+  "gameplayTuningVersion": "approved-1",
+  "godotBuildId": "4.7.1.stable.official.a13da4feb",
+  "latestTelemetryPath": "artifacts/godot/cablester-3c-labs.telemetry.json",
+  "performance": {
+    "estimatedMemoryBytes": 4194304,
+    "frameTimeP50Ms": 0.798,
+    "frameTimeP95Ms": 1.036,
+    "frameTimeP99Ms": 1.183,
+    "loadedChunkCount": 1,
+    "physicsTimeP50Ms": 0.732,
+    "physicsTimeP95Ms": 0.892,
+    "physicsTimeP99Ms": 1.036
+  },
+  "persistedState": {
+    "abilities": {},
+    "activeChunkId": "combined-vertical",
+    "checkpoint": {},
+    "checkpointState": {},
+    "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+    "flags": {},
+    "objectStates": {},
+    "saveVersion": 1,
+    "savedAt": "2026-08-17T13:27:06",
+    "visitedChunks": [
+      "combined-vertical"
+    ],
+    "worldId": "cablester-3c-labs"
+  },
+  "replayPath": "worlds/replays/labs/combined-vertical.replay.json",
+  "replaySlug": "combined-vertical",
+  "sourceContentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+  "startedAtUsec": 700162,
+  "targetState": {
+    "bashTargets": [],
+    "dashTicks": [],
+    "deathTicks": [
+      328
+    ],
+    "doubleJumpTicks": [
+      1,
+      230
+    ],
+    "glideTicks": [],
+    "hardBarTargets": [],
+    "hazardDamageTicks": [],
+    "ropeTargets": [
+      "combined-vertical:vert-a1"
+    ],
+    "windZoneTicks": []
+  },
+  "telemetryPath": "artifacts/godot/cablester-3c-labs.combined-vertical.telemetry.json",
+  "telemetryVersion": 1,
+  "trajectory": [
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18720.076172,
+        "y": 4190.107422
+      },
+      "ropePhase": "",
+      "tick": 0,
+      "timeSeconds": 0.0,
+      "velocity": {
+        "x": 9.166667,
+        "y": 12.916666999999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18722.138672,
+        "y": 4164.637694999999
+      },
+      "ropePhase": "",
+      "tick": 6,
+      "timeSeconds": 0.05,
+      "velocity": {
+        "x": 64.16667199999999,
+        "y": -477.099945
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18726.949219,
+        "y": 4143.042969
+      },
+      "ropePhase": "",
+      "tick": 12,
+      "timeSeconds": 0.1,
+      "velocity": {
+        "x": 119.16665599999999,
+        "y": -399.600006
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 260.39385999999996,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18734.513672,
+        "y": 4125.3232419999995
+      },
+      "ropePhase": "firing",
+      "tick": 18,
+      "timeSeconds": 0.15,
+      "velocity": {
+        "x": 174.166687,
+        "y": -322.10006699999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 260.39385999999996,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18744.826172,
+        "y": 4111.478516
+      },
+      "ropePhase": "firing",
+      "tick": 24,
+      "timeSeconds": 0.2,
+      "velocity": {
+        "x": 229.166718,
+        "y": -244.600113
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 260.39385999999996,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18757.886719,
+        "y": 4101.5087889999995
+      },
+      "ropePhase": "firing",
+      "tick": 30,
+      "timeSeconds": 0.25,
+      "velocity": {
+        "x": 284.16668699999997,
+        "y": -167.100082
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 259.30010999999996,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18773.3125,
+        "y": 4095.2761229999996
+      },
+      "ropePhase": "attached",
+      "tick": 36,
+      "timeSeconds": 0.3,
+      "velocity": {
+        "x": 317.76767,
+        "y": -95.19144399999999
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 255.58136,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18789.820313,
+        "y": 4092.604004
+      },
+      "ropePhase": "attached",
+      "tick": 42,
+      "timeSeconds": 0.35,
+      "velocity": {
+        "x": 339.500458,
+        "y": -23.284422
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 249.23761,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18807.544922,
+        "y": 4093.615723
+      },
+      "ropePhase": "attached",
+      "tick": 48,
+      "timeSeconds": 0.4,
+      "velocity": {
+        "x": 365.975983,
+        "y": 51.861259
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 240.26886,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18826.757813,
+        "y": 4098.493652
+      },
+      "ropePhase": "attached",
+      "tick": 54,
+      "timeSeconds": 0.45,
+      "velocity": {
+        "x": 397.95275899999996,
+        "y": 130.279449
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 228.67511,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18847.697266,
+        "y": 4107.259277
+      },
+      "ropePhase": "attached",
+      "tick": 60,
+      "timeSeconds": 0.5,
+      "velocity": {
+        "x": 434.22463999999997,
+        "y": 207.079208
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 214.45636,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18870.570313,
+        "y": 4119.755859
+      },
+      "ropePhase": "attached",
+      "tick": 66,
+      "timeSeconds": 0.55,
+      "velocity": {
+        "x": 474.720642,
+        "y": 279.810181
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 200.602193,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18895.554688,
+        "y": 4135.746582
+      },
+      "ropePhase": "attached",
+      "tick": 72,
+      "timeSeconds": 0.6,
+      "velocity": {
+        "x": 515.375854,
+        "y": 350.995728
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 200.602193,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18922.113280999998,
+        "y": 4155.994141
+      },
+      "ropePhase": "attached",
+      "tick": 78,
+      "timeSeconds": 0.65,
+      "velocity": {
+        "x": 543.6177369999999,
+        "y": 442.89575199999996
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 200.602193,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18950.306641,
+        "y": 4180.684082
+      },
+      "ropePhase": "attached",
+      "tick": 84,
+      "timeSeconds": 0.7,
+      "velocity": {
+        "x": 579.131531,
+        "y": 529.2193599999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 200.602193,
+      "attachmentTargetId": "combined-vertical:vert-a1",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 18978.439453,
+        "y": 4209.444824
+      },
+      "ropePhase": "retracting",
+      "tick": 90,
+      "timeSeconds": 0.75,
+      "velocity": {
+        "x": 539.764832,
+        "y": 607.512024
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19003.242188,
+        "y": 4217.190918
+      },
+      "ropePhase": "",
+      "tick": 96,
+      "timeSeconds": 0.8,
+      "velocity": {
+        "x": 449.76473999999996,
+        "y": -577.083313
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19024.126953,
+        "y": 4190.597168
+      },
+      "ropePhase": "",
+      "tick": 102,
+      "timeSeconds": 0.85,
+      "velocity": {
+        "x": 394.764801,
+        "y": -499.583221
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19042.353516,
+        "y": 4167.878418
+      },
+      "ropePhase": "",
+      "tick": 108,
+      "timeSeconds": 0.9,
+      "velocity": {
+        "x": 350,
+        "y": -422.083282
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19059.849609,
+        "y": 4149.034668
+      },
+      "ropePhase": "",
+      "tick": 114,
+      "timeSeconds": 0.95,
+      "velocity": {
+        "x": 350,
+        "y": -344.583344
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19077.345703,
+        "y": 4134.065918
+      },
+      "ropePhase": "",
+      "tick": 120,
+      "timeSeconds": 1.0,
+      "velocity": {
+        "x": 350,
+        "y": -267.08340499999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19094.841797,
+        "y": 4122.972168
+      },
+      "ropePhase": "",
+      "tick": 126,
+      "timeSeconds": 1.05,
+      "velocity": {
+        "x": 350,
+        "y": -189.583374
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19112.337891,
+        "y": 4115.753418
+      },
+      "ropePhase": "",
+      "tick": 132,
+      "timeSeconds": 1.1,
+      "velocity": {
+        "x": 350,
+        "y": -112.083359
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19129.833984,
+        "y": 4112.409668
+      },
+      "ropePhase": "",
+      "tick": 138,
+      "timeSeconds": 1.15,
+      "velocity": {
+        "x": 350,
+        "y": -34.583363
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19147.330078,
+        "y": 4112.940918
+      },
+      "ropePhase": "",
+      "tick": 144,
+      "timeSeconds": 1.2,
+      "velocity": {
+        "x": 350,
+        "y": 42.916641
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19164.826171999997,
+        "y": 4117.347168
+      },
+      "ropePhase": "",
+      "tick": 150,
+      "timeSeconds": 1.25,
+      "velocity": {
+        "x": 350,
+        "y": 120.41663399999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19182.322266,
+        "y": 4125.628418
+      },
+      "ropePhase": "",
+      "tick": 156,
+      "timeSeconds": 1.3,
+      "velocity": {
+        "x": 350,
+        "y": 197.916656
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19199.818359,
+        "y": 4137.784668
+      },
+      "ropePhase": "",
+      "tick": 162,
+      "timeSeconds": 1.35,
+      "velocity": {
+        "x": 350,
+        "y": 275.416656
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19217.314453,
+        "y": 4153.815918
+      },
+      "ropePhase": "",
+      "tick": 168,
+      "timeSeconds": 1.4,
+      "velocity": {
+        "x": 350,
+        "y": 352.916595
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19234.810546999997,
+        "y": 4173.722168
+      },
+      "ropePhase": "",
+      "tick": 174,
+      "timeSeconds": 1.45,
+      "velocity": {
+        "x": 350,
+        "y": 430.41653399999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19252.306641,
+        "y": 4197.503418
+      },
+      "ropePhase": "",
+      "tick": 180,
+      "timeSeconds": 1.5,
+      "velocity": {
+        "x": 350,
+        "y": 507.916473
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19269.802734,
+        "y": 4225.159668
+      },
+      "ropePhase": "",
+      "tick": 186,
+      "timeSeconds": 1.55,
+      "velocity": {
+        "x": 350,
+        "y": 585.416565
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19287.298828,
+        "y": 4256.690918
+      },
+      "ropePhase": "",
+      "tick": 192,
+      "timeSeconds": 1.6,
+      "velocity": {
+        "x": 350,
+        "y": 662.916687
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19304.794921999997,
+        "y": 4292.097168
+      },
+      "ropePhase": "",
+      "tick": 198,
+      "timeSeconds": 1.65,
+      "velocity": {
+        "x": 350,
+        "y": 740.416809
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19322.291016,
+        "y": 4331.378418
+      },
+      "ropePhase": "",
+      "tick": 204,
+      "timeSeconds": 1.7,
+      "velocity": {
+        "x": 350,
+        "y": 817.916931
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19339.787109,
+        "y": 4374.534668
+      },
+      "ropePhase": "",
+      "tick": 210,
+      "timeSeconds": 1.75,
+      "velocity": {
+        "x": 350,
+        "y": 895.417053
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19357.283203,
+        "y": 4421.565918
+      },
+      "ropePhase": "",
+      "tick": 216,
+      "timeSeconds": 1.8,
+      "velocity": {
+        "x": 350,
+        "y": 972.9171749999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19374.779296999997,
+        "y": 4472.472168
+      },
+      "ropePhase": "",
+      "tick": 222,
+      "timeSeconds": 1.85,
+      "velocity": {
+        "x": 350,
+        "y": 1050.4171139999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19392.275391,
+        "y": 4527.253418
+      },
+      "ropePhase": "",
+      "tick": 228,
+      "timeSeconds": 1.9,
+      "velocity": {
+        "x": 350,
+        "y": 1127.91687
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19409.771484,
+        "y": 4515.266602
+      },
+      "ropePhase": "",
+      "tick": 234,
+      "timeSeconds": 1.95,
+      "velocity": {
+        "x": 350,
+        "y": -490.016602
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19427.267578,
+        "y": 4493.025879
+      },
+      "ropePhase": "",
+      "tick": 240,
+      "timeSeconds": 2.0,
+      "velocity": {
+        "x": 350,
+        "y": -412.516663
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19444.763671999997,
+        "y": 4474.660156
+      },
+      "ropePhase": "",
+      "tick": 246,
+      "timeSeconds": 2.05,
+      "velocity": {
+        "x": 350,
+        "y": -335.016724
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19462.259766,
+        "y": 4460.169922
+      },
+      "ropePhase": "",
+      "tick": 252,
+      "timeSeconds": 2.1,
+      "velocity": {
+        "x": 350,
+        "y": -257.51678499999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19479.755859,
+        "y": 4449.554199
+      },
+      "ropePhase": "",
+      "tick": 258,
+      "timeSeconds": 2.15,
+      "velocity": {
+        "x": 350,
+        "y": -180.016754
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19497.251953,
+        "y": 4442.813477
+      },
+      "ropePhase": "",
+      "tick": 264,
+      "timeSeconds": 2.2,
+      "velocity": {
+        "x": 350,
+        "y": -102.516739
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19514.748046999997,
+        "y": 4439.9482419999995
+      },
+      "ropePhase": "",
+      "tick": 270,
+      "timeSeconds": 2.25,
+      "velocity": {
+        "x": 350,
+        "y": -25.016738999999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19532.244141,
+        "y": 4440.95752
+      },
+      "ropePhase": "",
+      "tick": 276,
+      "timeSeconds": 2.3,
+      "velocity": {
+        "x": 350,
+        "y": 52.483264999999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19549.740234,
+        "y": 4445.841797
+      },
+      "ropePhase": "",
+      "tick": 282,
+      "timeSeconds": 2.35,
+      "velocity": {
+        "x": 350,
+        "y": 129.983261
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19567.236328,
+        "y": 4454.601563
+      },
+      "ropePhase": "",
+      "tick": 288,
+      "timeSeconds": 2.4,
+      "velocity": {
+        "x": 350,
+        "y": 207.48329199999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19584.732421999997,
+        "y": 4467.235839999999
+      },
+      "ropePhase": "",
+      "tick": 294,
+      "timeSeconds": 2.45,
+      "velocity": {
+        "x": 350,
+        "y": 284.983276
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19602.228516,
+        "y": 4483.7451169999995
+      },
+      "ropePhase": "",
+      "tick": 300,
+      "timeSeconds": 2.5,
+      "velocity": {
+        "x": 350,
+        "y": 362.483215
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19619.724609,
+        "y": 4504.129883
+      },
+      "ropePhase": "",
+      "tick": 306,
+      "timeSeconds": 2.55,
+      "velocity": {
+        "x": 350,
+        "y": 439.98315399999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19637.220703,
+        "y": 4528.38916
+      },
+      "ropePhase": "",
+      "tick": 312,
+      "timeSeconds": 2.6,
+      "velocity": {
+        "x": 350,
+        "y": 517.4830929999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19654.716796999997,
+        "y": 4556.523438
+      },
+      "ropePhase": "",
+      "tick": 318,
+      "timeSeconds": 2.65,
+      "velocity": {
+        "x": 350,
+        "y": 594.983215
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19672.212891,
+        "y": 4588.533203
+      },
+      "ropePhase": "",
+      "tick": 324,
+      "timeSeconds": 2.7,
+      "velocity": {
+        "x": 350,
+        "y": 672.483337
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19680.960938,
+        "y": 4605.990723
+      },
+      "ropePhase": "",
+      "tick": 330,
+      "timeSeconds": 2.75,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19680.960938,
+        "y": 4605.990723
+      },
+      "ropePhase": "",
+      "tick": 336,
+      "timeSeconds": 2.8,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19680.960938,
+        "y": 4605.990723
+      },
+      "ropePhase": "",
+      "tick": 342,
+      "timeSeconds": 2.85,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19680.960938,
+        "y": 4605.990723
+      },
+      "ropePhase": "",
+      "tick": 348,
+      "timeSeconds": 2.9,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19680.960938,
+        "y": 4605.990723
+      },
+      "ropePhase": "",
+      "tick": 354,
+      "timeSeconds": 2.95,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19680.960938,
+        "y": 4605.990723
+      },
+      "ropePhase": "",
+      "tick": 360,
+      "timeSeconds": 3.0,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19680.960938,
+        "y": 4605.990723
+      },
+      "ropePhase": "",
+      "tick": 366,
+      "timeSeconds": 3.05,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19680.960938,
+        "y": 4605.990723
+      },
+      "ropePhase": "",
+      "tick": 372,
+      "timeSeconds": 3.1,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 19680.960938,
+        "y": 4605.990723
+      },
+      "ropePhase": "",
+      "tick": 378,
+      "timeSeconds": 3.15,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18715.457030999998,
+        "y": 4190.645508
+      },
+      "ropePhase": "",
+      "tick": 384,
+      "timeSeconds": 3.2,
+      "velocity": {
+        "x": 27.5,
+        "y": 38.75
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18718.4375,
+        "y": 4194.84375
+      },
+      "ropePhase": "",
+      "tick": 390,
+      "timeSeconds": 3.25,
+      "velocity": {
+        "x": 82.5,
+        "y": 116.24999199999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18724.166016,
+        "y": 4202.916504
+      },
+      "ropePhase": "",
+      "tick": 396,
+      "timeSeconds": 3.3,
+      "velocity": {
+        "x": 137.5,
+        "y": 193.750015
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18732.644530999998,
+        "y": 4214.864258
+      },
+      "ropePhase": "",
+      "tick": 402,
+      "timeSeconds": 3.35,
+      "velocity": {
+        "x": 192.50003099999998,
+        "y": 271.250031
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18744.457030999998,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 408,
+      "timeSeconds": 3.4,
+      "velocity": {
+        "x": 282.50006099999996,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18761.308594,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 414,
+      "timeSeconds": 3.45,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18778.804688,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 420,
+      "timeSeconds": 3.5,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18796.300780999998,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 426,
+      "timeSeconds": 3.55,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18813.796875,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 432,
+      "timeSeconds": 3.6,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18831.292969,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 438,
+      "timeSeconds": 3.65,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18848.789063,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 444,
+      "timeSeconds": 3.7,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18866.285155999998,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 450,
+      "timeSeconds": 3.75,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18883.78125,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 456,
+      "timeSeconds": 3.8,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18901.277344,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 462,
+      "timeSeconds": 3.85,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18918.773438,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 468,
+      "timeSeconds": 3.9,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18936.269530999998,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 474,
+      "timeSeconds": 3.95,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18953.765625,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 480,
+      "timeSeconds": 4.0,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18971.261719,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 486,
+      "timeSeconds": 4.05,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18988.757813,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 492,
+      "timeSeconds": 4.1,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19006.253905999998,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 498,
+      "timeSeconds": 4.15,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19023.75,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 504,
+      "timeSeconds": 4.2,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19041.246094,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 510,
+      "timeSeconds": 4.25,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19058.742188,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 516,
+      "timeSeconds": 4.3,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19076.238280999998,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 522,
+      "timeSeconds": 4.35,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19093.734375,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 528,
+      "timeSeconds": 4.4,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19111.230469,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 534,
+      "timeSeconds": 4.45,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19128.726563,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 540,
+      "timeSeconds": 4.5,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19146.222655999998,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 546,
+      "timeSeconds": 4.55,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19163.71875,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 552,
+      "timeSeconds": 4.6,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19181.214844,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 558,
+      "timeSeconds": 4.65,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19198.710938,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 564,
+      "timeSeconds": 4.7,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19216.207030999998,
+        "y": 4222
+      },
+      "ropePhase": "",
+      "tick": 570,
+      "timeSeconds": 4.75,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19233.703125,
+        "y": 4223.614258
+      },
+      "ropePhase": "",
+      "tick": 576,
+      "timeSeconds": 4.8,
+      "velocity": {
+        "x": 350,
+        "y": 64.583336
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19251.199219,
+        "y": 4229.104004
+      },
+      "ropePhase": "",
+      "tick": 582,
+      "timeSeconds": 4.85,
+      "velocity": {
+        "x": 350,
+        "y": 142.083328
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19268.695313,
+        "y": 4238.46875
+      },
+      "ropePhase": "",
+      "tick": 588,
+      "timeSeconds": 4.9,
+      "velocity": {
+        "x": 350,
+        "y": 219.583359
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19286.191405999998,
+        "y": 4251.708008
+      },
+      "ropePhase": "",
+      "tick": 594,
+      "timeSeconds": 4.95,
+      "velocity": {
+        "x": 350,
+        "y": 297.083344
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "combined-vertical",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19303.6875,
+        "y": 4268.822754
+      },
+      "ropePhase": "",
+      "tick": 600,
+      "timeSeconds": 5.0,
+      "velocity": {
+        "x": 350,
+        "y": 374.583282
+      }
+    }
+  ],
+  "visitedChunks": [
+    "combined-vertical"
+  ],
+  "worldId": "cablester-3c-labs"
+}

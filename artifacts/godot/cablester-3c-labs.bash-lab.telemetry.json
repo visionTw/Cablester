@@ -1,0 +1,2335 @@
+{
+  "chunkEvents": [
+    {
+      "chunkId": "bash-lab",
+      "kind": "load",
+      "timeUsec": 696092
+    },
+    {
+      "chunkId": "bash-lab",
+      "kind": "state",
+      "state": "active",
+      "timeUsec": 696099
+    }
+  ],
+  "counters": {
+    "checkpoints": 1,
+    "chunkLoads": 1,
+    "chunkUnloads": 0,
+    "deaths": 0,
+    "exits": 0,
+    "physicsTicks": 601
+  },
+  "deaths": 0,
+  "durationSeconds": 0.248114,
+  "expectations": {
+    "abilities": [
+      "bash",
+      "wallGrab"
+    ],
+    "maxDeaths": 8.0,
+    "maxDurationSeconds": 5.0,
+    "visitedChunks": [
+      "bash-lab"
+    ]
+  },
+  "finalPlayer": {
+    "airJumps": 0,
+    "attachedMode": "",
+    "attachmentLength": 0,
+    "attachmentTargetId": "",
+    "bashTargetId": "bash-lab:bash-t4",
+    "checkpointId": "bash-lab:bash-cp-start",
+    "dashCharges": 0,
+    "energy": 4.5,
+    "gravityDirection": {
+      "x": 0,
+      "y": 1
+    },
+    "health": 3,
+    "maximumDashCharges": 0,
+    "position": {
+      "x": 13534.84082,
+      "y": 577.422241
+    },
+    "ropePhase": "",
+    "velocity": {
+      "x": -31.666739999999997,
+      "y": -28.333454
+    },
+    "visualState": {
+      "collisionRadius": 18.0,
+      "renderOnly": true,
+      "rope": {
+        "active": false,
+        "animationSag": 0.0,
+        "authoredLength": 0.0,
+        "bend": "(0.0, 1.0)",
+        "displayLength": 0.0,
+        "end": "(0.0, 0.0)",
+        "id": "",
+        "maximumSlackSag": 0.0,
+        "phase": "",
+        "physicalSag": 0.0,
+        "start": "(0.0, 0.0)",
+        "targetSag": 0.0,
+        "targetTension": 0.0,
+        "visualSag": 0.0,
+        "visualTension": 0.0
+      },
+      "softBody": {
+        "axisAngle": 1.5707963705062866,
+        "dashBlend": 0.0,
+        "jumpTimer": 0.0,
+        "landingSquash": 0.26,
+        "landingTimer": 0.0,
+        "motionTailBlend": 0.0,
+        "pose": {
+          "angle": 1.5707963705062866,
+          "areaRatio": 1.0,
+          "crossRadius": 17.02773319549769,
+          "longRadius": 19.027782282005038
+        },
+        "stretch": 0.057099015666946584,
+        "stretchVelocity": -0.6438962719375345,
+        "targetAxis": 1.5707963705062866,
+        "targetStretch": 0.011525472867286812
+      },
+      "tail": {
+        "bodyAcceleration": "(0.0, 1550.0)",
+        "desiredLength": 42.45690286287697,
+        "facing": 1.0,
+        "facingVelocity": 0.0,
+        "offset": "(-4.577446, 43.15785)",
+        "relativeForce": "(0.0, -0.000022)",
+        "velocity": "(-234.4035, -25.91155)"
+      },
+      "timing": {
+        "accumulator": 0.0,
+        "fixedStep": 0.008333333333333333,
+        "maxFrameDelta": 0.1
+      }
+    }
+  },
+  "finalPosition": {
+    "x": 13534.84082,
+    "y": 577.422241
+  },
+  "finalResources": {
+    "airJumps": 0,
+    "dashCharges": 0,
+    "energy": 4.5,
+    "health": 3
+  },
+  "finalState": {
+    "abilities": {
+      "bash": true,
+      "wallGrab": true
+    },
+    "activeChunkId": "bash-lab",
+    "checkpoint": {
+      "chunkId": "bash-lab",
+      "id": "bash-lab:bash-cp-start",
+      "position": {
+        "x": 12515.0,
+        "y": 590.0
+      }
+    },
+    "checkpointState": {},
+    "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+    "flags": {
+      "bellroot-bells-rung": false,
+      "cistern-sluice-open": false,
+      "crown-route-open": false,
+      "echo-seed-lit": false,
+      "heartwood-awake": false,
+      "nursery-restored": false
+    },
+    "objectStates": {},
+    "saveVersion": 1,
+    "savedAt": "2026-08-17T13:27:00",
+    "visitedChunks": [
+      "bash-lab"
+    ],
+    "worldId": "cablester-3c-labs"
+  },
+  "fixedPhysicsHz": 120,
+  "gameplayTuningVersion": "approved-1",
+  "godotBuildId": "4.7.1.stable.official.a13da4feb",
+  "latestTelemetryPath": "artifacts/godot/cablester-3c-labs.telemetry.json",
+  "performance": {
+    "estimatedMemoryBytes": 4194304,
+    "frameTimeP50Ms": 0.379,
+    "frameTimeP95Ms": 0.546,
+    "frameTimeP99Ms": 0.683,
+    "loadedChunkCount": 1,
+    "physicsTimeP50Ms": 0.337,
+    "physicsTimeP95Ms": 0.409,
+    "physicsTimeP99Ms": 0.481
+  },
+  "persistedState": {
+    "abilities": {},
+    "activeChunkId": "bash-lab",
+    "checkpoint": {},
+    "checkpointState": {},
+    "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+    "flags": {},
+    "objectStates": {},
+    "saveVersion": 1,
+    "savedAt": "2026-08-17T13:27:00",
+    "visitedChunks": [
+      "bash-lab"
+    ],
+    "worldId": "cablester-3c-labs"
+  },
+  "replayPath": "worlds/replays/labs/bash-lab.replay.json",
+  "replaySlug": "bash-lab",
+  "sourceContentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+  "startedAtUsec": 696380,
+  "targetState": {
+    "bashTargets": [
+      "bash-lab:bash-t0",
+      "bash-lab:bash-t4"
+    ],
+    "dashTicks": [],
+    "deathTicks": [],
+    "doubleJumpTicks": [],
+    "glideTicks": [],
+    "hardBarTargets": [],
+    "hazardDamageTicks": [
+      88,
+      342
+    ],
+    "ropeTargets": [],
+    "windZoneTicks": []
+  },
+  "telemetryPath": "artifacts/godot/cablester-3c-labs.bash-lab.telemetry.json",
+  "telemetryVersion": 1,
+  "trajectory": [
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 12520.076172,
+        "y": 590.107666
+      },
+      "ropePhase": "",
+      "tick": 0,
+      "timeSeconds": 0.0,
+      "velocity": {
+        "x": 9.166667,
+        "y": 12.916666999999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 12522.138672,
+        "y": 593.013916
+      },
+      "ropePhase": "",
+      "tick": 6,
+      "timeSeconds": 0.05,
+      "velocity": {
+        "x": 64.16667199999999,
+        "y": 90.416664
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12522.75,
+        "y": 593.875
+      },
+      "ropePhase": "",
+      "tick": 12,
+      "timeSeconds": 0.1,
+      "velocity": {
+        "x": 73.333336,
+        "y": 103.333328
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12522.75,
+        "y": 593.875
+      },
+      "ropePhase": "",
+      "tick": 18,
+      "timeSeconds": 0.15,
+      "velocity": {
+        "x": 73.333336,
+        "y": 103.333328
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12538.521483999999,
+        "y": 594.197937
+      },
+      "ropePhase": "",
+      "tick": 24,
+      "timeSeconds": 0.2,
+      "velocity": {
+        "x": 941.666626,
+        "y": 25.833333999999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12584,
+        "y": 597.75
+      },
+      "ropePhase": "",
+      "tick": 30,
+      "timeSeconds": 0.25,
+      "velocity": {
+        "x": 886.6665039999999,
+        "y": 103.333328
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12626.729491999999,
+        "y": 605.1771239999999
+      },
+      "ropePhase": "",
+      "tick": 36,
+      "timeSeconds": 0.3,
+      "velocity": {
+        "x": 831.666382,
+        "y": 180.83334399999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12666.708983999999,
+        "y": 616.479187
+      },
+      "ropePhase": "",
+      "tick": 42,
+      "timeSeconds": 0.35,
+      "velocity": {
+        "x": 776.66626,
+        "y": 258.333374
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12703.354491999999,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 48,
+      "timeSeconds": 0.4,
+      "velocity": {
+        "x": 686.66626,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12734.041991999999,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 54,
+      "timeSeconds": 0.45,
+      "velocity": {
+        "x": 561.666382,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12758.582031,
+        "y": 622.567871
+      },
+      "ropePhase": "",
+      "tick": 60,
+      "timeSeconds": 0.5,
+      "velocity": {
+        "x": 448.33306899999997,
+        "y": 38.75
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12779.394531,
+        "y": 626.7657469999999
+      },
+      "ropePhase": "",
+      "tick": 66,
+      "timeSeconds": 0.55,
+      "velocity": {
+        "x": 393.33313,
+        "y": 116.24999199999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12797.576172,
+        "y": 634.838684
+      },
+      "ropePhase": "",
+      "tick": 72,
+      "timeSeconds": 0.6,
+      "velocity": {
+        "x": 350,
+        "y": 193.750015
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12815.078125,
+        "y": 646.786621
+      },
+      "ropePhase": "",
+      "tick": 78,
+      "timeSeconds": 0.65,
+      "velocity": {
+        "x": 350,
+        "y": 271.250031
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 5,
+      "position": {
+        "x": 12832.580077999999,
+        "y": 662.6094969999999
+      },
+      "ropePhase": "",
+      "tick": 84,
+      "timeSeconds": 0.7,
+      "velocity": {
+        "x": 350,
+        "y": 348.74996899999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 12848.258789,
+        "y": 660.420471
+      },
+      "ropePhase": "",
+      "tick": 90,
+      "timeSeconds": 0.75,
+      "velocity": {
+        "x": 245.221497,
+        "y": -886.9666139999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 12862.124023,
+        "y": 618.332581
+      },
+      "ropePhase": "",
+      "tick": 96,
+      "timeSeconds": 0.8,
+      "velocity": {
+        "x": 300.22146599999996,
+        "y": -809.466492
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 12878.696289,
+        "y": 580.11969
+      },
+      "ropePhase": "",
+      "tick": 102,
+      "timeSeconds": 0.85,
+      "velocity": {
+        "x": 350,
+        "y": -731.96637
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 12896.198241999999,
+        "y": 545.781799
+      },
+      "ropePhase": "",
+      "tick": 108,
+      "timeSeconds": 0.9,
+      "velocity": {
+        "x": 350,
+        "y": -654.466248
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 12913.700195,
+        "y": 515.318909
+      },
+      "ropePhase": "",
+      "tick": 114,
+      "timeSeconds": 0.95,
+      "velocity": {
+        "x": 350,
+        "y": -576.9661249999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 12931.202148,
+        "y": 488.73098799999997
+      },
+      "ropePhase": "",
+      "tick": 120,
+      "timeSeconds": 1.0,
+      "velocity": {
+        "x": 350,
+        "y": -499.466034
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 12948.704102,
+        "y": 466.018127
+      },
+      "ropePhase": "",
+      "tick": 126,
+      "timeSeconds": 1.05,
+      "velocity": {
+        "x": 350,
+        "y": -421.966095
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 12966.206054999999,
+        "y": 447.180237
+      },
+      "ropePhase": "",
+      "tick": 132,
+      "timeSeconds": 1.1,
+      "velocity": {
+        "x": 350,
+        "y": -344.466156
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 12983.708008,
+        "y": 432.217316
+      },
+      "ropePhase": "",
+      "tick": 138,
+      "timeSeconds": 1.15,
+      "velocity": {
+        "x": 350,
+        "y": -266.966217
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 13001.209960999999,
+        "y": 421.129456
+      },
+      "ropePhase": "",
+      "tick": 144,
+      "timeSeconds": 1.2,
+      "velocity": {
+        "x": 350,
+        "y": -189.466187
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 13018.711914,
+        "y": 413.916565
+      },
+      "ropePhase": "",
+      "tick": 150,
+      "timeSeconds": 1.25,
+      "velocity": {
+        "x": 350,
+        "y": -111.96617099999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 13036.213866999999,
+        "y": 410.578644
+      },
+      "ropePhase": "",
+      "tick": 156,
+      "timeSeconds": 1.3,
+      "velocity": {
+        "x": 350,
+        "y": -34.466175
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 13053.71582,
+        "y": 411.11578399999996
+      },
+      "ropePhase": "",
+      "tick": 162,
+      "timeSeconds": 1.35,
+      "velocity": {
+        "x": 350,
+        "y": 43.033829
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 13071.217773,
+        "y": 415.527893
+      },
+      "ropePhase": "",
+      "tick": 168,
+      "timeSeconds": 1.4,
+      "velocity": {
+        "x": 350,
+        "y": 120.53382099999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 13088.719727,
+        "y": 423.81497199999995
+      },
+      "ropePhase": "",
+      "tick": 174,
+      "timeSeconds": 1.45,
+      "velocity": {
+        "x": 350,
+        "y": 198.033844
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 13106.221679999999,
+        "y": 435.977112
+      },
+      "ropePhase": "",
+      "tick": 180,
+      "timeSeconds": 1.5,
+      "velocity": {
+        "x": 350,
+        "y": 275.533844
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t0",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 5.25,
+      "health": 4,
+      "position": {
+        "x": 13123.723633,
+        "y": 452.01422099999996
+      },
+      "ropePhase": "",
+      "tick": 186,
+      "timeSeconds": 1.55,
+      "velocity": {
+        "x": 350,
+        "y": 353.03378299999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13126.640625,
+        "y": 455.063812
+      },
+      "ropePhase": "",
+      "tick": 192,
+      "timeSeconds": 1.6,
+      "velocity": {
+        "x": 350,
+        "y": 365.95043899999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13126.640625,
+        "y": 455.063812
+      },
+      "ropePhase": "",
+      "tick": 198,
+      "timeSeconds": 1.65,
+      "velocity": {
+        "x": 350,
+        "y": 365.95043899999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13138.947266,
+        "y": 465.32904099999996
+      },
+      "ropePhase": "",
+      "tick": 204,
+      "timeSeconds": 1.7,
+      "velocity": {
+        "x": 733.824402,
+        "y": 622.372314
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13174.035156,
+        "y": 498.708099
+      },
+      "ropePhase": "",
+      "tick": 210,
+      "timeSeconds": 1.75,
+      "velocity": {
+        "x": 678.8242799999999,
+        "y": 699.872437
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13206.37207,
+        "y": 535.9621579999999
+      },
+      "ropePhase": "",
+      "tick": 216,
+      "timeSeconds": 1.8,
+      "velocity": {
+        "x": 623.824158,
+        "y": 777.3725589999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13235.958983999999,
+        "y": 572
+      },
+      "ropePhase": "",
+      "tick": 222,
+      "timeSeconds": 1.85,
+      "velocity": {
+        "x": 568.824036,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13260.757813,
+        "y": 572.01593
+      },
+      "ropePhase": "",
+      "tick": 228,
+      "timeSeconds": 1.9,
+      "velocity": {
+        "x": 443.824036,
+        "y": 12.916666999999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13280.761719,
+        "y": 574.92218
+      },
+      "ropePhase": "",
+      "tick": 234,
+      "timeSeconds": 1.95,
+      "velocity": {
+        "x": 377.15740999999997,
+        "y": 90.416664
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13298.486327999999,
+        "y": 547.6826169999999
+      },
+      "ropePhase": "",
+      "tick": 240,
+      "timeSeconds": 2.0,
+      "velocity": {
+        "x": 350,
+        "y": -512.499878
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13315.988281,
+        "y": 524.317993
+      },
+      "ropePhase": "",
+      "tick": 246,
+      "timeSeconds": 2.05,
+      "velocity": {
+        "x": 350,
+        "y": -434.999939
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13333.490233999999,
+        "y": 504.828461
+      },
+      "ropePhase": "",
+      "tick": 252,
+      "timeSeconds": 2.1,
+      "velocity": {
+        "x": 350,
+        "y": -357.5
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13350.992188,
+        "y": 489.213867
+      },
+      "ropePhase": "",
+      "tick": 258,
+      "timeSeconds": 2.15,
+      "velocity": {
+        "x": 350,
+        "y": -280.00006099999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13368.494141,
+        "y": 477.47430399999996
+      },
+      "ropePhase": "",
+      "tick": 264,
+      "timeSeconds": 2.2,
+      "velocity": {
+        "x": 350,
+        "y": -202.500046
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13385.996094,
+        "y": 469.609711
+      },
+      "ropePhase": "",
+      "tick": 270,
+      "timeSeconds": 2.25,
+      "velocity": {
+        "x": 350,
+        "y": -125.000023
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13403.498047,
+        "y": 465.620117
+      },
+      "ropePhase": "",
+      "tick": 276,
+      "timeSeconds": 2.3,
+      "velocity": {
+        "x": 350,
+        "y": -47.500031
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13421,
+        "y": 465.50555399999996
+      },
+      "ropePhase": "",
+      "tick": 282,
+      "timeSeconds": 2.35,
+      "velocity": {
+        "x": 350,
+        "y": 29.999972999999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13438.501952999999,
+        "y": 469.265961
+      },
+      "ropePhase": "",
+      "tick": 288,
+      "timeSeconds": 2.4,
+      "velocity": {
+        "x": 350,
+        "y": 107.499969
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13456.003906,
+        "y": 476.901367
+      },
+      "ropePhase": "",
+      "tick": 294,
+      "timeSeconds": 2.45,
+      "velocity": {
+        "x": 350,
+        "y": 184.99998499999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13473.505858999999,
+        "y": 488.41180399999996
+      },
+      "ropePhase": "",
+      "tick": 300,
+      "timeSeconds": 2.5,
+      "velocity": {
+        "x": 350,
+        "y": 262.5
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13491.007813,
+        "y": 503.797211
+      },
+      "ropePhase": "",
+      "tick": 306,
+      "timeSeconds": 2.55,
+      "velocity": {
+        "x": 350,
+        "y": 339.999939
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13508.509766,
+        "y": 523.057678
+      },
+      "ropePhase": "",
+      "tick": 312,
+      "timeSeconds": 2.6,
+      "velocity": {
+        "x": 350,
+        "y": 417.49987799999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13526.011719,
+        "y": 546.193054
+      },
+      "ropePhase": "",
+      "tick": 318,
+      "timeSeconds": 2.65,
+      "velocity": {
+        "x": 350,
+        "y": 494.99981699999995
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13543.513672,
+        "y": 573.203491
+      },
+      "ropePhase": "",
+      "tick": 324,
+      "timeSeconds": 2.7,
+      "velocity": {
+        "x": 350,
+        "y": 572.499878
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13561.015625,
+        "y": 604.088928
+      },
+      "ropePhase": "",
+      "tick": 330,
+      "timeSeconds": 2.75,
+      "velocity": {
+        "x": 350,
+        "y": 650
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 4,
+      "position": {
+        "x": 13578.517577999999,
+        "y": 638.849304
+      },
+      "ropePhase": "",
+      "tick": 336,
+      "timeSeconds": 2.8,
+      "velocity": {
+        "x": 350,
+        "y": 727.5001219999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13596.019531,
+        "y": 677.484741
+      },
+      "ropePhase": "",
+      "tick": 342,
+      "timeSeconds": 2.85,
+      "velocity": {
+        "x": 490.74139399999996,
+        "y": -370
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13602,
+        "y": 661.2451169999999
+      },
+      "ropePhase": "",
+      "tick": 348,
+      "timeSeconds": 2.9,
+      "velocity": {
+        "x": 0,
+        "y": -292.50006099999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13602,
+        "y": 648.880554
+      },
+      "ropePhase": "",
+      "tick": 354,
+      "timeSeconds": 2.95,
+      "velocity": {
+        "x": 0,
+        "y": -215.000061
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13602,
+        "y": 640.390991
+      },
+      "ropePhase": "",
+      "tick": 360,
+      "timeSeconds": 3.0,
+      "velocity": {
+        "x": 0,
+        "y": -137.500031
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13602,
+        "y": 635.7763669999999
+      },
+      "ropePhase": "",
+      "tick": 366,
+      "timeSeconds": 3.05,
+      "velocity": {
+        "x": 0,
+        "y": -60.000042
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13602,
+        "y": 635.036804
+      },
+      "ropePhase": "",
+      "tick": 372,
+      "timeSeconds": 3.1,
+      "velocity": {
+        "x": 0,
+        "y": 17.499962
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13602,
+        "y": 638.172241
+      },
+      "ropePhase": "",
+      "tick": 378,
+      "timeSeconds": 3.15,
+      "velocity": {
+        "x": 0,
+        "y": 94.999962
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13602,
+        "y": 645.1826169999999
+      },
+      "ropePhase": "",
+      "tick": 384,
+      "timeSeconds": 3.2,
+      "velocity": {
+        "x": 0,
+        "y": 172.499969
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13602,
+        "y": 656.068054
+      },
+      "ropePhase": "",
+      "tick": 390,
+      "timeSeconds": 3.25,
+      "velocity": {
+        "x": 0,
+        "y": 250
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13584.145508,
+        "y": 631.078491
+      },
+      "ropePhase": "",
+      "tick": 396,
+      "timeSeconds": 3.3,
+      "velocity": {
+        "x": -334.166718,
+        "y": -467.5
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13569.041991999999,
+        "y": 609.9638669999999
+      },
+      "ropePhase": "",
+      "tick": 402,
+      "timeSeconds": 3.35,
+      "velocity": {
+        "x": -279.16677899999996,
+        "y": -390.00006099999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13556.6875,
+        "y": 592.724304
+      },
+      "ropePhase": "",
+      "tick": 408,
+      "timeSeconds": 3.4,
+      "velocity": {
+        "x": -224.166779,
+        "y": -312.500122
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13547.083008,
+        "y": 579.359741
+      },
+      "ropePhase": "",
+      "tick": 414,
+      "timeSeconds": 3.45,
+      "velocity": {
+        "x": -169.16674799999998,
+        "y": -235.00015299999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13540.229491999999,
+        "y": 569.8701169999999
+      },
+      "ropePhase": "",
+      "tick": 420,
+      "timeSeconds": 3.5,
+      "velocity": {
+        "x": -114.166733,
+        "y": -157.500122
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13536.125,
+        "y": 564.255554
+      },
+      "ropePhase": "",
+      "tick": 426,
+      "timeSeconds": 3.55,
+      "velocity": {
+        "x": -59.166743999999994,
+        "y": -80.00012199999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13534.770508,
+        "y": 562.515991
+      },
+      "ropePhase": "",
+      "tick": 432,
+      "timeSeconds": 3.6,
+      "velocity": {
+        "x": -4.166739,
+        "y": -2.50012
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13536.166991999999,
+        "y": 564.6513669999999
+      },
+      "ropePhase": "",
+      "tick": 438,
+      "timeSeconds": 3.65,
+      "velocity": {
+        "x": 50.833267,
+        "y": 74.999886
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13540.3125,
+        "y": 570.661804
+      },
+      "ropePhase": "",
+      "tick": 444,
+      "timeSeconds": 3.7,
+      "velocity": {
+        "x": 105.83326,
+        "y": 152.499878
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13547.208008,
+        "y": 580.547241
+      },
+      "ropePhase": "",
+      "tick": 450,
+      "timeSeconds": 3.75,
+      "velocity": {
+        "x": 160.833267,
+        "y": 229.99990799999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13556.854491999999,
+        "y": 594.3076169999999
+      },
+      "ropePhase": "",
+      "tick": 456,
+      "timeSeconds": 3.8,
+      "velocity": {
+        "x": 215.83329799999998,
+        "y": 307.49987799999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13569.25,
+        "y": 611.943054
+      },
+      "ropePhase": "",
+      "tick": 462,
+      "timeSeconds": 3.85,
+      "velocity": {
+        "x": 270.833313,
+        "y": 384.999817
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13584.395508,
+        "y": 633.453491
+      },
+      "ropePhase": "",
+      "tick": 468,
+      "timeSeconds": 3.9,
+      "velocity": {
+        "x": 325.83325199999996,
+        "y": 462.499756
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13601.723633,
+        "y": 658.8388669999999
+      },
+      "ropePhase": "",
+      "tick": 474,
+      "timeSeconds": 3.95,
+      "velocity": {
+        "x": 350,
+        "y": 539.9997559999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13586.930664,
+        "y": 642.3527829999999
+      },
+      "ropePhase": "",
+      "tick": 480,
+      "timeSeconds": 4.0,
+      "velocity": {
+        "x": -343.333374,
+        "y": -480.416656
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13571.368164,
+        "y": 620.592346
+      },
+      "ropePhase": "",
+      "tick": 486,
+      "timeSeconds": 4.05,
+      "velocity": {
+        "x": -288.333435,
+        "y": -402.916718
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13558.555664,
+        "y": 602.70697
+      },
+      "ropePhase": "",
+      "tick": 492,
+      "timeSeconds": 4.1,
+      "velocity": {
+        "x": -233.33345,
+        "y": -325.41677899999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13548.493164,
+        "y": 588.6965329999999
+      },
+      "ropePhase": "",
+      "tick": 498,
+      "timeSeconds": 4.15,
+      "velocity": {
+        "x": -178.33342,
+        "y": -247.916824
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13541.180664,
+        "y": 578.561096
+      },
+      "ropePhase": "",
+      "tick": 504,
+      "timeSeconds": 4.2,
+      "velocity": {
+        "x": -123.33339699999999,
+        "y": -170.41679399999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13536.618164,
+        "y": 572.30072
+      },
+      "ropePhase": "",
+      "tick": 510,
+      "timeSeconds": 4.25,
+      "velocity": {
+        "x": -68.333412,
+        "y": -92.916786
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13534.805664,
+        "y": 569.9152829999999
+      },
+      "ropePhase": "",
+      "tick": 516,
+      "timeSeconds": 4.3,
+      "velocity": {
+        "x": -13.333404999999999,
+        "y": -15.416787
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13535.743164,
+        "y": 571.404846
+      },
+      "ropePhase": "",
+      "tick": 522,
+      "timeSeconds": 4.35,
+      "velocity": {
+        "x": 41.666599,
+        "y": 62.083217999999995
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13539.430664,
+        "y": 576.76947
+      },
+      "ropePhase": "",
+      "tick": 528,
+      "timeSeconds": 4.4,
+      "velocity": {
+        "x": 96.666595,
+        "y": 139.583206
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13545.868164,
+        "y": 586.0090329999999
+      },
+      "ropePhase": "",
+      "tick": 534,
+      "timeSeconds": 4.45,
+      "velocity": {
+        "x": 151.666595,
+        "y": 217.083237
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13555.055664,
+        "y": 599.123596
+      },
+      "ropePhase": "",
+      "tick": 540,
+      "timeSeconds": 4.5,
+      "velocity": {
+        "x": 206.66662599999998,
+        "y": 294.583221
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13566.993164,
+        "y": 616.11322
+      },
+      "ropePhase": "",
+      "tick": 546,
+      "timeSeconds": 4.55,
+      "velocity": {
+        "x": 261.666656,
+        "y": 372.08315999999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13581.680664,
+        "y": 636.9777829999999
+      },
+      "ropePhase": "",
+      "tick": 552,
+      "timeSeconds": 4.6,
+      "velocity": {
+        "x": 316.666595,
+        "y": 449.583099
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13598.806641,
+        "y": 661.717346
+      },
+      "ropePhase": "",
+      "tick": 558,
+      "timeSeconds": 4.65,
+      "velocity": {
+        "x": 350,
+        "y": 527.083069
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13589.791991999999,
+        "y": 653.734741
+      },
+      "ropePhase": "",
+      "tick": 564,
+      "timeSeconds": 4.7,
+      "velocity": {
+        "x": -352.500031,
+        "y": -493.333313
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13573.770508,
+        "y": 631.328491
+      },
+      "ropePhase": "",
+      "tick": 570,
+      "timeSeconds": 4.75,
+      "velocity": {
+        "x": -297.500092,
+        "y": -415.833374
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13560.5,
+        "y": 612.797241
+      },
+      "ropePhase": "",
+      "tick": 576,
+      "timeSeconds": 4.8,
+      "velocity": {
+        "x": -242.50012199999998,
+        "y": -338.333435
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13549.979491999999,
+        "y": 598.140991
+      },
+      "ropePhase": "",
+      "tick": 582,
+      "timeSeconds": 4.85,
+      "velocity": {
+        "x": -187.500092,
+        "y": -260.83349599999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13542.208008,
+        "y": 587.359741
+      },
+      "ropePhase": "",
+      "tick": 588,
+      "timeSeconds": 4.9,
+      "velocity": {
+        "x": -132.500061,
+        "y": -183.333466
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13537.1875,
+        "y": 580.453491
+      },
+      "ropePhase": "",
+      "tick": 594,
+      "timeSeconds": 4.95,
+      "velocity": {
+        "x": -77.50007599999999,
+        "y": -105.83345
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "bash-lab:bash-t4",
+      "chunkId": "bash-lab",
+      "dashCharges": 0,
+      "energy": 4.5,
+      "health": 3,
+      "position": {
+        "x": 13534.84082,
+        "y": 577.422241
+      },
+      "ropePhase": "",
+      "tick": 600,
+      "timeSeconds": 5.0,
+      "velocity": {
+        "x": -31.666739999999997,
+        "y": -28.333454
+      }
+    }
+  ],
+  "visitedChunks": [
+    "bash-lab"
+  ],
+  "worldId": "cablester-3c-labs"
+}

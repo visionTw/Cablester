@@ -1,0 +1,143 @@
+{
+  "replayVersion": 1,
+  "worldId": "cablester-3c-labs",
+  "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+  "gameplayTuningVersion": "approved-1",
+  "fixedDelta": 0.008333333333333333,
+  "spawn": {
+    "chunkId": "glide-lab"
+  },
+  "frames": [
+    {
+      "tick": 0,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 1000000,
+        "y": 500
+      }
+    },
+    {
+      "tick": 1,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 1000000,
+        "y": 500
+      }
+    },
+    {
+      "tick": 150,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 1000000,
+        "y": 500
+      }
+    },
+    {
+      "tick": 190,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 1000000,
+        "y": 500
+      }
+    },
+    {
+      "tick": 310,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 1000000,
+        "y": 500
+      }
+    },
+    {
+      "tick": 600,
+      "actions": {
+        "move_left": false,
+        "move_right": false,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 1000000,
+        "y": 500
+      }
+    }
+  ],
+  "expectations": {
+    "maxDurationSeconds": 5,
+    "visitedChunks": [
+      "glide-lab"
+    ],
+    "abilities": [
+      "glide",
+      "wallGrab"
+    ],
+    "maxDeaths": 8
+  }
+}

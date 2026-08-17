@@ -1,10 +1,21 @@
-import { createReadStream, existsSync, statSync } from "node:fs";
+import { createReadStream, existsSync, lstatSync, statSync } from "node:fs";
+import { createHash, randomBytes, randomUUID, timingSafeEqual } from "node:crypto";
+import { mkdir, readdir, readFile, realpath, rename, unlink, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
-import { extname, join, normalize } from "node:path";
+import { basename, dirname, extname, join, normalize, resolve, sep } from "node:path";
 import { mediaAssetRelativePath } from "../src/asset-paths.js";
+import { serializeWorldPackage, validateWorldPackage } from "../src/world-schema.js";
+import { validateWorldInStages } from "../src/world-validation-worker.js";
 
 const root = process.cwd();
 const port = Number(process.env.CABLESTER_PORT || 4173);
+const worldRoot = resolve(root, "worlds");
+const worldPathPattern = /^worlds\/(formal|labs)\/[a-z0-9][a-z0-9._-]*\.world\.json$/i;
+const maximumWorldBytes = 20 * 1024 * 1024;
+const repositoryCapability = String(
+  process.env.CABLESTER_REPOSITORY_CAPABILITY || randomBytes(32).toString("base64url")
+);
+const activeSaves = new Set();
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
@@ -18,8 +29,241 @@ const mimeTypes = {
   ".svg": "image/svg+xml"
 };
 
-const server = createServer((request, response) => {
+function sendJson(response, status, body, headers = {}) {
+  response.writeHead(status, {
+    "cache-control": "no-store",
+    "content-type": "application/json; charset=utf-8",
+    ...headers
+  });
+  response.end(`${JSON.stringify(body)}\n`);
+}
+
+function isLoopbackAuthority(value) {
+  if (typeof value !== "string" || !value) return false;
+  try {
+    const hostname = new URL(`http://${value}`).hostname.replace(/^\[|\]$/g, "").toLowerCase();
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  } catch {
+    return false;
+  }
+}
+
+function isLoopbackOrigin(value) {
+  if (value === undefined) return true;
+  try {
+    const hostname = new URL(String(value)).hostname.toLowerCase();
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  } catch {
+    return false;
+  }
+}
+
+function hasRepositoryCapability(request) {
+  const supplied = String(request.headers["x-cablester-repository-capability"] || "");
+  const expectedBytes = Buffer.from(repositoryCapability);
+  const suppliedBytes = Buffer.from(supplied);
+  return expectedBytes.length === suppliedBytes.length && timingSafeEqual(expectedBytes, suppliedBytes);
+}
+
+function isPublishedWebPath(relativePath) {
+  const path = String(relativePath || "").replaceAll("\\", "/");
+  if (!path || path.includes("\0") || path.split("/").some((part) => part.startsWith("."))) return false;
+  if (["index.html", "styles.css", "og.png"].includes(path)) return true;
+  if (/^src\/[a-z0-9._/-]+\.js$/i.test(path)) return true;
+  if (/^levels\/[a-z0-9._/-]+\.json$/i.test(path)) return true;
+  if (/^assets\/[a-z0-9._/-]+\.(?:avif|jpe?g|png|svg|webp)$/i.test(path)) return true;
+  if (/^worlds\/(?:formal|labs|registries)\/[a-z0-9._/-]+\.json$/i.test(path)) return true;
+  if (/^artifacts\/godot\/[^/]+\.(?:json|png)$/i.test(path)) return true;
+  return false;
+}
+
+function safeWorldPath(value) {
+  const normalized = String(value || "").replaceAll("\\", "/").replace(/^\/+/, "");
+  if (!worldPathPattern.test(normalized) || normalized.includes("..")) return null;
+  const absolute = resolve(root, normalized);
+  if (!absolute.startsWith(`${worldRoot}${sep}`)) return null;
+  return { relative: normalized, absolute };
+}
+
+async function listWorldFiles() {
+  const files = [];
+  for (const namespace of ["formal", "labs"]) {
+    const directory = resolve(worldRoot, namespace);
+    if (!existsSync(directory)) continue;
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      if (!entry.isFile() || !entry.name.endsWith(".world.json")) continue;
+      const path = `worlds/${namespace}/${entry.name}`;
+      const stats = statSync(resolve(directory, entry.name));
+      files.push({ path, namespace, bytes: stats.size, modifiedAt: stats.mtime.toISOString() });
+    }
+  }
+  return files.sort((a, b) => a.path.localeCompare(b.path));
+}
+
+function readRequestBody(request, limit = maximumWorldBytes) {
+  return new Promise((resolveBody, reject) => {
+    const chunks = [];
+    let bytes = 0;
+    request.on("data", (chunk) => {
+      bytes += chunk.length;
+      if (bytes > limit) {
+        reject(Object.assign(new Error("World package exceeds the 20 MiB local save limit"), { status: 413 }));
+        request.destroy();
+        return;
+      }
+      chunks.push(chunk);
+    });
+    request.once("end", () => resolveBody(Buffer.concat(chunks).toString("utf8")));
+    request.once("error", reject);
+  });
+}
+
+function fileEtag(contents) {
+  return `"sha256:${createHash("sha256").update(contents).digest("hex")}"`;
+}
+
+async function handleWorldRepository(request, response) {
+  if (!hasRepositoryCapability(request)) {
+    sendJson(response, 403, {
+      message: "World repository access requires the capability URL printed by the local development server."
+    });
+    return;
+  }
+  if (request.method === "GET") {
+    sendJson(response, 200, {
+      mode: "read-write",
+      writable: true,
+      local: true,
+      root: "worlds/",
+      worlds: await listWorldFiles()
+    });
+    return;
+  }
+  if (request.method !== "PUT") {
+    sendJson(response, 405, { message: "Use GET to inspect or PUT to save a world package." }, { allow: "GET, PUT" });
+    return;
+  }
+  if (!isLoopbackOrigin(request.headers.origin)) {
+    sendJson(response, 403, { message: "World saves accept only a localhost Origin." });
+    return;
+  }
+  const target = safeWorldPath(request.headers["x-cablester-world-path"]);
+  if (!target) {
+    sendJson(response, 400, { message: "Save path must match worlds/formal/*.world.json or worlds/labs/*.world.json." });
+    return;
+  }
+  if (activeSaves.has(target.absolute)) {
+    sendJson(response, 409, { message: "Another save for this world is already in progress." });
+    return;
+  }
+  activeSaves.add(target.absolute);
+  try {
+  let contents;
+  let parsed;
+  try {
+    contents = await readRequestBody(request);
+    parsed = JSON.parse(contents);
+  } catch (error) {
+    if (!response.headersSent) sendJson(response, error.status || 400, { message: error.message || "Invalid JSON body." });
+    return;
+  }
+  if (!contents.endsWith("\n")) {
+    sendJson(response, 400, { message: "Canonical repository saves require exactly one trailing newline." });
+    return;
+  }
+  const targetNamespace = target.relative.split("/")[1];
+  if (parsed?.manifest?.namespace !== targetNamespace) {
+    sendJson(response, 422, {
+      message: `World manifest namespace ${parsed?.manifest?.namespace || "<missing>"} does not match target namespace ${targetNamespace}.`
+    });
+    return;
+  }
+  const staged = await validateWorldInStages(parsed);
+  const validationIssues = [
+    ...validateWorldPackage(parsed),
+    ...(staged.issues || [])
+  ];
+  const validationErrors = validationIssues.filter((item) => (item.severity || "error") === "error");
+  if (validationErrors.length > 0) {
+    sendJson(response, 422, {
+      message: `Canonical validation failed with ${validationErrors.length} error(s).`,
+      issues: validationErrors
+    });
+    return;
+  }
+  const deterministicContents = await serializeWorldPackage(parsed);
+  if (contents !== deterministicContents) {
+    sendJson(response, 422, {
+      message: "World body is not the deterministic sealed representation (two spaces, canonical key order, current contentHash, one LF)."
+    });
+    return;
+  }
+  const existed = existsSync(target.absolute);
+  if (existed && lstatSync(target.absolute).isSymbolicLink()) {
+    sendJson(response, 400, { message: "Refusing to overwrite a symbolic link." });
+    return;
+  }
+  if (existed && !request.headers["if-match"]) {
+    sendJson(response, 428, { message: "Existing world saves require If-Match; reload the repository file first." });
+    return;
+  }
+  if (existed) {
+    const current = await readFile(target.absolute);
+    if (fileEtag(current) !== request.headers["if-match"]) {
+      sendJson(response, 412, { message: "World file changed on disk; reload before saving." });
+      return;
+    }
+  }
+  await mkdir(dirname(target.absolute), { recursive: true });
+  const realParent = await realpath(dirname(target.absolute));
+  if (!realParent.startsWith(`${worldRoot}${sep}`)) {
+    sendJson(response, 400, { message: "Resolved save path leaves worlds/." });
+    return;
+  }
+  const temporary = resolve(dirname(target.absolute), `.${basename(target.absolute)}.${randomUUID()}.tmp`);
+  try {
+    await writeFile(temporary, contents, { encoding: "utf8", flag: "wx" });
+    if (!existed && existsSync(target.absolute)) {
+      throw Object.assign(new Error("World file appeared while saving; reload before retrying."), { status: 409 });
+    }
+    if (existed) {
+      const latest = await readFile(target.absolute);
+      if (fileEtag(latest) !== request.headers["if-match"]) {
+        throw Object.assign(new Error("World file changed while saving; reload before retrying."), { status: 412 });
+      }
+    }
+    await rename(temporary, target.absolute);
+  } catch (error) {
+    await unlink(temporary).catch(() => {});
+    sendJson(response, error.status || 500, { message: `Atomic world save failed: ${error.message}` });
+    return;
+  }
+  const etag = fileEtag(contents);
+  sendJson(response, existed ? 200 : 201, {
+    saved: true,
+    path: target.relative,
+    bytes: Buffer.byteLength(contents),
+    atomic: true,
+    etag
+  }, { etag });
+  } finally {
+    activeSaves.delete(target.absolute);
+  }
+}
+
+const server = createServer(async (request, response) => {
+  if (!isLoopbackAuthority(request.headers.host)) {
+    sendJson(response, 403, { message: "This development server accepts only localhost Host headers." });
+    return;
+  }
   const rawPath = (request.url || "/").split("?")[0];
+  if (rawPath === "/__cablester/world-repository") {
+    await handleWorldRepository(request, response).catch((error) => {
+      if (!response.headersSent) sendJson(response, 500, { message: error.message });
+      else response.end();
+    });
+    return;
+  }
   const requestedMedia = /^\/media\//i.test(rawPath);
   const rawMediaRelativePath = mediaAssetRelativePath(rawPath);
   if (requestedMedia && !rawMediaRelativePath) {
@@ -38,6 +282,11 @@ const server = createServer((request, response) => {
   const assetPath = rawMediaRelativePath ? `/assets/${rawMediaRelativePath}` : requestPath;
   const relativePath = assetPath === "/" ? "index.html" : assetPath.slice(1);
   const safePath = normalize(relativePath).replace(/^(\.\.[/\\])+/, "");
+  if (!isPublishedWebPath(safePath)) {
+    response.writeHead(404, { "content-type": "text/plain; charset=utf-8", "x-content-type-options": "nosniff" });
+    response.end("Not found");
+    return;
+  }
   let filePath = join(root, safePath);
 
   if (!filePath.startsWith(root) || !existsSync(filePath)) {
@@ -46,19 +295,24 @@ const server = createServer((request, response) => {
     return;
   }
 
-  if (statSync(filePath).isDirectory()) {
-    filePath = join(filePath, "index.html");
+  if (!statSync(filePath).isFile()) {
+    response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+    response.end("Not found");
+    return;
   }
 
-  response.writeHead(200, {
+  const headers = {
     "cache-control": requestPath.startsWith("/assets/") || requestPath.startsWith("/media/")
       ? "public, max-age=3600, must-revalidate"
       : "no-store",
-    "content-type": mimeTypes[extname(filePath).toLowerCase()] || "application/octet-stream"
-  });
+    "content-type": mimeTypes[extname(filePath).toLowerCase()] || "application/octet-stream",
+    "x-content-type-options": "nosniff"
+  };
+  if (safeWorldPath(safePath)) headers.etag = fileEtag(await readFile(filePath));
+  response.writeHead(200, headers);
   createReadStream(filePath).pipe(response);
 });
 
 server.listen(port, "127.0.0.1", () => {
-  console.log(`Cablester prototype: http://127.0.0.1:${port}`);
+  console.log(`Cablester prototype: http://127.0.0.1:${port}/#cablester-repository-capability=${encodeURIComponent(repositoryCapability)}`);
 });

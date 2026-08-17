@@ -8,6 +8,7 @@ import {
   DEFAULT_ASSET_REGISTRY,
   GAME_ASSET_IDS,
   GENERATED_GAME_ASSETS,
+  LANDMARK_ASSET_IDS,
   SCENE_ASSET_IDS,
   assetDeliveryUrl,
   createAssetRegistry,
@@ -120,10 +121,10 @@ test("asset registry supports search, applicability and project/type defaults", 
 test("generated project assets have complete metadata and files matching the registry", () => {
   assert.deepEqual(validateAssetRegistry(DEFAULT_ASSET_REGISTRY), []);
   assert.deepEqual(createAssetRegistry(), structuredClone(DEFAULT_ASSET_REGISTRY));
-  assert.equal(GENERATED_GAME_ASSETS.length, 22);
+  assert.equal(GENERATED_GAME_ASSETS.length, 25);
   assert.deepEqual(
     searchAssets(DEFAULT_ASSET_REGISTRY, { objectType: "scene", kind: "image" }).map((asset) => asset.id),
-    Object.values(SCENE_ASSET_IDS)
+    [...Object.values(SCENE_ASSET_IDS), ...Object.values(LANDMARK_ASSET_IDS)]
   );
   for (const asset of GENERATED_GAME_ASSETS) {
     assert.match(asset.prompt, /original|Create one original/i);

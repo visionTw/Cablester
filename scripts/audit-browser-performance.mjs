@@ -858,6 +858,21 @@ async function environmentSnapshot(cdp, chromeVersion, browserInfo) {
   };
 }
 
+function portableEnvironment(snapshot, { controlledHardwareConcurrency = null } = {}) {
+  return {
+    chromeVersion: snapshot.chromeVersion,
+    browserProduct: snapshot.browserProduct,
+    browserProtocolVersion: snapshot.browserProtocolVersion,
+    deviceProfile: controlledHardwareConcurrency === null ? "local-desktop-redacted" : "controlled-low-tier",
+    controlledHardwareConcurrency,
+    devicePixelRatio: snapshot.devicePixelRatio,
+    prefersReducedMotion: snapshot.prefersReducedMotion,
+    crossOriginIsolated: snapshot.crossOriginIsolated,
+    webglAvailable: Boolean(snapshot.webgl),
+    privacy: "Host, OS, processor, memory and GPU-identifying fields are intentionally omitted from repository evidence."
+  };
+}
+
 async function collectInputFingerprint() {
   const roots = [
     join(projectRoot, "index.html"),
@@ -1119,9 +1134,9 @@ async function main() {
         lowTier: "A controlled CDP hardwareConcurrency=4 override triggers the runtime auto low tier; 4x CPU throttling supplies a separate slower-device frame sample. This is controlled emulation, not the host hardware baseline."
       },
       environment: {
-        cold: coldEnvironment,
-        lowTierControlled: lowEnvironment,
-        gpuInfo,
+        cold: portableEnvironment(coldEnvironment),
+        lowTierControlled: portableEnvironment(lowEnvironment, { controlledHardwareConcurrency: 4 }),
+        gpuInfo: { available: Boolean(gpuInfo), detailsRedacted: true },
         gpuMemoryMeasurement: {
           available: false,
           reason: "Chrome/CDP does not expose reliable per-page GPU texture memory for this Canvas workload; texture bytes are reported only as a VisualRuntime estimate."
@@ -1174,10 +1189,8 @@ async function main() {
       ranAt: report.generatedAt,
       environment: {
         chromeVersion: coldEnvironment.chromeVersion,
-        platform: coldEnvironment.platform,
-        hardwareConcurrency: coldEnvironment.hardwareConcurrency,
-        deviceMemoryGiB: coldEnvironment.deviceMemoryGiB,
-        webgl: coldEnvironment.webgl,
+        deviceProfile: "local-desktop-redacted",
+        privacy: "Host and hardware-identifying fields are intentionally omitted from repository evidence.",
         browserSurface: "Installed Google Chrome headless=new through direct CDP"
       },
       contentFingerprint: referenceContentFingerprint,

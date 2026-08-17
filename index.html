@@ -28,6 +28,8 @@
           <div class="menu-actions">
             <button id="open-level-editor" class="primary-action" type="button">打开关卡工坊</button>
             <span>搭建、生成并试玩自己的路线</span>
+            <button id="open-world-studio" class="primary-action world-studio-launch" type="button">打开世界工作室</button>
+            <span>World / Region / Chunk / Godot 回读</span>
           </div>
           <div id="level-grid" class="level-grid" aria-label="测试关卡"></div>
           <p class="menu-hint">关卡内按 <kbd>Esc</kbd> 返回这里</p>
@@ -199,6 +201,103 @@
       </div>
       <input id="editor-file-input" type="file" accept="application/json,.json" hidden />
     </section>
+    <section id="world-studio" class="world-studio" aria-label="Cablester 世界工作室" hidden>
+      <header class="world-studio-topbar">
+        <div class="world-studio-brand">
+          <span class="eyebrow">CABLESTER WORLD STUDIO</span>
+          <strong>Canonical 世界工作室</strong>
+          <small id="world-repository-mode" data-writable="false">ONLINE / STATIC · 只读</small>
+        </div>
+        <label class="world-path-picker">
+          <span>仓库世界</span>
+          <select id="world-path-select" aria-label="选择 canonical 世界文件"></select>
+        </label>
+        <div class="world-studio-actions">
+          <button id="world-open" type="button">打开</button>
+          <button id="world-refresh" type="button">回读</button>
+          <button id="world-import" type="button">导入 JSON</button>
+          <button id="world-export" type="button">导出 JSON</button>
+          <button id="world-save" class="world-primary" type="button">保存到仓库</button>
+          <button id="world-close" class="world-icon-action" type="button" aria-label="关闭世界工作室">×</button>
+        </div>
+      </header>
+
+      <nav class="world-view-tabs" aria-label="世界预览层级">
+        <button type="button" data-world-view="world" data-active="true" aria-pressed="true"><span>01</span>世界总览<small>RegionGraph</small></button>
+        <button type="button" data-world-view="region" data-active="false" aria-pressed="false"><span>02</span>区域视图<small>ChunkGraph</small></button>
+        <button type="button" data-world-view="chunk" data-active="false" aria-pressed="false"><span>03</span>本地区块<small>当前 + 一跳邻居</small></button>
+        <button type="button" data-world-view="godot" data-active="false" aria-pressed="false"><span>04</span>Godot 回读<small>Snapshot + Telemetry</small></button>
+      </nav>
+
+      <div class="world-studio-workspace">
+        <aside class="world-tree-panel" aria-label="世界层级与稳定 ID 搜索">
+          <div class="world-panel-heading"><strong>Canonical 层级</strong><small>稳定 ID 是跨端引用</small></div>
+          <div class="world-search-row">
+            <input id="world-search" type="search" placeholder="搜索 ID、类型、标签…" aria-label="搜索稳定 ID、物件类型或标签" />
+            <select id="world-filter" aria-label="筛选实体层级">
+              <option value="all">全部层级</option>
+              <option value="region">Region</option>
+              <option value="chunk">Chunk</option>
+              <option value="object">Object</option>
+            </select>
+          </div>
+          <div id="world-tree" class="world-tree" role="tree"></div>
+        </aside>
+
+        <main class="world-preview-stage">
+          <div class="world-preview-toolbar" aria-label="世界编辑与预览工具">
+            <button id="world-undo" type="button">撤销</button>
+            <button id="world-redo" type="button">重做</button>
+            <button id="world-duplicate" type="button">复制</button>
+            <button id="world-delete" type="button">删除</button>
+            <span class="world-toolbar-separator"></span>
+            <button id="world-fit" type="button">适应视图</button>
+            <span class="world-canvas-edit-hint">拖拽：Region / Chunk / Object · 空白处平移</span>
+            <span id="world-lod-label">LOD index-only</span>
+            <span id="world-visible-label">0/0 区块 · 0/0 物件</span>
+            <span class="world-toolbar-spacer"></span>
+            <span id="world-dirty-label">已同步</span>
+          </div>
+          <div class="world-canvas-wrap">
+            <canvas id="world-preview-canvas" width="1280" height="720" tabindex="0" aria-label="世界、区域、区块和 Godot 回读 Canvas"></canvas>
+            <div class="world-canvas-legend" aria-label="数据来源图例">
+              <span data-source="canonical-prediction">Canonical 推算</span>
+              <span data-source="web-contract">Web 契约</span>
+              <span data-source="godot-snapshot">Godot Snapshot</span>
+              <span data-source="godot-telemetry">Telemetry</span>
+              <span data-source="godot-only-proxy">Godot-only 代理</span>
+            </div>
+          </div>
+          <div class="world-stream-controls" aria-label="流式加载预测控制">
+            <strong>Streaming prediction</strong>
+            <button id="world-stream-toggle" type="button">播放流式预测</button>
+            <button id="world-stream-turn" type="button">掉头</button>
+            <button id="world-stream-teleport" type="button">瞬移</button>
+            <button id="world-stream-aba" type="button">A→B→A</button>
+            <small>方向预取 · 滞回 · keep-alive · 迟到结果丢弃 · 缓存/内存；仅为 Web 预测</small>
+          </div>
+          <footer class="world-statusbar">
+            <span id="world-status" data-tone="neutral">打开 canonical World Package 开始编辑。</span>
+            <div class="world-validation-controls">
+              <progress id="world-validation-progress" max="1" value="0"></progress>
+              <span id="world-validation-label">尚未验证</span>
+              <button id="world-validate" type="button">全图验证</button>
+              <button id="world-validation-cancel" type="button" disabled>取消</button>
+              <button id="world-play" class="world-primary" type="button">Web 试玩</button>
+              <button id="world-godot-command" type="button">复制 Godot 4.7.1 导入命令</button>
+            </div>
+          </footer>
+        </main>
+
+        <aside class="world-inspector-panel" aria-label="世界实体属性与回读诊断">
+          <div id="world-inspector" class="world-inspector"></div>
+          <div class="world-panel-heading world-diagnostics-heading"><strong>跨端诊断</strong><small>Snapshot 永远只读</small></div>
+          <div id="world-diagnostics" class="world-diagnostics"></div>
+        </aside>
+      </div>
+      <input id="world-file-input" type="file" accept="application/json,.json,.world.json" hidden />
+    </section>
     <script type="module" src="./src/game.js"></script>
+    <script type="module" src="./src/world-editor.js"></script>
   </body>
 </html>

@@ -1,0 +1,2336 @@
+{
+  "chunkEvents": [
+    {
+      "chunkId": "double-jump-lab",
+      "kind": "load",
+      "timeUsec": 701252
+    },
+    {
+      "chunkId": "double-jump-lab",
+      "kind": "state",
+      "state": "active",
+      "timeUsec": 701258
+    }
+  ],
+  "counters": {
+    "checkpoints": 1,
+    "chunkLoads": 1,
+    "chunkUnloads": 0,
+    "deaths": 1,
+    "exits": 0,
+    "physicsTicks": 601
+  },
+  "deaths": 1,
+  "durationSeconds": 0.267234,
+  "expectations": {
+    "abilities": [
+      "doubleJump",
+      "wallGrab"
+    ],
+    "maxDeaths": 8.0,
+    "maxDurationSeconds": 5.0,
+    "visitedChunks": [
+      "double-jump-lab"
+    ]
+  },
+  "finalPlayer": {
+    "airJumps": 1,
+    "attachedMode": "",
+    "attachmentLength": 0,
+    "attachmentTargetId": "",
+    "bashTargetId": "",
+    "checkpointId": "double-jump-lab:dj-cp-start",
+    "dashCharges": 0,
+    "energy": 6,
+    "gravityDirection": {
+      "x": 0,
+      "y": 1
+    },
+    "health": 3,
+    "maximumDashCharges": 0,
+    "position": {
+      "x": 19364.890625,
+      "y": 725.1875
+    },
+    "ropePhase": "",
+    "velocity": {
+      "x": 387.452942,
+      "y": -227.916733
+    },
+    "visualState": {
+      "collisionRadius": 18.0,
+      "renderOnly": true,
+      "rope": {
+        "active": false,
+        "animationSag": 0.0,
+        "authoredLength": 0.0,
+        "bend": "(0.0, 1.0)",
+        "displayLength": 0.0,
+        "end": "(0.0, 0.0)",
+        "id": "",
+        "maximumSlackSag": 0.0,
+        "phase": "",
+        "physicalSag": 0.0,
+        "start": "(0.0, 0.0)",
+        "targetSag": 0.0,
+        "targetTension": 0.0,
+        "visualSag": 0.0,
+        "visualTension": 0.0
+      },
+      "softBody": {
+        "axisAngle": 1.9663327677226126,
+        "dashBlend": 0.0,
+        "jumpTimer": 0.0,
+        "landingSquash": 0.2167166748046875,
+        "landingTimer": 0.0,
+        "motionTailBlend": 0.0,
+        "pose": {
+          "angle": 1.9663327677226126,
+          "areaRatio": 1.0,
+          "crossRadius": 16.5609091204421,
+          "longRadius": 19.56414334766609
+        },
+        "stretch": 0.08689685264811603,
+        "stretchVelocity": 0.45010370502216657,
+        "targetAxis": 1.5707963705062866,
+        "targetStretch": 0.09271189130362818
+      },
+      "tail": {
+        "bodyAcceleration": "(0.0, 1550.0)",
+        "desiredLength": 46.833519392116095,
+        "facing": 1.0,
+        "facingVelocity": 0.0,
+        "offset": "(-43.63293, 14.91172)",
+        "relativeForce": "(0.0, -0.000088)",
+        "velocity": "(37.44418, 74.38472)"
+      },
+      "timing": {
+        "accumulator": 0.0,
+        "fixedStep": 0.008333333333333333,
+        "maxFrameDelta": 0.1
+      }
+    }
+  },
+  "finalPosition": {
+    "x": 19364.890625,
+    "y": 725.1875
+  },
+  "finalResources": {
+    "airJumps": 1,
+    "dashCharges": 0,
+    "energy": 6,
+    "health": 3
+  },
+  "finalState": {
+    "abilities": {
+      "doubleJump": true,
+      "wallGrab": true
+    },
+    "activeChunkId": "double-jump-lab",
+    "checkpoint": {
+      "chunkId": "double-jump-lab",
+      "id": "double-jump-lab:dj-cp-start",
+      "position": {
+        "x": 18700.0,
+        "y": 590.0
+      }
+    },
+    "checkpointState": {},
+    "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+    "flags": {
+      "bellroot-bells-rung": false,
+      "cistern-sluice-open": false,
+      "crown-route-open": false,
+      "echo-seed-lit": false,
+      "heartwood-awake": false,
+      "nursery-restored": false
+    },
+    "objectStates": {},
+    "saveVersion": 1,
+    "savedAt": "2026-08-17T13:27:08",
+    "visitedChunks": [
+      "double-jump-lab"
+    ],
+    "worldId": "cablester-3c-labs"
+  },
+  "fixedPhysicsHz": 120,
+  "gameplayTuningVersion": "approved-1",
+  "godotBuildId": "4.7.1.stable.official.a13da4feb",
+  "latestTelemetryPath": "artifacts/godot/cablester-3c-labs.telemetry.json",
+  "performance": {
+    "estimatedMemoryBytes": 4194304,
+    "frameTimeP50Ms": 0.426,
+    "frameTimeP95Ms": 0.606,
+    "frameTimeP99Ms": 0.672,
+    "loadedChunkCount": 1,
+    "physicsTimeP50Ms": 0.371,
+    "physicsTimeP95Ms": 0.477,
+    "physicsTimeP99Ms": 0.549
+  },
+  "persistedState": {
+    "abilities": {},
+    "activeChunkId": "double-jump-lab",
+    "checkpoint": {},
+    "checkpointState": {},
+    "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+    "flags": {},
+    "objectStates": {},
+    "saveVersion": 1,
+    "savedAt": "2026-08-17T13:27:08",
+    "visitedChunks": [
+      "double-jump-lab"
+    ],
+    "worldId": "cablester-3c-labs"
+  },
+  "replayPath": "worlds/replays/labs/double-jump-lab.replay.json",
+  "replaySlug": "double-jump-lab",
+  "sourceContentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+  "startedAtUsec": 701476,
+  "targetState": {
+    "bashTargets": [],
+    "dashTicks": [],
+    "deathTicks": [
+      303
+    ],
+    "doubleJumpTicks": [
+      50
+    ],
+    "glideTicks": [],
+    "hardBarTargets": [],
+    "hazardDamageTicks": [
+      468,
+      589
+    ],
+    "ropeTargets": [],
+    "windZoneTicks": []
+  },
+  "telemetryPath": "artifacts/godot/cablester-3c-labs.double-jump-lab.telemetry.json",
+  "telemetryVersion": 1,
+  "trajectory": [
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18700.076172,
+        "y": 590.107666
+      },
+      "ropePhase": "",
+      "tick": 0,
+      "timeSeconds": 0.0,
+      "velocity": {
+        "x": 9.166667,
+        "y": 12.916666999999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18702.138672,
+        "y": 593.013916
+      },
+      "ropePhase": "",
+      "tick": 6,
+      "timeSeconds": 0.05,
+      "velocity": {
+        "x": 64.16667199999999,
+        "y": 90.416664
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18706.949219,
+        "y": 599.795166
+      },
+      "ropePhase": "",
+      "tick": 12,
+      "timeSeconds": 0.1,
+      "velocity": {
+        "x": 119.16665599999999,
+        "y": 167.916672
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18714.513672,
+        "y": 610.451416
+      },
+      "ropePhase": "",
+      "tick": 18,
+      "timeSeconds": 0.15,
+      "velocity": {
+        "x": 174.166687,
+        "y": 245.416702
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18724.923828,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 24,
+      "timeSeconds": 0.2,
+      "velocity": {
+        "x": 240.833374,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18740.476563,
+        "y": 617.190979
+      },
+      "ropePhase": "",
+      "tick": 30,
+      "timeSeconds": 0.25,
+      "velocity": {
+        "x": 350,
+        "y": -577.083313
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18757.972655999998,
+        "y": 590.597229
+      },
+      "ropePhase": "",
+      "tick": 36,
+      "timeSeconds": 0.3,
+      "velocity": {
+        "x": 350,
+        "y": -499.583221
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18775.46875,
+        "y": 567.878479
+      },
+      "ropePhase": "",
+      "tick": 42,
+      "timeSeconds": 0.35,
+      "velocity": {
+        "x": 350,
+        "y": -422.083282
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18792.964844,
+        "y": 549.034729
+      },
+      "ropePhase": "",
+      "tick": 48,
+      "timeSeconds": 0.4,
+      "velocity": {
+        "x": 350,
+        "y": -344.583344
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18810.460938,
+        "y": 510.95764199999996
+      },
+      "ropePhase": "",
+      "tick": 54,
+      "timeSeconds": 0.45,
+      "velocity": {
+        "x": 350,
+        "y": -821.683228
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18827.957030999998,
+        "y": 472.133881
+      },
+      "ropePhase": "",
+      "tick": 60,
+      "timeSeconds": 0.5,
+      "velocity": {
+        "x": 350,
+        "y": -744.183105
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18845.453125,
+        "y": 437.18514999999996
+      },
+      "ropePhase": "",
+      "tick": 66,
+      "timeSeconds": 0.55,
+      "velocity": {
+        "x": 350,
+        "y": -666.6829829999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18862.949219,
+        "y": 406.11142
+      },
+      "ropePhase": "",
+      "tick": 72,
+      "timeSeconds": 0.6,
+      "velocity": {
+        "x": 350,
+        "y": -589.182861
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18880.445313,
+        "y": 378.91265899999996
+      },
+      "ropePhase": "",
+      "tick": 78,
+      "timeSeconds": 0.65,
+      "velocity": {
+        "x": 350,
+        "y": -511.68277
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18897.941405999998,
+        "y": 355.588959
+      },
+      "ropePhase": "",
+      "tick": 84,
+      "timeSeconds": 0.7,
+      "velocity": {
+        "x": 350,
+        "y": -434.18283099999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18915.4375,
+        "y": 336.140228
+      },
+      "ropePhase": "",
+      "tick": 90,
+      "timeSeconds": 0.75,
+      "velocity": {
+        "x": 350,
+        "y": -356.682892
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18932.933594,
+        "y": 320.566467
+      },
+      "ropePhase": "",
+      "tick": 96,
+      "timeSeconds": 0.8,
+      "velocity": {
+        "x": 350,
+        "y": -279.182953
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18950.429688,
+        "y": 308.86776699999996
+      },
+      "ropePhase": "",
+      "tick": 102,
+      "timeSeconds": 0.85,
+      "velocity": {
+        "x": 350,
+        "y": -201.68293799999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18967.925780999998,
+        "y": 301.044037
+      },
+      "ropePhase": "",
+      "tick": 108,
+      "timeSeconds": 0.9,
+      "velocity": {
+        "x": 350,
+        "y": -124.182915
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18985.421875,
+        "y": 297.095276
+      },
+      "ropePhase": "",
+      "tick": 114,
+      "timeSeconds": 0.95,
+      "velocity": {
+        "x": 350,
+        "y": -46.682922
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19002.917969,
+        "y": 297.021576
+      },
+      "ropePhase": "",
+      "tick": 120,
+      "timeSeconds": 1.0,
+      "velocity": {
+        "x": 350,
+        "y": 30.817080999999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19020.414063,
+        "y": 300.822845
+      },
+      "ropePhase": "",
+      "tick": 126,
+      "timeSeconds": 1.05,
+      "velocity": {
+        "x": 350,
+        "y": 108.317078
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19037.910155999998,
+        "y": 308.499084
+      },
+      "ropePhase": "",
+      "tick": 132,
+      "timeSeconds": 1.1,
+      "velocity": {
+        "x": 350,
+        "y": 185.817093
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19055.40625,
+        "y": 320.050385
+      },
+      "ropePhase": "",
+      "tick": 138,
+      "timeSeconds": 1.15,
+      "velocity": {
+        "x": 350,
+        "y": 263.31710799999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19072.902344,
+        "y": 335.476654
+      },
+      "ropePhase": "",
+      "tick": 144,
+      "timeSeconds": 1.2,
+      "velocity": {
+        "x": 350,
+        "y": 340.817047
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19090.398438,
+        "y": 354.777893
+      },
+      "ropePhase": "",
+      "tick": 150,
+      "timeSeconds": 1.25,
+      "velocity": {
+        "x": 350,
+        "y": 418.316986
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19107.894530999998,
+        "y": 377.954193
+      },
+      "ropePhase": "",
+      "tick": 156,
+      "timeSeconds": 1.3,
+      "velocity": {
+        "x": 350,
+        "y": 495.81692499999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19125.390625,
+        "y": 405.00546299999996
+      },
+      "ropePhase": "",
+      "tick": 162,
+      "timeSeconds": 1.35,
+      "velocity": {
+        "x": 350,
+        "y": 573.317017
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19142.886719,
+        "y": 435.931702
+      },
+      "ropePhase": "",
+      "tick": 168,
+      "timeSeconds": 1.4,
+      "velocity": {
+        "x": 350,
+        "y": 650.817139
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19160.382813,
+        "y": 470.733002
+      },
+      "ropePhase": "",
+      "tick": 174,
+      "timeSeconds": 1.45,
+      "velocity": {
+        "x": 350,
+        "y": 728.3172609999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19177.878905999998,
+        "y": 509.40930199999997
+      },
+      "ropePhase": "",
+      "tick": 180,
+      "timeSeconds": 1.5,
+      "velocity": {
+        "x": 350,
+        "y": 805.817383
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19195.378905999998,
+        "y": 518.042725
+      },
+      "ropePhase": "",
+      "tick": 186,
+      "timeSeconds": 1.55,
+      "velocity": {
+        "x": 350,
+        "y": 51.666667999999994
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19212.875,
+        "y": 522.886475
+      },
+      "ropePhase": "",
+      "tick": 192,
+      "timeSeconds": 1.6,
+      "velocity": {
+        "x": 350,
+        "y": 129.166656
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19230.371094,
+        "y": 531.605225
+      },
+      "ropePhase": "",
+      "tick": 198,
+      "timeSeconds": 1.65,
+      "velocity": {
+        "x": 350,
+        "y": 206.666687
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19247.867188,
+        "y": 544.198975
+      },
+      "ropePhase": "",
+      "tick": 204,
+      "timeSeconds": 1.7,
+      "velocity": {
+        "x": 350,
+        "y": 284.16668699999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19265.363280999998,
+        "y": 560.667725
+      },
+      "ropePhase": "",
+      "tick": 210,
+      "timeSeconds": 1.75,
+      "velocity": {
+        "x": 350,
+        "y": 361.666626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19282.859375,
+        "y": 581.011475
+      },
+      "ropePhase": "",
+      "tick": 216,
+      "timeSeconds": 1.8,
+      "velocity": {
+        "x": 350,
+        "y": 439.166565
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19300.355469,
+        "y": 605.230225
+      },
+      "ropePhase": "",
+      "tick": 222,
+      "timeSeconds": 1.85,
+      "velocity": {
+        "x": 350,
+        "y": 516.666504
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19317.851563,
+        "y": 633.323975
+      },
+      "ropePhase": "",
+      "tick": 228,
+      "timeSeconds": 1.9,
+      "velocity": {
+        "x": 350,
+        "y": 594.166626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19335.347655999998,
+        "y": 665.292725
+      },
+      "ropePhase": "",
+      "tick": 234,
+      "timeSeconds": 1.95,
+      "velocity": {
+        "x": 350,
+        "y": 671.666748
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19352.84375,
+        "y": 701.136475
+      },
+      "ropePhase": "",
+      "tick": 240,
+      "timeSeconds": 2.0,
+      "velocity": {
+        "x": 350,
+        "y": 749.16687
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19370.339844,
+        "y": 740.855225
+      },
+      "ropePhase": "",
+      "tick": 246,
+      "timeSeconds": 2.05,
+      "velocity": {
+        "x": 350,
+        "y": 826.6669919999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19387.835938,
+        "y": 784.448975
+      },
+      "ropePhase": "",
+      "tick": 252,
+      "timeSeconds": 2.1,
+      "velocity": {
+        "x": 350,
+        "y": 904.167114
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19405.332030999998,
+        "y": 831.917786
+      },
+      "ropePhase": "",
+      "tick": 258,
+      "timeSeconds": 2.15,
+      "velocity": {
+        "x": 350,
+        "y": 981.667236
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19422.828125,
+        "y": 883.2615969999999
+      },
+      "ropePhase": "",
+      "tick": 264,
+      "timeSeconds": 2.2,
+      "velocity": {
+        "x": 350,
+        "y": 1059.167236
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19440.324219,
+        "y": 938.4803469999999
+      },
+      "ropePhase": "",
+      "tick": 270,
+      "timeSeconds": 2.25,
+      "velocity": {
+        "x": 350,
+        "y": 1136.666992
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19457.820313,
+        "y": 997.3275759999999
+      },
+      "ropePhase": "",
+      "tick": 276,
+      "timeSeconds": 2.3,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19475.316405999998,
+        "y": 1056.9732669999999
+      },
+      "ropePhase": "",
+      "tick": 282,
+      "timeSeconds": 2.35,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19492.8125,
+        "y": 1116.618774
+      },
+      "ropePhase": "",
+      "tick": 288,
+      "timeSeconds": 2.4,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19510.308594,
+        "y": 1176.2642819999999
+      },
+      "ropePhase": "",
+      "tick": 294,
+      "timeSeconds": 2.45,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19527.804688,
+        "y": 1235.90979
+      },
+      "ropePhase": "",
+      "tick": 300,
+      "timeSeconds": 2.5,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19533.636719,
+        "y": 1255.791626
+      },
+      "ropePhase": "",
+      "tick": 306,
+      "timeSeconds": 2.55,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19533.636719,
+        "y": 1255.791626
+      },
+      "ropePhase": "",
+      "tick": 312,
+      "timeSeconds": 2.6,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19533.636719,
+        "y": 1255.791626
+      },
+      "ropePhase": "",
+      "tick": 318,
+      "timeSeconds": 2.65,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19533.636719,
+        "y": 1255.791626
+      },
+      "ropePhase": "",
+      "tick": 324,
+      "timeSeconds": 2.7,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19533.636719,
+        "y": 1255.791626
+      },
+      "ropePhase": "",
+      "tick": 330,
+      "timeSeconds": 2.75,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19533.636719,
+        "y": 1255.791626
+      },
+      "ropePhase": "",
+      "tick": 336,
+      "timeSeconds": 2.8,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19533.636719,
+        "y": 1255.791626
+      },
+      "ropePhase": "",
+      "tick": 342,
+      "timeSeconds": 2.85,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19533.636719,
+        "y": 1255.791626
+      },
+      "ropePhase": "",
+      "tick": 348,
+      "timeSeconds": 2.9,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 19533.636719,
+        "y": 1255.791626
+      },
+      "ropePhase": "",
+      "tick": 354,
+      "timeSeconds": 2.95,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18700.761719,
+        "y": 591.076416
+      },
+      "ropePhase": "",
+      "tick": 360,
+      "timeSeconds": 3.0,
+      "velocity": {
+        "x": 36.666668,
+        "y": 51.666667999999994
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18704.201172,
+        "y": 595.920166
+      },
+      "ropePhase": "",
+      "tick": 366,
+      "timeSeconds": 3.05,
+      "velocity": {
+        "x": 91.666664,
+        "y": 129.166656
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18710.388672,
+        "y": 604.638916
+      },
+      "ropePhase": "",
+      "tick": 372,
+      "timeSeconds": 3.1,
+      "velocity": {
+        "x": 146.666672,
+        "y": 206.666687
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18719.324219,
+        "y": 617.232666
+      },
+      "ropePhase": "",
+      "tick": 378,
+      "timeSeconds": 3.15,
+      "velocity": {
+        "x": 201.666702,
+        "y": 284.16668699999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18731.984375,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 384,
+      "timeSeconds": 3.2,
+      "velocity": {
+        "x": 303.33340499999997,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18749.224609,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 390,
+      "timeSeconds": 3.25,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18766.720703,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 396,
+      "timeSeconds": 3.3,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18784.216797,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 402,
+      "timeSeconds": 3.35,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18801.712891,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 408,
+      "timeSeconds": 3.4,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18819.208984,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 414,
+      "timeSeconds": 3.45,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18836.705078,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 420,
+      "timeSeconds": 3.5,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18854.201172,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 426,
+      "timeSeconds": 3.55,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18871.697266,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 432,
+      "timeSeconds": 3.6,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18889.193359,
+        "y": 622
+      },
+      "ropePhase": "",
+      "tick": 438,
+      "timeSeconds": 3.65,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18906.693359,
+        "y": 622.5588379999999
+      },
+      "ropePhase": "",
+      "tick": 444,
+      "timeSeconds": 3.7,
+      "velocity": {
+        "x": 350,
+        "y": 38.75
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18924.189453,
+        "y": 626.756714
+      },
+      "ropePhase": "",
+      "tick": 450,
+      "timeSeconds": 3.75,
+      "velocity": {
+        "x": 350,
+        "y": 116.24999199999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18941.685547,
+        "y": 634.829651
+      },
+      "ropePhase": "",
+      "tick": 456,
+      "timeSeconds": 3.8,
+      "velocity": {
+        "x": 350,
+        "y": 193.750015
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 18959.181641,
+        "y": 646.7775879999999
+      },
+      "ropePhase": "",
+      "tick": 462,
+      "timeSeconds": 3.85,
+      "velocity": {
+        "x": 350,
+        "y": 271.250031
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 18976.677734,
+        "y": 662.600464
+      },
+      "ropePhase": "",
+      "tick": 468,
+      "timeSeconds": 3.9,
+      "velocity": {
+        "x": 330.169983,
+        "y": -370
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 18994.074219,
+        "y": 646.3608399999999
+      },
+      "ropePhase": "",
+      "tick": 474,
+      "timeSeconds": 3.95,
+      "velocity": {
+        "x": 350,
+        "y": -292.50006099999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19011.570313,
+        "y": 633.996277
+      },
+      "ropePhase": "",
+      "tick": 480,
+      "timeSeconds": 4.0,
+      "velocity": {
+        "x": 350,
+        "y": -215.000061
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19029.066405999998,
+        "y": 625.506714
+      },
+      "ropePhase": "",
+      "tick": 486,
+      "timeSeconds": 4.05,
+      "velocity": {
+        "x": 350,
+        "y": -137.500031
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19046.5625,
+        "y": 620.8920899999999
+      },
+      "ropePhase": "",
+      "tick": 492,
+      "timeSeconds": 4.1,
+      "velocity": {
+        "x": 350,
+        "y": -60.000042
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19063.107422,
+        "y": 621.895996
+      },
+      "ropePhase": "",
+      "tick": 498,
+      "timeSeconds": 4.15,
+      "velocity": {
+        "x": 270.745178,
+        "y": 167.308334
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19078.25,
+        "y": 632.521851
+      },
+      "ropePhase": "",
+      "tick": 504,
+      "timeSeconds": 4.2,
+      "velocity": {
+        "x": 325.745117,
+        "y": 244.80836499999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19095.572266,
+        "y": 647.022705
+      },
+      "ropePhase": "",
+      "tick": 510,
+      "timeSeconds": 4.25,
+      "velocity": {
+        "x": 350,
+        "y": 322.308319
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19113.068359,
+        "y": 665.398499
+      },
+      "ropePhase": "",
+      "tick": 516,
+      "timeSeconds": 4.3,
+      "velocity": {
+        "x": 350,
+        "y": 399.80825799999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19130.564453,
+        "y": 687.649292
+      },
+      "ropePhase": "",
+      "tick": 522,
+      "timeSeconds": 4.35,
+      "velocity": {
+        "x": 350,
+        "y": 477.30819699999995
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19148.060547,
+        "y": 713.775146
+      },
+      "ropePhase": "",
+      "tick": 528,
+      "timeSeconds": 4.4,
+      "velocity": {
+        "x": 350,
+        "y": 554.808228
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19165.556641,
+        "y": 743.77594
+      },
+      "ropePhase": "",
+      "tick": 534,
+      "timeSeconds": 4.45,
+      "velocity": {
+        "x": 350,
+        "y": 632.30835
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19183.052734,
+        "y": 752
+      },
+      "ropePhase": "",
+      "tick": 540,
+      "timeSeconds": 4.5,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19200.548828,
+        "y": 752
+      },
+      "ropePhase": "",
+      "tick": 546,
+      "timeSeconds": 4.55,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19218.044921999997,
+        "y": 752
+      },
+      "ropePhase": "",
+      "tick": 552,
+      "timeSeconds": 4.6,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19235.541016,
+        "y": 752
+      },
+      "ropePhase": "",
+      "tick": 558,
+      "timeSeconds": 4.65,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19253.037109,
+        "y": 752
+      },
+      "ropePhase": "",
+      "tick": 564,
+      "timeSeconds": 4.7,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19270.533203,
+        "y": 752
+      },
+      "ropePhase": "",
+      "tick": 570,
+      "timeSeconds": 4.75,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19288.029296999997,
+        "y": 752
+      },
+      "ropePhase": "",
+      "tick": 576,
+      "timeSeconds": 4.8,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19305.525391,
+        "y": 752
+      },
+      "ropePhase": "",
+      "tick": 582,
+      "timeSeconds": 4.85,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 4,
+      "position": {
+        "x": 19323.021484,
+        "y": 752
+      },
+      "ropePhase": "",
+      "tick": 588,
+      "timeSeconds": 4.9,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 3,
+      "position": {
+        "x": 19344.755859,
+        "y": 738.197876
+      },
+      "ropePhase": "",
+      "tick": 594,
+      "timeSeconds": 4.95,
+      "velocity": {
+        "x": 433.286224,
+        "y": -305.416718
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "double-jump-lab",
+      "dashCharges": 0,
+      "energy": 6,
+      "health": 3,
+      "position": {
+        "x": 19364.890625,
+        "y": 725.1875
+      },
+      "ropePhase": "",
+      "tick": 600,
+      "timeSeconds": 5.0,
+      "velocity": {
+        "x": 387.452942,
+        "y": -227.916733
+      }
+    }
+  ],
+  "visitedChunks": [
+    "double-jump-lab"
+  ],
+  "worldId": "cablester-3c-labs"
+}

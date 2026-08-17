@@ -1,20 +1,17 @@
 {
   "schemaVersion": 1,
-  "ranAt": "2026-08-12T22:02:54+08:00",
+  "ranAt": "2026-08-17T21:19:09+08:00",
   "environment": {
-    "device": "MacBook Pro Mac15,6",
-    "processor": "Apple M3 Pro 11-core",
-    "memory": "18 GB",
-    "operatingSystem": "macOS 14.4 arm64",
-    "timeZone": "Asia/Shanghai",
+    "deviceProfile": "local-desktop-redacted",
+    "privacy": "Host name, processor, memory and operating-system details are intentionally omitted from repository evidence.",
     "viewport": "1280x720"
   },
   "contentFingerprint": {
     "algorithm": "sha256",
-    "value": "a92443959bb2a1c140239f64a7298a8d1455499556a92e1837210fd005fc6849",
-    "fileCount": 934,
+    "value": "f8e84e4b5c7ad28075c81ee1a4635d30d6a86a48300c2639cb3a93115d9084ca",
+    "fileCount": 944,
     "roomFileCount": 908,
-    "runtimeFileCount": 26
+    "runtimeFileCount": 36
   },
   "scope": {
     "collections": 44,
@@ -34,7 +31,7 @@
     "transitionsCompleted": 864,
     "deathsOrResets": 0,
     "failedCollections": 0,
-    "elapsedSeconds": 18.8,
+    "elapsedSeconds": 18.5,
     "freshConsoleErrorsOrWarnings": 0
   },
   "statusPolicy": {

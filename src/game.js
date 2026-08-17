@@ -71,19 +71,25 @@ import {
 import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
 import { LatestRequestCoordinator, PreparedVisualLoadCoordinator, VisualRuntime, isObjectVisualVisible, stableSortRenderQueue } from "./visual-runtime.js";
 
-const canvas = document.querySelector("#game");
-const context = canvas.getContext("2d");
-const startCard = document.querySelector("#start-card");
-const levelGrid = document.querySelector("#level-grid");
-const levelEditorRoot = document.querySelector("#level-editor");
-const openLevelEditorButton = document.querySelector("#open-level-editor");
+const canvas = typeof document === "undefined" ? null : document.querySelector("#game");
+const context = canvas?.getContext("2d") || null;
+const startCard = typeof document === "undefined" ? null : document.querySelector("#start-card");
+const levelGrid = typeof document === "undefined" ? null : document.querySelector("#level-grid");
+const levelEditorRoot = typeof document === "undefined" ? null : document.querySelector("#level-editor");
+const openLevelEditorButton = typeof document === "undefined" ? null : document.querySelector("#open-level-editor");
+
+// Game.renderHud() is defined at module scope and is also exercised by the
+// headless Web replay runner. Keep the reference-library state in the same
+// lexical scope instead of hiding it inside the browser bootstrap block.
+let referenceCollections = [];
+let referenceRunState = null;
 
 for (const level of LEVELS) {
   const levelErrors = validateLevel(level);
   if (levelErrors.length > 0) throw new Error(`${level.id}:\n${levelErrors.join("\n")}`);
 }
 
-class Input {
+export class Input {
   constructor(target) {
     this.target = target;
     this.keys = new Set();
@@ -234,8 +240,8 @@ class ParticleField {
   }
 }
 
-class Game {
-  constructor(ctx, input, levels) {
+export class Game {
+  constructor(ctx, input, levels, { autoFrame = true, preloadVisuals = true } = {}) {
     this.ctx = ctx;
     this.input = input;
     this.levels = levels;
@@ -252,8 +258,8 @@ class Game {
     this.onRoomExit = null;
     this.frameMetrics = { samples: [], averageFps: 0, averageMs: 0, p95Ms: 0, worstMs: 0 };
     this.debugStats = { activeObjects: 0, renderedObjects: 0, collisionCandidates: 0 };
-    this.loadLevel(levels[0]);
-    this.frameRequest = requestAnimationFrame((timestamp) => this.frame(timestamp));
+    this.loadLevel(levels[0], { visualsPrepared: !preloadVisuals });
+    this.frameRequest = autoFrame ? requestAnimationFrame((timestamp) => this.frame(timestamp)) : null;
   }
 
   loadLevel(level, options = {}) {
@@ -3181,6 +3187,7 @@ function isGodotSyncReady(level) {
   return level.category === "单项3C" && Number(level.acceptanceLevel.slice(1)) >= 1;
 }
 
+if (canvas && context && startCard && levelGrid && levelEditorRoot && openLevelEditorButton) {
 const input = new Input(canvas);
 const game = new Game(context, input, LEVELS);
 const referenceLevelLibrary = new ReferenceLevelLibrary();
@@ -3189,9 +3196,7 @@ globalThis.cablesterCancelPendingLevelStart = () => levelStartCoordinator.cancel
 
 let customLevels = [];
 let referenceRooms = [];
-let referenceCollections = [];
 let referenceCollectionByRoom = new Map();
-let referenceRunState = null;
 let referenceLoadError = null;
 let referenceCollectionFilter = "all";
 let referenceSearch = "";
@@ -3874,3 +3879,4 @@ window.cablesterReference = {
   get acceptanceAudit() { return structuredClone(referenceAcceptanceAudit); },
   get continuousAudit() { return structuredClone(referenceContinuousAudit); }
 };
+}

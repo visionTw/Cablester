@@ -67,9 +67,9 @@ Registry validation 会拒绝重复 ID、未知字段、缺失路径、非法尺
 
 ## 当前素材清单
 
-当前 registry 共 23 条记录：1 个内置程序化回退和 22 个透明 WebP 图片；图片按用途分为 8 个 gameplay 素材和 14 个 scene 素材。22 个运行时图片合计 456,262 bytes（约 445.6 KiB），22 个缩略图合计 116,680 bytes（约 113.9 KiB），主图与缩略图合计 572,942 bytes（约 559.5 KiB）。这些数字由当前 registry 和磁盘文件动态核对，不代表网络传输或解码内存基线。
+当前 registry 共 26 条记录：1 个内置程序化回退和 25 个透明 WebP 图片；图片按用途分为 8 个 gameplay 素材、14 个通用 scene 素材和 3 个第一森林 landmark 素材。25 个运行时图片合计 625,544 bytes（约 610.9 KiB），25 个缩略图合计 142,094 bytes（约 138.8 KiB），主图与缩略图合计 767,638 bytes（约 749.6 KiB）。这些数字由当前 registry 和磁盘文件动态核对，不代表网络传输或解码内存基线。
 
-可重复素材审计命令为 `npm run assets:audit`。它从 registry 读取 22 个图片记录，检查 44 个主图/缩略图的路径、WebP RGBA 解码、登记尺寸和字节数、透明边距、边缘 alpha、洋红残留、缩略图尺寸与重采样相似度，并报告磁盘与估算解码占用。当前工作树的最新本地审计为 22/22 素材、44/44 文件通过；这属于文件 QA，不替代浏览器请求、显存或帧率测试。
+可重复素材审计命令为 `npm run assets:audit`。它从 registry 读取 25 个图片记录，检查 50 个主图/缩略图的路径、WebP RGBA 解码、登记尺寸和字节数、透明边距、边缘 alpha、洋红残留、缩略图尺寸与重采样相似度，并报告磁盘与估算解码占用。当前工作树的最新本地审计为 25/25 素材、50/50 文件通过；这属于文件 QA，不替代浏览器请求、显存或帧率测试。
 
 ### 玩法与布局素材
 
@@ -103,6 +103,14 @@ Registry validation 会拒绝重复 ID、未知字段、缺失路径、非法尺
 | `scene:moss-root-boulders` | 苔根岩组 | structures | 360×164 | 18,460 | `assets/game/scene/structures/moss-root-boulders.webp` |
 | `scene:aqua-bell-flowers` | 水青铃花 | vegetation | 160×177 | 18,306 | `assets/game/scene/vegetation/aqua-bell-flowers.webp` |
 
+### 暮种林地标素材
+
+| 素材 ID | 名称 | 分类 | 尺寸 | 字节 | 文件 |
+| --- | --- | --- | ---: | ---: | --- |
+| `landmark:duskseed-gate` | 暮种门 | landmarks | 373×420 | 52,678 | `assets/game/scene/landmarks/duskseed-gate.webp` |
+| `landmark:twin-root-bells` | 双根钟 | landmarks | 420×302 | 55,424 | `assets/game/scene/landmarks/twin-root-bells.webp` |
+| `landmark:heartwood-core` | 心木环庭核心 | landmarks | 358×360 | 61,180 | `assets/game/scene/landmarks/heartwood-core.webp` |
+
 所有图片都有对应的 `assets/game/thumbnails/*-thumb.webp`。每项素材的完整实际提示词、generation method、尺寸、字节数和 license 原文保存在 [`src/asset-library.js`](../src/asset-library.js)；文档清单用于检索，registry 才是机器可读的审计记录。
 
 #### 2026-08-12 场景扩展批次
@@ -119,6 +127,18 @@ Registry validation 会拒绝重复 ID、未知字段、缺失路径、非法尺
 | `scene:aqua-bell-flowers` | 三株高低错落的水青铃花与卷草叶 | 7,984 | 玩家附近的稀疏生物光点缀 |
 
 完整逐项提示词以 registry 中 `prompt` 字段为准。6 项 license 均为 `Original AI-generated project asset`；scope 为 Cablester 运行时、编辑器、文档和公开 Sites 部署；source 明确记录 `Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used`。
+
+#### 2026-08-12 暮种林地标批次
+
+本批 3 个小型模块化地标的运行时主图合计 169,282 bytes，缩略图合计 25,414 bytes，总计 194,696 bytes（约 190.1 KiB）。它们同样使用内置 ImageGen（`gpt-image-2`）与纯 `#ff00ff` 背景生产，再执行 chroma-key alpha 提取、裁切、缩放和 WebP quality 88 输出；没有生成整关背景或使用第三方游戏资源。
+
+| 素材 ID | 提示词的可复用目标 | 正式应用 chunk |
+| --- | --- | --- |
+| `landmark:duskseed-gate` | 独立根木种灯门、中央琥珀种荚与冷青藤蔓 | `seedgate-verge` |
+| `landmark:twin-root-bells` | 两枚悬挂根木钟与生物光绳结 | `bellroot-court` |
+| `landmark:heartwood-core` | 环形心木核心、金色种核与青蓝根脉 | `heartwood-ring` |
+
+逐项完整提示词、generation method、尺寸、字节数与原创许可仍以 registry 为准；世界包通过稳定 asset ID 引用，不嵌入第二份资源元数据。
 
 ## 类型默认与项目默认
 
@@ -148,7 +168,7 @@ Registry validation 会拒绝重复 ID、未知字段、缺失路径、非法尺
 5. 使用 `scripts/process-game-asset.py` 对已抠图 RGBA 做 key-colour unmatte、可见区域裁切、等比缩小，并输出 WebP 及匹配缩略图；当前资产使用 quality 88。
 6. 用最终文件的真实宽高和字节数登记 registry，同时保存完整 prompt、generation method、适用类型和 license。
 7. 立即检查透明边缘、缩略图、不同缩放、色调/翻转、重复接缝、编辑器回退和运行时回退，再开始下一项素材。
-8. 运行 `npm run assets:audit`，确认 registry 与 44 个最终文件一致。
+8. 运行 `npm run assets:audit`，确认 registry 与 50 个最终文件一致。
 9. 构建时 `scripts/build.mjs` 会把整个 `assets/` 目录复制到 Sites client；`assetDeliveryUrl` 把浏览器请求映射到 `/media/`，Worker 再读取对应 `/assets/` 文件并设置 MIME 与一小时浏览器缓存。部署前仍须用公开地址检查实际响应头。
 
 处理脚本示例：
@@ -171,7 +191,7 @@ python3 scripts/process-game-asset.py \
 
 - 名称：`Original AI-generated project asset`；
 - 范围：Cablester 运行时、编辑器、文档和公开 Sites 部署；
-- 来源：前 16 项记录为 2026-08-11 生成；新增 6 项场景素材记录为 2026-08-12 生成；两批均使用 OpenAI 内置 ImageGen 为 Cablester 生成，未使用第三方游戏资源。
+- 来源：前 16 项记录为 2026-08-11 生成；新增 6 项场景素材和 3 项暮种林地标记录为 2026-08-12 生成；三批均使用 OpenAI 内置 ImageGen 为 Cablester 生成，未使用第三方游戏资源。
 
 创作可以提炼“梦幻森林、生物光、手绘质感、剪影层次、冷暖色彩、空间纵深”等通用视觉语言，但不得复制、描摹、提取或分发《Ori》系列原画、角色、标志或未经授权资源。提示词不得要求复现特定受保护角色、场景构图或 logo；参考作品名称不应作为资源内容的一部分。
 

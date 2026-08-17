@@ -1,0 +1,308 @@
+{
+  "replayVersion": 1,
+  "worldId": "cablester-3c-labs",
+  "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+  "gameplayTuningVersion": "approved-1",
+  "fixedDelta": 0.008333333333333333,
+  "spawn": {
+    "chunkId": "combined-vertical"
+  },
+  "frames": [
+    {
+      "tick": 0,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 1,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 12,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 18,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": true,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 24,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": true,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": true,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 72,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": true,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 86,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 96,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 108,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 156,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": true,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 204,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 230,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 242,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    },
+    {
+      "tick": 600,
+      "actions": {
+        "move_left": false,
+        "move_right": false,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 370,
+        "y": 420
+      }
+    }
+  ],
+  "expectations": {
+    "maxDurationSeconds": 5,
+    "visitedChunks": [
+      "combined-vertical"
+    ],
+    "abilities": [
+      "rope",
+      "hardBar",
+      "bash",
+      "doubleJump",
+      "glide",
+      "dash",
+      "wallGrab"
+    ],
+    "maxDeaths": 8
+  }
+}

@@ -1,24 +1,18 @@
 {
   "schemaVersion": 2,
-  "ranAt": "2026-08-12T13:59:59.440Z",
+  "ranAt": "2026-08-17T13:21:47.186Z",
   "environment": {
     "chromeVersion": "Google Chrome 119.0.6045.159",
-    "platform": "MacIntel",
-    "hardwareConcurrency": 11,
-    "deviceMemoryGiB": 8,
-    "webgl": {
-      "vendor": "Google Inc. (Apple)",
-      "renderer": "ANGLE (Apple, Apple M3 Pro, OpenGL 4.1)",
-      "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
-    },
+    "deviceProfile": "local-desktop-redacted",
+    "privacy": "Host and hardware-identifying fields are intentionally omitted from repository evidence.",
     "browserSurface": "Installed Google Chrome headless=new through direct CDP"
   },
   "contentFingerprint": {
     "algorithm": "sha256",
-    "value": "a92443959bb2a1c140239f64a7298a8d1455499556a92e1837210fd005fc6849",
-    "fileCount": 934,
+    "value": "f8e84e4b5c7ad28075c81ee1a4635d30d6a86a48300c2639cb3a93115d9084ca",
+    "fileCount": 944,
     "roomFileCount": 908,
-    "runtimeFileCount": 26
+    "runtimeFileCount": 36
   },
   "method": "From the same direct-CDP performance run as levels/art/performance-audit.json: dynamically select the highest unified object-count Celeste and Ori rooms, keep each sample in its selected room by temporarily disconnecting exits, warm the live runtime, then collect a 10-second requestAnimationFrame distribution while dispatching real keyboard input.",
   "samples": [
@@ -28,16 +22,16 @@
       "documentObjects": 54,
       "viewport": "1280x720",
       "requestedDurationMs": 10000,
-      "measuredDurationMs": 9995.908,
-      "averageFps": 119.949,
-      "averageFrameMs": 8.337,
+      "measuredDurationMs": 10000.082,
+      "averageFps": 119.999,
+      "averageFrameMs": 8.333,
       "p95FrameMs": 8.333,
-      "worstFrameMs": 16.666,
+      "worstFrameMs": 8.815,
       "activeObjects": 53,
       "drawnObjects": 14,
       "collisionCandidates": 26,
       "realKeyboardInput": {
-        "heldRightMs": 9872,
+        "heldRightMs": 9870,
         "jumpPresses": 11,
         "dashPresses": 3
       },
@@ -48,7 +42,7 @@
       },
       "visualRuntime": {
         "requests": 22,
-        "cacheHits": 258099,
+        "cacheHits": 410155,
         "ready": 22,
         "loading": 0,
         "error": 0,
@@ -74,16 +68,16 @@
       "documentObjects": 28,
       "viewport": "1280x720",
       "requestedDurationMs": 10000,
-      "measuredDurationMs": 10000.074,
-      "averageFps": 119.699,
-      "averageFrameMs": 8.354,
+      "measuredDurationMs": 10000.082,
+      "averageFps": 119.999,
+      "averageFrameMs": 8.333,
       "p95FrameMs": 8.333,
-      "worstFrameMs": 16.666,
+      "worstFrameMs": 8.815,
       "activeObjects": 27,
       "drawnObjects": 5,
       "collisionCandidates": 16,
       "realKeyboardInput": {
-        "heldRightMs": 9870,
+        "heldRightMs": 9869,
         "jumpPresses": 11,
         "dashPresses": 3
       },
@@ -94,7 +88,7 @@
       },
       "visualRuntime": {
         "requests": 22,
-        "cacheHits": 265133,
+        "cacheHits": 417203,
         "ready": 22,
         "loading": 0,
         "error": 0,
@@ -120,16 +114,16 @@
       "documentObjects": 28,
       "viewport": "1600x1000",
       "requestedDurationMs": 10000,
-      "measuredDurationMs": 10000.074,
-      "averageFps": 119.599,
-      "averageFrameMs": 8.361,
+      "measuredDurationMs": 10000.08,
+      "averageFps": 119.999,
+      "averageFrameMs": 8.333,
       "p95FrameMs": 8.333,
-      "worstFrameMs": 16.666,
+      "worstFrameMs": 8.813,
       "activeObjects": 27,
       "drawnObjects": 5,
       "collisionCandidates": 16,
       "realKeyboardInput": {
-        "heldRightMs": 9868,
+        "heldRightMs": 9871,
         "jumpPresses": 11,
         "dashPresses": 3
       },
@@ -140,7 +134,7 @@
       },
       "visualRuntime": {
         "requests": 22,
-        "cacheHits": 272147,
+        "cacheHits": 424245,
         "ready": 22,
         "loading": 0,
         "error": 0,
@@ -166,16 +160,16 @@
       "documentObjects": 28,
       "viewport": "800x900",
       "requestedDurationMs": 10000,
-      "measuredDurationMs": 10000.078,
+      "measuredDurationMs": 10000.079,
       "averageFps": 119.999,
       "averageFrameMs": 8.333,
       "p95FrameMs": 8.333,
-      "worstFrameMs": 8.811,
+      "worstFrameMs": 8.812,
       "activeObjects": 27,
       "drawnObjects": 5,
       "collisionCandidates": 16,
       "realKeyboardInput": {
-        "heldRightMs": 9871,
+        "heldRightMs": 9869,
         "jumpPresses": 11,
         "dashPresses": 3
       },
@@ -186,7 +180,7 @@
       },
       "visualRuntime": {
         "requests": 22,
-        "cacheHits": 279176,
+        "cacheHits": 431286,
         "ready": 22,
         "loading": 0,
         "error": 0,

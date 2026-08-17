@@ -1,0 +1,870 @@
+{
+  "entries": [
+    {
+      "applicableTypes": [
+        "*"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": null,
+      "id": "builtin:procedural",
+      "kind": "procedural",
+      "label": "原有程序化表现",
+      "license": {
+        "name": "Cablester project source",
+        "scope": "Cablester project runtime and editor",
+        "source": "builtin"
+      },
+      "platforms": {
+        "godot": {
+          "path": null
+        },
+        "web": {
+          "path": null,
+          "thumbnailPath": null
+        }
+      },
+      "tags": [
+        "builtin",
+        "procedural",
+        "fallback"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "platform",
+        "boundaryWall"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "gameplay:moss-platform",
+      "kind": "image",
+      "label": "荧光苔藓根木平台",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/terrain/moss-root-platform.webp"
+        },
+        "web": {
+          "path": "./assets/game/terrain/moss-root-platform.webp",
+          "thumbnailPath": "./assets/game/thumbnails/moss-root-platform-thumb.webp"
+        }
+      },
+      "scaling": {
+        "allowedModes": [
+          "stretch",
+          "nine-slice",
+          "tile"
+        ],
+        "defaultMode": "nine-slice",
+        "nineSlice": {
+          "bottom": 34,
+          "centerMode": "stretch",
+          "edgeMode": "stretch",
+          "left": 96,
+          "right": 96,
+          "top": 32
+        },
+        "tile": {
+          "height": 60,
+          "width": 256
+        }
+      },
+      "tags": [
+        "平台",
+        "根木",
+        "苔藓",
+        "生物光",
+        "forest",
+        "moss",
+        "rootwood"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "hazard"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "gameplay:thorn-hazard",
+      "kind": "image",
+      "label": "绯红荆棘藤",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/gameplay/crimson-thorn-vine.webp"
+        },
+        "web": {
+          "path": "./assets/game/gameplay/crimson-thorn-vine.webp",
+          "thumbnailPath": "./assets/game/thumbnails/crimson-thorn-vine-thumb.webp"
+        }
+      },
+      "tags": [
+        "危险物",
+        "荆棘",
+        "藤蔓",
+        "crimson",
+        "thorn",
+        "hazard"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "anchor"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "gameplay:rope-anchor",
+      "kind": "image",
+      "label": "水晶种荚锚点",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/gameplay/crystal-rope-anchor.webp"
+        },
+        "web": {
+          "path": "./assets/game/gameplay/crystal-rope-anchor.webp",
+          "thumbnailPath": "./assets/game/thumbnails/crystal-rope-anchor-thumb.webp"
+        }
+      },
+      "tags": [
+        "锚点",
+        "水晶",
+        "抓取",
+        "rope",
+        "anchor",
+        "crystal"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "energyOrb",
+        "dashRefill"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "gameplay:energy-orb",
+      "kind": "image",
+      "label": "叶环能量种子",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/gameplay/leaf-energy-orb.webp"
+        },
+        "web": {
+          "path": "./assets/game/gameplay/leaf-energy-orb.webp",
+          "thumbnailPath": "./assets/game/thumbnails/leaf-energy-orb-thumb.webp"
+        }
+      },
+      "tags": [
+        "能量",
+        "拾取物",
+        "种子",
+        "energy",
+        "orb",
+        "refill"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "bashTarget"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "gameplay:bash-blossom",
+      "kind": "image",
+      "label": "紫辉猛击花",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/gameplay/violet-bash-blossom.webp"
+        },
+        "web": {
+          "path": "./assets/game/gameplay/violet-bash-blossom.webp",
+          "thumbnailPath": "./assets/game/thumbnails/violet-bash-blossom-thumb.webp"
+        }
+      },
+      "tags": [
+        "猛击",
+        "花朵",
+        "支点",
+        "bash",
+        "blossom",
+        "violet"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "checkpoint"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "gameplay:checkpoint-lantern",
+      "kind": "image",
+      "label": "种灯检查点",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/gameplay/seed-lantern-checkpoint.webp"
+        },
+        "web": {
+          "path": "./assets/game/gameplay/seed-lantern-checkpoint.webp",
+          "thumbnailPath": "./assets/game/thumbnails/seed-lantern-checkpoint-thumb.webp"
+        }
+      },
+      "tags": [
+        "检查点",
+        "灯笼",
+        "火种",
+        "checkpoint",
+        "lantern",
+        "memory"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "spawn"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "gameplay:spawn-gate",
+      "kind": "image",
+      "label": "根木出生门",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/layout/root-spawn-gate.webp"
+        },
+        "web": {
+          "path": "./assets/game/layout/root-spawn-gate.webp",
+          "thumbnailPath": "./assets/game/thumbnails/root-spawn-gate-thumb.webp"
+        }
+      },
+      "tags": [
+        "出生点",
+        "入口",
+        "拱门",
+        "spawn",
+        "entrance",
+        "root"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "goal"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "gameplay:goal-gate",
+      "kind": "image",
+      "label": "金辉终点门",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/layout/golden-goal-gate.webp"
+        },
+        "web": {
+          "path": "./assets/game/layout/golden-goal-gate.webp",
+          "thumbnailPath": "./assets/game/thumbnails/golden-goal-gate-thumb.webp"
+        }
+      },
+      "tags": [
+        "终点",
+        "目标",
+        "拱门",
+        "goal",
+        "destination",
+        "gold"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:moss-bush-cluster",
+      "kind": "image",
+      "label": "苔藓草灌丛",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/vegetation/moss-bush-cluster.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/vegetation/moss-bush-cluster.webp",
+          "thumbnailPath": "./assets/game/thumbnails/moss-bush-cluster-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "草丛",
+        "灌木",
+        "苔藓",
+        "scene",
+        "bush",
+        "moss"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:cyan-seed-plant",
+      "kind": "image",
+      "label": "青露发光植物",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/vegetation/cyan-seed-plant.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/vegetation/cyan-seed-plant.webp",
+          "thumbnailPath": "./assets/game/thumbnails/cyan-seed-plant-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "发光植物",
+        "种荚",
+        "scene",
+        "plant",
+        "bioluminescent"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:overhang-vine-branch",
+      "kind": "image",
+      "label": "前景垂藤暗枝",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/foreground/overhang-vine-branch.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/foreground/overhang-vine-branch.webp",
+          "thumbnailPath": "./assets/game/thumbnails/overhang-vine-branch-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "前景",
+        "藤蔓",
+        "暗枝",
+        "scene",
+        "foreground",
+        "vine"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:ancient-amber-tree",
+      "kind": "image",
+      "label": "琥珀树洞古树",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/trees/ancient-amber-tree.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/trees/ancient-amber-tree.webp",
+          "thumbnailPath": "./assets/game/thumbnails/ancient-amber-tree-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "古树",
+        "中景",
+        "树洞",
+        "scene",
+        "tree",
+        "midground"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:distant-trunk-grove",
+      "kind": "image",
+      "label": "远景高干林影",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/background/distant-trunk-grove.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/background/distant-trunk-grove.webp",
+          "thumbnailPath": "./assets/game/thumbnails/distant-trunk-grove-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "远景",
+        "树干",
+        "剪影",
+        "scene",
+        "background",
+        "trunks"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:mid-tree-cluster",
+      "kind": "image",
+      "label": "中远景三树组",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/trees/mid-tree-cluster.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/trees/mid-tree-cluster.webp",
+          "thumbnailPath": "./assets/game/thumbnails/mid-tree-cluster-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "树群",
+        "中远景",
+        "scene",
+        "trees",
+        "cluster"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:cyan-mist-band",
+      "kind": "image",
+      "label": "青蓝游雾带",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/atmosphere/cyan-mist-band.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/atmosphere/cyan-mist-band.webp",
+          "thumbnailPath": "./assets/game/thumbnails/cyan-mist-band-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "雾气",
+        "气氛",
+        "scene",
+        "mist",
+        "fog"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:forest-light-motes",
+      "kind": "image",
+      "label": "林间生物光点",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-11; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/atmosphere/forest-light-motes.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/atmosphere/forest-light-motes.webp",
+          "thumbnailPath": "./assets/game/thumbnails/forest-light-motes-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "光点",
+        "生物光",
+        "scene",
+        "motes",
+        "bioluminescent"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:moonlit-canopy-cluster",
+      "kind": "image",
+      "label": "月影远景树冠",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/background/moonlit-canopy-cluster.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/background/moonlit-canopy-cluster.webp",
+          "thumbnailPath": "./assets/game/thumbnails/moonlit-canopy-cluster-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "远景",
+        "树冠",
+        "剪影",
+        "scene",
+        "background",
+        "canopy"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:distant-root-spires",
+      "kind": "image",
+      "label": "雾化远根尖塔",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/background/distant-root-spires.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/background/distant-root-spires.webp",
+          "thumbnailPath": "./assets/game/thumbnails/distant-root-spires-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "远景",
+        "古根",
+        "岩峰",
+        "scene",
+        "background",
+        "spires"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:root-stone-arch",
+      "kind": "image",
+      "label": "盘根石拱",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/structures/root-stone-arch.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/structures/root-stone-arch.webp",
+          "thumbnailPath": "./assets/game/thumbnails/root-stone-arch-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "中景",
+        "石拱",
+        "盘根",
+        "scene",
+        "structure",
+        "arch"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:shadow-fern-cluster",
+      "kind": "image",
+      "label": "暗影蕨叶组",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/foreground/shadow-fern-cluster.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/foreground/shadow-fern-cluster.webp",
+          "thumbnailPath": "./assets/game/thumbnails/shadow-fern-cluster-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "前景",
+        "蕨叶",
+        "藤蔓",
+        "scene",
+        "foreground",
+        "fern"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:moss-root-boulders",
+      "kind": "image",
+      "label": "苔根岩组",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/structures/moss-root-boulders.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/structures/moss-root-boulders.webp",
+          "thumbnailPath": "./assets/game/thumbnails/moss-root-boulders-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "中景",
+        "岩石",
+        "盘根",
+        "苔藓",
+        "scene",
+        "boulders"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "scene:aqua-bell-flowers",
+      "kind": "image",
+      "label": "水青铃花",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/vegetation/aqua-bell-flowers.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/vegetation/aqua-bell-flowers.webp",
+          "thumbnailPath": "./assets/game/thumbnails/aqua-bell-flowers-thumb.webp"
+        }
+      },
+      "tags": [
+        "场景",
+        "近景",
+        "铃花",
+        "发光植物",
+        "scene",
+        "flower",
+        "bioluminescent"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "landmark:duskseed-gate",
+      "kind": "image",
+      "label": "暮种灯门",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/landmarks/duskseed-gate.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/landmarks/duskseed-gate.webp",
+          "thumbnailPath": "./assets/game/thumbnails/duskseed-gate-thumb.webp"
+        }
+      },
+      "tags": [
+        "地标",
+        "入口",
+        "种灯",
+        "盘根",
+        "landmark",
+        "gate",
+        "duskseed"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "landmark:twin-root-bells",
+      "kind": "image",
+      "label": "双根钟",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/landmarks/twin-root-bells.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/landmarks/twin-root-bells.webp",
+          "thumbnailPath": "./assets/game/thumbnails/twin-root-bells-thumb.webp"
+        }
+      },
+      "tags": [
+        "地标",
+        "根钟",
+        "猛击",
+        "钟庭",
+        "landmark",
+        "bell",
+        "bash"
+      ]
+    },
+    {
+      "applicableTypes": [
+        "scene"
+      ],
+      "fallbackAllowed": true,
+      "fallbackAssetId": "builtin:procedural",
+      "id": "landmark:heartwood-core",
+      "kind": "image",
+      "label": "心木核环",
+      "license": {
+        "name": "Original AI-generated project asset",
+        "scope": "Cablester project runtime, editor, documentation, and public Sites deployment",
+        "source": "Generated for Cablester with OpenAI built-in ImageGen on 2026-08-12; no third-party game resources used"
+      },
+      "platforms": {
+        "godot": {
+          "path": "res://assets/game/scene/landmarks/heartwood-core.webp"
+        },
+        "web": {
+          "path": "./assets/game/scene/landmarks/heartwood-core.webp",
+          "thumbnailPath": "./assets/game/thumbnails/heartwood-core-thumb.webp"
+        }
+      },
+      "tags": [
+        "地标",
+        "心木",
+        "种心",
+        "环庭",
+        "landmark",
+        "heartwood",
+        "core"
+      ]
+    }
+  ],
+  "version": "1"
+}

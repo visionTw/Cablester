@@ -1,0 +1,155 @@
+{
+  "entries": [
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:spawn",
+      "required": true,
+      "type": "spawn"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:goal",
+      "required": true,
+      "type": "goal"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:checkpoint",
+      "required": true,
+      "type": "checkpoint"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:roomEntrance",
+      "required": true,
+      "type": "roomEntrance"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:roomExit",
+      "required": true,
+      "type": "roomExit"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:boundaryWall",
+      "required": true,
+      "type": "boundaryWall"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:platform",
+      "required": true,
+      "type": "platform"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:slope",
+      "required": true,
+      "type": "slope"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:hazard",
+      "required": true,
+      "type": "hazard"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:windZone",
+      "required": true,
+      "type": "windZone"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:liquidZone",
+      "required": true,
+      "type": "liquidZone"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:darknessZone",
+      "required": true,
+      "type": "darknessZone"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:rotationTrigger",
+      "required": true,
+      "type": "rotationTrigger"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:anchor",
+      "required": true,
+      "type": "anchor"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:bashTarget",
+      "required": true,
+      "type": "bashTarget"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:energyOrb",
+      "required": true,
+      "type": "energyOrb"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:dashRefill",
+      "required": true,
+      "type": "dashRefill"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:movingObject",
+      "required": true,
+      "type": "movingObject"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:launcher",
+      "required": true,
+      "type": "launcher"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:fragilePlatform",
+      "required": true,
+      "type": "fragilePlatform"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:gate",
+      "required": true,
+      "type": "gate"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:stateTrigger",
+      "required": true,
+      "type": "stateTrigger"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:abilityPickup",
+      "required": true,
+      "type": "abilityPickup"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:sign",
+      "required": true,
+      "type": "sign"
+    },
+    {
+      "godotScene": "res://godot/prefabs/canonical_object.tscn",
+      "id": "prefab:backgroundSeed",
+      "required": true,
+      "type": "backgroundSeed"
+    }
+  ],
+  "version": "1"
+}

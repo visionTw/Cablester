@@ -1,0 +1,624 @@
+{
+  "replayVersion": 1,
+  "worldId": "cablester-3c-labs",
+  "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+  "gameplayTuningVersion": "approved-1",
+  "fixedDelta": 0.008333333333333333,
+  "spawn": {
+    "chunkId": "hard-bar-lab"
+  },
+  "frames": [
+    {
+      "tick": 0,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 1,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 6,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": true,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 7,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 31,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 36,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": true,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 38,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 70,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": true,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 72,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 79,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 109,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 157,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 187,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 235,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 246,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": true,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 248,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 265,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 313,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 343,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 370,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": true,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 372,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 391,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 421,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 456,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": true,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 458,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 469,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 499,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 547,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": true,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 577,
+      "actions": {
+        "move_left": false,
+        "move_right": true,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    },
+    {
+      "tick": 600,
+      "actions": {
+        "move_left": false,
+        "move_right": false,
+        "move_up": false,
+        "move_down": false,
+        "jump": false,
+        "dash": false,
+        "rope": false,
+        "hard_bar": false,
+        "bash": false,
+        "grab": false,
+        "reset": false
+      },
+      "aim": {
+        "x": 390,
+        "y": 640
+      }
+    }
+  ],
+  "expectations": {
+    "maxDurationSeconds": 5,
+    "visitedChunks": [
+      "hard-bar-lab"
+    ],
+    "abilities": [
+      "hardBar",
+      "dash",
+      "wallGrab"
+    ],
+    "maxDeaths": 8
+  }
+}

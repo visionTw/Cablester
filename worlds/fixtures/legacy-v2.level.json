@@ -1,0 +1,308 @@
+{
+  "schemaVersion": 2,
+  "metadata": {
+    "id": "fixture.golden-grove",
+    "name": "Golden Grove",
+    "category": "Fixture",
+    "summary": "Canonical migration golden",
+    "acceptanceLevel": "L1",
+    "authoringNote": "preserve metadata extension"
+  },
+  "bounds": {
+    "x": -500,
+    "y": -450,
+    "w": 2800,
+    "h": 1700
+  },
+  "dashCapacity": 1,
+  "startingAbilities": [
+    "rope",
+    "dash",
+    "wallGrab"
+  ],
+  "scene": {
+    "schemaVersion": 1,
+    "layers": [
+      {
+        "id": "scene-background",
+        "name": "背景",
+        "role": "background",
+        "depth": -100,
+        "assets": [
+          {
+            "assetId": "builtin:procedural",
+            "weight": 1
+          }
+        ],
+        "visible": true,
+        "locked": false,
+        "parallax": 0.18,
+        "scale": 1,
+        "opacity": 0.72,
+        "tint": "#ffffff",
+        "blur": 3,
+        "fog": 0.45,
+        "blendMode": "source-over",
+        "repeatX": true,
+        "seamless": {
+          "mode": "tile",
+          "tileWidth": 1280,
+          "overlap": 0
+        },
+        "seed": "background-default",
+        "range": {
+          "startX": null,
+          "endX": null
+        },
+        "originX": 0,
+        "spacing": 0,
+        "density": 1,
+        "drawCap": 256
+      },
+      {
+        "id": "scene-midground",
+        "name": "中景",
+        "role": "midground",
+        "depth": -20,
+        "assets": [
+          {
+            "assetId": "builtin:procedural",
+            "weight": 1
+          }
+        ],
+        "visible": true,
+        "locked": false,
+        "parallax": 0.58,
+        "scale": 1,
+        "opacity": 0.9,
+        "tint": "#ffffff",
+        "blur": 1,
+        "fog": 0.18,
+        "blendMode": "source-over",
+        "repeatX": true,
+        "seamless": {
+          "mode": "tile",
+          "tileWidth": 1280,
+          "overlap": 0
+        },
+        "seed": "midground-default",
+        "range": {
+          "startX": null,
+          "endX": null
+        },
+        "originX": 0,
+        "spacing": 0,
+        "density": 1,
+        "drawCap": 256
+      },
+      {
+        "id": "scene-player",
+        "name": "玩家层",
+        "role": "player",
+        "depth": 0,
+        "assets": [
+          {
+            "assetId": "builtin:procedural",
+            "weight": 1
+          }
+        ],
+        "visible": true,
+        "locked": true,
+        "parallax": 1,
+        "scale": 1,
+        "opacity": 1,
+        "tint": "#ffffff",
+        "blur": 0,
+        "fog": 0,
+        "blendMode": "source-over",
+        "repeatX": true,
+        "seamless": {
+          "mode": "tile",
+          "tileWidth": 1280,
+          "overlap": 0
+        },
+        "seed": "player-default",
+        "range": {
+          "startX": null,
+          "endX": null
+        },
+        "originX": 0,
+        "spacing": 0,
+        "density": 1,
+        "drawCap": 256
+      },
+      {
+        "id": "scene-foreground",
+        "name": "前景",
+        "role": "foreground",
+        "depth": 100,
+        "assets": [
+          {
+            "assetId": "builtin:procedural",
+            "weight": 1
+          }
+        ],
+        "visible": true,
+        "locked": false,
+        "parallax": 1.22,
+        "scale": 1,
+        "opacity": 0.82,
+        "tint": "#ffffff",
+        "blur": 0,
+        "fog": 0.08,
+        "blendMode": "source-over",
+        "repeatX": true,
+        "seamless": {
+          "mode": "tile",
+          "tileWidth": 1280,
+          "overlap": 0
+        },
+        "seed": "foreground-default",
+        "range": {
+          "startX": null,
+          "endX": null
+        },
+        "originX": 0,
+        "spacing": 0,
+        "density": 1,
+        "drawCap": 256
+      }
+    ]
+  },
+  "objects": [
+    {
+      "id": "platform-1",
+      "type": "platform",
+      "position": {
+        "x": -260,
+        "y": 640
+      },
+      "properties": {
+        "w": 760,
+        "h": 180,
+        "visual": {
+          "assetId": "gameplay:moss-platform",
+          "scaleMode": "asset",
+          "tileScale": 1,
+          "scaleX": 1,
+          "scaleY": 1,
+          "anchorX": 0.5,
+          "anchorY": 0.5,
+          "offsetX": 0,
+          "offsetY": 0,
+          "flipX": false,
+          "flipY": false,
+          "drawLayer": 0,
+          "opacity": 1,
+          "tint": "#ffffff"
+        }
+      },
+      "editorExtension": {
+        "lockedBy": "fixture"
+      }
+    },
+    {
+      "id": "spawn-1",
+      "type": "spawn",
+      "position": {
+        "x": 120,
+        "y": 590
+      },
+      "properties": {
+        "visual": {
+          "assetId": "gameplay:spawn-gate",
+          "scaleMode": "asset",
+          "tileScale": 1,
+          "scaleX": 1,
+          "scaleY": 1,
+          "anchorX": 0.5,
+          "anchorY": 0.5,
+          "offsetX": 0,
+          "offsetY": 0,
+          "flipX": false,
+          "flipY": false,
+          "drawLayer": 0,
+          "opacity": 1,
+          "tint": "#ffffff"
+        }
+      }
+    },
+    {
+      "id": "checkpoint-1",
+      "type": "checkpoint",
+      "position": {
+        "x": 75,
+        "y": 550
+      },
+      "properties": {
+        "w": 90,
+        "h": 90,
+        "spawnOffsetX": 45,
+        "spawnOffsetY": 40,
+        "visual": {
+          "assetId": "gameplay:checkpoint-lantern",
+          "scaleMode": "asset",
+          "tileScale": 1,
+          "scaleX": 1,
+          "scaleY": 1,
+          "anchorX": 0.5,
+          "anchorY": 0.5,
+          "offsetX": 0,
+          "offsetY": 0,
+          "flipX": false,
+          "flipY": false,
+          "drawLayer": 0,
+          "opacity": 1,
+          "tint": "#ffffff"
+        }
+      }
+    },
+    {
+      "id": "goal-1",
+      "type": "goal",
+      "position": {
+        "x": 420,
+        "y": 585
+      },
+      "properties": {
+        "radius": 34,
+        "visual": {
+          "assetId": "gameplay:goal-gate",
+          "scaleMode": "asset",
+          "tileScale": 1,
+          "scaleX": 1,
+          "scaleY": 1,
+          "anchorX": 0.5,
+          "anchorY": 0.5,
+          "offsetX": 0,
+          "offsetY": 0,
+          "flipX": false,
+          "flipY": false,
+          "drawLayer": 0,
+          "opacity": 1,
+          "tint": "#ffffff"
+        }
+      }
+    }
+  ],
+  "reference": {
+    "source": "fixture",
+    "notes": [
+      "preserve reference"
+    ]
+  },
+  "statePolicy": {
+    "deathReset": "checkpoint",
+    "checkpointReset": "chunk",
+    "offscreen": "sleep-local",
+    "worldPersistence": [
+      "flags"
+    ]
+  },
+  "customExtension": {
+    "preserved": true,
+    "nested": {
+      "value": 1.23456789
+    }
+  }
+}

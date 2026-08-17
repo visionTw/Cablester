@@ -1,4 +1,6 @@
-# 浏览器原型 0.3 验收记录
+# 浏览器原型 0.3 验收记录（历史快照）
+
+> 此文档冻结早期 Web-only 原型证据，其中的测试数量、素材范围与“Godot 尚未开始”均已过期。当前 canonical/World Studio/Godot 4.7.1 状态以 [`PHASE_ONE_REPORT.md`](PHASE_ONE_REPORT.md) 和当前 checkout 的机器证据为准；该报告明确为 `HOLD` 候选时，本页后文的“当前”只描述 0.3 历史快照。
 
 ## 当前结论
 

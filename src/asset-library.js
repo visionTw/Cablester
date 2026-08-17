@@ -47,6 +47,12 @@ export const SCENE_ASSET_IDS = Object.freeze({
   aquaBellFlowers: "scene:aqua-bell-flowers"
 });
 
+export const LANDMARK_ASSET_IDS = Object.freeze({
+  duskseedGate: "landmark:duskseed-gate",
+  twinRootBells: "landmark:twin-root-bells",
+  heartwoodCore: "landmark:heartwood-core"
+});
+
 export const DEFAULT_TYPE_ASSET_IDS = Object.freeze(Object.fromEntries(
   BUILTIN_LEVEL_OBJECT_TYPES.map((objectType) => [objectType, ({
     platform: GAME_ASSET_IDS.mossPlatform,
@@ -706,6 +712,57 @@ export const GENERATED_GAME_ASSETS = Object.freeze([
     width: 160,
     height: 177,
     fileSizeBytes: 18306,
+    license: GENERATED_SCENE_EXPANSION_LICENSE
+  }),
+  Object.freeze({
+    id: LANDMARK_ASSET_IDS.duskseedGate,
+    label: "暮种灯门",
+    description: "两股盘根围合成的入口拱门与悬挂种灯，作为暮种林入口和世界地图的稳定地标代理。",
+    category: "landmarks",
+    kind: "image",
+    path: "./assets/game/scene/landmarks/duskseed-gate.webp",
+    thumbnailPath: "./assets/game/thumbnails/duskseed-gate-thumb.webp",
+    applicableTypes: Object.freeze(["scene"]),
+    tags: Object.freeze(["地标", "入口", "种灯", "盘根", "landmark", "gate", "duskseed"]),
+    prompt: "Use case: stylized-concept. Asset type: reusable small 2D game landmark sprite for the Cablester canonical world editor and Godot runtime. Primary request: an original Duskseed Gate landmark, a compact asymmetrical arch grown from two intertwined mossy roots around a small suspended seed lantern, designed as a modular entrance marker. Style/medium: hand-painted gouache 2D game sprite, clear silhouette and readable at small scale, dreamlike bioluminescent forest atmosphere, entirely original. Composition/framing: isolated full object, roughly square, generous padding, front three-quarter view, no ground plane. Lighting/mood: cool cyan moonlight with one restrained amber seed glow. Color palette: deep teal, blue-green moss, pale cyan edge light, warm amber focal glow. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background, uniform with no shadows, gradients, texture, reflections, floor plane, or lighting variation. Constraints: small modular landmark only; no full scene; crisp separated edges; do not use #ff00ff in the subject; no character, text, logo, UI, watermark, or existing-game IP; no cast/contact shadow.",
+    generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
+    width: 373,
+    height: 420,
+    fileSizeBytes: 52678,
+    license: GENERATED_SCENE_EXPANSION_LICENSE
+  }),
+  Object.freeze({
+    id: LANDMARK_ASSET_IDS.twinRootBells,
+    label: "双根钟",
+    description: "共享根枝上悬挂的两枚发光种荚钟，作为钟庭猛击机关与区域图的原创地标。",
+    category: "landmarks",
+    kind: "image",
+    path: "./assets/game/scene/landmarks/twin-root-bells.webp",
+    thumbnailPath: "./assets/game/thumbnails/twin-root-bells-thumb.webp",
+    applicableTypes: Object.freeze(["scene"]),
+    tags: Object.freeze(["地标", "根钟", "猛击", "钟庭", "landmark", "bell", "bash"]),
+    prompt: "Use case: stylized-concept. Asset type: reusable small 2D game landmark sprite for the Cablester canonical world editor and Godot runtime. Primary request: an original Twin Root Bells landmark, two hollow bell-shaped seed pods grown from a shared curling root branch, each bell with a small luminous clapper, suitable as a bash-interaction landmark module. Style/medium: hand-painted gouache 2D game sprite, bold readable silhouette at small scale, dreamlike bioluminescent forest atmosphere, entirely original. Composition/framing: isolated horizontal cluster, approximately 4:3, entire branch and both bells inside frame with generous padding, no ground plane. Lighting/mood: cool cyan rim light with restrained violet-blue bell glow and tiny warm amber centers. Color palette: deep teal wood, moss green, aqua/cyan, muted violet, small amber accents. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background, uniform with no shadows, gradients, texture, reflections, floor plane, or lighting variation. Constraints: small modular landmark only; no full scene; crisp separated edges; do not use #ff00ff in subject; no character, text, logo, UI, watermark, or existing-game IP; no cast/contact shadow.",
+    generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
+    width: 420,
+    height: 302,
+    fileSizeBytes: 55424,
+    license: GENERATED_SCENE_EXPANSION_LICENSE
+  }),
+  Object.freeze({
+    id: LANDMARK_ASSET_IDS.heartwoodCore,
+    label: "心木核环",
+    description: "盘根圆环守护发光种心的模块化核心，用于心木环庭和世界图的最终主地标。",
+    category: "landmarks",
+    kind: "image",
+    path: "./assets/game/scene/landmarks/heartwood-core.webp",
+    thumbnailPath: "./assets/game/thumbnails/heartwood-core-thumb.webp",
+    applicableTypes: Object.freeze(["scene"]),
+    tags: Object.freeze(["地标", "心木", "种心", "环庭", "landmark", "heartwood", "core"]),
+    prompt: "Use case: stylized-concept. Asset type: reusable small 2D game landmark sprite for the Cablester canonical world editor and Godot runtime. Primary request: an original Heartwood Core landmark, a compact circular ring of intertwined roots protecting a floating faceted seed-heart, with a few small moss fronds, designed as a modular world-map and in-level focal marker. Style/medium: hand-painted gouache 2D game sprite, strong circular silhouette and readable at small scale, dreamlike bioluminescent forest atmosphere, entirely original. Composition/framing: isolated full object, roughly square, centered ring with generous padding, no ground plane. Lighting/mood: cool cyan moonlight around the roots with a restrained amber-white glow from the seed-heart. Color palette: deep teal and blue-green roots, moss green, pale cyan accents, warm amber core. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background, uniform with no shadows, gradients, texture, reflections, floor plane, or lighting variation. Constraints: small modular landmark only; no full scene; crisp separated edges; do not use #ff00ff in subject; no character, text, logo, UI, watermark, or existing-game IP; no cast/contact shadow.",
+    generationMethod: "OpenAI built-in ImageGen (gpt-image-2); #ff00ff chroma-key extraction; local crop, resize, and WebP quality 88",
+    width: 358,
+    height: 360,
+    fileSizeBytes: 61180,
     license: GENERATED_SCENE_EXPANSION_LICENSE
   })
 ]);

@@ -1,0 +1,2360 @@
+{
+  "chunkEvents": [
+    {
+      "chunkId": "movement-lab-01",
+      "kind": "load",
+      "timeUsec": 699850
+    },
+    {
+      "chunkId": "movement-lab-01",
+      "kind": "state",
+      "state": "active",
+      "timeUsec": 699857
+    }
+  ],
+  "counters": {
+    "checkpoints": 1,
+    "chunkLoads": 1,
+    "chunkUnloads": 0,
+    "deaths": 1,
+    "exits": 0,
+    "physicsTicks": 601
+  },
+  "deaths": 1,
+  "durationSeconds": 0.516682,
+  "expectations": {
+    "abilities": [
+      "rope",
+      "hardBar",
+      "dash",
+      "wallGrab"
+    ],
+    "maxDeaths": 8.0,
+    "maxDurationSeconds": 5.0,
+    "visitedChunks": [
+      "movement-lab-01"
+    ]
+  },
+  "finalPlayer": {
+    "airJumps": 0,
+    "attachedMode": "",
+    "attachmentLength": 0,
+    "attachmentTargetId": "",
+    "bashTargetId": "",
+    "checkpointId": "movement-lab-01:cp-start",
+    "dashCharges": 0,
+    "energy": 5,
+    "gravityDirection": {
+      "x": 0,
+      "y": 1
+    },
+    "health": 4,
+    "maximumDashCharges": 1,
+    "position": {
+      "x": 2187.9223629999997,
+      "y": 1351.41626
+    },
+    "ropePhase": "",
+    "velocity": {
+      "x": 0,
+      "y": 0
+    },
+    "visualState": {
+      "collisionRadius": 18.0,
+      "renderOnly": true,
+      "rope": {
+        "active": false,
+        "animationSag": 0.0,
+        "authoredLength": 0.0,
+        "bend": "(0.0, 1.0)",
+        "displayLength": 0.0,
+        "end": "(0.0, 0.0)",
+        "id": "",
+        "maximumSlackSag": 0.0,
+        "phase": "",
+        "physicalSag": 0.0,
+        "start": "(0.0, 0.0)",
+        "targetSag": 0.0,
+        "targetTension": 0.0,
+        "visualSag": 0.0,
+        "visualTension": 0.0
+      },
+      "softBody": {
+        "axisAngle": -1.5707960258849152,
+        "dashBlend": 2.9648034623341278e-05,
+        "jumpTimer": 0.0,
+        "landingSquash": 0.26,
+        "landingTimer": 0.0,
+        "motionTailBlend": 8.059538657113632e-05,
+        "pose": {
+          "angle": -1.5707960258849152,
+          "areaRatio": 1.0,
+          "crossRadius": 15.443974707323031,
+          "longRadius": 20.979055336471752
+        },
+        "stretch": 0.16550307424843072,
+        "stretchVelocity": -1.9874742161622736,
+        "targetAxis": 1.5707963705062866,
+        "targetStretch": 0.0
+      },
+      "tail": {
+        "bodyAcceleration": "(0.0, 0.0)",
+        "desiredLength": 42.0,
+        "facing": 1.0,
+        "facingVelocity": 0.0,
+        "offset": "(-20.60974, -38.78866)",
+        "relativeForce": "(0.0, 279.0)",
+        "velocity": "(-93.79317, 231.7585)"
+      },
+      "timing": {
+        "accumulator": 0.0,
+        "fixedStep": 0.008333333333333333,
+        "maxFrameDelta": 0.1
+      }
+    }
+  },
+  "finalPosition": {
+    "x": 2187.9223629999997,
+    "y": 1351.41626
+  },
+  "finalResources": {
+    "airJumps": 0,
+    "dashCharges": 0,
+    "energy": 5,
+    "health": 4
+  },
+  "finalState": {
+    "abilities": {
+      "dash": true,
+      "doubleJump": true,
+      "hardBar": true,
+      "rope": true,
+      "wallGrab": true
+    },
+    "activeChunkId": "movement-lab-01",
+    "checkpoint": {
+      "chunkId": "movement-lab-01",
+      "id": "movement-lab-01:cp-start",
+      "position": {
+        "x": 160.0,
+        "y": 590.0
+      }
+    },
+    "checkpointState": {},
+    "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+    "flags": {
+      "bellroot-bells-rung": false,
+      "cistern-sluice-open": false,
+      "crown-route-open": false,
+      "echo-seed-lit": false,
+      "heartwood-awake": false,
+      "nursery-restored": false
+    },
+    "objectStates": {
+      "movement-lab-01:ability-double-jump": {
+        "consumed": true,
+        "objectType": "abilityPickup",
+        "resetOnDeath": true,
+        "resetPolicy": "persistent"
+      }
+    },
+    "saveVersion": 1,
+    "savedAt": "2026-08-17T13:27:12",
+    "visitedChunks": [
+      "movement-lab-01"
+    ],
+    "worldId": "cablester-3c-labs"
+  },
+  "fixedPhysicsHz": 120,
+  "gameplayTuningVersion": "approved-1",
+  "godotBuildId": "4.7.1.stable.official.a13da4feb",
+  "latestTelemetryPath": "artifacts/godot/cablester-3c-labs.telemetry.json",
+  "performance": {
+    "estimatedMemoryBytes": 4194304,
+    "frameTimeP50Ms": 0.802,
+    "frameTimeP95Ms": 1.089,
+    "frameTimeP99Ms": 1.354,
+    "loadedChunkCount": 1,
+    "physicsTimeP50Ms": 0.755,
+    "physicsTimeP95Ms": 0.928,
+    "physicsTimeP99Ms": 1.054
+  },
+  "persistedState": {
+    "abilities": {},
+    "activeChunkId": "movement-lab-01",
+    "checkpoint": {},
+    "checkpointState": {},
+    "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+    "flags": {},
+    "objectStates": {
+      "movement-lab-01:ability-double-jump": {
+        "consumed": true,
+        "objectType": "abilityPickup",
+        "resetOnDeath": true,
+        "resetPolicy": "persistent"
+      }
+    },
+    "saveVersion": 1,
+    "savedAt": "2026-08-17T13:27:12",
+    "visitedChunks": [
+      "movement-lab-01"
+    ],
+    "worldId": "cablester-3c-labs"
+  },
+  "replayPath": "worlds/replays/labs/movement-lab-01.replay.json",
+  "replaySlug": "movement-lab-01",
+  "sourceContentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+  "startedAtUsec": 700179,
+  "targetState": {
+    "bashTargets": [],
+    "dashTicks": [
+      36,
+      246,
+      456
+    ],
+    "deathTicks": [
+      595
+    ],
+    "doubleJumpTicks": [
+      476
+    ],
+    "glideTicks": [],
+    "hardBarTargets": [],
+    "hazardDamageTicks": [
+      74
+    ],
+    "ropeTargets": [
+      "movement-lab-01:a01"
+    ],
+    "windZoneTicks": []
+  },
+  "telemetryPath": "artifacts/godot/cablester-3c-labs.movement-lab-01.telemetry.json",
+  "telemetryVersion": 1,
+  "trajectory": [
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 160.076385,
+        "y": 590.107666
+      },
+      "ropePhase": "",
+      "tick": 0,
+      "timeSeconds": 0.0,
+      "velocity": {
+        "x": 9.166667,
+        "y": 12.916666999999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 162.138885,
+        "y": 593.013916
+      },
+      "ropePhase": "",
+      "tick": 6,
+      "timeSeconds": 0.05,
+      "velocity": {
+        "x": 64.16667199999999,
+        "y": 90.416664
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 6,
+      "health": 5,
+      "position": {
+        "x": 166.951385,
+        "y": 599.795166
+      },
+      "ropePhase": "",
+      "tick": 12,
+      "timeSeconds": 0.1,
+      "velocity": {
+        "x": 119.16665599999999,
+        "y": 167.916672
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 174.513885,
+        "y": 610.451416
+      },
+      "ropePhase": "firing",
+      "tick": 18,
+      "timeSeconds": 0.15,
+      "velocity": {
+        "x": 174.166687,
+        "y": 245.416702
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 184.923599,
+        "y": 622
+      },
+      "ropePhase": "firing",
+      "tick": 24,
+      "timeSeconds": 0.2,
+      "velocity": {
+        "x": 240.833374,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 200.479156,
+        "y": 622
+      },
+      "ropePhase": "firing",
+      "tick": 30,
+      "timeSeconds": 0.25,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 222.14584399999998,
+        "y": 622
+      },
+      "ropePhase": "firing",
+      "tick": 36,
+      "timeSeconds": 0.3,
+      "velocity": {
+        "x": 850,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 264.64874299999997,
+        "y": 622
+      },
+      "ropePhase": "attached",
+      "tick": 42,
+      "timeSeconds": 0.35,
+      "velocity": {
+        "x": 850.347351,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 307.372009,
+        "y": 622
+      },
+      "ropePhase": "attached",
+      "tick": 48,
+      "timeSeconds": 0.4,
+      "velocity": {
+        "x": 858.8421629999999,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 350.727325,
+        "y": 621.980652
+      },
+      "ropePhase": "attached",
+      "tick": 54,
+      "timeSeconds": 0.45,
+      "velocity": {
+        "x": 868.857178,
+        "y": -2.3200179999999997
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 393.46218899999997,
+        "y": 622
+      },
+      "ropePhase": "attached",
+      "tick": 60,
+      "timeSeconds": 0.5,
+      "velocity": {
+        "x": 843.62207,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 434.74508699999996,
+        "y": 622
+      },
+      "ropePhase": "attached",
+      "tick": 66,
+      "timeSeconds": 0.55,
+      "velocity": {
+        "x": 812.018738,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 5,
+      "position": {
+        "x": 474.290558,
+        "y": 622
+      },
+      "ropePhase": "attached",
+      "tick": 72,
+      "timeSeconds": 0.6,
+      "velocity": {
+        "x": 775.1927489999999,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 508.30407699999995,
+        "y": 610.819763
+      },
+      "ropePhase": "attached",
+      "tick": 78,
+      "timeSeconds": 0.65,
+      "velocity": {
+        "x": 648.15564,
+        "y": -314.876587
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 536.740784,
+        "y": 575.004089
+      },
+      "ropePhase": "attached",
+      "tick": 84,
+      "timeSeconds": 0.7,
+      "velocity": {
+        "x": 586.821655,
+        "y": -683.706909
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 446.594086,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 565.302002,
+        "y": 543.068665
+      },
+      "ropePhase": "retracting",
+      "tick": 90,
+      "timeSeconds": 0.75,
+      "velocity": {
+        "x": 548.3076169999999,
+        "y": -606.416748
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 591.11322,
+        "y": 515.00824
+      },
+      "ropePhase": "",
+      "tick": 96,
+      "timeSeconds": 0.8,
+      "velocity": {
+        "x": 493.30758699999996,
+        "y": -528.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 614.174438,
+        "y": 490.822845
+      },
+      "ropePhase": "",
+      "tick": 102,
+      "timeSeconds": 0.85,
+      "velocity": {
+        "x": 438.307648,
+        "y": -451.416656
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 634.485596,
+        "y": 470.51242099999996
+      },
+      "ropePhase": "",
+      "tick": 108,
+      "timeSeconds": 0.9,
+      "velocity": {
+        "x": 383.307709,
+        "y": -373.916718
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 652.360046,
+        "y": 454.076965
+      },
+      "ropePhase": "",
+      "tick": 114,
+      "timeSeconds": 0.95,
+      "velocity": {
+        "x": 350,
+        "y": -296.41677899999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 669.8601679999999,
+        "y": 441.516571
+      },
+      "ropePhase": "",
+      "tick": 120,
+      "timeSeconds": 1.0,
+      "velocity": {
+        "x": 350,
+        "y": -218.91679399999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 687.360291,
+        "y": 432.831146
+      },
+      "ropePhase": "",
+      "tick": 126,
+      "timeSeconds": 1.05,
+      "velocity": {
+        "x": 350,
+        "y": -141.416763
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 704.860413,
+        "y": 428.020691
+      },
+      "ropePhase": "",
+      "tick": 132,
+      "timeSeconds": 1.1,
+      "velocity": {
+        "x": 350,
+        "y": -63.916767
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 722.3605349999999,
+        "y": 427.08529699999997
+      },
+      "ropePhase": "",
+      "tick": 138,
+      "timeSeconds": 1.15,
+      "velocity": {
+        "x": 350,
+        "y": 13.583238
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5.5,
+      "health": 4,
+      "position": {
+        "x": 739.860657,
+        "y": 430.02487199999996
+      },
+      "ropePhase": "",
+      "tick": 144,
+      "timeSeconds": 1.2,
+      "velocity": {
+        "x": 350,
+        "y": 91.083237
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 757.360779,
+        "y": 436.83941699999997
+      },
+      "ropePhase": "firing",
+      "tick": 150,
+      "timeSeconds": 1.25,
+      "velocity": {
+        "x": 350,
+        "y": 168.583252
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 774.860901,
+        "y": 447.529022
+      },
+      "ropePhase": "firing",
+      "tick": 156,
+      "timeSeconds": 1.3,
+      "velocity": {
+        "x": 350,
+        "y": 246.083282
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 792.3610229999999,
+        "y": 422.649475
+      },
+      "ropePhase": "firing",
+      "tick": 162,
+      "timeSeconds": 1.35,
+      "velocity": {
+        "x": 350,
+        "y": -465.299988
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 768.812561,
+        "y": 389.51232899999997
+      },
+      "ropePhase": "attached",
+      "tick": 168,
+      "timeSeconds": 1.4,
+      "velocity": {
+        "x": 95.45979299999999,
+        "y": -460.43078599999996
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 772.227173,
+        "y": 368.440918
+      },
+      "ropePhase": "attached",
+      "tick": 174,
+      "timeSeconds": 1.45,
+      "velocity": {
+        "x": 46.209713,
+        "y": -393.561584
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 773.6496579999999,
+        "y": 350.850861
+      },
+      "ropePhase": "attached",
+      "tick": 180,
+      "timeSeconds": 1.5,
+      "velocity": {
+        "x": 14.326208,
+        "y": -321.686829
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 773.871582,
+        "y": 336.959747
+      },
+      "ropePhase": "attached",
+      "tick": 186,
+      "timeSeconds": 1.55,
+      "velocity": {
+        "x": -2.112084,
+        "y": -245.171539
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 773.515503,
+        "y": 327.125793
+      },
+      "ropePhase": "attached",
+      "tick": 192,
+      "timeSeconds": 1.6,
+      "velocity": {
+        "x": -9.853569,
+        "y": -162.429306
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 772.8452149999999,
+        "y": 321.36535599999996
+      },
+      "ropePhase": "attached",
+      "tick": 198,
+      "timeSeconds": 1.65,
+      "velocity": {
+        "x": -15.923423,
+        "y": -81.70549
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 771.8773189999999,
+        "y": 319.59106399999996
+      },
+      "ropePhase": "attached",
+      "tick": 204,
+      "timeSeconds": 1.7,
+      "velocity": {
+        "x": -21.759940999999998,
+        "y": -2.747528
+      }
+    },
+    {
+      "attachedMode": "rope",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 770.633972,
+        "y": 321.73306299999996
+      },
+      "ropePhase": "attached",
+      "tick": 210,
+      "timeSeconds": 1.75,
+      "velocity": {
+        "x": -26.957327,
+        "y": 75.465538
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 769.6517329999999,
+        "y": 327.78817699999996
+      },
+      "ropePhase": "retracting",
+      "tick": 216,
+      "timeSeconds": 1.8,
+      "velocity": {
+        "x": -1.66876,
+        "y": 153.483017
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 243.89117399999998,
+      "attachmentTargetId": "movement-lab-01:a01",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 771.172424,
+        "y": 337.72274799999997
+      },
+      "ropePhase": "retracting",
+      "tick": 222,
+      "timeSeconds": 1.85,
+      "velocity": {
+        "x": 53.331244999999996,
+        "y": 230.983047
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 775.443176,
+        "y": 351.532288
+      },
+      "ropePhase": "",
+      "tick": 228,
+      "timeSeconds": 1.9,
+      "velocity": {
+        "x": 108.331238,
+        "y": 308.483002
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 782.4638669999999,
+        "y": 369.216888
+      },
+      "ropePhase": "",
+      "tick": 234,
+      "timeSeconds": 1.95,
+      "velocity": {
+        "x": 163.331253,
+        "y": 385.982941
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 792.234619,
+        "y": 390.776459
+      },
+      "ropePhase": "",
+      "tick": 240,
+      "timeSeconds": 2.0,
+      "velocity": {
+        "x": 218.33128399999998,
+        "y": 463.48287999999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 809.5609129999999,
+        "y": 411.70282
+      },
+      "ropePhase": "",
+      "tick": 246,
+      "timeSeconds": 2.05,
+      "velocity": {
+        "x": 850,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 852.060791,
+        "y": 411.70282
+      },
+      "ropePhase": "",
+      "tick": 252,
+      "timeSeconds": 2.1,
+      "velocity": {
+        "x": 850,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 894.560669,
+        "y": 411.70282
+      },
+      "ropePhase": "",
+      "tick": 258,
+      "timeSeconds": 2.15,
+      "velocity": {
+        "x": 850,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 937.0605469999999,
+        "y": 411.70282
+      },
+      "ropePhase": "",
+      "tick": 264,
+      "timeSeconds": 2.2,
+      "velocity": {
+        "x": 850,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 978.414734,
+        "y": 413.317383
+      },
+      "ropePhase": "",
+      "tick": 270,
+      "timeSeconds": 2.25,
+      "velocity": {
+        "x": 804.166565,
+        "y": 64.583336
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1017.0188599999999,
+        "y": 418.80697599999996
+      },
+      "ropePhase": "",
+      "tick": 276,
+      "timeSeconds": 2.3,
+      "velocity": {
+        "x": 749.166443,
+        "y": 142.083328
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1052.873047,
+        "y": 428.17157
+      },
+      "ropePhase": "",
+      "tick": 282,
+      "timeSeconds": 2.35,
+      "velocity": {
+        "x": 694.1663209999999,
+        "y": 219.583359
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1085.977295,
+        "y": 441.411133
+      },
+      "ropePhase": "",
+      "tick": 288,
+      "timeSeconds": 2.4,
+      "velocity": {
+        "x": 639.166199,
+        "y": 297.083344
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1116.3314209999999,
+        "y": 458.52572599999996
+      },
+      "ropePhase": "",
+      "tick": 294,
+      "timeSeconds": 2.45,
+      "velocity": {
+        "x": 584.166077,
+        "y": 374.583282
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1143.935547,
+        "y": 479.51532
+      },
+      "ropePhase": "",
+      "tick": 300,
+      "timeSeconds": 2.5,
+      "velocity": {
+        "x": 529.1659549999999,
+        "y": 452.083221
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1167.817505,
+        "y": 487
+      },
+      "ropePhase": "",
+      "tick": 306,
+      "timeSeconds": 2.55,
+      "velocity": {
+        "x": 427.499237,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1186.2132569999999,
+        "y": 487
+      },
+      "ropePhase": "",
+      "tick": 312,
+      "timeSeconds": 2.6,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1203.713013,
+        "y": 459.760406
+      },
+      "ropePhase": "",
+      "tick": 318,
+      "timeSeconds": 2.65,
+      "velocity": {
+        "x": 350,
+        "y": -512.499878
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1221.212769,
+        "y": 436.39584399999995
+      },
+      "ropePhase": "",
+      "tick": 324,
+      "timeSeconds": 2.7,
+      "velocity": {
+        "x": 350,
+        "y": -434.999939
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1238.712524,
+        "y": 416.90625
+      },
+      "ropePhase": "",
+      "tick": 330,
+      "timeSeconds": 2.75,
+      "velocity": {
+        "x": 350,
+        "y": -357.5
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1256.21228,
+        "y": 401.291656
+      },
+      "ropePhase": "",
+      "tick": 336,
+      "timeSeconds": 2.8,
+      "velocity": {
+        "x": 350,
+        "y": -280.00006099999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1273.712036,
+        "y": 389.55209399999995
+      },
+      "ropePhase": "",
+      "tick": 342,
+      "timeSeconds": 2.85,
+      "velocity": {
+        "x": 350,
+        "y": -202.500046
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1291.2117919999998,
+        "y": 381.6875
+      },
+      "ropePhase": "",
+      "tick": 348,
+      "timeSeconds": 2.9,
+      "velocity": {
+        "x": 350,
+        "y": -125.000023
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1308.711548,
+        "y": 377.697906
+      },
+      "ropePhase": "",
+      "tick": 354,
+      "timeSeconds": 2.95,
+      "velocity": {
+        "x": 350,
+        "y": -47.500031
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1326.211304,
+        "y": 377.583344
+      },
+      "ropePhase": "",
+      "tick": 360,
+      "timeSeconds": 3.0,
+      "velocity": {
+        "x": 350,
+        "y": 29.999972999999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1343.7110599999999,
+        "y": 381.34375
+      },
+      "ropePhase": "",
+      "tick": 366,
+      "timeSeconds": 3.05,
+      "velocity": {
+        "x": 350,
+        "y": 107.499969
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1361.210815,
+        "y": 388.979156
+      },
+      "ropePhase": "",
+      "tick": 372,
+      "timeSeconds": 3.1,
+      "velocity": {
+        "x": 350,
+        "y": 184.99998499999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1378.7105709999998,
+        "y": 400.48959399999995
+      },
+      "ropePhase": "",
+      "tick": 378,
+      "timeSeconds": 3.15,
+      "velocity": {
+        "x": 350,
+        "y": 262.5
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1396.210327,
+        "y": 415.875
+      },
+      "ropePhase": "",
+      "tick": 384,
+      "timeSeconds": 3.2,
+      "velocity": {
+        "x": 350,
+        "y": 339.999939
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1413.710083,
+        "y": 435.135406
+      },
+      "ropePhase": "",
+      "tick": 390,
+      "timeSeconds": 3.25,
+      "velocity": {
+        "x": 350,
+        "y": 417.49987799999997
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1431.2098389999999,
+        "y": 458.27084399999995
+      },
+      "ropePhase": "",
+      "tick": 396,
+      "timeSeconds": 3.3,
+      "velocity": {
+        "x": 350,
+        "y": 494.99981699999995
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1448.709595,
+        "y": 485.28125
+      },
+      "ropePhase": "",
+      "tick": 402,
+      "timeSeconds": 3.35,
+      "velocity": {
+        "x": 350,
+        "y": 572.499878
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1466.209351,
+        "y": 516.166687
+      },
+      "ropePhase": "",
+      "tick": 408,
+      "timeSeconds": 3.4,
+      "velocity": {
+        "x": 350,
+        "y": 650
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1483.709106,
+        "y": 550.927063
+      },
+      "ropePhase": "",
+      "tick": 414,
+      "timeSeconds": 3.45,
+      "velocity": {
+        "x": 350,
+        "y": 727.5001219999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1501.208862,
+        "y": 589.5625
+      },
+      "ropePhase": "",
+      "tick": 420,
+      "timeSeconds": 3.5,
+      "velocity": {
+        "x": 350,
+        "y": 805.000244
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1518.708618,
+        "y": 612
+      },
+      "ropePhase": "",
+      "tick": 426,
+      "timeSeconds": 3.55,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1536.2083739999998,
+        "y": 612
+      },
+      "ropePhase": "",
+      "tick": 432,
+      "timeSeconds": 3.6,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1553.70813,
+        "y": 612
+      },
+      "ropePhase": "",
+      "tick": 438,
+      "timeSeconds": 3.65,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1571.207886,
+        "y": 612
+      },
+      "ropePhase": "",
+      "tick": 444,
+      "timeSeconds": 3.7,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 1,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1588.7076419999999,
+        "y": 612
+      },
+      "ropePhase": "",
+      "tick": 450,
+      "timeSeconds": 3.75,
+      "velocity": {
+        "x": 350,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1610.3741459999999,
+        "y": 612
+      },
+      "ropePhase": "",
+      "tick": 456,
+      "timeSeconds": 3.8,
+      "velocity": {
+        "x": 850,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1652.87439,
+        "y": 612
+      },
+      "ropePhase": "",
+      "tick": 462,
+      "timeSeconds": 3.85,
+      "velocity": {
+        "x": 850,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1695.374634,
+        "y": 612
+      },
+      "ropePhase": "",
+      "tick": 468,
+      "timeSeconds": 3.9,
+      "velocity": {
+        "x": 850,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1737.8748779999999,
+        "y": 612
+      },
+      "ropePhase": "",
+      "tick": 474,
+      "timeSeconds": 3.95,
+      "velocity": {
+        "x": 850,
+        "y": 0
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1778.2342529999999,
+        "y": 605.891968
+      },
+      "ropePhase": "",
+      "tick": 480,
+      "timeSeconds": 4.0,
+      "velocity": {
+        "x": 766.660583,
+        "y": 90.09490199999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1814.963135,
+        "y": 612.657166
+      },
+      "ropePhase": "",
+      "tick": 486,
+      "timeSeconds": 4.05,
+      "velocity": {
+        "x": 711.6604609999999,
+        "y": 167.59491
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1848.9420169999999,
+        "y": 623.297363
+      },
+      "ropePhase": "",
+      "tick": 492,
+      "timeSeconds": 4.1,
+      "velocity": {
+        "x": 656.660339,
+        "y": 245.09493999999998
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1880.170776,
+        "y": 637.8125
+      },
+      "ropePhase": "",
+      "tick": 498,
+      "timeSeconds": 4.15,
+      "velocity": {
+        "x": 601.660217,
+        "y": 322.594879
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1908.6496579999998,
+        "y": 656.2026979999999
+      },
+      "ropePhase": "",
+      "tick": 504,
+      "timeSeconds": 4.2,
+      "velocity": {
+        "x": 546.660095,
+        "y": 400.094818
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1934.37854,
+        "y": 678.467896
+      },
+      "ropePhase": "",
+      "tick": 510,
+      "timeSeconds": 4.25,
+      "velocity": {
+        "x": 491.660065,
+        "y": 477.59475699999996
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1957.3573,
+        "y": 704.608032
+      },
+      "ropePhase": "",
+      "tick": 516,
+      "timeSeconds": 4.3,
+      "velocity": {
+        "x": 436.660126,
+        "y": 555.094788
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1977.586182,
+        "y": 734.6232299999999
+      },
+      "ropePhase": "",
+      "tick": 522,
+      "timeSeconds": 4.35,
+      "velocity": {
+        "x": 381.660187,
+        "y": 632.59491
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 1995.419189,
+        "y": 768.513428
+      },
+      "ropePhase": "",
+      "tick": 528,
+      "timeSeconds": 4.4,
+      "velocity": {
+        "x": 350,
+        "y": 710.095032
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2012.918945,
+        "y": 806.278564
+      },
+      "ropePhase": "",
+      "tick": 534,
+      "timeSeconds": 4.45,
+      "velocity": {
+        "x": 350,
+        "y": 787.595154
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2030.4187009999998,
+        "y": 847.918762
+      },
+      "ropePhase": "",
+      "tick": 540,
+      "timeSeconds": 4.5,
+      "velocity": {
+        "x": 350,
+        "y": 865.095276
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2047.918457,
+        "y": 893.43396
+      },
+      "ropePhase": "",
+      "tick": 546,
+      "timeSeconds": 4.55,
+      "velocity": {
+        "x": 350,
+        "y": 942.5953979999999
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2065.418945,
+        "y": 942.8240969999999
+      },
+      "ropePhase": "",
+      "tick": 552,
+      "timeSeconds": 4.6,
+      "velocity": {
+        "x": 350,
+        "y": 1020.09552
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2082.919434,
+        "y": 996.089294
+      },
+      "ropePhase": "",
+      "tick": 558,
+      "timeSeconds": 4.65,
+      "velocity": {
+        "x": 350,
+        "y": 1097.595337
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2100.419922,
+        "y": 1053.229492
+      },
+      "ropePhase": "",
+      "tick": 564,
+      "timeSeconds": 4.7,
+      "velocity": {
+        "x": 350,
+        "y": 1175.095093
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2117.9204099999997,
+        "y": 1112.834229
+      },
+      "ropePhase": "",
+      "tick": 570,
+      "timeSeconds": 4.75,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2135.420898,
+        "y": 1172.479736
+      },
+      "ropePhase": "",
+      "tick": 576,
+      "timeSeconds": 4.8,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2152.921387,
+        "y": 1232.1252439999998
+      },
+      "ropePhase": "",
+      "tick": 582,
+      "timeSeconds": 4.85,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2170.421875,
+        "y": 1291.770752
+      },
+      "ropePhase": "",
+      "tick": 588,
+      "timeSeconds": 4.9,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2187.9223629999997,
+        "y": 1351.41626
+      },
+      "ropePhase": "",
+      "tick": 594,
+      "timeSeconds": 4.95,
+      "velocity": {
+        "x": 350,
+        "y": 1192.916626
+      }
+    },
+    {
+      "attachedMode": "",
+      "attachmentLength": 0,
+      "attachmentTargetId": "",
+      "bashTargetId": "",
+      "chunkId": "movement-lab-01",
+      "dashCharges": 0,
+      "energy": 5,
+      "health": 4,
+      "position": {
+        "x": 2187.9223629999997,
+        "y": 1351.41626
+      },
+      "ropePhase": "",
+      "tick": 600,
+      "timeSeconds": 5.0,
+      "velocity": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "visitedChunks": [
+    "movement-lab-01"
+  ],
+  "worldId": "cablester-3c-labs"
+}
