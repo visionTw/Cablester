@@ -1,6 +1,6 @@
 # Web / Godot 3C 对等矩阵
 
-状态含义：`draft` 仅 Web 实验；`implemented` 已有双端实现但尚未完成共享固定输入轨迹容差；`automated-pass` 要求当前 checkout 的 Web/Godot 同输入轨迹、目标、资源与死亡断言全部通过；`approved` 还要求真人主观手感签字。当前 10 个案例已由真实 Web `Game.update()` 与 Godot `4.7.1.stable.official.a13da4feb` 在同一份 120 Hz 固定输入上完成自动对等，[`artifacts/godot/3c-parity-report.json`](../artifacts/godot/3c-parity-report.json) 为 **10/10 cases、318/318 assertions**。机器结果不冒充真人主观批准，因此 `humanConfirmation` 仍为 `needed`；第一阶段总体状态见 [`PHASE_ONE_REPORT.md`](PHASE_ONE_REPORT.md)。
+状态含义：`draft` 仅 Web 实验；`implemented` 已有双端实现但尚未完成共享固定输入轨迹容差；`automated-pass` 要求当前 checkout 的 Web/Godot 同输入轨迹、目标、资源与死亡断言全部通过；`approved` 还要求真人主观手感签字。Godot telemetry 和对比报告只保存在私有 `Game_Cablester`，由其中的 `npm run contract:parity` 重新生成；公开仓库不再保存引擎派生证据。历史自动对等基线为 **10/10 cases、318/318 assertions**，但每次交付仍必须现场重跑，机器结果也不能代签真人手感。
 
 ## Approved tuning v1
 

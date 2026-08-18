@@ -27,8 +27,8 @@ import { createWorldRepositoryClient } from "./world-repository-client.js";
 import { WorldValidationWorkerClient } from "./world-validation-worker.js";
 
 const DEFAULT_WORLD_PATHS = Object.freeze([
-  "worlds/formal/first-forest.world.json",
-  "worlds/formal/cablester-first-forest.world.json"
+  "worlds/labs/cablester-composite-showcase.world.json",
+  "worlds/labs/cablester-3c-labs.world.json"
 ]);
 
 const ENTITY_KINDS = Object.freeze(["world", "region", "chunk", "object"]);
@@ -649,6 +649,28 @@ export class WorldEditorSession {
   }
 }
 
+export class WorldExportValidationError extends Error {
+  constructor(issues) {
+    const errors = Array.isArray(issues) ? issues : [];
+    super(`Canonical world export blocked by ${errors.length} validation error${errors.length === 1 ? "" : "s"}.`);
+    this.name = "WorldExportValidationError";
+    this.issues = errors;
+  }
+}
+
+export async function serializeValidatedWorldPackage(world) {
+  const errors = validateWorldPackage(world)
+    .filter((item) => (item.severity || "error") === "error");
+  if (errors.length > 0) throw new WorldExportValidationError(errors);
+
+  const contents = await serializeWorldPackage(world);
+  const sealedWorld = JSON.parse(contents);
+  const sealedErrors = validateWorldPackage(sealedWorld)
+    .filter((item) => (item.severity || "error") === "error");
+  if (sealedErrors.length > 0) throw new WorldExportValidationError(sealedErrors);
+  return contents;
+}
+
 function download(name, contents, type = "application/json") {
   const blob = new Blob([contents], { type });
   const link = document.createElement("a");
@@ -1064,29 +1086,8 @@ export function createWorldStudio({
     snapshot = null;
     normalizedManifest = null;
     telemetry = null;
-    if (!session) return;
-    const worldId = session.world.manifest.worldId;
-    const candidates = {
-      snapshot: [`artifacts/godot/${worldId}.resolved-snapshot.json`, `artifacts/godot/${worldId}.snapshot.json`, `artifacts/godot/${worldId}.resolved.json`, "artifacts/godot/resolved-snapshot.json"],
-      manifest: [`artifacts/godot/${worldId}.normalized-manifest.json`, "artifacts/godot/normalized-manifest.json"],
-      telemetry: [`artifacts/godot/${worldId}.telemetry.json`, "artifacts/godot/telemetry.json"]
-    };
-    const loadFirst = async (paths) => {
-      for (const path of paths) {
-        try {
-          const response = await fetch(`./${path}`, { cache: "no-store" });
-          if (response.ok) return response.json();
-        } catch {
-          // Optional diagnostic artifacts may not exist yet.
-        }
-      }
-      return null;
-    };
-    [snapshot, normalizedManifest, telemetry] = await Promise.all([
-      loadFirst(candidates.snapshot),
-      loadFirst(candidates.manifest),
-      loadFirst(candidates.telemetry)
-    ]);
+    // Godot diagnostics live in the private sibling project after the split.
+    // The Web project intentionally starts without engine-derived artifacts.
   }
 
   async function openWorld(path) {
@@ -1111,6 +1112,13 @@ export function createWorldStudio({
     capability = await repository.inspect({ refresh: true });
     let worlds = capability.worlds || [];
     if (worlds.length === 0) worlds = DEFAULT_WORLD_PATHS.map((path) => ({ path }));
+    else worlds = [...worlds].sort((left, right) => {
+      const leftPriority = DEFAULT_WORLD_PATHS.indexOf(left.path);
+      const rightPriority = DEFAULT_WORLD_PATHS.indexOf(right.path);
+      const normalizedLeft = leftPriority < 0 ? Number.MAX_SAFE_INTEGER : leftPriority;
+      const normalizedRight = rightPriority < 0 ? Number.MAX_SAFE_INTEGER : rightPriority;
+      return normalizedLeft - normalizedRight || left.path.localeCompare(right.path);
+    });
     pathSelect.innerHTML = worlds.map((entry) => `<option value="${escapeHtml(entry.path)}">${escapeHtml(entry.path)}</option>`).join("");
     renderToolbar();
     return worlds;
@@ -1354,9 +1362,18 @@ export function createWorldStudio({
   root.querySelector("#world-import").addEventListener("click", () => fileInput.click());
   root.querySelector("#world-export").addEventListener("click", async () => {
     if (!session) return;
-    const contents = await session.serialize();
-    download(`${session.world.manifest.worldId}.world.json`, contents);
-    setStatus("已导出确定性 canonical JSON；导出不等于仓库保存。", "success");
+    try {
+      const contents = await serializeValidatedWorldPackage(session.world);
+      download(`${session.world.manifest.worldId}.world.json`, contents);
+      setStatus("已校验、封存并导出 canonical JSON；导出不等于仓库保存。", "success");
+    } catch (error) {
+      const issues = error instanceof WorldExportValidationError ? error.issues : [];
+      if (issues.length > 0) {
+        validationResult = { issues };
+        renderDiagnostics();
+        setStatus(`导出已阻止：${issues.length} 个 canonical 错误。`, "error");
+      } else setStatus(`导出失败：${error.message}`, "error");
+    }
   });
   fileInput.addEventListener("change", async () => {
     const file = fileInput.files?.[0];

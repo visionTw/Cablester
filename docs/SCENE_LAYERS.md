@@ -142,8 +142,7 @@ center    = cameraX × parallax
 
 `VisualRuntime` 在加载关卡时收集 object visuals 和 scene layers 引用的非程序化素材，并以默认并发 6 预加载。菜单、编辑器试玩和参考房切换都使用 prepared-load gate：当前关卡与一跳相邻关卡的图片全部完成 decode（或明确进入 error 回退态）以后，才原子切换关卡；准备期间菜单保持可见，真实切房则冻结旧房玩法并保留旧画面。
 
-- 正式关卡按菜单顺序预取前后相邻关；参考房按 `connections` 预取一跳出入邻居，不递归扩展到整个 908 房库；
-- reference document fetch 使用 in-flight Promise 去重，当前房与一跳邻房文档固定驻留；
+- 菜单中的 3C 关按顺序预取前后相邻关；World Studio 试玩按 canonical `connections` 只准备当前 Chunk 与一跳邻居；
 - 快速 A → B 请求使用 generation token，晚完成的 A 不会反向覆盖 B；
 - 当前关与邻关的素材 ID 会在图片 LRU 中固定驻留，下一次 prepared load 再原子替换驻留集合；
 - 图片失败会等待到稳定 error 状态后使用程序化回退，不会让加载门控死锁。
@@ -156,7 +155,7 @@ center    = cameraX × parallax
 - scene validation 与质量档选择结果按 scene 对象存入 `WeakMap`；
 - `stats()` 暴露请求、命中、ready/loading/error、估算 decoded bytes、tint bytes、淘汰、scene/object/fallback draw 和 cull 数。
 
-兼容旧的同步 `loadLevel()` 调用时，图片加载中仍可即时使用程序化 renderer；面向玩家的入口统一走 prepared-load，因此不会先显示程序化占位、随后突然替换图片。加载失败时物件持续使用原程序化 renderer；场景解析到 `builtin:procedural` 后，非玩家层绘制轻量程序化剪影，玩家层不额外绘制占位物。只引用 `builtin:procedural` 的默认 scene 在正式运行时跳过，因此 908 个参考白盒仍保留基础 Canvas 背景，不会凭空套用正式关卡森林层。
+兼容旧的同步 `loadLevel()` 调用时，图片加载中仍可即时使用程序化 renderer；面向玩家的入口统一走 prepared-load，因此不会先显示程序化占位、随后突然替换图片。加载失败时物件持续使用原程序化 renderer；场景解析到 `builtin:procedural` 后，非玩家层绘制轻量程序化剪影，玩家层不额外绘制占位物。
 
 ## 自动质量降级
 
@@ -172,7 +171,7 @@ center    = cameraX × parallax
 | `balanced` | 24 | 128 | 512 | 0.72 | 6 px |
 | `low` | 12 | 48 | 192 | 0.42 | 2 px |
 
-当图层数超过档位上限时，运行时优先保留 player、midground、foreground、background，再保留 custom；同优先级选择更靠近玩家基准的 depth。此策略保证降级有确定性，但不是性能结果本身。首次加载、请求数、内存/显存、平均 FPS、P95 和最差帧时间必须按 [ART_RELEASE.md](ART_RELEASE.md) 在目标设备实测。
+当图层数超过档位上限时，运行时优先保留 player、midground、foreground、background，再保留 custom；同优先级选择更靠近玩家基准的 depth。此策略保证降级有确定性，但不是性能结果本身。首次加载、请求数、内存/显存、平均 FPS、P95 和最差帧时间必须在目标设备实测。
 
 ## 编辑与验收检查表
 

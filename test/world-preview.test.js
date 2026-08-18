@@ -101,7 +101,7 @@ test("10x synthetic world meets spatial-index preview query performance gates", 
 });
 
 test("real first-forest preview builds from canonical data without decoding its asset registry", async () => {
-  const world = JSON.parse(await readFile(new URL("worlds/formal/first-forest.world.json", root), "utf8"));
+  const world = JSON.parse(await readFile(new URL("worlds/labs/cablester-composite-showcase.world.json", root), "utf8"));
   const index = buildWorldSpatialIndex(world);
   const model = createWorldPreviewModel(world, {
     spatialIndex: index,

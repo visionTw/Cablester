@@ -3,9 +3,11 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import {
   WorldEditorSession,
+  WorldExportValidationError,
   createChunkWebPlaytestDocument,
   createWorldDocumentDiff,
-  nextStableId
+  nextStableId,
+  serializeValidatedWorldPackage
 } from "../src/world-editor.js";
 import { applyTransformChain } from "../src/world-streaming.js";
 import {
@@ -22,7 +24,7 @@ import { validateLevel } from "../src/level-validator.js";
 const root = new URL("..", import.meta.url);
 
 async function forestWorld() {
-  return JSON.parse(await readFile(new URL("worlds/formal/first-forest.world.json", root), "utf8"));
+  return JSON.parse(await readFile(new URL("worlds/labs/cablester-composite-showcase.world.json", root), "utf8"));
 }
 
 test("stable ID allocator, search, filter, duplicate, delete, undo and redo use canonical entities", async () => {
@@ -148,6 +150,31 @@ test("world editor diff and deterministic export track the last repository basel
   assert.deepEqual(session.changes().changes, []);
 });
 
+test("validated world export seals valid packages and fails closed on stale or invalid input", async () => {
+  const world = await forestWorld();
+  const first = await serializeValidatedWorldPackage(world);
+  const second = await serializeValidatedWorldPackage(world);
+  assert.equal(first, second);
+  assert.deepEqual(validateWorldPackage(JSON.parse(first)), []);
+
+  const staleHash = structuredClone(world);
+  staleHash.regions[0].name = "stale hash mutation";
+  await assert.rejects(
+    () => serializeValidatedWorldPackage(staleHash),
+    (error) => error instanceof WorldExportValidationError
+      && error.issues.some((issue) => issue.code === "content-hash-mismatch")
+  );
+
+  const invalid = structuredClone(world);
+  invalid.manifest.contentHash = "";
+  invalid.regions[0].chunks[0].objects[0].type = "";
+  await assert.rejects(
+    () => serializeValidatedWorldPackage(invalid),
+    (error) => error instanceof WorldExportValidationError
+      && error.issues.some((issue) => issue.code === "invalid-object-type")
+  );
+});
+
 test("adding and retyping objects uses registry defaults and clears the stale content hash", async () => {
   const session = new WorldEditorSession(await forestWorld());
   const objectId = session.addObject("seedgate-verge", "platform");
@@ -199,7 +226,7 @@ test("document diff identifies added, removed and changed canonical paths", () =
 });
 
 test("repository client allows only worlds/formal and worlds/labs and clearly rejects online saves", async () => {
-  assert.equal(assertWorldRepositoryPath("/worlds/formal/first-forest.world.json"), "worlds/formal/first-forest.world.json");
+  assert.equal(assertWorldRepositoryPath("/worlds/labs/cablester-composite-showcase.world.json"), "worlds/labs/cablester-composite-showcase.world.json");
   assert.equal(assertWorldRepositoryPath("worlds/labs/3c.world.json"), "worlds/labs/3c.world.json");
   for (const path of ["../worlds/formal/x.world.json", "worlds/registries/x.world.json", "worlds/formal/x.json", "godot/x.world.json"]) {
     assert.throws(() => assertWorldRepositoryPath(path), /worlds\/formal/);
@@ -220,7 +247,7 @@ test("repository client allows only worlds/formal and worlds/labs and clearly re
       text: async () => JSON.stringify({
         mode: "read-only",
         worlds: [
-          "worlds/formal/first-forest.world.json",
+          "worlds/labs/cablester-composite-showcase.world.json",
           { path: "worlds/labs/cablester-3c-labs.world.json", title: "3C" },
           "../project.godot"
         ]
@@ -228,7 +255,7 @@ test("repository client allows only worlds/formal and worlds/labs and clearly re
     })
   });
   assert.deepEqual((await legacyCapability.list()).map((entry) => entry.path), [
-    "worlds/formal/first-forest.world.json",
+    "worlds/labs/cablester-composite-showcase.world.json",
     "worlds/labs/cablester-3c-labs.world.json"
   ]);
 });
@@ -272,7 +299,7 @@ test("repository capability is captured from the URL fragment, removed from brow
 });
 
 test("staged validator checks real formal and labs packages without false positive bounds or persistence warnings", async () => {
-  for (const path of ["worlds/formal/first-forest.world.json", "worlds/labs/cablester-3c-labs.world.json"]) {
+  for (const path of ["worlds/labs/cablester-composite-showcase.world.json", "worlds/labs/cablester-3c-labs.world.json"]) {
     const world = JSON.parse(await readFile(new URL(path, root), "utf8"));
     const progress = [];
     const result = await validateWorldInStages(world, { onProgress: (event) => progress.push(event) });

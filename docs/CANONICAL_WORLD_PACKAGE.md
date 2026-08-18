@@ -1,19 +1,17 @@
 # Canonical World Package vNext 冻结契约
 
-状态：第一阶段接口冻结。Schema 版本为 `3`。任何改动都必须同时更新迁移、Web、Godot、roundtrip、golden fixture 与本文档。
-
-Godot 工具链固定为 `4.7.1.stable.official.a13da4feb`。`GODOT_VERSION` 是机器可读版本门；导入器、snapshot、telemetry、测试和导出包必须由这一 build 或明确批准的更高 4.7.x 稳定维护版产生，禁止用 4.6.x 或 4.8 开发版冒充验收。
+状态：跨仓库接口冻结。Schema 版本为 `3`。任何改动都必须同时更新迁移、Web、Godot、roundtrip、golden fixture 与本文档。Godot 的精确版本门、导入器和派生证据由私有 `Game_Cablester` 维护。
 
 ## 1. 唯一权威与文件布局
 
-- `worlds/formal/*.world.json`：正式世界与区域，唯一可编辑内容权威。
+- `Game_Cablester/worlds/formal/*.world.json`：私有正式世界与区域，唯一可编辑内容权威；本地编辑时映射为虚拟 `worlds/formal/`。
 - `worlds/labs/*.world.json`：6 个专项关与 4 个综合案例的 canonical 数据。
 - `worlds/registries/*.json`：type、asset、prefab registry。
 - `worlds/fixtures/*.json`：迁移与跨端 golden fixture。
-- `artifacts/godot/*.json`：Godot 只读 resolved snapshot、normalized manifest 与 telemetry；均可删除重建。
-- `godot/`：可复用 prefab、运行时实现、导入器与测试。正式布局不得写入 `.tscn`。
+- `Game_Cablester/artifacts/godot/*.json`：私有 Godot resolved snapshot、normalized manifest 与 telemetry；均可删除重建。
+- `Game_Cablester/godot/`：私有 prefab、运行时实现、导入器与测试。正式布局不得写入 `.tscn`。
 
-Web 读取 `worlds/`；Godot 从同一路径读取 `worlds/`。构建可生成只读 JS/资源缓存，但缓存不得人工维护或成为编辑源。
+Web 公开构建只读取 `worlds/labs/`。本地开发服务可显式映射私有 formal 目录；映射路径和正式内容都不进入公开构建。Godot 直接读取私有 formal，并消费从 Web 单向同步的 labs/registries/assets/replays。
 
 ## 2. 坐标与数值
 
@@ -148,9 +146,9 @@ A 线拥有：`src/world-schema.js`、`src/world-hash.js`、`src/world-diff.js`�
 
 B 线拥有：`src/world-editor.js`、`src/world-preview.js`、`src/world-streaming.js`、`src/world-validation-worker.js`、世界工作室 HTML/CSS、Web 编辑/性能测试。
 
-C 线拥有：`project.godot`、`godot/**`、`artifacts/godot/**` 与 Godot headless 测试。
+C 线拥有私有仓库中的 `project.godot`、`godot/**`、`artifacts/godot/**` 与 Godot headless 测试。
 
-D/集成线拥有：`worlds/formal/**`、`worlds/labs/**`、3C/森林内容、资产登记、跨端验收、构建发布与最终证据。
+D/集成线拥有私有 `worlds/formal/**`、公开 `worlds/labs/**`、3C 内容、资产登记、跨端验收与最终证据。
 
 冻结的 JavaScript API：
 
@@ -167,7 +165,7 @@ chunkToLevelDocument(world, regionId, chunkId) -> v2-compatible document
 applyLevelDocumentToChunk(world, regionId, chunkId, document) -> world
 ```
 
-Godot CLI：
+Godot CLI（在私有 `Game_Cablester` 执行）：
 
 ```text
 scripts/godot.sh --headless --path . -- --import-world worlds/formal/first-forest.world.json

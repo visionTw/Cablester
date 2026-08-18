@@ -10,9 +10,8 @@ import {
   validateWorldPackage
 } from "../src/world-schema.js";
 
-const FOREST_PATH = new URL("../worlds/formal/first-forest.world.json", import.meta.url);
+const SHOWCASE_PATH = new URL("../worlds/labs/cablester-composite-showcase.world.json", import.meta.url);
 const LABS_PATH = new URL("../worlds/labs/cablester-3c-labs.world.json", import.meta.url);
-const GODOT_VERSION_PATH = new URL("../GODOT_VERSION", import.meta.url);
 
 async function readWorld(url) {
   const source = await readFile(url, "utf8");
@@ -151,7 +150,7 @@ function simulateStaticProgression(world, startChunkId) {
 }
 
 test("phase-one canonical worlds are sealed, deterministic, and fully resolvable", async () => {
-  for (const path of [FOREST_PATH, LABS_PATH]) {
+  for (const path of [SHOWCASE_PATH, LABS_PATH]) {
     const { source, world } = await readWorld(path);
     assert.equal(world.schemaVersion, 3);
     assert.equal(world.manifest.contentHash, await computeContentHash(world));
@@ -163,12 +162,10 @@ test("phase-one canonical worlds are sealed, deterministic, and fully resolvable
   }
 });
 
-test("first forest is one canonical 12-chunk region with complete gated topology", async () => {
-  const { world } = await readWorld(FOREST_PATH);
-  const requiredGodotBuild = (await readFile(GODOT_VERSION_PATH, "utf8")).trim();
-  assert.equal(requiredGodotBuild, "4.7.1.stable.official.a13da4feb");
-  assert.equal(world.godotCompatibility.requiredBuildId, requiredGodotBuild);
-  assert.equal(world.manifest.namespace, "formal");
+test("public composite showcase is one canonical 12-chunk region with complete gated topology", async () => {
+  const { world } = await readWorld(SHOWCASE_PATH);
+  assert.equal(world.godotCompatibility.requiredBuildId, "4.7.1.stable.official.a13da4feb");
+  assert.equal(world.manifest.namespace, "labs");
   assert.equal(world.regions.length, 1);
 
   const [region] = world.regions;
@@ -220,8 +217,8 @@ test("first forest is one canonical 12-chunk region with complete gated topology
   assert.ok(finalChunk.objects.some((object) => object.type === "goal"));
 });
 
-test("first forest portals, spawns, and checkpoints keep a conservative player envelope clear", async () => {
-  const { world } = await readWorld(FOREST_PATH);
+test("public composite showcase portals, spawns, and checkpoints keep a conservative player envelope clear", async () => {
+  const { world } = await readWorld(SHOWCASE_PATH);
   let entranceCount = 0;
   let exitCount = 0;
   let spawnCount = 0;
@@ -289,8 +286,8 @@ test("first forest portals, spawns, and checkpoints keep a conservative player e
   });
 });
 
-test("first forest uses only registered project assets and declared persistent state", async () => {
-  const { world } = await readWorld(FOREST_PATH);
+test("public composite showcase uses only registered project assets and declared persistent state", async () => {
+  const { world } = await readWorld(SHOWCASE_PATH);
   const assetIds = new Set(world.assetRegistry.entries.map((entry) => entry.id));
   const declaredFlags = new Set(world.stateDefinitions.flags.map((entry) => entry.id));
   const usedLandmarks = new Set();

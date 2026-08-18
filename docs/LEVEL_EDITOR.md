@@ -2,7 +2,7 @@
 
 Cablester 的关卡工坊从开始菜单进入，提供四种共用同一份关卡文档的模式：`物件编辑`、`关卡支持`、`物件素材` 和 `场景分层`。四个模式共用撤销/重做历史、本地保存、JSON 导入导出和一键试玩；视觉编辑只改变美术配置，不改变碰撞、交互或玩法语义。
 
-素材登记与生成规范见 [ASSET_LIBRARY.md](ASSET_LIBRARY.md)，场景图层字段和无缝计算见 [SCENE_LAYERS.md](SCENE_LAYERS.md)，最终美术验收与发布记录见 [ART_RELEASE.md](ART_RELEASE.md)。
+素材登记与生成规范见 [ASSET_LIBRARY.md](ASSET_LIBRARY.md)，场景图层字段和无缝计算见 [SCENE_LAYERS.md](SCENE_LAYERS.md)，正式关卡本地写回见 [LOCAL_FORMAL_LEVEL_WORKFLOW.md](LOCAL_FORMAL_LEVEL_WORKFLOW.md)。
 
 ## 基本工作流
 
@@ -119,7 +119,7 @@ Cablester 的关卡工坊从开始菜单进入，提供四种共用同一份关�
 
 “场景分层”模式支持新增、显示/隐藏、锁定、排序、复制和删除图层；编辑多个带权重素材、深度、视差、缩放、透明度、色调、模糊、雾化、混合方式、横向重复、随机种子、出现范围、间距、密度和绘制上限。场景素材选择器只列 `applicableTypes` 包含 `scene` 或 `*` 的素材，添加和替换时再次校验。
 
-默认迁移场景仍是 4 个角色层；10 个正式关卡由 `LEVEL_ART_PRESET_BY_ID` 扩展为各 12 层（4 个角色层 + 8 个自定义深度层），并共同使用当前 14 个 scene 素材。参考白盒不套用正式 preset，不能据此宣称完成逐房美术。
+默认迁移场景仍是 4 个角色层；10 个公开 3C 测试关由 `LEVEL_ART_PRESET_BY_ID` 扩展为各 12 层（4 个角色层 + 8 个自定义深度层），并共同使用当前 14 个 scene 素材。
 
 图层排序与运行时都以 `depth` 为首要依据；工坊的上移/下移会同步调整深度，避免列表顺序与实际绘制顺序分离。详细字段、计算公式和性能上限见 [SCENE_LAYERS.md](SCENE_LAYERS.md)。
 
@@ -158,4 +158,4 @@ Cablester 的关卡工坊从开始菜单进入，提供四种共用同一份关�
 6. `npm test`、`npm run check`、`npm run assets:audit`、`npm run build`；
 7. 浏览器中的四个模式入口、能力开关与覆盖提示、原生下拉可读性、保存/导入/试玩和实际关卡表现。
 
-浏览器、性能和 Sites 结果不得从旧记录推断；每次发布都应填写 [ART_RELEASE.md](ART_RELEASE.md) 的当次证据区。
+浏览器、性能和构建结果不得从旧记录推断；每次交付都应重新运行测试并记录当前内容哈希。

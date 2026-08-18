@@ -8,11 +8,6 @@ const dist = resolve(root, "dist");
 const client = resolve(dist, "client");
 const server = resolve(dist, "server");
 const isGodotDerivative = (source) => source.endsWith(".import") || source.includes("/.godot/");
-const isPublishedGodotArtifact = (source) => {
-  if (source.includes("/artifacts/godot/test/")) return false;
-  if (source.endsWith("/artifacts/godot")) return true;
-  return source.endsWith(".json") || source.endsWith(".png");
-};
 const isPublishedWebArtifact = (source) => (
   source.endsWith("/artifacts/web")
   || source.endsWith("/artifacts/web/world-studio-performance.json")
@@ -34,7 +29,6 @@ const copyTasks = [
   cp(resolve(root, "og.png"), resolve(client, "og.png")),
   cp(resolve(root, "src"), resolve(client, "src"), { recursive: true }),
   cp(resolve(root, "levels"), resolve(client, "levels"), { recursive: true }),
-  cp(resolve(root, "worlds", "formal"), resolve(client, "worlds", "formal"), { recursive: true }),
   cp(resolve(root, "worlds", "labs"), resolve(client, "worlds", "labs"), { recursive: true }),
   cp(resolve(root, "worlds", "registries"), resolve(client, "worlds", "registries"), { recursive: true }),
   cp(
@@ -46,12 +40,6 @@ if (existsSync(resolve(root, "assets"))) {
   copyTasks.push(cp(resolve(root, "assets"), resolve(client, "assets"), {
     recursive: true,
     filter: (source) => !isGodotDerivative(source)
-  }));
-}
-if (existsSync(resolve(root, "artifacts", "godot"))) {
-  copyTasks.push(cp(resolve(root, "artifacts", "godot"), resolve(client, "artifacts", "godot"), {
-    recursive: true,
-    filter: isPublishedGodotArtifact
   }));
 }
 if (existsSync(resolve(root, "artifacts", "web", "world-studio-performance.json"))) {
@@ -81,8 +69,8 @@ await writeFile(
         writable: false,
         local: false,
         worlds: [
-          { path: "worlds/formal/first-forest.world.json" },
-          { path: "worlds/labs/cablester-3c-labs.world.json" }
+          { path: "worlds/labs/cablester-3c-labs.world.json" },
+          { path: "worlds/labs/cablester-composite-showcase.world.json" }
         ],
         reason: "线上版本为只读；请在 localhost 开发服务器中保存仓库文件。"
       }, { headers: { "cache-control": "no-store" } });

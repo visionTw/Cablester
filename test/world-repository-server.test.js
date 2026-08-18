@@ -2,11 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createServer } from "node:net";
-import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { cp, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { request } from "node:http";
+import { serializeWorldPackage } from "../src/world-hash.js";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 
@@ -61,14 +63,16 @@ test("localhost repository endpoint is worlds-only, atomic and conflict-aware", 
   const port = await availablePort();
   const repositoryCapability = "test-only-repository-capability-32-bytes";
   const repositoryHeaders = { "x-cablester-repository-capability": repositoryCapability };
+  const externalFormalRoot = join(sandbox, "private-formal-worlds");
   await mkdir(join(sandbox, "scripts"), { recursive: true });
   await mkdir(join(sandbox, "worlds", "labs"), { recursive: true });
+  await mkdir(externalFormalRoot, { recursive: true });
   await writeFile(join(sandbox, "index.html"), "<!doctype html>\n");
   await writeFile(join(sandbox, "scripts", "serve.mjs"), await readFile(join(root, "scripts", "serve.mjs")));
   await cp(join(root, "src"), join(sandbox, "src"), { recursive: true });
   await writeFile(join(sandbox, "package.json"), '{"type":"module"}\n');
 
-  const child = spawn(process.execPath, ["scripts/serve.mjs"], {
+  const child = spawn(process.execPath, ["scripts/serve.mjs", "--formal-world-root", externalFormalRoot], {
     cwd: sandbox,
     env: {
       ...process.env,
@@ -86,6 +90,7 @@ test("localhost repository endpoint is worlds-only, atomic and conflict-aware", 
     const capability = await httpRequest(port, "/__cablester/world-repository", { headers: repositoryHeaders });
     assert.equal(capability.status, 200);
     assert.equal(JSON.parse(capability.body).mode, "read-write");
+    assert.equal(JSON.parse(capability.body).formalRootMode, "external-private");
 
     const contents = await readFile(join(root, "worlds", "fixtures", "v3-golden.world.json"), "utf8");
     const unauthorizedSave = await httpRequest(port, "/__cablester/world-repository", {
@@ -138,6 +143,29 @@ test("localhost repository endpoint is worlds-only, atomic and conflict-aware", 
       body: contents
     });
     assert.equal(resaved.status, 200);
+
+    const formalWorld = JSON.parse(await readFile(join(root, "worlds", "labs", "cablester-composite-showcase.world.json"), "utf8"));
+    formalWorld.manifest.namespace = "formal";
+    formalWorld.manifest.contentHash = "";
+    const formalContents = await serializeWorldPackage(formalWorld);
+    const externalSave = await httpRequest(port, "/__cablester/world-repository", {
+      method: "PUT",
+      headers: { ...repositoryHeaders, "content-type": "application/json", "x-cablester-world-path": "worlds/formal/private-test.world.json" },
+      body: formalContents
+    });
+    assert.equal(externalSave.status, 201);
+    assert.equal(await readFile(join(externalFormalRoot, "private-test.world.json"), "utf8"), formalContents);
+    assert.equal(existsSync(join(sandbox, "worlds", "formal", "private-test.world.json")), false);
+    const externalLoad = await httpRequest(port, "/worlds/formal/private-test.world.json");
+    assert.equal(externalLoad.status, 200);
+    assert.equal(externalLoad.body, formalContents);
+    const outsideWorld = join(sandbox, "outside-private.world.json");
+    await writeFile(outsideWorld, formalContents);
+    await symlink(outsideWorld, join(externalFormalRoot, "symlink-leak.world.json"));
+    assert.equal((await httpRequest(port, "/worlds/formal/symlink-leak.world.json")).status, 404);
+    const refreshedCapability = JSON.parse((await httpRequest(port, "/__cablester/world-repository", { headers: repositoryHeaders })).body);
+    assert.ok(refreshedCapability.worlds.some((entry) => entry.path === "worlds/formal/private-test.world.json"));
+    assert.equal(refreshedCapability.worlds.some((entry) => entry.path === "worlds/formal/symlink-leak.world.json"), false);
 
     for (const path of ["../project.godot", "worlds/fixtures/x.world.json", "godot/x.world.json"]) {
       const rejected = await httpRequest(port, "/__cablester/world-repository", {

@@ -8,8 +8,31 @@ import { serializeWorldPackage, validateWorldPackage } from "../src/world-schema
 import { validateWorldInStages } from "../src/world-validation-worker.js";
 
 const root = process.cwd();
+const argumentsList = process.argv.slice(2);
+let configuredFormalWorldRoot = process.env.CABLESTER_FORMAL_WORLD_ROOT || "";
+for (let index = 0; index < argumentsList.length; index += 1) {
+  const argument = argumentsList[index];
+  if (argument === "--formal-world-root") {
+    configuredFormalWorldRoot = argumentsList[index + 1] || "";
+    index += 1;
+    continue;
+  }
+  throw new Error(`Unknown argument: ${argument}`);
+}
 const port = Number(process.env.CABLESTER_PORT || 4173);
-const worldRoot = resolve(root, "worlds");
+const worldRoots = Object.freeze({
+  formal: resolve(root, configuredFormalWorldRoot || "worlds/formal"),
+  labs: resolve(root, "worlds/labs")
+});
+const externalFormalWorldRoot = Boolean(configuredFormalWorldRoot);
+if (externalFormalWorldRoot) {
+  if (!existsSync(worldRoots.formal) || !statSync(worldRoots.formal).isDirectory()) {
+    throw new Error(`Formal world root is not a directory: ${worldRoots.formal}`);
+  }
+  if (lstatSync(worldRoots.formal).isSymbolicLink()) {
+    throw new Error("Formal world root must not be a symbolic link.");
+  }
+}
 const worldPathPattern = /^worlds\/(formal|labs)\/[a-z0-9][a-z0-9._-]*\.world\.json$/i;
 const maximumWorldBytes = 20 * 1024 * 1024;
 const repositoryCapability = String(
@@ -73,22 +96,24 @@ function isPublishedWebPath(relativePath) {
   if (/^levels\/[a-z0-9._/-]+\.json$/i.test(path)) return true;
   if (/^assets\/[a-z0-9._/-]+\.(?:avif|jpe?g|png|svg|webp)$/i.test(path)) return true;
   if (/^worlds\/(?:formal|labs|registries)\/[a-z0-9._/-]+\.json$/i.test(path)) return true;
-  if (/^artifacts\/godot\/[^/]+\.(?:json|png)$/i.test(path)) return true;
   return false;
 }
 
 function safeWorldPath(value) {
   const normalized = String(value || "").replaceAll("\\", "/").replace(/^\/+/, "");
   if (!worldPathPattern.test(normalized) || normalized.includes("..")) return null;
-  const absolute = resolve(root, normalized);
-  if (!absolute.startsWith(`${worldRoot}${sep}`)) return null;
-  return { relative: normalized, absolute };
+  const [, namespace, fileName] = normalized.match(/^worlds\/(formal|labs)\/([^/]+)$/i) || [];
+  const namespaceRoot = worldRoots[String(namespace || "").toLowerCase()];
+  if (!namespaceRoot) return null;
+  const absolute = resolve(namespaceRoot, fileName);
+  if (!absolute.startsWith(`${namespaceRoot}${sep}`)) return null;
+  return { relative: normalized, absolute, root: namespaceRoot };
 }
 
 async function listWorldFiles() {
   const files = [];
   for (const namespace of ["formal", "labs"]) {
-    const directory = resolve(worldRoot, namespace);
+    const directory = worldRoots[namespace];
     if (!existsSync(directory)) continue;
     for (const entry of await readdir(directory, { withFileTypes: true })) {
       if (!entry.isFile() || !entry.name.endsWith(".world.json")) continue;
@@ -135,6 +160,7 @@ async function handleWorldRepository(request, response) {
       writable: true,
       local: true,
       root: "worlds/",
+      formalRootMode: externalFormalWorldRoot ? "external-private" : "repository-local",
       worlds: await listWorldFiles()
     });
     return;
@@ -216,8 +242,8 @@ async function handleWorldRepository(request, response) {
   }
   await mkdir(dirname(target.absolute), { recursive: true });
   const realParent = await realpath(dirname(target.absolute));
-  if (!realParent.startsWith(`${worldRoot}${sep}`)) {
-    sendJson(response, 400, { message: "Resolved save path leaves worlds/." });
+  if (realParent !== await realpath(target.root)) {
+    sendJson(response, 400, { message: "Resolved save path leaves its configured world namespace." });
     return;
   }
   const temporary = resolve(dirname(target.absolute), `.${basename(target.absolute)}.${randomUUID()}.tmp`);
@@ -287,12 +313,22 @@ const server = createServer(async (request, response) => {
     response.end("Not found");
     return;
   }
-  let filePath = join(root, safePath);
+  const mappedWorldPath = safeWorldPath(safePath);
+  let filePath = mappedWorldPath?.absolute || join(root, safePath);
 
-  if (!filePath.startsWith(root) || !existsSync(filePath)) {
+  if ((!mappedWorldPath && !filePath.startsWith(root)) || !existsSync(filePath)) {
     response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
     response.end("Not found");
     return;
+  }
+
+  if (mappedWorldPath) {
+    const mappedRoot = await realpath(mappedWorldPath.root);
+    if (lstatSync(filePath).isSymbolicLink() || dirname(await realpath(filePath)) !== mappedRoot) {
+      response.writeHead(404, { "content-type": "text/plain; charset=utf-8", "x-content-type-options": "nosniff" });
+      response.end("Not found");
+      return;
+    }
   }
 
   if (!statSync(filePath).isFile()) {
@@ -315,4 +351,5 @@ const server = createServer(async (request, response) => {
 
 server.listen(port, "127.0.0.1", () => {
   console.log(`Cablester prototype: http://127.0.0.1:${port}/#cablester-repository-capability=${encodeURIComponent(repositoryCapability)}`);
+  if (externalFormalWorldRoot) console.log("Formal worlds: external private directory mapped to /worlds/formal/");
 });

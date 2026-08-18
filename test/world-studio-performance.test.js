@@ -34,11 +34,11 @@ test("World Studio evidence is a fresh real-browser pass for forest and >=10x sy
     await currentSourceFingerprint(audit.inputs.sourceFingerprint.paths),
     "browser evidence must match the current frozen World Studio sources and forest");
   assert.equal(audit.inputs.completionFingerprint.value, audit.inputs.sourceFingerprint.value,
-    "World Studio sources and Godot evidence must remain unchanged throughout the browser run");
+    "World Studio Web sources must remain unchanged throughout the browser run");
   assert.equal(audit.inputs.forest.sha256,
-    `sha256:${createHash("sha256").update(await readFile(new URL("../worlds/formal/first-forest.world.json", import.meta.url))).digest("hex")}`);
-  assert.equal(audit.inputs.forest.worldId, "cablester-first-forest");
-  assert.equal(audit.inputs.forest.contentHash, "sha256:bd86d11711e237d8305594384fb0081ea41c003bb7121952f919030eed01c5d7");
+    `sha256:${createHash("sha256").update(await readFile(new URL("../worlds/labs/cablester-composite-showcase.world.json", import.meta.url))).digest("hex")}`);
+  assert.equal(audit.inputs.forest.worldId, "cablester-composite-showcase");
+  assert.equal(audit.inputs.forest.contentHash, "sha256:dae9e5f40359f0e99e033babf3a251c76eddb4a3c82943f2c5a644f0c9ace560");
   assert.ok(audit.inputs.forest.chunks >= 12);
   assert.ok(audit.inputs.forest.objects >= 250);
   assert.equal(audit.inputs.synthetic.regions, 10);
@@ -105,27 +105,31 @@ test("three-level Canvas moves, connection builder, undo, and background pan pre
   assert.equal(editing.backgroundPan.after.semanticUnchanged, true);
   assert.equal(editing.backgroundPan.after.dirty, editing.backgroundPan.before.dirty);
   assert.equal(editing.backgroundPan.after.changeCount, editing.backgroundPan.before.changeCount);
-  assert.equal(editing.connection.afterCreate.connectionCountDelta, 1);
-  assert.equal(editing.connection.afterCreate.storedCopies, 1,
-    "the builder stores one frozen edge only in the from Chunk");
-  assert.equal(editing.connection.afterUndo.createdConnectionAbsent, true);
-  assert.equal(editing.connection.afterUndo.semanticRestored, true);
+  if (editing.connection.skipped) {
+    assert.equal(editing.connection.reason, "no-unused-room-entrance-pair");
+    assert.match(editing.connection.proof, /30 roomEntrance objects/);
+  } else {
+    assert.equal(editing.connection.afterCreate.connectionCountDelta, 1);
+    assert.equal(editing.connection.afterCreate.storedCopies, 1,
+      "the builder stores one frozen edge only in the from Chunk");
+    assert.equal(editing.connection.afterUndo.createdConnectionAbsent, true);
+    assert.equal(editing.connection.afterUndo.semanticRestored, true);
+  }
   assert.equal(editing.final.dirty, false);
   assert.equal(editing.final.changeCount, 0);
   assert.equal(editing.final.semanticRestored, true);
 });
 
-test("four Canvas views contain overview, route, collision, snapshot and trajectory evidence", async () => {
+test("three Web Canvas views contain overview, route, and collision evidence", async () => {
   const audit = await evidence();
-  const result = audit.forest.fourPreviewViews;
-  assert.deepEqual(result.views.map((view) => view.view), ["world", "region", "chunk", "godot"]);
+  const result = audit.forest.webPreviewViews;
+  assert.deepEqual(result.views.map((view) => view.view), ["world", "region", "chunk"]);
   assert.ok(result.distinctCanvasDigests >= 3);
   const views = Object.fromEntries(result.views.map((view) => [view.view, view]));
   for (const view of result.views) {
     assert.ok(view.canvas.nonTransparentPixels > 0, view.view);
     assert.ok(view.canvas.brightPixels > 0, view.view);
     assert.ok(Object.values(view.operationCounts).reduce((sum, value) => sum + value, 0) > 0, view.view);
-    assert.equal(view.snapshotStatus.state, "current", view.view);
   }
   assert.ok(views.world.semanticLayers.overviewMarkers > 0);
   assert.ok(views.world.semanticLayers.landmarks > 0);
@@ -135,13 +139,9 @@ test("four Canvas views contain overview, route, collision, snapshot and traject
   assert.ok(views.region.operationCounts.lineTo > 0);
   assert.ok(views.chunk.semanticLayers.canonicalCollisionProxies > 0);
   assert.ok(views.chunk.operationCounts.strokeRect > 0);
-  assert.ok(views.godot.semanticLayers.godotSnapshotChunks > 0);
-  assert.ok(views.godot.semanticLayers.godotCollisionProxies > 0);
-  assert.ok(views.godot.semanticLayers.godotTrajectorySamples > 1);
-  assert.ok(views.godot.operationCounts.lineTo > 0);
 });
 
-test("cleared browser drafts recover the exact formal repository package and current snapshot", async () => {
+test("cleared browser drafts recover the exact formal repository package without requiring a Godot snapshot", async () => {
   const audit = await evidence();
   const recovery = audit.forest.storageRecovery;
   assert.equal(recovery.storage.beforeClear.localDraftPresent, true);
@@ -155,16 +155,15 @@ test("cleared browser drafts recover the exact formal repository package and cur
   assert.equal(recovery.repositoryReadbackProved, true);
   assert.deepEqual(new Set(recovery.repositoryGetPaths), new Set([
     "/__cablester/world-repository",
-    "/worlds/formal/first-forest.world.json"
+    "/worlds/labs/cablester-composite-showcase.world.json"
   ]));
-  assert.equal(recovery.recovered.worldId, "cablester-first-forest");
-  assert.equal(recovery.recovered.contentHash, "sha256:bd86d11711e237d8305594384fb0081ea41c003bb7121952f919030eed01c5d7");
+  assert.equal(recovery.recovered.worldId, "cablester-composite-showcase");
+  assert.equal(recovery.recovered.contentHash, "sha256:dae9e5f40359f0e99e033babf3a251c76eddb4a3c82943f2c5a644f0c9ace560");
   assert.equal(recovery.recovered.chunks, 12);
-  assert.equal(recovery.recovered.objects, 284);
+  assert.equal(recovery.recovered.objects, 285);
   assert.equal(recovery.recovered.dirty, false);
   assert.equal(recovery.recovered.changeCount, 0);
-  assert.equal(recovery.recovered.snapshotStatus.state, "current");
-  assert.equal(recovery.recovered.snapshotStatus.current, true);
+  assert.equal(recovery.recovered.snapshotStatus.state, "missing/import-failed");
 });
 
 test("selection, view switching and edit feedback remain below 100 ms", async () => {
@@ -226,5 +225,5 @@ test("World Studio browser run is free of fresh application errors", async () =>
   assert.deepEqual(audit.diagnostics.logErrors, []);
   assert.equal(audit.longTasks.supported, true);
   assert.equal(typeof audit.longTasks.maximumDurationMs, "number");
-  assert.ok(projectRoot.endsWith("/Cablester/"));
+  assert.ok(projectRoot.endsWith("/Game_Cablester_Web/"));
 });

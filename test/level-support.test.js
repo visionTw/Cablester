@@ -106,17 +106,6 @@ test("anchors marked for rope and hard bar require both capabilities", () => {
   assert.equal(analyzeLevelAbilitySupport(document).warnings.some((warning) => warning.abilityId === "hardBar"), false);
 });
 
-test("all authored reference rooms cover every strict generated mechanism", async () => {
-  const { readFile } = await import("node:fs/promises");
-  const index = JSON.parse(await readFile(new URL("../levels/reference/playable-index.json", import.meta.url), "utf8"));
-  for (const room of Object.values(index.rooms)) {
-    const raw = JSON.parse(await readFile(new URL(`../${room.dataFile}`, import.meta.url), "utf8"));
-    const document = migrateLevelDocument(raw);
-    const strictWarnings = analyzeLevelAbilitySupport(document).warnings.filter((warning) => warning.tone === "warning");
-    assert.deepEqual(strictWarnings, [], room.id);
-  }
-});
-
 test("workshop exposes the seven ability support controls as a visible mode", async () => {
   const [html, editorSource] = await Promise.all([
     readFile(resolve(root, "index.html"), "utf8"),

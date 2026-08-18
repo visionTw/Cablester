@@ -4,20 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.mjs",
+    "build": "node scripts/build.mjs && node scripts/verify-public-repository-boundary.mjs --dist",
     "dev": "node scripts/serve.mjs",
+    "dev:formal": "node scripts/serve.mjs --formal-world-root ../Game_Cablester/worlds/formal",
     "test": "node --test",
-    "check": "node scripts/check.mjs",
+    "check": "node scripts/check.mjs && node scripts/verify-public-repository-boundary.mjs --source",
+    "boundary:check": "node scripts/verify-public-repository-boundary.mjs --source --dist",
     "assets:audit": "python3 scripts/audit-game-assets.py",
     "performance:audit": "node scripts/audit-browser-performance.mjs",
     "world-studio:audit": "node scripts/audit-world-studio-performance.mjs",
-    "3c:parity": "node scripts/run-3c-parity.mjs --output artifacts/godot/3c-parity-report.json",
-    "godot:tuning-audit": "node scripts/audit-godot-tuning-coverage.mjs",
-    "godot:export-acceptance": "node scripts/verify-godot-export.mjs",
-    "world:fixtures": "node scripts/update-world-golden-fixtures.mjs",
-    "reference:catalog": "node scripts/build-reference-catalog.mjs",
-    "reference:whiteboxes": "node scripts/build-reference-whiteboxes.mjs",
-    "reference:audit": "node scripts/audit-reference-graph.mjs && node scripts/audit-reference-fidelity.mjs",
-    "reference:refresh": "npm run reference:whiteboxes && npm run reference:catalog && npm run reference:audit"
+    "world:fixtures": "node scripts/update-world-golden-fixtures.mjs"
   }
 }
