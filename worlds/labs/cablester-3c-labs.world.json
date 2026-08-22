@@ -1052,7 +1052,7 @@
   ],
   "manifest": {
     "assetRegistryVersion": "1",
-    "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+    "contentHash": "sha256:615aa65a395efffbd7e61f6d8662ff483835b9ed95f04428ae2e90f99f4c40dd",
     "contentVersion": "1.0.0",
     "gameplayTuningVersion": "approved-1",
     "namespace": "labs",
@@ -3078,6 +3078,11 @@
               "id": "movement-lab-01:sign-start",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "左键出绳 · 松开回收 · 绳上按住W / ↑快速收绳",
                 "visual": {
                   "anchorX": 0.5,
@@ -3114,6 +3119,11 @@
               "id": "movement-lab-01:sign-bar",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "F连接角色与命中面 · 再按F释放",
                 "visual": {
                   "anchorX": 0.5,
@@ -3150,6 +3160,11 @@
               "id": "movement-lab-01:sign-rotation",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "从左侧入口进入旋转房 · 输入仍按屏幕方向",
                 "visual": {
                   "anchorX": 0.5,
@@ -4541,6 +4556,11 @@
               "id": "hard-bar-lab:hb-sign-a",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "硬杆可撑在墙地、斜面或伤害区底座 · F连接",
                 "visual": {
                   "anchorX": 0.5,
@@ -4577,6 +4597,11 @@
               "id": "hard-bar-lab:hb-sign-b",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "Space撑杆起跳 · A/D切向加减速 · F释放",
                 "visual": {
                   "anchorX": 0.5,
@@ -5917,6 +5942,11 @@
               "id": "bash-lab:bash-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "靠近六边支点 · 按住Q选向 · 松开立即猛击",
                 "visual": {
                   "anchorX": 0.5,
@@ -7240,6 +7270,11 @@
               "id": "double-jump-lab:dj-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "Space起跳 · 空中再次Space",
                 "visual": {
                   "anchorX": 0.5,
@@ -7276,6 +7311,11 @@
               "id": "double-jump-lab:dj-sign-delay",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "延迟第二跳可以获得更远距离",
                 "visual": {
                   "anchorX": 0.5,
@@ -8564,6 +8604,11 @@
               "id": "glide-lab:glide-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "下落时按住Space展开滑翔",
                 "visual": {
                   "anchorX": 0.5,
@@ -8600,6 +8645,11 @@
               "id": "glide-lab:glide-sign-wind",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "风场会强化滑翔升力与横向位移 · A/D微调",
                 "visual": {
                   "anchorX": 0.5,
@@ -10216,6 +10266,11 @@
               "id": "dash-lab:dash-sign-a",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "Ctrl按朝向冲刺 · W/A/S/D + Ctrl八方向",
                 "visual": {
                   "anchorX": 0.5,
@@ -10252,6 +10307,11 @@
               "id": "dash-lab:dash-sign-b",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "空中一次 · 落地恢复",
                 "visual": {
                   "anchorX": 0.5,
@@ -10288,6 +10348,11 @@
               "id": "dash-lab:dash-sign-c",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "冲刺途中接绳或硬杆会继承速度",
                 "visual": {
                   "anchorX": 0.5,
@@ -12451,6 +12516,11 @@
               "id": "combined-speed:speed-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "目标：尽量不断速、少落地",
                 "visual": {
                   "anchorX": 0.5,
@@ -15199,6 +15269,11 @@
               "id": "combined-horizontal:hor-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "下层更安全 · 上层速度更快",
                 "visual": {
                   "anchorX": 0.5,
@@ -17761,6 +17836,11 @@
               "id": "combined-vertical:vert-sign-a",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "先向上攀升 · 顶部向右进入下降通道",
                 "visual": {
                   "anchorX": 0.5,
@@ -17797,6 +17877,11 @@
               "id": "combined-vertical:vert-sign-b",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "按住Space滑翔控制下降",
                 "visual": {
                   "anchorX": 0.5,
@@ -20485,6 +20570,11 @@
               "id": "combined-hazards:haz-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "伤害坑底可碰撞 · 每秒扣1血 · Space脱离",
                 "visual": {
                   "anchorX": 0.5,
@@ -22902,6 +22992,42 @@
         "defaultAssetId": "builtin:procedural",
         "defaultPrefabId": "prefab:sign",
         "editableProperties": {
+          "activationRadius": {
+            "default": 48,
+            "kind": "number",
+            "label": "激活半径",
+            "max": 400,
+            "min": 12,
+            "optional": true,
+            "step": 1
+          },
+          "completionFlag": {
+            "default": "",
+            "kind": "text",
+            "label": "完成进度标记",
+            "optional": true
+          },
+          "disabled": {
+            "default": false,
+            "kind": "boolean",
+            "label": "禁用",
+            "optional": true
+          },
+          "nearbyRadius": {
+            "default": 140,
+            "kind": "number",
+            "label": "临近提示半径",
+            "max": 800,
+            "min": 24,
+            "optional": true,
+            "step": 1
+          },
+          "oneShot": {
+            "default": false,
+            "kind": "boolean",
+            "label": "触发后完成",
+            "optional": true
+          },
           "text": {
             "default": "在这里输入提示",
             "kind": "text",

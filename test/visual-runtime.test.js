@@ -20,6 +20,7 @@ import {
   objectVisualBounds,
   requiredSceneResidencyDraws,
   scenePassForLayer,
+  sceneLayerScreenBaselineY,
   stableSortRenderQueue,
   visualQualityProfile
 } from "../src/visual-runtime.js";
@@ -554,6 +555,16 @@ test("scene rendering uses canonical placements, pass selection and low-tier cap
   assert.ok(stats.sceneResidencyDeficits > 0);
   assert.equal(stats.objectAssetDraws, 0);
   assert.equal(ctx.calls.filter((call) => call[0] === "drawImage").length + 1, stats.sceneDraws);
+});
+
+test("explicit scene Y anchors move in level space while legacy layers retain viewport-bottom fallback", () => {
+  const camera = { x: 0, y: 200, width: 640, height: 360 };
+  const legacyLayer = { parallax: 0.5 };
+  assert.equal(sceneLayerScreenBaselineY(legacyLayer, camera), 360);
+
+  const anchoredLayer = { ...legacyLayer, originY: 500 };
+  assert.equal(sceneLayerScreenBaselineY(anchoredLayer, camera), 480);
+  assert.equal(sceneLayerScreenBaselineY(anchoredLayer, { ...camera, y: 300 }), 380);
 });
 
 test("missing scene images draw a bounded procedural fallback and fog overlay", () => {

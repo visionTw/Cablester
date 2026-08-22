@@ -57,6 +57,7 @@
         </div>
         <nav class="editor-mode-tabs" aria-label="关卡工坊模式">
           <button id="editor-mode-objects" type="button" data-mode="objects" data-active="true" aria-pressed="true">物件编辑</button>
+          <button id="editor-mode-terrain" type="button" data-mode="terrain" data-active="false" aria-pressed="false">地形刷</button>
           <button id="editor-mode-support" type="button" data-mode="support" data-active="false" aria-pressed="false">关卡支持</button>
           <button id="editor-mode-assets" type="button" data-mode="assets" data-active="false" aria-pressed="false">物件素材</button>
           <button id="editor-mode-scene" type="button" data-mode="scene" data-active="false" aria-pressed="false">场景分层</button>
@@ -69,6 +70,7 @@
           <button id="editor-new" type="button">新建</button>
           <button id="editor-generator-toggle" type="button">生成器</button>
           <button id="editor-save" type="button">保存</button>
+          <button id="editor-apply-world" class="editor-play" type="button" hidden>应用到当前 Chunk</button>
           <button id="editor-play" class="editor-play" type="button">试玩关卡</button>
           <button id="editor-close" class="icon-action" type="button" aria-label="关闭关卡工坊">×</button>
         </div>
@@ -102,6 +104,29 @@
           </div>
           <input id="object-search" class="object-search" type="search" placeholder="搜索物件…" aria-label="搜索关卡物件" />
           <div id="object-library" class="object-library"></div>
+        </aside>
+
+        <aside id="terrain-panel" class="library-panel terrain-panel" aria-label="地形笔刷与组合图章" hidden>
+          <div class="panel-title">
+            <span>地形笔刷</span>
+            <small>落地为 canonical 物件，不创建 TileMap</small>
+          </div>
+          <div class="terrain-tool-list" role="group" aria-label="地形工具">
+            <button type="button" data-terrain-tool="platform" data-active="true">连续平台<small>沿拖动轨迹铺设</small></button>
+            <button type="button" data-terrain-tool="slope" data-active="false">斜面<small>从起点拖到终点</small></button>
+            <button type="button" data-terrain-tool="erase" data-active="false">擦除地形<small>仅平台与斜面</small></button>
+          </div>
+          <div class="terrain-brush-fields">
+            <label>笔刷宽度 <input id="terrain-brush-width" type="number" min="20" max="600" step="20" value="120" /></label>
+            <label>地形厚度 <input id="terrain-brush-depth" type="number" min="2" max="400" step="2" value="60" /></label>
+          </div>
+          <div class="terrain-stamps" role="group" aria-label="组合图章">
+            <strong>组合图章</strong>
+            <button type="button" data-terrain-stamp="ascending-steps">上升台阶<small>4 平台</small></button>
+            <button type="button" data-terrain-stamp="hazard-corridor">危险走廊<small>平台 + 伤害区</small></button>
+            <button type="button" data-terrain-stamp="root-arch-island">根桥地标<small>平台 + 检查点 + 中景</small></button>
+          </div>
+          <p class="terrain-panel-hint">图章会立即展开为现有物件和少量非重复场景层；随后可逐项编辑。</p>
         </aside>
 
         <aside id="support-panel" class="library-panel support-panel" aria-label="关卡支持与3C能力" hidden>
@@ -252,6 +277,7 @@
             <button id="world-delete" type="button">删除</button>
             <span class="world-toolbar-separator"></span>
             <button id="world-fit" type="button">适应视图</button>
+            <button id="world-edit-chunk" class="world-primary" type="button">在关卡工坊编辑 Chunk</button>
             <span class="world-canvas-edit-hint">拖拽：Region / Chunk / Object · 空白处平移</span>
             <span id="world-lod-label">LOD index-only</span>
             <span id="world-visible-label">0/0 区块 · 0/0 物件</span>

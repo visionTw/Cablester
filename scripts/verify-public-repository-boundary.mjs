@@ -12,14 +12,20 @@ for (const mode of modes) {
   if (!["--source", "--dist"].includes(mode)) throw new Error(`Unknown argument: ${mode}`);
 }
 
-async function walk(directory, relative = "") {
+const SOURCE_EXCLUDED_DIRECTORIES = new Set([".git", ".godot", "dist", "node_modules"]);
+
+async function walk(directory, relative = "", { source = false } = {}) {
   const current = path.join(directory, relative);
   if (!existsSync(current)) return [];
   const files = [];
   for (const entry of await readdir(current, { withFileTypes: true })) {
     const child = path.posix.join(relative, entry.name);
-    if (entry.isDirectory()) files.push(...await walk(directory, child));
-    else if (entry.isFile()) files.push(child);
+    if (entry.isDirectory()) {
+      if (source && (SOURCE_EXCLUDED_DIRECTORIES.has(entry.name) || child === "artifacts/godot")) continue;
+      files.push(...await walk(directory, child, { source }));
+    } else if (entry.isFile() && (!source || !child.endsWith(".import"))) {
+      files.push(child);
+    }
   }
   return files.sort();
 }
@@ -51,7 +57,7 @@ function forbidden(files) {
 
 const results = [];
 if (modes.has("--source")) {
-  const sourceFiles = (await walk(root)).filter((file) => !file.startsWith(".git/") && !file.startsWith("dist/") && !file.startsWith("node_modules/"));
+  const sourceFiles = await walk(root, "", { source: true });
   results.push({ target: "source", files: sourceFiles.length, violations: forbidden(sourceFiles) });
 }
 if (modes.has("--dist")) {

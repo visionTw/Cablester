@@ -17,7 +17,7 @@ import {
   readWorldRepositoryCapability
 } from "../src/world-repository-client.js";
 import { validateWorldInStages } from "../src/world-validation-worker.js";
-import { validateWorldPackage } from "../src/world-schema.js";
+import { chunkToLevelDocument, validateWorldPackage } from "../src/world-schema.js";
 import { compileLevelDocument, validateLevelDocument } from "../src/level-objects.js";
 import { validateLevel } from "../src/level-validator.js";
 
@@ -48,6 +48,16 @@ test("stable ID allocator, search, filter, duplicate, delete, undo and redo use 
   assert.equal(session.search(copyId, { kind: "object" }).length, 0);
   session.redo();
   assert.equal(session.search(copyId, { kind: "object" }).length, 1);
+});
+
+test("opening and applying an unchanged Chunk workshop document is a no-op", async () => {
+  const session = new WorldEditorSession(await forestWorld());
+  const region = session.world.regions[0];
+  const chunk = region.chunks[0];
+  const document = chunkToLevelDocument(session.world, region.id, chunk.id);
+  assert.equal(session.replaceChunkFromLevelDocument(region.id, chunk.id, document), false);
+  assert.equal(session.dirty, false);
+  assert.equal(session.canUndo, false);
 });
 
 test("cross-chunk movement preserves world position and keeps one global stable object ID", async () => {

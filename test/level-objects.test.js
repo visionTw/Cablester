@@ -35,6 +35,38 @@ test("blank object document compiles into a playable level", () => {
   assert.equal(level.checkpoints.length, 1);
 });
 
+test("dynamic sign cue properties round-trip without creating collision geometry", () => {
+  const document = createBlankLevelDocument("动态提示点");
+  document.objects.push(createLevelObject("sign", 240, 520, document.objects, {
+    id: "sign-dynamic",
+    properties: {
+      text: "靠近查看",
+      nearbyRadius: 180,
+      activationRadius: 52,
+      completionFlag: "intro-seen",
+      oneShot: true,
+      disabled: false
+    }
+  }));
+  const compiled = compileLevelDocument(document);
+  assert.deepEqual(compiled.signs[0], {
+    id: "sign-dynamic",
+    x: 240,
+    y: 520,
+    text: "靠近查看",
+    nearbyRadius: 180,
+    activationRadius: 52,
+    completionFlag: "intro-seen",
+    oneShot: true,
+    disabled: false
+  });
+  const roundTrip = levelToDocument(compiled).objects.find((object) => object.id === "sign-dynamic");
+  assert.equal(roundTrip.properties.nearbyRadius, 180);
+  assert.equal(LEVEL_OBJECT_LIBRARY.sign.category, "guidance");
+  assert.equal(Object.hasOwn(roundTrip.properties, "w"), false);
+  assert.equal(Object.hasOwn(roundTrip.properties, "h"), false);
+});
+
 test("existing level round-trips through type, position and properties objects", () => {
   const document = levelToDocument(PROTOTYPE_LEVEL);
   const compiled = compileLevelDocument(document);
@@ -220,6 +252,8 @@ test("visual mappings and scene layers survive compile and document round-trip w
     name: "雾层",
     depth: -45,
     parallax: 0.4,
+    originX: 320,
+    originY: 640,
     opacity: 0.6,
     fog: 0.8,
     seed: "roundtrip-mist"

@@ -38,7 +38,7 @@ test("World Studio evidence is a fresh real-browser pass for forest and >=10x sy
   assert.equal(audit.inputs.forest.sha256,
     `sha256:${createHash("sha256").update(await readFile(new URL("../worlds/labs/cablester-composite-showcase.world.json", import.meta.url))).digest("hex")}`);
   assert.equal(audit.inputs.forest.worldId, "cablester-composite-showcase");
-  assert.equal(audit.inputs.forest.contentHash, "sha256:dae9e5f40359f0e99e033babf3a251c76eddb4a3c82943f2c5a644f0c9ace560");
+  assert.equal(audit.inputs.forest.contentHash, "sha256:6cf1cda4c2e221c77c135ff3a5c2c10aeefdae52bc61d64c06e500a4b347441e");
   assert.ok(audit.inputs.forest.chunks >= 12);
   assert.ok(audit.inputs.forest.objects >= 250);
   assert.equal(audit.inputs.synthetic.regions, 10);
@@ -46,7 +46,9 @@ test("World Studio evidence is a fresh real-browser pass for forest and >=10x sy
   assert.ok(audit.inputs.synthetic.objects >= audit.inputs.forest.objects * 10,
     `synthetic ${audit.inputs.synthetic.objects} must be >= 10x forest ${audit.inputs.forest.objects}`);
   assert.ok(audit.inputs.synthetic.scaleVersusForest.objectMultiplier >= 10);
-  assert.match(audit.notes.browserSurface, /real Google Chrome renderer/i);
+	assert.match(audit.notes.browserSurface, /real Chromium-family renderer/i);
+	assert.match(audit.environment.browserProtocolVersion.product, /^(?:Chrome|HeadlessChrome|Chromium|Edg)\//,
+	  "browser evidence must name the observed Chromium-family product rather than hard-code a vendor claim");
   assert.match(audit.notes.canvasInput, /trusted mouse/i);
 });
 
@@ -158,7 +160,7 @@ test("cleared browser drafts recover the exact formal repository package without
     "/worlds/labs/cablester-composite-showcase.world.json"
   ]));
   assert.equal(recovery.recovered.worldId, "cablester-composite-showcase");
-  assert.equal(recovery.recovered.contentHash, "sha256:dae9e5f40359f0e99e033babf3a251c76eddb4a3c82943f2c5a644f0c9ace560");
+  assert.equal(recovery.recovered.contentHash, "sha256:6cf1cda4c2e221c77c135ff3a5c2c10aeefdae52bc61d64c06e500a4b347441e");
   assert.equal(recovery.recovered.chunks, 12);
   assert.equal(recovery.recovered.objects, 285);
   assert.equal(recovery.recovered.dirty, false);
@@ -225,5 +227,5 @@ test("World Studio browser run is free of fresh application errors", async () =>
   assert.deepEqual(audit.diagnostics.logErrors, []);
   assert.equal(audit.longTasks.supported, true);
   assert.equal(typeof audit.longTasks.maximumDurationMs, "number");
-  assert.ok(projectRoot.endsWith("/Game_Cablester_Web/"));
+  assert.ok(projectRoot.replaceAll("\\", "/").endsWith("/Cablester_Web/"));
 });

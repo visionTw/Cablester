@@ -1767,6 +1767,87 @@ kbd {
   line-height: 1.45;
 }
 
+.terrain-panel {
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+}
+
+.terrain-tool-list,
+.terrain-stamps {
+  display: grid;
+  gap: 6px;
+  padding: 0 9px 9px;
+}
+
+.level-editor .terrain-tool-list button,
+.level-editor .terrain-stamps button {
+  display: grid;
+  gap: 3px;
+  min-height: 44px;
+  padding: 7px 9px;
+  text-align: left;
+}
+
+.level-editor .terrain-tool-list button[data-active="true"],
+.level-editor .terrain-stamps button[data-active="true"] {
+  border-color: rgba(255, 229, 132, 0.7);
+  background: rgba(255, 219, 109, 0.1);
+  color: #fff3b0;
+}
+
+.terrain-tool-list small,
+.terrain-stamps small,
+.terrain-panel-hint {
+  color: rgba(211, 246, 247, 0.42);
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+.terrain-brush-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 9px;
+  border-block: 1px solid rgba(126, 231, 231, 0.08);
+}
+
+.terrain-brush-fields label {
+  display: grid;
+  gap: 4px;
+  color: rgba(211, 246, 247, 0.52);
+  font-size: 8px;
+}
+
+.terrain-brush-fields input {
+  width: 100%;
+  min-width: 0;
+  padding-inline: 7px;
+}
+
+.terrain-stamps {
+  align-content: start;
+  overflow-y: auto;
+  padding-top: 10px;
+}
+
+.terrain-stamps strong {
+  color: rgba(190, 234, 235, 0.56);
+  font: 700 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.1em;
+}
+
+.terrain-panel-hint {
+  margin: 0;
+  padding: 9px 11px 11px;
+  border-top: 1px solid rgba(126, 231, 231, 0.08);
+}
+
+.level-editor[data-session="canonical"] .editor-brand strong::after {
+  margin-left: 7px;
+  color: #ffd883;
+  font: 700 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  content: "CANONICAL CHUNK";
+}
+
 .inspector-section {
   display: grid;
   gap: 6px;
@@ -2252,6 +2333,38 @@ kbd {
     grid-template-columns: 190px 235px minmax(280px, 1fr);
     grid-template-rows: 56px;
     overflow-x: auto;
+  }
+
+  .terrain-panel {
+    grid-template-columns: 300px 250px minmax(320px, 1fr);
+    grid-template-rows: 56px;
+    overflow-x: auto;
+  }
+
+  .terrain-tool-list,
+  .terrain-stamps {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 6px 7px;
+  }
+
+  .level-editor .terrain-tool-list button,
+  .level-editor .terrain-stamps button {
+    flex: 0 0 126px;
+    min-height: 44px;
+  }
+
+  .terrain-brush-fields {
+    align-items: center;
+    border-block: 0;
+    border-inline: 1px solid rgba(126, 231, 231, 0.08);
+  }
+
+  .terrain-panel-hint,
+  .terrain-stamps strong {
+    display: none;
   }
 
   .scene-create-row,

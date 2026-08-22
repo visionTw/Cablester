@@ -13,6 +13,7 @@
     "assets:audit": "python3 scripts/audit-game-assets.py",
     "performance:audit": "node scripts/audit-browser-performance.mjs",
     "world-studio:audit": "node scripts/audit-world-studio-performance.mjs",
+    "experience-parity:audit": "node scripts/audit-experience-parity.mjs --check",
     "world:fixtures": "node scripts/update-world-golden-fixtures.mjs"
   }
 }

@@ -66,8 +66,17 @@ import {
   rotate,
   TAU
 } from "./math.js";
-import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, isGoalReached, isSurfaceFrontFacing, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "./rules.js";
 import { LatestRequestCoordinator, PreparedVisualLoadCoordinator, VisualRuntime, isObjectVisualVisible, stableSortRenderQueue } from "./visual-runtime.js";
+import {
+  createSignCueState,
+  createWindCueState,
+  glideWingPose,
+  resolveWindCue,
+  signCuePresentation,
+  updateSignCueState,
+  updateWindCueState
+} from "./experience-cues.js";
 
 const canvas = typeof document === "undefined" ? null : document.querySelector("#game");
 const context = canvas?.getContext("2d") || null;
@@ -250,6 +259,7 @@ export class Game {
     this.onRoomExit = null;
     this.frameMetrics = { samples: [], averageFps: 0, averageMs: 0, p95Ms: 0, worstMs: 0 };
     this.debugStats = { activeObjects: 0, renderedObjects: 0, collisionCandidates: 0 };
+    this.reducedMotion = globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false;
     this.loadLevel(levels[0], { visualsPrepared: !preloadVisuals });
     this.frameRequest = autoFrame ? requestAnimationFrame((timestamp) => this.frame(timestamp)) : null;
   }
@@ -287,6 +297,8 @@ export class Game {
       bashTargets: level.bashTargets.map((target) => ({ ...target, cooldown: 0 })),
       bashAim: null,
       rotationTriggers: level.rotationTriggers.map((trigger) => ({ ...trigger, activated: false })),
+      windCues: new Map((level.windZones || []).map((wind) => [wind.id, createWindCueState()])),
+      signs: (level.signs || []).map((sign) => ({ ...sign, cue: createSignCueState() })),
       goalReached: false,
       hardBar: null,
       transitioning: false,
@@ -476,6 +488,7 @@ export class Game {
       return;
     }
     this.updatePlayer(deltaTime);
+    this.updateExperienceCues(deltaTime);
     this.updateInteractions();
     this.updateCamera(deltaTime);
     this.particles.update(deltaTime);
@@ -702,9 +715,11 @@ export class Game {
       tangent,
       grounded: player.grounded,
       gliding: player.gliding,
+      glideUnlocked: this.abilities.has("glide"),
       constrained: Boolean(this.isRopeAttached() || this.runtime.hardBar),
       dashing,
       facing: player.facing,
+      reducedMotion: this.reducedMotion,
       distanceTravelled: player.distanceTravelled
     }, deltaTime);
 
@@ -1144,6 +1159,7 @@ export class Game {
     const hardBarCandidates = [];
 
     for (const surface of this.grappleSurfaces) {
+      if (!isSurfaceFrontFacing(surface, this.player)) continue;
       const match = closestPointsBetweenSegments(
         this.player.x,
         this.player.y,
@@ -1173,6 +1189,7 @@ export class Game {
       TUNING.hardBarMaximumLength
     );
     for (const surface of this.hardBarSurfaces) {
+      if (!isSurfaceFrontFacing(surface, this.player)) continue;
       const surfacePoint = closestPointOnSegment(pointer.x, pointer.y, surface.ax, surface.ay, surface.bx, surface.by);
       const offsetX = surfacePoint.x - this.player.x;
       const offsetY = surfacePoint.y - this.player.y;
@@ -1637,6 +1654,225 @@ export class Game {
     this.hardBarSurfaces = [...this.grappleSurfaces, ...this.buildHazardAttachmentSurfaces()];
   }
 
+  updateExperienceCues(deltaTime) {
+    for (const wind of this.level.windZones || []) {
+      const cue = this.runtime.windCues.get(wind.id) || createWindCueState();
+      const inside = circleIntersectsRect(this.player.x, this.player.y, this.player.radius, wind);
+      this.runtime.windCues.set(wind.id, updateWindCueState(cue, inside, deltaTime));
+    }
+    for (const sign of this.runtime.signs || []) {
+      const distance = length(this.player.x - sign.x, this.player.y - sign.y);
+      updateSignCueState(sign.cue, sign, { distance, flags: this.runtime.flags }, deltaTime);
+    }
+  }
+
+  applyExperienceParityCheckpoint(cueId, checkpointId) {
+    const step = TUNING.fixedStep;
+    this.running = false;
+    this.paused = false;
+    this.reducedMotion = cueId === "sign" && checkpointId === "reduced-motion";
+    let invariantBefore;
+    if (cueId === "glide") {
+      const iterations = { before: 1, activation: 1, "mid-animation": 8, stable: 48, exit: 10 }[checkpointId];
+      if (iterations === undefined) throw new Error(`Unknown glide checkpoint: ${checkpointId}`);
+      if (checkpointId === "before") {
+        this.player.animation = createPlayerAnimation(-1);
+        this.player.gliding = false;
+      }
+      this.abilities.add("glide");
+      this.player.x = 280;
+      this.player.y = 650;
+      this.player.vx = 190;
+      this.player.vy = 110;
+      this.player.grounded = false;
+      this.player.facing = -1;
+      this.player.gliding = !["before", "exit"].includes(checkpointId);
+      this.camera.x = this.player.x;
+      this.camera.y = this.player.y - 30;
+      const gravity = this.gravityDirection();
+      const tangent = this.screenRightDirection();
+      invariantBefore = this.experienceRuntimeSignature();
+      for (let index = 0; index < iterations; index += 1) {
+        updatePlayerAnimation(this.player.animation, {
+          vx: this.player.vx,
+          vy: this.player.vy,
+          gravity,
+          tangent,
+          facing: this.player.facing,
+          grounded: this.player.grounded,
+          gliding: this.player.gliding,
+          glideUnlocked: this.abilities.has("glide"),
+          constrained: false,
+          dashing: false,
+          distanceTravelled: this.player.distanceTravelled,
+          reducedMotion: this.reducedMotion,
+        }, step);
+        this.elapsed += step;
+      }
+    } else if (cueId === "wind") {
+      const targetId = checkpointId.startsWith("direction-") ? `wind-${checkpointId.slice("direction-".length)}` : "wind-right";
+      const wind = (this.level.windZones || []).find((entry) => entry.id === targetId);
+      if (!wind) throw new Error(`Missing wind evidence target: ${targetId}`);
+      const inside = !["before", "exit"].includes(checkpointId);
+      this.player.x = wind.x + wind.w / 2;
+      this.player.y = inside ? wind.y + wind.h / 2 : wind.y - this.player.radius - 32;
+      this.camera.x = wind.x + wind.w / 2;
+      this.camera.y = wind.y + wind.h / 2;
+      const repeats = checkpointId === "mid-animation" ? 8 : checkpointId === "stable" ? 32 : 1;
+      invariantBefore = this.experienceRuntimeSignature();
+      for (let index = 0; index < repeats; index += 1) {
+        this.updateExperienceCues(step);
+        this.elapsed += step;
+      }
+    } else if (cueId === "sign") {
+      const sign = this.runtime.signs.find((entry) => entry.id === "sign-dynamic");
+      if (!sign) throw new Error("Missing dynamic sign evidence target");
+      if (checkpointId === "idle") sign.cue = createSignCueState();
+      sign.disabled = checkpointId === "disabled";
+      const distance = {
+        idle: sign.nearbyRadius + 50,
+        "idle-mid-animation": sign.nearbyRadius + 50,
+        nearby: (sign.nearbyRadius + sign.activationRadius) * 0.5,
+        activated: sign.activationRadius * 0.5,
+        "activated-stable": sign.activationRadius * 0.5,
+        "reduced-motion": sign.activationRadius * 0.5,
+        completed: sign.nearbyRadius + 50,
+        disabled: 0,
+      }[checkpointId];
+      if (!Number.isFinite(distance)) throw new Error(`Unknown sign checkpoint: ${checkpointId}`);
+      this.player.x = sign.x + distance;
+      this.player.y = sign.y;
+      this.camera.x = sign.x;
+      this.camera.y = sign.y - 20;
+      const repeats = ["idle-mid-animation", "activated-stable", "reduced-motion"].includes(checkpointId) ? 24 : 1;
+      invariantBefore = this.experienceRuntimeSignature();
+      for (let index = 0; index < repeats; index += 1) {
+        this.updateExperienceCues(step);
+        this.elapsed += step;
+      }
+    } else {
+      throw new Error(`Unknown experience cue: ${cueId}`);
+    }
+    this.render();
+    const invariantAfter = this.experienceRuntimeSignature();
+    this.lastExperienceInvariants = {
+      trajectoryBefore: invariantBefore.trajectory,
+      trajectoryAfter: invariantAfter.trajectory,
+      collisionBefore: invariantBefore.collision,
+      collisionAfter: invariantAfter.collision,
+      trajectoryUnchanged: JSON.stringify(invariantBefore.trajectory) === JSON.stringify(invariantAfter.trajectory),
+      collisionUnchanged: JSON.stringify(invariantBefore.collision) === JSON.stringify(invariantAfter.collision),
+    };
+    return this.experienceParitySnapshot(cueId, checkpointId);
+  }
+
+  experienceRuntimeSignature() {
+    const collisionObjects = [
+      ...(this.level.platforms || []),
+      ...(this.level.slopes || []),
+      ...(this.level.boundaryWalls || []),
+      ...(this.level.hazards || []),
+      ...(this.runtime.movingObjects || []).filter((item) => ["platform", "hazard"].includes(item.objectKind)),
+      ...(this.runtime.fragilePlatforms || []).filter((item) => item.phase !== "gone"),
+      ...(this.runtime.gates || []).filter((item) => !item.open),
+    ].map((item) => ({
+      id: item.id,
+      kind: item.objectKind || item.type || (Number.isFinite(item.ax) ? "segment" : "rect"),
+      x: item.x ?? null, y: item.y ?? null, w: item.w ?? null, h: item.h ?? null,
+      ax: item.ax ?? null, ay: item.ay ?? null, bx: item.bx ?? null, by: item.by ?? null,
+    })).sort((left, right) => String(left.id).localeCompare(String(right.id)));
+    return {
+      trajectory: {
+        position: { x: this.player.x, y: this.player.y },
+        velocity: { x: this.player.vx, y: this.player.vy },
+        grounded: this.player.grounded,
+        gliding: this.player.gliding,
+        distanceTravelled: this.player.distanceTravelled,
+      },
+      collision: {
+        radius: this.player.radius,
+        shapeClass: "Circle",
+        collisionObjects,
+      },
+    };
+  }
+
+  experienceObjectCollisionSignature(objectId) {
+    const collisionCollections = {
+      platforms: this.level.platforms || [],
+      slopes: this.level.slopes || [],
+      boundaryWalls: this.level.boundaryWalls || [],
+      hazards: this.level.hazards || [],
+      movingSolids: (this.runtime.movingObjects || []).filter((item) => ["platform", "hazard"].includes(item.objectKind)),
+      fragilePlatforms: (this.runtime.fragilePlatforms || []).filter((item) => item.phase !== "gone"),
+      closedGates: (this.runtime.gates || []).filter((item) => !item.open),
+    };
+    const memberships = Object.fromEntries(Object.entries(collisionCollections).map(([name, items]) => [name, items.filter((item) => item.id === objectId).map((item) => item.id)]));
+    return {
+      memberships,
+      solidEntryCount: Object.values(memberships).reduce((total, entries) => total + entries.length, 0),
+      blockingSurfaceIds: (this.blockingSurfaces || []).filter((surface) => String(surface.id).startsWith(`${objectId}:`) || surface.id === objectId).map((surface) => surface.id).sort(),
+    };
+  }
+
+  experienceParitySnapshot(cueId, checkpointId = "observed") {
+    const snapshot = {
+      schemaVersion: 1,
+      engine: "web-canvas",
+      worldId: this.level?.id || "unknown",
+      cue: cueId,
+      checkpoint: checkpointId,
+      runtime: {
+        player: {
+          x: this.player.x,
+          y: this.player.y,
+          vx: this.player.vx,
+          vy: this.player.vy,
+          radius: this.player.radius,
+          grounded: this.player.grounded,
+          gliding: this.player.gliding,
+          facing: this.player.facing,
+        },
+        abilities: [...this.abilities].sort(),
+        reducedMotion: this.reducedMotion,
+        invariants: structuredClone(this.lastExperienceInvariants || {}),
+      },
+    };
+    if (cueId === "glide") snapshot.runtime.cue = structuredClone(this.player.animation.glideCue);
+    if (cueId === "wind") {
+      snapshot.runtime.cues = (this.level.windZones || []).map((wind) => ({
+        id: wind.id,
+        ...resolveWindCue(wind.forceX, wind.forceY),
+        lifecycle: this.runtime.windCues.get(wind.id)?.state || "idle",
+      }));
+      snapshot.runtime.vectorProbe = resolveWindCue(300, -400);
+      const activeTarget = snapshot.runtime.cues.find((entry) => entry.lifecycle === "inside") || snapshot.runtime.cues.find((entry) => entry.id === "wind-right");
+      snapshot.runtime.targetCollision = this.experienceObjectCollisionSignature(activeTarget?.id || "wind-right");
+    }
+    if (cueId === "sign") {
+      const sign = this.runtime.signs.find((entry) => entry.id === "sign-dynamic");
+      snapshot.runtime.cue = structuredClone(sign?.cue || {});
+      const layout = sign ? this.signPromptLayout(sign) : null;
+      snapshot.runtime.sign = sign ? {
+        id: sign.id,
+        nearbyRadius: sign.nearbyRadius,
+        activationRadius: sign.activationRadius,
+        completionFlag: sign.completionFlag,
+        oneShot: sign.oneShot,
+        disabled: sign.disabled,
+        collision: this.experienceObjectCollisionSignature(sign.id),
+        promptVisible: sign.cue?.state !== "disabled",
+        promptBounds: layout?.bounds || null,
+        promptScreenBounds: layout?.screenBounds || null,
+        overlapsPlayer: sign.cue?.state === "disabled" ? false : this.circleIntersectsPrompt(this.player, layout?.bounds),
+        overlapsHud: sign.cue?.state === "disabled" ? false : Boolean(layout?.overlapsHud),
+        insideViewportSafeArea: sign.cue?.state === "disabled" ? true : Boolean(layout?.insideViewportSafeArea),
+        presentation: signCuePresentation(sign.cue, { reducedMotion: this.reducedMotion }),
+      } : null;
+    }
+    return snapshot;
+  }
+
   isMovingObjectOffscreen(item) {
     const centerX = item.x + (["platform", "hazard"].includes(item.objectKind) ? item.w / 2 : 0);
     const centerY = item.y + (["platform", "hazard"].includes(item.objectKind) ? item.h / 2 : 0);
@@ -1864,7 +2100,7 @@ export class Game {
     append("checkpoint", this.level.checkpoints, (checkpoint) => this.renderCheckpoint(ctx, checkpoint));
     append("roomEntrance", this.level.roomEntrances, this.debug ? (entrance) => this.renderRoomEntrance(ctx, entrance) : null);
     append("roomExit", this.level.roomExits, (exit) => this.renderRoomExit(ctx, exit));
-    append("sign", this.level.signs, (sign) => this.renderSign(ctx, sign));
+    append("sign", this.runtime.signs, (sign) => this.renderSign(ctx, sign));
     append("energyOrb", this.runtime.energyOrbs, (orb) => this.renderEnergyOrb(ctx, orb), (orb) => orb.available);
     append("dashRefill", this.runtime.dashRefills, (refill) => this.renderDashRefill(ctx, refill));
     append("launcher", this.runtime.launchers, (launcher) => this.renderLauncher(ctx, launcher));
@@ -2055,30 +2291,39 @@ export class Game {
         ctx.setLineDash([]);
       }
     } else if (semanticType === "windZone") {
-      const direction = normalize(item.forceX, item.forceY, 0, -1);
+      const windCue = resolveWindCue(item.forceX, item.forceY);
+      const direction = windCue.calm ? { x: 0, y: 0 } : windCue;
       const centerX = item.x + item.w / 2;
       const centerY = item.y + item.h / 2;
-      const active = this.player.wind?.ids.includes(item.id);
+      const lifecycle = this.runtime.windCues.get(item.id)?.state || "idle";
+      const active = lifecycle === "inside";
       ctx.strokeStyle = active ? "rgba(157, 236, 255, 0.88)" : "rgba(128, 222, 255, 0.62)";
       ctx.lineWidth = active ? 4 : 3;
-      ctx.beginPath();
-      ctx.moveTo(centerX - direction.x * 26, centerY - direction.y * 26);
-      ctx.lineTo(centerX + direction.x * 30, centerY + direction.y * 30);
-      ctx.stroke();
+      if (windCue.calm) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 8, 0, TAU);
+        ctx.stroke();
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(centerX - direction.x * 26, centerY - direction.y * 26);
+        ctx.lineTo(centerX + direction.x * 30, centerY + direction.y * 30);
+        ctx.stroke();
+        const side = { x: -direction.y, y: direction.x };
+        ctx.beginPath();
+        ctx.moveTo(centerX + direction.x * 34, centerY + direction.y * 34);
+        ctx.lineTo(centerX + direction.x * 20 + side.x * 8, centerY + direction.y * 20 + side.y * 8);
+        ctx.lineTo(centerX + direction.x * 20 - side.x * 8, centerY + direction.y * 20 - side.y * 8);
+        ctx.closePath();
+        ctx.fillStyle = ctx.strokeStyle;
+        ctx.fill();
+      }
       if (active) ctx.strokeRect(item.x, item.y, item.w, item.h);
     } else if (semanticType === "liquidZone" && this.player.liquid?.id === item.id) {
       ctx.strokeStyle = "rgba(133, 216, 255, 0.82)";
       ctx.lineWidth = 4;
       ctx.strokeRect(item.x, item.y, item.w, item.h);
-    } else if (semanticType === "sign" && item.text) {
-      ctx.font = "650 13px system-ui, sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = "rgba(4, 16, 23, 0.86)";
-      ctx.fillStyle = "rgba(231, 255, 252, 0.94)";
-      ctx.strokeText(item.text, item.x, item.y);
-      ctx.fillText(item.text, item.x, item.y);
+	} else if (semanticType === "sign" && item.text) {
+	  this.renderSign(ctx, item);
     }
     ctx.restore();
   }
@@ -2112,8 +2357,12 @@ export class Game {
   }
 
   renderWindZone(ctx, wind) {
-    const active = this.player.wind?.ids.includes(wind.id);
+    const lifecycle = this.runtime.windCues.get(wind.id)?.state || "idle";
+    const active = lifecycle === "inside";
+    const exiting = lifecycle === "exiting";
+    const cue = resolveWindCue(wind.forceX, wind.forceY);
     ctx.save();
+    ctx.globalAlpha = exiting ? 0.62 : 1;
     ctx.fillStyle = active ? "rgba(91, 207, 255, 0.16)" : "rgba(91, 188, 255, 0.07)";
     ctx.strokeStyle = active ? "rgba(157, 236, 255, 0.72)" : "rgba(116, 215, 255, 0.28)";
     ctx.lineWidth = active ? 4 : 2;
@@ -2123,18 +2372,36 @@ export class Game {
     ctx.fillRect(wind.x, wind.y, wind.w, wind.h);
     ctx.strokeRect(wind.x, wind.y, wind.w, wind.h);
     ctx.setLineDash([]);
-    const direction = normalize(wind.forceX, wind.forceY, 0, -1);
-    for (let x = wind.x + 34; x < wind.x + wind.w; x += 64) {
-      for (let y = wind.y + 40; y < wind.y + wind.h; y += 82) {
-        const pulse = (this.elapsed * 90 + x + y) % 24;
+    const direction = cue.calm ? { x: 0, y: 0 } : cue;
+    const strengthRatio = clamp(cue.strength / 720, 0.25, 1.4);
+    const spacingX = Math.max(42, 72 - strengthRatio * 16);
+    const spacingY = Math.max(54, 92 - strengthRatio * 18);
+    for (let x = wind.x + 30; x < wind.x + wind.w; x += spacingX) {
+      for (let y = wind.y + 34; y < wind.y + wind.h; y += spacingY) {
+        if (cue.calm) {
+          ctx.fillStyle = "rgba(128, 222, 255, 0.42)";
+          ctx.beginPath();
+          ctx.arc(x, y, 2.5, 0, TAU);
+          ctx.fill();
+          continue;
+        }
+        const pulse = this.reducedMotion ? 10 : (this.elapsed * 72 * strengthRatio + x + y) % 28;
         const cx = x + direction.x * pulse;
         const cy = y + direction.y * pulse;
         ctx.strokeStyle = active ? "rgba(190, 244, 255, 0.82)" : "rgba(128, 222, 255, 0.4)";
-        ctx.lineWidth = active ? 3 : 1.5;
+        ctx.lineWidth = (active ? 3 : 1.5) * clamp(strengthRatio, 0.7, 1.25);
         ctx.beginPath();
-        ctx.moveTo(cx - direction.x * 12, cy - direction.y * 12);
-        ctx.lineTo(cx + direction.x * 12, cy + direction.y * 12);
+        ctx.moveTo(cx - direction.x * 11, cy - direction.y * 11);
+        ctx.lineTo(cx + direction.x * 13, cy + direction.y * 13);
         ctx.stroke();
+        const side = { x: -direction.y, y: direction.x };
+        ctx.fillStyle = ctx.strokeStyle;
+        ctx.beginPath();
+        ctx.moveTo(cx + direction.x * 17, cy + direction.y * 17);
+        ctx.lineTo(cx + direction.x * 8 + side.x * 4.5, cy + direction.y * 8 + side.y * 4.5);
+        ctx.lineTo(cx + direction.x * 8 - side.x * 4.5, cy + direction.y * 8 - side.y * 4.5);
+        ctx.closePath();
+        ctx.fill();
       }
     }
     ctx.restore();
@@ -2601,19 +2868,86 @@ export class Game {
   }
 
   renderSign(ctx, sign) {
+    const presentation = signCuePresentation(sign.cue, { reducedMotion: this.reducedMotion });
+    if (presentation.state === "disabled") return;
+    const layout = this.signPromptLayout(sign, presentation);
     ctx.save();
+	ctx.translate(layout.anchor.x, layout.anchor.y);
+    ctx.scale(presentation.scale, presentation.scale);
+    ctx.globalAlpha = presentation.emphasis;
     ctx.font = "600 13px system-ui, sans-serif";
-    const width = ctx.measureText(sign.text).width + 28;
+	const width = layout.unscaledWidth;
     ctx.fillStyle = "rgba(4, 16, 23, 0.72)";
     ctx.strokeStyle = "rgba(124, 235, 228, 0.2)";
     ctx.lineWidth = 1;
-    roundedRect(ctx, sign.x - width / 2, sign.y - 20, width, 34, 10);
+    roundedRect(ctx, -width / 2, -20, width, 34, 10);
     ctx.fill();
     ctx.stroke();
-    ctx.fillStyle = "rgba(211, 249, 247, 0.74)";
+    ctx.fillStyle = presentation.interactive ? "rgba(255, 246, 190, 0.96)" : "rgba(211, 249, 247, 0.74)";
     ctx.textAlign = "center";
-    ctx.fillText(sign.text, sign.x, sign.y + 2);
+    ctx.fillText(sign.text, 0, 2);
+	ctx.font = "700 9px ui-monospace, SFMono-Regular, Menlo, monospace";
+	ctx.fillStyle = presentation.interactive ? "rgba(255, 226, 126, 0.94)" : "rgba(147, 226, 222, 0.74)";
+	ctx.fillText(presentation.state, 0, -26);
     ctx.restore();
+  }
+
+  signPromptLayout(sign, providedPresentation = null) {
+    const presentation = providedPresentation || signCuePresentation(sign.cue, { reducedMotion: this.reducedMotion });
+    this.ctx.save();
+    this.ctx.font = "600 13px system-ui, sans-serif";
+    const unscaledWidth = this.ctx.measureText(sign.text).width + 28;
+    this.ctx.restore();
+    const playerAbove = this.player.y < sign.y - this.player.radius;
+    const width = unscaledWidth * presentation.scale;
+    const height = 34 * presentation.scale;
+    const preferredY = playerAbove ? 64 : -64;
+    const candidates = [{ x: 0, y: preferredY }, { x: 0, y: -preferredY }, { x: 96, y: 0 }, { x: -96, y: 0 }, { x: 0, y: 96 }, { x: 0, y: -96 }];
+    const reserved = [
+      { x: 22, y: 22, w: 330, h: 104 },
+      { x: 918, y: 22, w: 340, h: 52 },
+      { x: 190, y: 664, w: 900, h: 36 },
+    ];
+    const safe = { x: 16, y: 16, w: VIEWPORT.width - 32, h: VIEWPORT.height - 32 };
+    let selected = null;
+    for (const candidate of candidates) {
+      const anchor = { x: sign.x + candidate.x, y: sign.y + candidate.y + presentation.offsetY };
+      const bounds = { x: anchor.x - width / 2, y: anchor.y - 20 * presentation.scale, w: width, h: height };
+      const screenBounds = this.worldRectToScreenBounds(bounds);
+      const insideViewportSafeArea = screenBounds.x >= safe.x && screenBounds.y >= safe.y && screenBounds.x + screenBounds.w <= safe.x + safe.w && screenBounds.y + screenBounds.h <= safe.y + safe.h;
+      const overlapsHud = reserved.some((rect) => this.rectsIntersect(screenBounds, { x: rect.x - 8, y: rect.y - 8, w: rect.w + 16, h: rect.h + 16 }));
+      const overlapsPlayer = this.circleIntersectsPrompt(this.player, bounds);
+      const layout = { anchor, baseOffset: candidate.y, baseOffsetX: candidate.x, unscaledWidth, bounds, screenBounds, overlapsHud, insideViewportSafeArea };
+      selected ||= layout;
+      if (insideViewportSafeArea && !overlapsHud && !overlapsPlayer) {
+        selected = layout;
+        break;
+      }
+    }
+    return selected;
+  }
+
+  worldRectToScreenBounds(bounds) {
+    const corners = [
+      this.worldToScreen(bounds.x, bounds.y),
+      this.worldToScreen(bounds.x + bounds.w, bounds.y),
+      this.worldToScreen(bounds.x, bounds.y + bounds.h),
+      this.worldToScreen(bounds.x + bounds.w, bounds.y + bounds.h),
+    ];
+    const xs = corners.map((point) => point.x);
+    const ys = corners.map((point) => point.y);
+    return { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
+  }
+
+  rectsIntersect(left, right) {
+    return left.x < right.x + right.w && left.x + left.w > right.x && left.y < right.y + right.h && left.y + left.h > right.y;
+  }
+
+  circleIntersectsPrompt(player, bounds) {
+    if (!bounds) return false;
+    const closestX = clamp(player.x, bounds.x, bounds.x + bounds.w);
+    const closestY = clamp(player.y, bounds.y, bounds.y + bounds.h);
+    return (player.x - closestX) ** 2 + (player.y - closestY) ** 2 <= player.radius ** 2;
   }
 
   renderGoal(ctx) {
@@ -2868,17 +3202,25 @@ export class Game {
 
     ctx.shadowColor = animation.dashBlend > 0.05 ? "#8fdfff" : "#a8fff5";
     ctx.shadowBlur = 17 + animation.dashBlend * 21 + Math.abs(animation.stretch) * 18;
-    if (this.player.gliding) {
+    const wingPose = glideWingPose(animation.glideCue, this.elapsed);
+    if (wingPose.visible) {
       ctx.strokeStyle = "rgba(143, 225, 255, 0.84)";
       ctx.fillStyle = "rgba(91, 181, 235, 0.16)";
       ctx.lineWidth = 3;
+      const tangentScreen = rotate(wingPose.tangent.x, wingPose.tangent.y, this.camera.angle);
+      const gravityScreen = rotate(wingPose.gravity.x, wingPose.gravity.y, this.camera.angle);
+      const span = wingPose.span;
+      const lift = wingPose.lift;
       ctx.beginPath();
-      ctx.moveTo(-8, -3);
-      ctx.quadraticCurveTo(-42, -30, -55, 6);
-      ctx.quadraticCurveTo(-32, -1, -10, 10);
-      ctx.moveTo(8, -3);
-      ctx.quadraticCurveTo(42, -30, 55, 6);
-      ctx.quadraticCurveTo(32, -1, 10, 10);
+      for (const side of [-1, 1]) {
+        const rootX = tangentScreen.x * side * 8 - gravityScreen.x * 3;
+        const rootY = tangentScreen.y * side * 8 - gravityScreen.y * 3;
+        const tipX = tangentScreen.x * side * span + gravityScreen.x * 6;
+        const tipY = tangentScreen.y * side * span + gravityScreen.y * 6;
+        ctx.moveTo(rootX, rootY);
+        ctx.quadraticCurveTo(tangentScreen.x * side * span * 0.72 - gravityScreen.x * lift, tangentScreen.y * side * span * 0.72 - gravityScreen.y * lift, tipX, tipY);
+        ctx.quadraticCurveTo(tangentScreen.x * side * span * 0.55 + gravityScreen.x * 8, tangentScreen.y * side * span * 0.55 + gravityScreen.y * 8, tangentScreen.x * side * 10 + gravityScreen.x * 10, tangentScreen.y * side * 10 + gravityScreen.y * 10);
+      }
       ctx.fill();
       ctx.stroke();
     }
@@ -3249,6 +3591,8 @@ const levelEditor = createLevelEditor({
     renderLevelMenu();
   }
 });
+
+globalThis.cablesterLevelEditor = levelEditor;
 
 
 openLevelEditorButton.addEventListener("click", () => levelEditor.open());

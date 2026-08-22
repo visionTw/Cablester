@@ -33,10 +33,12 @@ const LAYER_KEYS = Object.freeze([
   "seed",
   "range",
   "originX",
+  "originY",
   "spacing",
   "density",
   "drawCap"
 ]);
+const OPTIONAL_LAYER_KEYS = new Set(["originY"]);
 const ASSET_REF_KEYS = Object.freeze(["assetId", "weight"]);
 const SEAMLESS_KEYS = Object.freeze(["mode", "tileWidth", "overlap"]);
 const RANGE_KEYS = Object.freeze(["startX", "endX"]);
@@ -120,6 +122,7 @@ export function createSceneLayer(overrides = {}, layers = []) {
     density: overrides.density ?? 1,
     drawCap: overrides.drawCap ?? 256
   };
+  if (Object.hasOwn(overrides, "originY")) layer.originY = overrides.originY;
   const errors = validateSceneLayer(layer);
   if (errors.length) throw new Error(errors.join("\n"));
   return layer;
@@ -139,7 +142,7 @@ export function validateSceneLayer(layer, path = "layer") {
   if (!isRecord(layer)) return [`${path} must be an object`];
   const errors = unexpectedKeys(layer, LAYER_KEYS, path);
   for (const key of LAYER_KEYS) {
-    if (!Object.hasOwn(layer, key)) errors.push(`${path}.${key} is required`);
+    if (!OPTIONAL_LAYER_KEYS.has(key) && !Object.hasOwn(layer, key)) errors.push(`${path}.${key} is required`);
   }
   if (typeof layer.id !== "string" || !layer.id.trim()) errors.push(`${path}.id must be a non-empty string`);
   if (typeof layer.name !== "string" || !layer.name.trim()) errors.push(`${path}.name must be a non-empty string`);
@@ -197,10 +200,19 @@ export function validateSceneLayer(layer, path = "layer") {
     }
   }
   if (!finiteInRange(layer.originX, -10000000, 10000000)) errors.push(`${path}.originX must be a finite number`);
+  if (layer.originY !== undefined && layer.originY !== null && !finiteInRange(layer.originY, -10000000, 10000000)) {
+    errors.push(`${path}.originY must be a finite number or null`);
+  }
   if (!finiteInRange(layer.spacing, -100000, 100000)) errors.push(`${path}.spacing must be a number from -100000 to 100000`);
   if (!finiteInRange(layer.density, 0.01, 100)) errors.push(`${path}.density must be a number from 0.01 to 100`);
   if (!Number.isInteger(layer.drawCap) || layer.drawCap < 1 || layer.drawCap > 4096) errors.push(`${path}.drawCap must be an integer from 1 to 4096`);
   return [...new Set(errors)];
+}
+
+export function sceneLayerBaselineY(layer, fallbackY) {
+  if (Number.isFinite(layer?.originY)) return layer.originY;
+  if (!Number.isFinite(fallbackY)) throw new Error("Scene layer fallback Y must be finite");
+  return fallbackY;
 }
 
 export function validateScene(scene) {

@@ -615,7 +615,17 @@ export class WorldEditorSession {
   }
 
   replaceChunkFromLevelDocument(regionId, chunkId, document) {
-    this.commit(`应用关卡文档到 ${chunkId}`, (world) => applyLevelDocumentToChunk(world, regionId, chunkId, document));
+    const next = applyLevelDocumentToChunk(this.world, regionId, chunkId, document);
+    const currentChunk = findChunk(this.world, chunkId)?.chunk;
+    const nextChunk = findChunk(next, chunkId)?.chunk;
+    if (currentChunk && nextChunk && !Object.hasOwn(currentChunk, "extensions") && Object.keys(nextChunk.extensions || {}).length === 0) {
+      delete nextChunk.extensions;
+    }
+    const meaningfulChanges = createWorldDocumentDiff(this.world, next).changes
+      .filter((change) => change.path !== "manifest.contentHash");
+    if (meaningfulChanges.length === 0) return false;
+    this.commit(`应用关卡文档到 ${chunkId}`, () => next);
+    return true;
   }
 
   importWorld(input) {
@@ -1003,7 +1013,7 @@ export function createWorldStudio({
 
   function renderToolbar() {
     const loaded = Boolean(session);
-    for (const selector of ["#world-save", "#world-export", "#world-validate", "#world-play", "#world-godot-command"]) root.querySelector(selector).disabled = !loaded;
+    for (const selector of ["#world-save", "#world-export", "#world-validate", "#world-play", "#world-godot-command", "#world-edit-chunk"]) root.querySelector(selector).disabled = !loaded;
     root.querySelector("#world-save").disabled = !loaded || !capability.writable;
     root.querySelector("#world-save").title = capability.writable ? "确定性原子写回仓库" : capability.reason || "线上只读";
     root.querySelector("#world-undo").disabled = !session?.canUndo;
@@ -1230,6 +1240,40 @@ export function createWorldStudio({
     }
   }
 
+  function editSelectedChunk() {
+    if (!session) return;
+    const { regionId, chunkId } = selectedContext();
+    if (!regionId || !chunkId) return setStatus("请先选择一个 Chunk。", "warning");
+    const levelEditor = globalThis.cablesterLevelEditor;
+    if (!levelEditor?.openDocument) return setStatus("关卡工坊尚未初始化。", "error");
+    try {
+      const document = chunkToLevelDocument(session.world, regionId, chunkId);
+      const chunkName = session.world.regions
+        .find((region) => region.id === regionId)?.chunks
+        .find((chunk) => chunk.id === chunkId)?.name || chunkId;
+      root.hidden = true;
+      levelEditor.openDocument(document, {
+        sourceLabel: `${chunkName} · ${chunkId}`,
+        onApply(nextDocument) {
+          const changed = session.replaceChunkFromLevelDocument(regionId, chunkId, nextDocument);
+          if (changed) createStreaming();
+          renderAll({ rebuild: changed });
+          setStatus(changed
+            ? `已将关卡工坊草稿回写到 ${chunkId}；请验证后保存 canonical 世界。`
+            : `${chunkId} 没有内容变化；canonical 世界保持同步。`, "success");
+        },
+        onClose() {
+          root.hidden = false;
+          renderAll();
+          root.querySelector("#world-edit-chunk").focus();
+        }
+      });
+    } catch (error) {
+      root.hidden = false;
+      setStatus(`无法打开 Chunk：${error.message}`, "error");
+    }
+  }
+
   function documentBody() {
     return globalThis.document;
   }
@@ -1410,6 +1454,7 @@ export function createWorldStudio({
   root.querySelector("#world-validate").addEventListener("click", runValidation);
   root.querySelector("#world-validation-cancel").addEventListener("click", () => validation.cancel());
   root.querySelector("#world-play").addEventListener("click", playSelectedChunk);
+  root.querySelector("#world-edit-chunk").addEventListener("click", editSelectedChunk);
   root.querySelector("#world-godot-command").addEventListener("click", copyGodotCommand);
   root.querySelector("#world-stream-toggle").addEventListener("click", () => streamingTimer ? stopStreaming() : startStreaming());
   root.querySelector("#world-stream-turn").addEventListener("click", () => { streamingVelocity.x *= -1; streamingVelocity.y *= -1; streamingStep(); });

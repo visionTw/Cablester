@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "version": "1",
+  "experienceCueVersion": "cablester-experience-cues-v1",
+  "status": "automated-pass",
+  "formalAuthority": "cablester_godot",
+  "publicStructureAuthority": "cablester_web",
+  "humanAcceptance": "awaiting-user",
+  "coordinateSystem": {
+    "xPositive": "right",
+    "yPositive": "down",
+    "units": "canonical-world-units"
+  },
+  "consistency": [
+    "same-runtime-trigger",
+    "same-player-meaning",
+    "same-direction-and-strength-semantics",
+    "same-lifecycle",
+    "first-time-player-comprehension"
+  ],
+  "cues": {
+    "ability.glide": {
+      "source": "player.gliding",
+      "states": ["locked", "ready", "opening", "gliding", "closing"],
+      "checkpoints": ["before", "activation", "mid-animation", "stable", "exit"],
+      "follows": ["facing", "gravity-direction"],
+      "collisionInvariant": true,
+      "trajectoryInvariant": true,
+      "reducedMotion": "use-state-silhouette-without-flapping"
+    },
+    "object.windZone": {
+      "source": ["canonical_properties.forceX", "canonical_properties.forceY"],
+      "states": ["idle", "inside", "exiting"],
+      "checkpoints": ["before", "entry", "mid-animation", "stable-inside", "exit"],
+      "directions": ["up", "down", "left", "right", "vector"],
+      "zeroVector": "calm-no-direction",
+      "colorIsNotDirection": true,
+      "collisionInvariant": true,
+      "trajectoryInvariant": true,
+      "reducedMotion": "use-static-arrow-density-and-inside-outline"
+    },
+    "object.sign": {
+      "canonicalType": "sign",
+      "source": ["player-distance", "interaction", "completionFlag", "disabled"],
+      "states": ["idle", "nearby", "activated", "completed", "disabled"],
+      "checkpoints": ["idle", "nearby", "activated", "completed", "disabled"],
+      "collisionSemantics": "none",
+      "trajectoryInvariant": true,
+      "reducedMotion": "use-static-outline-label-and-state-badge"
+    }
+  },
+  "evidence": {
+    "minimumFramesPerCue": 5,
+    "requiresRuntimeState": true,
+    "requiresSideBySide": true,
+    "singleScreenshotSufficient": false,
+    "telemetryAloneSufficient": false
+  }
+}

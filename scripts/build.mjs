@@ -28,7 +28,6 @@ const copyTasks = [
   cp(resolve(root, "styles.css"), resolve(client, "styles.css")),
   cp(resolve(root, "og.png"), resolve(client, "og.png")),
   cp(resolve(root, "src"), resolve(client, "src"), { recursive: true }),
-  cp(resolve(root, "levels"), resolve(client, "levels"), { recursive: true }),
   cp(resolve(root, "worlds", "labs"), resolve(client, "worlds", "labs"), { recursive: true }),
   cp(resolve(root, "worlds", "registries"), resolve(client, "worlds", "registries"), { recursive: true }),
   cp(
@@ -36,6 +35,9 @@ const copyTasks = [
     resolve(dist, ".openai", "hosting.json"),
   ),
 ];
+if (existsSync(resolve(root, "levels"))) {
+  copyTasks.push(cp(resolve(root, "levels"), resolve(client, "levels"), { recursive: true }));
+}
 if (existsSync(resolve(root, "assets"))) {
   copyTasks.push(cp(resolve(root, "assets"), resolve(client, "assets"), {
     recursive: true,

@@ -1,5 +1,6 @@
 import { TUNING } from "./config.js";
 import { clamp, dot, length } from "./math.js";
+import { createGlideCueState, updateGlideCueState } from "./experience-cues.js";
 
 const HALF_TURN = Math.PI;
 const QUARTER_TURN = Math.PI / 2;
@@ -123,6 +124,7 @@ export function createPlayerAnimation(facing = 1) {
     previousPlayerVy: 0,
     motionTailBlend: 0,
     dashBlend: 0,
+    glideCue: createGlideCueState(),
     jumpTimer: 0,
     landingTimer: 0,
     landingSquash: 0
@@ -233,6 +235,14 @@ export function updatePlayerAnimation(animation, state, deltaTime) {
   animation.motionTailBlend += ((usesMotionTail ? 1 : 0) - animation.motionTailBlend) * motionTailAmount;
   const dashAmount = 1 - Math.exp(-(state.dashing ? 28 : 10) * deltaTime);
   animation.dashBlend += ((state.dashing ? 1 : 0) - animation.dashBlend) * dashAmount;
+  updateGlideCueState(animation.glideCue, {
+    unlocked: Boolean(state.glideUnlocked),
+    gliding: Boolean(state.gliding),
+    grounded: Boolean(state.grounded),
+    facing: state.facing,
+    gravity: state.gravity,
+    reducedMotion: Boolean(state.reducedMotion)
+  }, deltaTime);
 
   animation.jumpTimer = Math.max(0, animation.jumpTimer - deltaTime);
   animation.landingTimer = Math.max(0, animation.landingTimer - deltaTime);

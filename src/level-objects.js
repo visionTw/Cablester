@@ -29,6 +29,7 @@ const selectProperty = (label, defaultValue, options) => ({
 
 const textProperty = (label, defaultValue = "") => ({ label, kind: "text", default: defaultValue });
 const booleanProperty = (label, defaultValue = false) => ({ label, kind: "boolean", default: defaultValue });
+const optionalProperty = (property) => ({ ...property, optional: true });
 
 export const LEVEL_OBJECT_CATEGORIES = Object.freeze([
   { id: "layout", label: "关卡结构" },
@@ -322,7 +323,14 @@ export const LEVEL_OBJECT_LIBRARY = Object.freeze({
     label: "提示牌",
     category: "guidance",
     color: "#f2e4b8",
-    properties: { text: textProperty("提示文字", "在这里输入提示") }
+    properties: {
+      text: textProperty("提示文字", "在这里输入提示"),
+      nearbyRadius: optionalProperty(numberProperty("临近提示半径", 140, 24, 800)),
+      activationRadius: optionalProperty(numberProperty("激活半径", 48, 12, 400)),
+      completionFlag: optionalProperty(textProperty("完成进度标记", "")),
+      oneShot: optionalProperty(booleanProperty("触发后完成", false)),
+      disabled: optionalProperty(booleanProperty("禁用", false))
+    }
   },
   backgroundSeed: {
     label: "背景光晕",
@@ -526,7 +534,14 @@ function readObjectProperties(type, item) {
       oneWay: Boolean(item.oneWay)
     };
     case "rotationTrigger": return { w: item.w, h: item.h, deltaDegrees: item.delta * 180 / Math.PI };
-    case "sign": return { text: item.text || "" };
+    case "sign": return {
+      text: item.text || "",
+      ...(Object.hasOwn(item, "nearbyRadius") ? { nearbyRadius: item.nearbyRadius } : {}),
+      ...(Object.hasOwn(item, "activationRadius") ? { activationRadius: item.activationRadius } : {}),
+      ...(Object.hasOwn(item, "completionFlag") ? { completionFlag: item.completionFlag || "" } : {}),
+      ...(Object.hasOwn(item, "oneShot") ? { oneShot: Boolean(item.oneShot) } : {}),
+      ...(Object.hasOwn(item, "disabled") ? { disabled: Boolean(item.disabled) } : {})
+    };
     case "backgroundSeed": return { size: item.size };
     default: return {};
   }
@@ -553,13 +568,19 @@ export function levelToDocument(level) {
       const x = type === "slope" ? item.ax : item.x;
       const y = type === "slope" ? item.ay : item.y;
       const id = runtimeObjectId(level, type, index, item.id, objects);
-      objects.push(createLevelObject(type, x, y, objects, {
+      const documentObject = createLevelObject(type, x, y, objects, {
         id,
         properties: {
           ...readObjectProperties(type, item),
           visual: runtimeObjectVisual(level, type, id)
         }
-      }));
+      });
+      if (type === "sign") {
+        for (const key of ["nearbyRadius", "activationRadius", "completionFlag", "oneShot", "disabled"]) {
+          if (!Object.hasOwn(item, key)) delete documentObject.properties[key];
+        }
+      }
+      objects.push(documentObject);
     }
   }
   if (level.spawn) {
@@ -681,7 +702,17 @@ function compileObject(object) {
       oneWay: Boolean(p.oneWay)
     };
     case "rotationTrigger": return { id: object.id, x, y, w: p.w, h: p.h, delta: p.deltaDegrees * Math.PI / 180 };
-    case "sign": return { id: object.id, x, y, text: p.text };
+    case "sign": return {
+      id: object.id,
+      x,
+      y,
+      text: p.text,
+      ...(Object.hasOwn(p, "nearbyRadius") ? { nearbyRadius: p.nearbyRadius } : {}),
+      ...(Object.hasOwn(p, "activationRadius") ? { activationRadius: p.activationRadius } : {}),
+      ...(Object.hasOwn(p, "completionFlag") ? { completionFlag: p.completionFlag || "" } : {}),
+      ...(Object.hasOwn(p, "oneShot") ? { oneShot: Boolean(p.oneShot) } : {}),
+      ...(Object.hasOwn(p, "disabled") ? { disabled: Boolean(p.disabled) } : {})
+    };
     case "backgroundSeed": return { x, y, size: p.size };
     default: return null;
   }
@@ -751,6 +782,7 @@ function validateVersionTwoDocument(document) {
     errors.push(...validateVisualConfig(object.properties?.visual, { path: `${object.id || object.type}.visual` }));
     for (const [key, property] of Object.entries(definition?.properties || {})) {
       const value = object.properties?.[key];
+      if (value === undefined && property.optional) continue;
       if (property.kind === "number" && (!Number.isFinite(value) || value < property.min || value > property.max)) {
         errors.push(`${object.id || object.type}.${key} must be a number from ${property.min} to ${property.max}`);
       } else if (property.kind === "select" && !property.options.some(([option]) => option === value)) {

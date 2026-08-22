@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "cablester-world-studio-browser-performance",
-  "generatedAt": "2026-08-17T18:57:18.455Z",
+  "generatedAt": "2026-08-22T17:45:13.170Z",
   "status": "pass",
   "configuration": {
     "standardRun": true,
@@ -27,7 +27,7 @@
   "inputs": {
     "sourceFingerprint": {
       "algorithm": "sha256",
-      "value": "sha256:6f733e0ef91fc8ceeb7bb3770e74aec64643fd091818db3ac1e70a78547116cb",
+      "value": "sha256:3c6bd382cb80f66b7e7a8f34bb7191c39860ebef81b760f61cdc66af282477e7",
       "paths": [
         "scripts/audit-world-studio-performance.mjs",
         "test/world-studio-performance.test.js",
@@ -47,14 +47,14 @@
       ]
     },
     "forest": {
-      "path": "worlds/labs/cablester-composite-showcase.world.json",
-      "sha256": "sha256:9f1cdd1ec038683d277b97e0916460abbfbe00386ab7d67ab0a16bf1f46f89e9",
+      "path": "worlds\\labs\\cablester-composite-showcase.world.json",
+      "sha256": "sha256:db51ba5b5cc2300440bbbd91d8ca470ce52bf8ddebbfee1f5b094dd12b26940b",
       "worldId": "cablester-composite-showcase",
-      "contentHash": "sha256:dae9e5f40359f0e99e033babf3a251c76eddb4a3c82943f2c5a644f0c9ace560",
+      "contentHash": "sha256:6cf1cda4c2e221c77c135ff3a5c2c10aeefdae52bc61d64c06e500a4b347441e",
       "regions": 1,
       "chunks": 12,
       "objects": 285,
-      "bytes": 622954
+      "bytes": 626135
     },
     "synthetic": {
       "generator": "createSyntheticWorld() defaults",
@@ -68,12 +68,12 @@
         "regionMultiplier": 10,
         "chunkMultiplier": 16.666666666666668,
         "objectMultiplier": 36.49122807017544,
-        "byteMultiplier": 3.382670309525262
+        "byteMultiplier": 3.365485079096361
       }
     },
     "completionFingerprint": {
       "algorithm": "sha256",
-      "value": "sha256:6f733e0ef91fc8ceeb7bb3770e74aec64643fd091818db3ac1e70a78547116cb",
+      "value": "sha256:3c6bd382cb80f66b7e7a8f34bb7191c39860ebef81b760f61cdc66af282477e7",
       "paths": [
         "scripts/audit-world-studio-performance.mjs",
         "test/world-studio-performance.test.js",
@@ -102,496 +102,524 @@
     "longTaskApiSupported": true,
     "deviceProfile": "local-desktop-redacted",
     "privacy": "Host and hardware-identifying fields are intentionally omitted from repository evidence.",
-    "chromeExecutableVersion": "Google Chrome 151.0.7922.138",
+    "chromeExecutableVersion": "��������������Ự�д򿪡�",
     "browserProtocolVersion": {
       "protocolVersion": "1.3",
-      "product": "Chrome/151.0.7922.138"
+      "product": "Edg/149.0.4022.98"
     }
   },
   "firstLoad": {
     "emptyBrowserCache": true,
-    "wallDurationToBootstrapMs": 1423,
+    "wallDurationToBootstrapMs": 1534,
     "beforeStudio": {
-      "requestCount": 55,
+      "requestCount": 57,
       "failedCount": 0,
       "httpErrorCount": 1,
       "applicationErrorCount": 0,
       "cachedRequestCount": 0,
-      "transferBytes": 1294164,
-      "decodedBodyBytes": 1280345,
+      "transferBytes": 1375147,
+      "decodedBodyBytes": 1360829,
       "byType": {
         "Document": 1,
         "Stylesheet": 1,
-        "Script": 31,
+        "Script": 33,
         "Image": 21,
         "Other": 1
       },
       "resources": [
         {
           "sequence": 1,
-          "requestId": "8B0411BC514F15850BAA31B15DF40F35",
+          "requestId": "C5F5705B4B1C47DDBC9457CEB80A877C",
           "url": "/",
           "method": "GET",
           "type": "Document",
           "status": 200,
           "mimeType": "text/html",
           "fromCache": false,
-          "transferBytes": 18323,
-          "decodedBodyBytes": 18081,
+          "transferBytes": 20762,
+          "decodedBodyBytes": 20520,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 2,
-          "requestId": "63652.2",
+          "requestId": "31952.2",
           "url": "/styles.css",
           "method": "GET",
           "type": "Stylesheet",
           "status": 200,
           "mimeType": "text/css",
           "fromCache": false,
-          "transferBytes": 45111,
-          "decodedBodyBytes": 44870,
+          "transferBytes": 49683,
+          "decodedBodyBytes": 49442,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 3,
-          "requestId": "63652.3",
+          "requestId": "31952.3",
           "url": "/src/game.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 131540,
-          "decodedBodyBytes": 131276,
+          "transferBytes": 151803,
+          "decodedBodyBytes": 151537,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 4,
-          "requestId": "63652.4",
+          "requestId": "31952.4",
           "url": "/src/world-editor.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 71186,
-          "decodedBodyBytes": 70929,
+          "transferBytes": 74746,
+          "decodedBodyBytes": 74489,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 5,
-          "requestId": "63652.8",
+          "requestId": "31952.8",
           "url": "/src/world-schema.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 53834,
-          "decodedBodyBytes": 53586,
+          "transferBytes": 54841,
+          "decodedBodyBytes": 54593,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 6,
-          "requestId": "63652.9",
+          "requestId": "31952.9",
           "url": "/src/world-hash.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 10089,
-          "decodedBodyBytes": 9841,
+          "transferBytes": 10343,
+          "decodedBodyBytes": 10095,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 7,
-          "requestId": "63652.10",
+          "requestId": "31952.10",
           "url": "/src/level-objects.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 39280,
-          "decodedBodyBytes": 39032,
+          "transferBytes": 41999,
+          "decodedBodyBytes": 41751,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 8,
-          "requestId": "63652.11",
+          "requestId": "31952.11",
           "url": "/src/world-preview.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 41080,
-          "decodedBodyBytes": 40832,
+          "transferBytes": 44324,
+          "decodedBodyBytes": 44076,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 9,
-          "requestId": "63652.12",
+          "requestId": "31952.12",
           "url": "/src/world-streaming.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 26979,
-          "decodedBodyBytes": 26731,
+          "transferBytes": 27706,
+          "decodedBodyBytes": 27458,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 10,
-          "requestId": "63652.13",
+          "requestId": "31952.13",
           "url": "/src/world-repository-client.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 8149,
-          "decodedBodyBytes": 7901,
+          "transferBytes": 8366,
+          "decodedBodyBytes": 8118,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 11,
-          "requestId": "63652.14",
+          "requestId": "31952.14",
           "url": "/src/world-validation-worker.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 31523,
-          "decodedBodyBytes": 31275,
+          "transferBytes": 32186,
+          "decodedBodyBytes": 31938,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 12,
-          "requestId": "63652.15",
+          "requestId": "31952.15",
           "url": "/src/config.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 3563,
-          "decodedBodyBytes": 3316,
+          "transferBytes": 3677,
+          "decodedBodyBytes": 3430,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 13,
-          "requestId": "63652.16",
+          "requestId": "31952.16",
           "url": "/src/display.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 1837,
-          "decodedBodyBytes": 1590,
+          "transferBytes": 1887,
+          "decodedBodyBytes": 1640,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 14,
-          "requestId": "63652.17",
+          "requestId": "31952.17",
           "url": "/src/asset-library.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 64481,
-          "decodedBodyBytes": 64233,
+          "transferBytes": 65474,
+          "decodedBodyBytes": 65226,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 15,
-          "requestId": "63652.18",
+          "requestId": "31952.18",
           "url": "/src/level-editor.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 96187,
-          "decodedBodyBytes": 95930,
+          "transferBytes": 115354,
+          "decodedBodyBytes": 115097,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 16,
-          "requestId": "63652.19",
+          "requestId": "31952.19",
           "url": "/src/levels.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 22117,
-          "decodedBodyBytes": 21869,
+          "transferBytes": 22635,
+          "decodedBodyBytes": 22387,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 17,
-          "requestId": "63652.20",
+          "requestId": "31952.20",
           "url": "/src/level-validator.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 8399,
-          "decodedBodyBytes": 8151,
+          "transferBytes": 8567,
+          "decodedBodyBytes": 8319,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 18,
-          "requestId": "63652.21",
+          "requestId": "31952.21",
           "url": "/src/level-support.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 8015,
-          "decodedBodyBytes": 7767,
+          "transferBytes": 8186,
+          "decodedBodyBytes": 7938,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 19,
-          "requestId": "63652.22",
+          "requestId": "31952.22",
           "url": "/src/boundary-wall.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 6139,
-          "decodedBodyBytes": 5891,
+          "transferBytes": 6273,
+          "decodedBodyBytes": 6025,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 20,
-          "requestId": "63652.23",
+          "requestId": "31952.23",
           "url": "/src/dash-refill.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 1979,
-          "decodedBodyBytes": 1732,
+          "transferBytes": 2035,
+          "decodedBodyBytes": 1788,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 21,
-          "requestId": "63652.24",
+          "requestId": "31952.24",
           "url": "/src/motion.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 10434,
-          "decodedBodyBytes": 10186,
+          "transferBytes": 10691,
+          "decodedBodyBytes": 10443,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 22,
-          "requestId": "63652.25",
+          "requestId": "31952.25",
           "url": "/src/reference-mechanisms.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 4568,
-          "decodedBodyBytes": 4320,
+          "transferBytes": 4682,
+          "decodedBodyBytes": 4434,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 23,
-          "requestId": "63652.26",
+          "requestId": "31952.26",
           "url": "/src/player-animation.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 9382,
-          "decodedBodyBytes": 9134,
+          "transferBytes": 10027,
+          "decodedBodyBytes": 9779,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 24,
-          "requestId": "63652.27",
+          "requestId": "31952.27",
           "url": "/src/math.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 5722,
-          "decodedBodyBytes": 5474,
+          "transferBytes": 5893,
+          "decodedBodyBytes": 5645,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 25,
-          "requestId": "63652.28",
+          "requestId": "31952.28",
           "url": "/src/rules.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 14396,
-          "decodedBodyBytes": 14148,
+          "transferBytes": 15367,
+          "decodedBodyBytes": 15119,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 26,
-          "requestId": "63652.29",
+          "requestId": "31952.29",
           "url": "/src/visual-runtime.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 28240,
-          "decodedBodyBytes": 27992,
+          "transferBytes": 29386,
+          "decodedBodyBytes": 29138,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 27,
-          "requestId": "63652.30",
+          "requestId": "31952.30",
+          "url": "/src/experience-cues.js",
+          "method": "GET",
+          "type": "Script",
+          "status": 200,
+          "mimeType": "text/javascript",
+          "fromCache": false,
+          "transferBytes": 5826,
+          "decodedBodyBytes": 5578,
+          "failed": false,
+          "errorText": null
+        },
+        {
+          "sequence": 28,
+          "requestId": "31952.31",
           "url": "/src/scene-layers.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 18385,
-          "decodedBodyBytes": 18137,
+          "transferBytes": 19370,
+          "decodedBodyBytes": 19122,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 28,
-          "requestId": "63652.31",
+          "sequence": 29,
+          "requestId": "31952.32",
           "url": "/src/world-registries.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 13454,
-          "decodedBodyBytes": 13206,
+          "transferBytes": 13789,
+          "decodedBodyBytes": 13541,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 29,
-          "requestId": "63652.32",
+          "sequence": 30,
+          "requestId": "31952.33",
           "url": "/src/world-diff.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 14139,
-          "decodedBodyBytes": 13891,
+          "transferBytes": 14480,
+          "decodedBodyBytes": 14232,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 30,
-          "requestId": "63652.33",
+          "sequence": 31,
+          "requestId": "31952.34",
           "url": "/src/asset-paths.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 1415,
-          "decodedBodyBytes": 1168,
+          "transferBytes": 1439,
+          "decodedBodyBytes": 1192,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 31,
-          "requestId": "63652.34",
+          "sequence": 32,
+          "requestId": "31952.35",
           "url": "/src/asset-scaling.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 14253,
-          "decodedBodyBytes": 14005,
+          "transferBytes": 14556,
+          "decodedBodyBytes": 14308,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 32,
-          "requestId": "63652.35",
+          "sequence": 33,
+          "requestId": "31952.36",
           "url": "/src/level.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 4338,
-          "decodedBodyBytes": 4091,
+          "transferBytes": 4427,
+          "decodedBodyBytes": 4179,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 33,
-          "requestId": "63652.36",
+          "sequence": 34,
+          "requestId": "31952.37",
           "url": "/src/level-art-presets.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 18711,
-          "decodedBodyBytes": 18463,
+          "transferBytes": 19248,
+          "decodedBodyBytes": 19000,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 34,
-          "requestId": "63652.37",
+          "sequence": 35,
+          "requestId": "31952.38",
+          "url": "/src/terrain-authoring.js",
+          "method": "GET",
+          "type": "Script",
+          "status": 200,
+          "mimeType": "text/javascript",
+          "fromCache": false,
+          "transferBytes": 8203,
+          "decodedBodyBytes": 7955,
+          "failed": false,
+          "errorText": null
+        },
+        {
+          "sequence": 36,
+          "requestId": "31952.39",
           "url": "/media/game/terrain/moss-root-platform.webp",
           "method": "GET",
           "type": "Image",
@@ -604,8 +632,8 @@
           "errorText": null
         },
         {
-          "sequence": 35,
-          "requestId": "63652.38",
+          "sequence": 37,
+          "requestId": "31952.40",
           "url": "/media/game/gameplay/crimson-thorn-vine.webp",
           "method": "GET",
           "type": "Image",
@@ -618,8 +646,8 @@
           "errorText": null
         },
         {
-          "sequence": 36,
-          "requestId": "63652.39",
+          "sequence": 38,
+          "requestId": "31952.41",
           "url": "/media/game/gameplay/crystal-rope-anchor.webp",
           "method": "GET",
           "type": "Image",
@@ -632,8 +660,8 @@
           "errorText": null
         },
         {
-          "sequence": 37,
-          "requestId": "63652.40",
+          "sequence": 39,
+          "requestId": "31952.42",
           "url": "/media/game/gameplay/leaf-energy-orb.webp",
           "method": "GET",
           "type": "Image",
@@ -646,8 +674,8 @@
           "errorText": null
         },
         {
-          "sequence": 38,
-          "requestId": "63652.41",
+          "sequence": 40,
+          "requestId": "31952.43",
           "url": "/media/game/gameplay/seed-lantern-checkpoint.webp",
           "method": "GET",
           "type": "Image",
@@ -660,8 +688,8 @@
           "errorText": null
         },
         {
-          "sequence": 39,
-          "requestId": "63652.42",
+          "sequence": 41,
+          "requestId": "31952.44",
           "url": "/media/game/layout/root-spawn-gate.webp",
           "method": "GET",
           "type": "Image",
@@ -674,8 +702,8 @@
           "errorText": null
         },
         {
-          "sequence": 40,
-          "requestId": "63652.43",
+          "sequence": 42,
+          "requestId": "31952.45",
           "url": "/media/game/scene/background/distant-root-spires.webp",
           "method": "GET",
           "type": "Image",
@@ -688,8 +716,8 @@
           "errorText": null
         },
         {
-          "sequence": 41,
-          "requestId": "63652.44",
+          "sequence": 43,
+          "requestId": "31952.46",
           "url": "/media/game/scene/background/distant-trunk-grove.webp",
           "method": "GET",
           "type": "Image",
@@ -702,8 +730,8 @@
           "errorText": null
         },
         {
-          "sequence": 42,
-          "requestId": "63652.45",
+          "sequence": 44,
+          "requestId": "31952.47",
           "url": "/media/game/scene/atmosphere/cyan-mist-band.webp",
           "method": "GET",
           "type": "Image",
@@ -716,8 +744,8 @@
           "errorText": null
         },
         {
-          "sequence": 43,
-          "requestId": "63652.46",
+          "sequence": 45,
+          "requestId": "31952.48",
           "url": "/media/game/scene/background/moonlit-canopy-cluster.webp",
           "method": "GET",
           "type": "Image",
@@ -730,8 +758,8 @@
           "errorText": null
         },
         {
-          "sequence": 44,
-          "requestId": "63652.47",
+          "sequence": 46,
+          "requestId": "31952.49",
           "url": "/media/game/scene/trees/ancient-amber-tree.webp",
           "method": "GET",
           "type": "Image",
@@ -744,8 +772,8 @@
           "errorText": null
         },
         {
-          "sequence": 45,
-          "requestId": "63652.48",
+          "sequence": 47,
+          "requestId": "31952.50",
           "url": "/media/game/scene/trees/mid-tree-cluster.webp",
           "method": "GET",
           "type": "Image",
@@ -758,8 +786,8 @@
           "errorText": null
         },
         {
-          "sequence": 46,
-          "requestId": "63652.49",
+          "sequence": 48,
+          "requestId": "31952.51",
           "url": "/media/game/scene/structures/moss-root-boulders.webp",
           "method": "GET",
           "type": "Image",
@@ -772,8 +800,8 @@
           "errorText": null
         },
         {
-          "sequence": 47,
-          "requestId": "63652.50",
+          "sequence": 49,
+          "requestId": "31952.52",
           "url": "/media/game/scene/vegetation/aqua-bell-flowers.webp",
           "method": "GET",
           "type": "Image",
@@ -786,8 +814,8 @@
           "errorText": null
         },
         {
-          "sequence": 48,
-          "requestId": "63652.51",
+          "sequence": 50,
+          "requestId": "31952.53",
           "url": "/media/game/scene/vegetation/cyan-seed-plant.webp",
           "method": "GET",
           "type": "Image",
@@ -800,8 +828,8 @@
           "errorText": null
         },
         {
-          "sequence": 49,
-          "requestId": "63652.52",
+          "sequence": 51,
+          "requestId": "31952.54",
           "url": "/media/game/scene/atmosphere/forest-light-motes.webp",
           "method": "GET",
           "type": "Image",
@@ -814,8 +842,8 @@
           "errorText": null
         },
         {
-          "sequence": 50,
-          "requestId": "63652.53",
+          "sequence": 52,
+          "requestId": "31952.55",
           "url": "/media/game/scene/vegetation/moss-bush-cluster.webp",
           "method": "GET",
           "type": "Image",
@@ -828,8 +856,8 @@
           "errorText": null
         },
         {
-          "sequence": 51,
-          "requestId": "63652.54",
+          "sequence": 53,
+          "requestId": "31952.56",
           "url": "/media/game/scene/foreground/shadow-fern-cluster.webp",
           "method": "GET",
           "type": "Image",
@@ -842,8 +870,8 @@
           "errorText": null
         },
         {
-          "sequence": 52,
-          "requestId": "63652.55",
+          "sequence": 54,
+          "requestId": "31952.57",
           "url": "/media/game/scene/foreground/overhang-vine-branch.webp",
           "method": "GET",
           "type": "Image",
@@ -856,8 +884,8 @@
           "errorText": null
         },
         {
-          "sequence": 53,
-          "requestId": "63652.56",
+          "sequence": 55,
+          "requestId": "31952.58",
           "url": "/media/game/layout/golden-goal-gate.webp",
           "method": "GET",
           "type": "Image",
@@ -870,8 +898,8 @@
           "errorText": null
         },
         {
-          "sequence": 54,
-          "requestId": "63652.57",
+          "sequence": 56,
+          "requestId": "31952.59",
           "url": "/media/game/scene/structures/root-stone-arch.webp",
           "method": "GET",
           "type": "Image",
@@ -884,8 +912,8 @@
           "errorText": null
         },
         {
-          "sequence": 55,
-          "requestId": "63652.58",
+          "sequence": 57,
+          "requestId": "31952.60",
           "url": "/favicon.ico",
           "method": "GET",
           "type": "Other",
@@ -905,54 +933,54 @@
       "httpErrorCount": 0,
       "applicationErrorCount": 0,
       "cachedRequestCount": 0,
-      "transferBytes": 623958,
-      "decodedBodyBytes": 623332,
+      "transferBytes": 627276,
+      "decodedBodyBytes": 626650,
       "byType": {
         "Fetch": 2
       },
       "resources": [
         {
-          "sequence": 56,
-          "requestId": "63652.59",
+          "sequence": 58,
+          "requestId": "31952.61",
           "url": "/__cablester/world-repository",
           "method": "GET",
           "type": "Fetch",
           "status": 200,
           "mimeType": "application/json",
           "fromCache": false,
-          "transferBytes": 593,
-          "decodedBodyBytes": 378,
+          "transferBytes": 730,
+          "decodedBodyBytes": 515,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 57,
-          "requestId": "63652.60",
+          "sequence": 59,
+          "requestId": "31952.62",
           "url": "/worlds/labs/cablester-composite-showcase.world.json",
           "method": "GET",
           "type": "Fetch",
           "status": 200,
           "mimeType": "application/json",
           "fromCache": false,
-          "transferBytes": 623365,
-          "decodedBodyBytes": 622954,
+          "transferBytes": 626546,
+          "decodedBodyBytes": 626135,
           "failed": false,
           "errorText": null
         }
       ]
     },
     "totalColdNavigation": {
-      "requestCount": 57,
+      "requestCount": 59,
       "failedCount": 0,
       "httpErrorCount": 1,
       "applicationErrorCount": 0,
       "cachedRequestCount": 0,
-      "transferBytes": 1918122,
-      "decodedBodyBytes": 1903677,
+      "transferBytes": 2002423,
+      "decodedBodyBytes": 1987479,
       "byType": {
         "Document": 1,
         "Stylesheet": 1,
-        "Script": 31,
+        "Script": 33,
         "Image": 21,
         "Other": 1,
         "Fetch": 2
@@ -960,469 +988,497 @@
       "resources": [
         {
           "sequence": 1,
-          "requestId": "8B0411BC514F15850BAA31B15DF40F35",
+          "requestId": "C5F5705B4B1C47DDBC9457CEB80A877C",
           "url": "/",
           "method": "GET",
           "type": "Document",
           "status": 200,
           "mimeType": "text/html",
           "fromCache": false,
-          "transferBytes": 18323,
-          "decodedBodyBytes": 18081,
+          "transferBytes": 20762,
+          "decodedBodyBytes": 20520,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 2,
-          "requestId": "63652.2",
+          "requestId": "31952.2",
           "url": "/styles.css",
           "method": "GET",
           "type": "Stylesheet",
           "status": 200,
           "mimeType": "text/css",
           "fromCache": false,
-          "transferBytes": 45111,
-          "decodedBodyBytes": 44870,
+          "transferBytes": 49683,
+          "decodedBodyBytes": 49442,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 3,
-          "requestId": "63652.3",
+          "requestId": "31952.3",
           "url": "/src/game.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 131540,
-          "decodedBodyBytes": 131276,
+          "transferBytes": 151803,
+          "decodedBodyBytes": 151537,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 4,
-          "requestId": "63652.4",
+          "requestId": "31952.4",
           "url": "/src/world-editor.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 71186,
-          "decodedBodyBytes": 70929,
+          "transferBytes": 74746,
+          "decodedBodyBytes": 74489,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 5,
-          "requestId": "63652.8",
+          "requestId": "31952.8",
           "url": "/src/world-schema.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 53834,
-          "decodedBodyBytes": 53586,
+          "transferBytes": 54841,
+          "decodedBodyBytes": 54593,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 6,
-          "requestId": "63652.9",
+          "requestId": "31952.9",
           "url": "/src/world-hash.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 10089,
-          "decodedBodyBytes": 9841,
+          "transferBytes": 10343,
+          "decodedBodyBytes": 10095,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 7,
-          "requestId": "63652.10",
+          "requestId": "31952.10",
           "url": "/src/level-objects.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 39280,
-          "decodedBodyBytes": 39032,
+          "transferBytes": 41999,
+          "decodedBodyBytes": 41751,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 8,
-          "requestId": "63652.11",
+          "requestId": "31952.11",
           "url": "/src/world-preview.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 41080,
-          "decodedBodyBytes": 40832,
+          "transferBytes": 44324,
+          "decodedBodyBytes": 44076,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 9,
-          "requestId": "63652.12",
+          "requestId": "31952.12",
           "url": "/src/world-streaming.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 26979,
-          "decodedBodyBytes": 26731,
+          "transferBytes": 27706,
+          "decodedBodyBytes": 27458,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 10,
-          "requestId": "63652.13",
+          "requestId": "31952.13",
           "url": "/src/world-repository-client.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 8149,
-          "decodedBodyBytes": 7901,
+          "transferBytes": 8366,
+          "decodedBodyBytes": 8118,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 11,
-          "requestId": "63652.14",
+          "requestId": "31952.14",
           "url": "/src/world-validation-worker.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 31523,
-          "decodedBodyBytes": 31275,
+          "transferBytes": 32186,
+          "decodedBodyBytes": 31938,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 12,
-          "requestId": "63652.15",
+          "requestId": "31952.15",
           "url": "/src/config.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 3563,
-          "decodedBodyBytes": 3316,
+          "transferBytes": 3677,
+          "decodedBodyBytes": 3430,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 13,
-          "requestId": "63652.16",
+          "requestId": "31952.16",
           "url": "/src/display.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 1837,
-          "decodedBodyBytes": 1590,
+          "transferBytes": 1887,
+          "decodedBodyBytes": 1640,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 14,
-          "requestId": "63652.17",
+          "requestId": "31952.17",
           "url": "/src/asset-library.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 64481,
-          "decodedBodyBytes": 64233,
+          "transferBytes": 65474,
+          "decodedBodyBytes": 65226,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 15,
-          "requestId": "63652.18",
+          "requestId": "31952.18",
           "url": "/src/level-editor.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 96187,
-          "decodedBodyBytes": 95930,
+          "transferBytes": 115354,
+          "decodedBodyBytes": 115097,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 16,
-          "requestId": "63652.19",
+          "requestId": "31952.19",
           "url": "/src/levels.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 22117,
-          "decodedBodyBytes": 21869,
+          "transferBytes": 22635,
+          "decodedBodyBytes": 22387,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 17,
-          "requestId": "63652.20",
+          "requestId": "31952.20",
           "url": "/src/level-validator.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 8399,
-          "decodedBodyBytes": 8151,
+          "transferBytes": 8567,
+          "decodedBodyBytes": 8319,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 18,
-          "requestId": "63652.21",
+          "requestId": "31952.21",
           "url": "/src/level-support.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 8015,
-          "decodedBodyBytes": 7767,
+          "transferBytes": 8186,
+          "decodedBodyBytes": 7938,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 19,
-          "requestId": "63652.22",
+          "requestId": "31952.22",
           "url": "/src/boundary-wall.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 6139,
-          "decodedBodyBytes": 5891,
+          "transferBytes": 6273,
+          "decodedBodyBytes": 6025,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 20,
-          "requestId": "63652.23",
+          "requestId": "31952.23",
           "url": "/src/dash-refill.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 1979,
-          "decodedBodyBytes": 1732,
+          "transferBytes": 2035,
+          "decodedBodyBytes": 1788,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 21,
-          "requestId": "63652.24",
+          "requestId": "31952.24",
           "url": "/src/motion.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 10434,
-          "decodedBodyBytes": 10186,
+          "transferBytes": 10691,
+          "decodedBodyBytes": 10443,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 22,
-          "requestId": "63652.25",
+          "requestId": "31952.25",
           "url": "/src/reference-mechanisms.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 4568,
-          "decodedBodyBytes": 4320,
+          "transferBytes": 4682,
+          "decodedBodyBytes": 4434,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 23,
-          "requestId": "63652.26",
+          "requestId": "31952.26",
           "url": "/src/player-animation.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 9382,
-          "decodedBodyBytes": 9134,
+          "transferBytes": 10027,
+          "decodedBodyBytes": 9779,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 24,
-          "requestId": "63652.27",
+          "requestId": "31952.27",
           "url": "/src/math.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 5722,
-          "decodedBodyBytes": 5474,
+          "transferBytes": 5893,
+          "decodedBodyBytes": 5645,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 25,
-          "requestId": "63652.28",
+          "requestId": "31952.28",
           "url": "/src/rules.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 14396,
-          "decodedBodyBytes": 14148,
+          "transferBytes": 15367,
+          "decodedBodyBytes": 15119,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 26,
-          "requestId": "63652.29",
+          "requestId": "31952.29",
           "url": "/src/visual-runtime.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 28240,
-          "decodedBodyBytes": 27992,
+          "transferBytes": 29386,
+          "decodedBodyBytes": 29138,
           "failed": false,
           "errorText": null
         },
         {
           "sequence": 27,
-          "requestId": "63652.30",
+          "requestId": "31952.30",
+          "url": "/src/experience-cues.js",
+          "method": "GET",
+          "type": "Script",
+          "status": 200,
+          "mimeType": "text/javascript",
+          "fromCache": false,
+          "transferBytes": 5826,
+          "decodedBodyBytes": 5578,
+          "failed": false,
+          "errorText": null
+        },
+        {
+          "sequence": 28,
+          "requestId": "31952.31",
           "url": "/src/scene-layers.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 18385,
-          "decodedBodyBytes": 18137,
+          "transferBytes": 19370,
+          "decodedBodyBytes": 19122,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 28,
-          "requestId": "63652.31",
+          "sequence": 29,
+          "requestId": "31952.32",
           "url": "/src/world-registries.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 13454,
-          "decodedBodyBytes": 13206,
+          "transferBytes": 13789,
+          "decodedBodyBytes": 13541,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 29,
-          "requestId": "63652.32",
+          "sequence": 30,
+          "requestId": "31952.33",
           "url": "/src/world-diff.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 14139,
-          "decodedBodyBytes": 13891,
+          "transferBytes": 14480,
+          "decodedBodyBytes": 14232,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 30,
-          "requestId": "63652.33",
+          "sequence": 31,
+          "requestId": "31952.34",
           "url": "/src/asset-paths.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 1415,
-          "decodedBodyBytes": 1168,
+          "transferBytes": 1439,
+          "decodedBodyBytes": 1192,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 31,
-          "requestId": "63652.34",
+          "sequence": 32,
+          "requestId": "31952.35",
           "url": "/src/asset-scaling.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 14253,
-          "decodedBodyBytes": 14005,
+          "transferBytes": 14556,
+          "decodedBodyBytes": 14308,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 32,
-          "requestId": "63652.35",
+          "sequence": 33,
+          "requestId": "31952.36",
           "url": "/src/level.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 4338,
-          "decodedBodyBytes": 4091,
+          "transferBytes": 4427,
+          "decodedBodyBytes": 4179,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 33,
-          "requestId": "63652.36",
+          "sequence": 34,
+          "requestId": "31952.37",
           "url": "/src/level-art-presets.js",
           "method": "GET",
           "type": "Script",
           "status": 200,
           "mimeType": "text/javascript",
           "fromCache": false,
-          "transferBytes": 18711,
-          "decodedBodyBytes": 18463,
+          "transferBytes": 19248,
+          "decodedBodyBytes": 19000,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 34,
-          "requestId": "63652.37",
+          "sequence": 35,
+          "requestId": "31952.38",
+          "url": "/src/terrain-authoring.js",
+          "method": "GET",
+          "type": "Script",
+          "status": 200,
+          "mimeType": "text/javascript",
+          "fromCache": false,
+          "transferBytes": 8203,
+          "decodedBodyBytes": 7955,
+          "failed": false,
+          "errorText": null
+        },
+        {
+          "sequence": 36,
+          "requestId": "31952.39",
           "url": "/media/game/terrain/moss-root-platform.webp",
           "method": "GET",
           "type": "Image",
@@ -1435,8 +1491,8 @@
           "errorText": null
         },
         {
-          "sequence": 35,
-          "requestId": "63652.38",
+          "sequence": 37,
+          "requestId": "31952.40",
           "url": "/media/game/gameplay/crimson-thorn-vine.webp",
           "method": "GET",
           "type": "Image",
@@ -1449,8 +1505,8 @@
           "errorText": null
         },
         {
-          "sequence": 36,
-          "requestId": "63652.39",
+          "sequence": 38,
+          "requestId": "31952.41",
           "url": "/media/game/gameplay/crystal-rope-anchor.webp",
           "method": "GET",
           "type": "Image",
@@ -1463,8 +1519,8 @@
           "errorText": null
         },
         {
-          "sequence": 37,
-          "requestId": "63652.40",
+          "sequence": 39,
+          "requestId": "31952.42",
           "url": "/media/game/gameplay/leaf-energy-orb.webp",
           "method": "GET",
           "type": "Image",
@@ -1477,8 +1533,8 @@
           "errorText": null
         },
         {
-          "sequence": 38,
-          "requestId": "63652.41",
+          "sequence": 40,
+          "requestId": "31952.43",
           "url": "/media/game/gameplay/seed-lantern-checkpoint.webp",
           "method": "GET",
           "type": "Image",
@@ -1491,8 +1547,8 @@
           "errorText": null
         },
         {
-          "sequence": 39,
-          "requestId": "63652.42",
+          "sequence": 41,
+          "requestId": "31952.44",
           "url": "/media/game/layout/root-spawn-gate.webp",
           "method": "GET",
           "type": "Image",
@@ -1505,8 +1561,8 @@
           "errorText": null
         },
         {
-          "sequence": 40,
-          "requestId": "63652.43",
+          "sequence": 42,
+          "requestId": "31952.45",
           "url": "/media/game/scene/background/distant-root-spires.webp",
           "method": "GET",
           "type": "Image",
@@ -1519,8 +1575,8 @@
           "errorText": null
         },
         {
-          "sequence": 41,
-          "requestId": "63652.44",
+          "sequence": 43,
+          "requestId": "31952.46",
           "url": "/media/game/scene/background/distant-trunk-grove.webp",
           "method": "GET",
           "type": "Image",
@@ -1533,8 +1589,8 @@
           "errorText": null
         },
         {
-          "sequence": 42,
-          "requestId": "63652.45",
+          "sequence": 44,
+          "requestId": "31952.47",
           "url": "/media/game/scene/atmosphere/cyan-mist-band.webp",
           "method": "GET",
           "type": "Image",
@@ -1547,8 +1603,8 @@
           "errorText": null
         },
         {
-          "sequence": 43,
-          "requestId": "63652.46",
+          "sequence": 45,
+          "requestId": "31952.48",
           "url": "/media/game/scene/background/moonlit-canopy-cluster.webp",
           "method": "GET",
           "type": "Image",
@@ -1561,8 +1617,8 @@
           "errorText": null
         },
         {
-          "sequence": 44,
-          "requestId": "63652.47",
+          "sequence": 46,
+          "requestId": "31952.49",
           "url": "/media/game/scene/trees/ancient-amber-tree.webp",
           "method": "GET",
           "type": "Image",
@@ -1575,8 +1631,8 @@
           "errorText": null
         },
         {
-          "sequence": 45,
-          "requestId": "63652.48",
+          "sequence": 47,
+          "requestId": "31952.50",
           "url": "/media/game/scene/trees/mid-tree-cluster.webp",
           "method": "GET",
           "type": "Image",
@@ -1589,8 +1645,8 @@
           "errorText": null
         },
         {
-          "sequence": 46,
-          "requestId": "63652.49",
+          "sequence": 48,
+          "requestId": "31952.51",
           "url": "/media/game/scene/structures/moss-root-boulders.webp",
           "method": "GET",
           "type": "Image",
@@ -1603,8 +1659,8 @@
           "errorText": null
         },
         {
-          "sequence": 47,
-          "requestId": "63652.50",
+          "sequence": 49,
+          "requestId": "31952.52",
           "url": "/media/game/scene/vegetation/aqua-bell-flowers.webp",
           "method": "GET",
           "type": "Image",
@@ -1617,8 +1673,8 @@
           "errorText": null
         },
         {
-          "sequence": 48,
-          "requestId": "63652.51",
+          "sequence": 50,
+          "requestId": "31952.53",
           "url": "/media/game/scene/vegetation/cyan-seed-plant.webp",
           "method": "GET",
           "type": "Image",
@@ -1631,8 +1687,8 @@
           "errorText": null
         },
         {
-          "sequence": 49,
-          "requestId": "63652.52",
+          "sequence": 51,
+          "requestId": "31952.54",
           "url": "/media/game/scene/atmosphere/forest-light-motes.webp",
           "method": "GET",
           "type": "Image",
@@ -1645,8 +1701,8 @@
           "errorText": null
         },
         {
-          "sequence": 50,
-          "requestId": "63652.53",
+          "sequence": 52,
+          "requestId": "31952.55",
           "url": "/media/game/scene/vegetation/moss-bush-cluster.webp",
           "method": "GET",
           "type": "Image",
@@ -1659,8 +1715,8 @@
           "errorText": null
         },
         {
-          "sequence": 51,
-          "requestId": "63652.54",
+          "sequence": 53,
+          "requestId": "31952.56",
           "url": "/media/game/scene/foreground/shadow-fern-cluster.webp",
           "method": "GET",
           "type": "Image",
@@ -1673,8 +1729,8 @@
           "errorText": null
         },
         {
-          "sequence": 52,
-          "requestId": "63652.55",
+          "sequence": 54,
+          "requestId": "31952.57",
           "url": "/media/game/scene/foreground/overhang-vine-branch.webp",
           "method": "GET",
           "type": "Image",
@@ -1687,8 +1743,8 @@
           "errorText": null
         },
         {
-          "sequence": 53,
-          "requestId": "63652.56",
+          "sequence": 55,
+          "requestId": "31952.58",
           "url": "/media/game/layout/golden-goal-gate.webp",
           "method": "GET",
           "type": "Image",
@@ -1701,8 +1757,8 @@
           "errorText": null
         },
         {
-          "sequence": 54,
-          "requestId": "63652.57",
+          "sequence": 56,
+          "requestId": "31952.59",
           "url": "/media/game/scene/structures/root-stone-arch.webp",
           "method": "GET",
           "type": "Image",
@@ -1715,8 +1771,8 @@
           "errorText": null
         },
         {
-          "sequence": 55,
-          "requestId": "63652.58",
+          "sequence": 57,
+          "requestId": "31952.60",
           "url": "/favicon.ico",
           "method": "GET",
           "type": "Other",
@@ -1729,30 +1785,30 @@
           "errorText": null
         },
         {
-          "sequence": 56,
-          "requestId": "63652.59",
+          "sequence": 58,
+          "requestId": "31952.61",
           "url": "/__cablester/world-repository",
           "method": "GET",
           "type": "Fetch",
           "status": 200,
           "mimeType": "application/json",
           "fromCache": false,
-          "transferBytes": 593,
-          "decodedBodyBytes": 378,
+          "transferBytes": 730,
+          "decodedBodyBytes": 515,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 57,
-          "requestId": "63652.60",
+          "sequence": 59,
+          "requestId": "31952.62",
           "url": "/worlds/labs/cablester-composite-showcase.world.json",
           "method": "GET",
           "type": "Fetch",
           "status": 200,
           "mimeType": "application/json",
           "fromCache": false,
-          "transferBytes": 623365,
-          "decodedBodyBytes": 622954,
+          "transferBytes": 626546,
+          "decodedBodyBytes": 626135,
           "failed": false,
           "errorText": null
         }
@@ -1768,7 +1824,7 @@
     },
     "visualRuntimeBeforeStudio": {
       "requests": 21,
-      "cacheHits": 1764,
+      "cacheHits": 28616,
       "ready": 21,
       "loading": 0,
       "error": 0,
@@ -1789,7 +1845,7 @@
     },
     "visualRuntimeAfterStudio": {
       "requests": 21,
-      "cacheHits": 3920,
+      "cacheHits": 65317,
       "ready": 21,
       "loading": 0,
       "error": 0,
@@ -1812,7 +1868,7 @@
   },
   "forest": {
     "open": {
-      "durationMs": 93.39999997615814,
+      "durationMs": 96.09999999962747,
       "worldId": "cablester-composite-showcase",
       "regions": 1,
       "chunks": 12,
@@ -1831,36 +1887,36 @@
       "visibleLabel": "12/12 区块 · 0/285 物件",
       "lodLabel": "LOD index-only",
       "realInputEvents": {
-        "pointermove": 220,
+        "pointermove": 210,
         "wheel": 5
       },
-      "minimumCanvasDraws": 225,
+      "minimumCanvasDraws": 215,
       "inputToNextPaint": {
-        "count": 225,
-        "averageMs": 1.462,
-        "p50Ms": 1.5,
-        "p95Ms": 1.9,
-        "p99Ms": 2.6,
-        "maximumMs": 6.2
+        "count": 215,
+        "averageMs": 1.025,
+        "p50Ms": 0.9,
+        "p95Ms": 2,
+        "p99Ms": 2.7,
+        "maximumMs": 4.7
       },
       "frames": {
         "requestedDurationMs": 4000,
-        "measuredDurationMs": 4000,
-        "frameCount": 240,
-        "averageFps": 60,
-        "averageFrameMs": 16.667,
-        "p50FrameMs": 16.7,
-        "p95FrameMs": 18.5,
-        "p99FrameMs": 18.6,
-        "worstFrameMs": 18.7,
-        "framesOver16_7Ms": 95,
-        "framesOver33_3Ms": 0,
-        "framesOver50Ms": 0
+        "measuredDurationMs": 3996.6,
+        "frameCount": 3345,
+        "averageFps": 836.961,
+        "averageFrameMs": 1.195,
+        "p50FrameMs": 0.8,
+        "p95FrameMs": 2,
+        "p99FrameMs": 3.1,
+        "worstFrameMs": 665.2,
+        "framesOver16_7Ms": 1,
+        "framesOver33_3Ms": 1,
+        "framesOver50Ms": 1
       },
       "pixelEvidence": {
-        "start": "b4833e2c",
-        "firstInput": "b4833e2c",
-        "end": "ce12701f",
+        "start": "3e3e8c46",
+        "firstInput": "3e3e8c46",
+        "end": "f97471ca",
         "changed": true
       },
       "longTasks": {
@@ -1874,7 +1930,7 @@
       "original": {
         "dirty": false,
         "changeCount": 0,
-        "semanticDigest": "b4b6d08d"
+        "semanticDigest": "309a213e"
       },
       "drags": [
         {
@@ -1906,7 +1962,7 @@
           "before": {
             "dirty": false,
             "changeCount": 0,
-            "semanticDigest": "b4b6d08d",
+            "semanticDigest": "309a213e",
             "lastMutation": "打开世界"
           },
           "afterMove": {
@@ -1951,7 +2007,7 @@
           "before": {
             "dirty": false,
             "changeCount": 0,
-            "semanticDigest": "b4b6d08d",
+            "semanticDigest": "309a213e",
             "lastMutation": "撤销：画布移动 region duskseed-reach"
           },
           "afterMove": {
@@ -1996,7 +2052,7 @@
           "before": {
             "dirty": false,
             "changeCount": 0,
-            "semanticDigest": "b4b6d08d",
+            "semanticDigest": "309a213e",
             "lastMutation": "撤销：画布移动 chunk seedgate-verge"
           },
           "afterMove": {
@@ -2031,7 +2087,7 @@
         "before": {
           "dirty": false,
           "changeCount": 0,
-          "semanticDigest": "b4b6d08d"
+          "semanticDigest": "309a213e"
         },
         "after": {
           "dirty": false,
@@ -2082,132 +2138,132 @@
       "selection": {
         "sync": {
           "count": 6,
-          "averageMs": 3.7833333214124045,
-          "p50Ms": 3.699999988079071,
-          "p95Ms": 4.099999964237213,
-          "p99Ms": 4.099999964237213,
-          "maximumMs": 4.099999964237213
+          "averageMs": 9.950000000186265,
+          "p50Ms": 8.400000000372529,
+          "p95Ms": 15.299999998882413,
+          "p99Ms": 15.299999998882413,
+          "maximumMs": 15.299999998882413
         },
         "paint": {
           "count": 6,
-          "averageMs": 32.7666666607062,
-          "p50Ms": 31.600000023841858,
-          "p95Ms": 35.39999997615814,
-          "p99Ms": 35.39999997615814,
-          "maximumMs": 35.39999997615814
+          "averageMs": 14.216666666790843,
+          "p50Ms": 12.599999999627471,
+          "p95Ms": 20.199999999254942,
+          "p99Ms": 20.199999999254942,
+          "maximumMs": 20.199999999254942
         },
         "samples": [
           {
-            "syncMs": 4.099999964237213,
-            "paintMs": 31.399999976158142
+            "syncMs": 15.299999998882413,
+            "paintMs": 20.199999999254942
           },
           {
-            "syncMs": 3.699999988079071,
-            "paintMs": 33
+            "syncMs": 11.100000001490116,
+            "paintMs": 15.300000000745058
           },
           {
-            "syncMs": 3.699999988079071,
-            "paintMs": 33.89999997615814
+            "syncMs": 8.300000000745058,
+            "paintMs": 12.599999999627471
           },
           {
-            "syncMs": 3.800000011920929,
-            "paintMs": 31.600000023841858
+            "syncMs": 8.400000000372529,
+            "paintMs": 12.400000000372529
           },
           {
-            "syncMs": 4.099999964237213,
-            "paintMs": 35.39999997615814
+            "syncMs": 8.800000000745058,
+            "paintMs": 12.900000000372529
           },
           {
-            "syncMs": 3.300000011920929,
-            "paintMs": 31.30000001192093
+            "syncMs": 7.799999998882413,
+            "paintMs": 11.900000000372529
           }
         ]
       },
       "viewSwitch": {
         "sync": {
           "count": 6,
-          "averageMs": 0.38333333532015484,
-          "p50Ms": 0.30000001192092896,
+          "averageMs": 0.3666666665424903,
+          "p50Ms": 0.30000000074505806,
           "p95Ms": 0.5,
           "p99Ms": 0.5,
           "maximumMs": 0.5
         },
         "paint": {
           "count": 6,
-          "averageMs": 33.58333332339922,
-          "p50Ms": 33.19999998807907,
-          "p95Ms": 35.200000047683716,
-          "p99Ms": 35.200000047683716,
-          "maximumMs": 35.200000047683716
+          "averageMs": 2.6666666666666665,
+          "p50Ms": 2.5,
+          "p95Ms": 3,
+          "p99Ms": 3,
+          "maximumMs": 3
         },
         "samples": [
           {
-            "syncMs": 0.30000001192092896,
-            "paintMs": 33.09999996423721
+            "syncMs": 0.3999999985098839,
+            "paintMs": 3
           },
           {
-            "syncMs": 0.40000003576278687,
-            "paintMs": 35.200000047683716
-          },
-          {
-            "syncMs": 0.5,
-            "paintMs": 33.19999998807907
+            "syncMs": 0.3999999985098839,
+            "paintMs": 2.5
           },
           {
             "syncMs": 0.5,
-            "paintMs": 31.5
+            "paintMs": 2.799999998882413
           },
           {
-            "syncMs": 0.30000001192092896,
-            "paintMs": 35.19999998807907
+            "syncMs": 0.30000000074505806,
+            "paintMs": 2.5
           },
           {
-            "syncMs": 0.2999999523162842,
-            "paintMs": 33.299999952316284
+            "syncMs": 0.30000000074505806,
+            "paintMs": 2.5
+          },
+          {
+            "syncMs": 0.30000000074505806,
+            "paintMs": 2.700000001117587
           }
         ]
       },
       "edit": {
         "sync": {
           "count": 6,
-          "averageMs": 7.03333334128062,
-          "p50Ms": 6.5,
-          "p95Ms": 9.100000023841858,
-          "p99Ms": 9.100000023841858,
-          "maximumMs": 9.100000023841858
+          "averageMs": 13.549999999813735,
+          "p50Ms": 13.099999999627471,
+          "p95Ms": 18.40000000037253,
+          "p99Ms": 18.40000000037253,
+          "maximumMs": 18.40000000037253
         },
         "paint": {
           "count": 6,
-          "averageMs": 33.51666667064031,
-          "p50Ms": 33,
-          "p95Ms": 35.30000001192093,
-          "p99Ms": 35.30000001192093,
-          "maximumMs": 35.30000001192093
+          "averageMs": 18.833333333333332,
+          "p50Ms": 17.5,
+          "p95Ms": 23.5,
+          "p99Ms": 23.5,
+          "maximumMs": 23.5
         },
         "samples": [
           {
-            "syncMs": 9.100000023841858,
-            "paintMs": 33
+            "syncMs": 13.099999999627471,
+            "paintMs": 22
           },
           {
-            "syncMs": 6.899999976158142,
-            "paintMs": 33
+            "syncMs": 13.300000000745058,
+            "paintMs": 17.5
           },
           {
-            "syncMs": 7.100000023841858,
-            "paintMs": 35.30000001192093
+            "syncMs": 18.40000000037253,
+            "paintMs": 23.5
           },
           {
-            "syncMs": 6.5,
-            "paintMs": 35.19999998807907
+            "syncMs": 10.899999998509884,
+            "paintMs": 15.099999999627471
           },
           {
-            "syncMs": 6.300000011920929,
-            "paintMs": 33.19999998807907
+            "syncMs": 11.099999999627471,
+            "paintMs": 16.09999999962747
           },
           {
-            "syncMs": 6.300000011920929,
-            "paintMs": 31.400000035762787
+            "syncMs": 14.5,
+            "paintMs": 18.800000000745058
           }
         ]
       },
@@ -2216,7 +2272,7 @@
     },
     "workerValidation": {
       "transport": "dedicated-module-worker",
-      "durationMs": 35.30000001192093,
+      "durationMs": 45.30000000074506,
       "progress": [
         {
           "stage": "schema",
@@ -2225,7 +2281,7 @@
           "total": 15,
           "progress": 0,
           "issueCount": 0,
-          "observedAtMs": 15.300000011920929
+          "observedAtMs": 20.90000000037253
         },
         {
           "stage": "objects",
@@ -2234,7 +2290,7 @@
           "total": 15,
           "progress": 0.06666666666666667,
           "issueCount": 0,
-          "observedAtMs": 31.700000047683716
+          "observedAtMs": 41.30000000074506
         },
         {
           "stage": "chunks",
@@ -2243,7 +2299,7 @@
           "total": 15,
           "progress": 0.13333333333333333,
           "issueCount": 0,
-          "observedAtMs": 32.40000003576279
+          "observedAtMs": 41.90000000037253
         },
         {
           "stage": "chunks",
@@ -2252,7 +2308,7 @@
           "total": 15,
           "progress": 0.6666666666666666,
           "issueCount": 0,
-          "observedAtMs": 34.40000003576279
+          "observedAtMs": 44.5
         },
         {
           "stage": "routes",
@@ -2261,7 +2317,7 @@
           "total": 15,
           "progress": 0.8666666666666667,
           "issueCount": 0,
-          "observedAtMs": 34.700000047683716
+          "observedAtMs": 44.5
         },
         {
           "stage": "complete",
@@ -2270,7 +2326,7 @@
           "total": 15,
           "progress": 1,
           "issueCount": 0,
-          "observedAtMs": 35.30000001192093
+          "observedAtMs": 45.20000000111759
         }
       ],
       "progressMonotonic": true,
@@ -2282,7 +2338,7 @@
           "regions": 1,
           "chunks": 12,
           "objects": 285,
-          "durationMs": 20.099999964237213,
+          "durationMs": 24.300000000745058,
           "cancelled": false
         }
       }
@@ -2292,9 +2348,9 @@
         {
           "view": "world",
           "canvas": {
-            "hash": "e3493dc4",
+            "hash": "a3103fac",
             "nonTransparentPixels": 2304,
-            "brightPixels": 26
+            "brightPixels": 27
           },
           "operationCounts": {
             "arc": 80,
@@ -2329,9 +2385,9 @@
         {
           "view": "region",
           "canvas": {
-            "hash": "d6dfd465",
+            "hash": "002bc280",
             "nonTransparentPixels": 2304,
-            "brightPixels": 31
+            "brightPixels": 32
           },
           "operationCounts": {
             "arc": 0,
@@ -2366,9 +2422,9 @@
         {
           "view": "chunk",
           "canvas": {
-            "hash": "9b4c7f7b",
+            "hash": "b7cc8c66",
             "nonTransparentPixels": 2304,
-            "brightPixels": 5
+            "brightPixels": 7
           },
           "operationCounts": {
             "arc": 16,
@@ -2422,14 +2478,24 @@
         "label": "initial-navigation-and-forest",
         "supported": true,
         "observerError": null,
-        "count": 1,
-        "totalDurationMs": 54,
-        "maximumDurationMs": 54,
+        "count": 3,
+        "totalDurationMs": 1179,
+        "maximumDurationMs": 602,
         "entries": [
           {
+            "name": "unknown",
+            "startTime": 901.9000000003725,
+            "duration": 62
+          },
+          {
             "name": "self",
-            "startTime": 842.1999999880791,
-            "duration": 54
+            "startTime": 5527.5,
+            "duration": 515
+          },
+          {
+            "name": "self",
+            "startTime": 11262.200000001118,
+            "duration": 602
           }
         ]
       },
@@ -2438,7 +2504,7 @@
       },
       "recovered": {
         "worldId": "cablester-composite-showcase",
-        "contentHash": "sha256:dae9e5f40359f0e99e033babf3a251c76eddb4a3c82943f2c5a644f0c9ace560",
+        "contentHash": "sha256:6cf1cda4c2e221c77c135ff3a5c2c10aeefdae52bc61d64c06e500a4b347441e",
         "regions": 1,
         "chunks": 12,
         "objects": 285,
@@ -2453,487 +2519,515 @@
         "sessionStorageLength": 0
       },
       "network": {
-        "requestCount": 57,
+        "requestCount": 59,
         "failedCount": 0,
         "httpErrorCount": 1,
         "applicationErrorCount": 0,
         "cachedRequestCount": 0,
-        "transferBytes": 1918122,
-        "decodedBodyBytes": 1903677,
+        "transferBytes": 2002423,
+        "decodedBodyBytes": 1987479,
         "byType": {
           "Document": 1,
           "Stylesheet": 1,
-          "Script": 31,
+          "Script": 33,
           "Image": 21,
-          "Other": 1,
-          "Fetch": 2
+          "Fetch": 2,
+          "Other": 1
         },
         "resources": [
           {
-            "sequence": 59,
-            "requestId": "AABC6DC5EE6315AE0BF58C0F6BDA4B12",
+            "sequence": 61,
+            "requestId": "001C93F5906526684C64A8D2F43CD1AA",
             "url": "/",
             "method": "GET",
             "type": "Document",
             "status": 200,
             "mimeType": "text/html",
             "fromCache": false,
-            "transferBytes": 18323,
-            "decodedBodyBytes": 18081,
+            "transferBytes": 20762,
+            "decodedBodyBytes": 20520,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 60,
-            "requestId": "63652.75",
+            "sequence": 62,
+            "requestId": "31952.77",
             "url": "/styles.css",
             "method": "GET",
             "type": "Stylesheet",
             "status": 200,
             "mimeType": "text/css",
             "fromCache": false,
-            "transferBytes": 45111,
-            "decodedBodyBytes": 44870,
+            "transferBytes": 49683,
+            "decodedBodyBytes": 49442,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 61,
-            "requestId": "63652.76",
+            "sequence": 63,
+            "requestId": "31952.78",
             "url": "/src/game.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 131540,
-            "decodedBodyBytes": 131276,
+            "transferBytes": 151803,
+            "decodedBodyBytes": 151537,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 62,
-            "requestId": "63652.77",
+            "sequence": 64,
+            "requestId": "31952.79",
             "url": "/src/world-editor.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 71186,
-            "decodedBodyBytes": 70929,
+            "transferBytes": 74746,
+            "decodedBodyBytes": 74489,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 63,
-            "requestId": "63652.81",
+            "sequence": 65,
+            "requestId": "31952.83",
             "url": "/src/world-schema.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 53834,
-            "decodedBodyBytes": 53586,
+            "transferBytes": 54841,
+            "decodedBodyBytes": 54593,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 64,
-            "requestId": "63652.82",
+            "sequence": 66,
+            "requestId": "31952.84",
             "url": "/src/world-hash.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 10089,
-            "decodedBodyBytes": 9841,
+            "transferBytes": 10343,
+            "decodedBodyBytes": 10095,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 65,
-            "requestId": "63652.83",
+            "sequence": 67,
+            "requestId": "31952.85",
             "url": "/src/level-objects.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 39280,
-            "decodedBodyBytes": 39032,
+            "transferBytes": 41999,
+            "decodedBodyBytes": 41751,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 66,
-            "requestId": "63652.84",
+            "sequence": 68,
+            "requestId": "31952.86",
             "url": "/src/world-preview.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 41080,
-            "decodedBodyBytes": 40832,
+            "transferBytes": 44324,
+            "decodedBodyBytes": 44076,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 67,
-            "requestId": "63652.85",
+            "sequence": 69,
+            "requestId": "31952.87",
             "url": "/src/world-streaming.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 26979,
-            "decodedBodyBytes": 26731,
+            "transferBytes": 27706,
+            "decodedBodyBytes": 27458,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 68,
-            "requestId": "63652.86",
+            "sequence": 70,
+            "requestId": "31952.88",
             "url": "/src/world-repository-client.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 8149,
-            "decodedBodyBytes": 7901,
+            "transferBytes": 8366,
+            "decodedBodyBytes": 8118,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 69,
-            "requestId": "63652.87",
+            "sequence": 71,
+            "requestId": "31952.89",
             "url": "/src/world-validation-worker.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 31523,
-            "decodedBodyBytes": 31275,
+            "transferBytes": 32186,
+            "decodedBodyBytes": 31938,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 70,
-            "requestId": "63652.88",
+            "sequence": 72,
+            "requestId": "31952.90",
             "url": "/src/config.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 3563,
-            "decodedBodyBytes": 3316,
+            "transferBytes": 3677,
+            "decodedBodyBytes": 3430,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 71,
-            "requestId": "63652.89",
+            "sequence": 73,
+            "requestId": "31952.91",
             "url": "/src/display.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 1837,
-            "decodedBodyBytes": 1590,
+            "transferBytes": 1887,
+            "decodedBodyBytes": 1640,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 72,
-            "requestId": "63652.90",
+            "sequence": 74,
+            "requestId": "31952.92",
             "url": "/src/asset-library.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 64481,
-            "decodedBodyBytes": 64233,
+            "transferBytes": 65474,
+            "decodedBodyBytes": 65226,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 73,
-            "requestId": "63652.91",
+            "sequence": 75,
+            "requestId": "31952.93",
             "url": "/src/level-editor.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 96187,
-            "decodedBodyBytes": 95930,
+            "transferBytes": 115354,
+            "decodedBodyBytes": 115097,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 74,
-            "requestId": "63652.92",
+            "sequence": 76,
+            "requestId": "31952.94",
             "url": "/src/levels.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 22117,
-            "decodedBodyBytes": 21869,
+            "transferBytes": 22635,
+            "decodedBodyBytes": 22387,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 75,
-            "requestId": "63652.93",
+            "sequence": 77,
+            "requestId": "31952.95",
             "url": "/src/level-validator.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 8399,
-            "decodedBodyBytes": 8151,
+            "transferBytes": 8567,
+            "decodedBodyBytes": 8319,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 76,
-            "requestId": "63652.94",
+            "sequence": 78,
+            "requestId": "31952.96",
             "url": "/src/level-support.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 8015,
-            "decodedBodyBytes": 7767,
+            "transferBytes": 8186,
+            "decodedBodyBytes": 7938,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 77,
-            "requestId": "63652.95",
+            "sequence": 79,
+            "requestId": "31952.97",
             "url": "/src/boundary-wall.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 6139,
-            "decodedBodyBytes": 5891,
+            "transferBytes": 6273,
+            "decodedBodyBytes": 6025,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 78,
-            "requestId": "63652.96",
+            "sequence": 80,
+            "requestId": "31952.98",
             "url": "/src/dash-refill.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 1979,
-            "decodedBodyBytes": 1732,
+            "transferBytes": 2035,
+            "decodedBodyBytes": 1788,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 79,
-            "requestId": "63652.97",
+            "sequence": 81,
+            "requestId": "31952.99",
             "url": "/src/motion.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 10434,
-            "decodedBodyBytes": 10186,
+            "transferBytes": 10691,
+            "decodedBodyBytes": 10443,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 80,
-            "requestId": "63652.98",
+            "sequence": 82,
+            "requestId": "31952.100",
             "url": "/src/reference-mechanisms.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 4568,
-            "decodedBodyBytes": 4320,
+            "transferBytes": 4682,
+            "decodedBodyBytes": 4434,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 81,
-            "requestId": "63652.99",
+            "sequence": 83,
+            "requestId": "31952.101",
             "url": "/src/player-animation.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 9382,
-            "decodedBodyBytes": 9134,
+            "transferBytes": 10027,
+            "decodedBodyBytes": 9779,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 82,
-            "requestId": "63652.100",
+            "sequence": 84,
+            "requestId": "31952.102",
             "url": "/src/math.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 5722,
-            "decodedBodyBytes": 5474,
+            "transferBytes": 5893,
+            "decodedBodyBytes": 5645,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 83,
-            "requestId": "63652.101",
+            "sequence": 85,
+            "requestId": "31952.103",
             "url": "/src/rules.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 14396,
-            "decodedBodyBytes": 14148,
+            "transferBytes": 15367,
+            "decodedBodyBytes": 15119,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 84,
-            "requestId": "63652.102",
+            "sequence": 86,
+            "requestId": "31952.104",
             "url": "/src/visual-runtime.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 28240,
-            "decodedBodyBytes": 27992,
+            "transferBytes": 29386,
+            "decodedBodyBytes": 29138,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 85,
-            "requestId": "63652.103",
+            "sequence": 87,
+            "requestId": "31952.105",
+            "url": "/src/experience-cues.js",
+            "method": "GET",
+            "type": "Script",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "fromCache": false,
+            "transferBytes": 5826,
+            "decodedBodyBytes": 5578,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "sequence": 88,
+            "requestId": "31952.106",
             "url": "/src/scene-layers.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 18385,
-            "decodedBodyBytes": 18137,
+            "transferBytes": 19370,
+            "decodedBodyBytes": 19122,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 86,
-            "requestId": "63652.104",
+            "sequence": 89,
+            "requestId": "31952.107",
             "url": "/src/world-registries.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 13454,
-            "decodedBodyBytes": 13206,
+            "transferBytes": 13789,
+            "decodedBodyBytes": 13541,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 87,
-            "requestId": "63652.105",
+            "sequence": 90,
+            "requestId": "31952.108",
             "url": "/src/world-diff.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 14139,
-            "decodedBodyBytes": 13891,
+            "transferBytes": 14480,
+            "decodedBodyBytes": 14232,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 88,
-            "requestId": "63652.106",
-            "url": "/src/asset-paths.js",
-            "method": "GET",
-            "type": "Script",
-            "status": 200,
-            "mimeType": "text/javascript",
-            "fromCache": false,
-            "transferBytes": 1415,
-            "decodedBodyBytes": 1168,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "sequence": 89,
-            "requestId": "63652.107",
-            "url": "/src/asset-scaling.js",
-            "method": "GET",
-            "type": "Script",
-            "status": 200,
-            "mimeType": "text/javascript",
-            "fromCache": false,
-            "transferBytes": 14253,
-            "decodedBodyBytes": 14005,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "sequence": 90,
-            "requestId": "63652.108",
+            "sequence": 91,
+            "requestId": "31952.109",
             "url": "/src/level.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 4338,
-            "decodedBodyBytes": 4091,
+            "transferBytes": 4427,
+            "decodedBodyBytes": 4179,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 91,
-            "requestId": "63652.109",
+            "sequence": 92,
+            "requestId": "31952.110",
             "url": "/src/level-art-presets.js",
             "method": "GET",
             "type": "Script",
             "status": 200,
             "mimeType": "text/javascript",
             "fromCache": false,
-            "transferBytes": 18711,
-            "decodedBodyBytes": 18463,
+            "transferBytes": 19248,
+            "decodedBodyBytes": 19000,
             "failed": false,
             "errorText": null
           },
           {
-            "sequence": 92,
-            "requestId": "63652.110",
+            "sequence": 93,
+            "requestId": "31952.111",
+            "url": "/src/asset-paths.js",
+            "method": "GET",
+            "type": "Script",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "fromCache": false,
+            "transferBytes": 1439,
+            "decodedBodyBytes": 1192,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "sequence": 94,
+            "requestId": "31952.112",
+            "url": "/src/asset-scaling.js",
+            "method": "GET",
+            "type": "Script",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "fromCache": false,
+            "transferBytes": 14556,
+            "decodedBodyBytes": 14308,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "sequence": 95,
+            "requestId": "31952.113",
+            "url": "/src/terrain-authoring.js",
+            "method": "GET",
+            "type": "Script",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "fromCache": false,
+            "transferBytes": 8203,
+            "decodedBodyBytes": 7955,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "sequence": 96,
+            "requestId": "31952.114",
             "url": "/media/game/terrain/moss-root-platform.webp",
             "method": "GET",
             "type": "Image",
@@ -2946,8 +3040,8 @@
             "errorText": null
           },
           {
-            "sequence": 93,
-            "requestId": "63652.111",
+            "sequence": 97,
+            "requestId": "31952.115",
             "url": "/media/game/gameplay/crimson-thorn-vine.webp",
             "method": "GET",
             "type": "Image",
@@ -2960,8 +3054,8 @@
             "errorText": null
           },
           {
-            "sequence": 94,
-            "requestId": "63652.112",
+            "sequence": 98,
+            "requestId": "31952.116",
             "url": "/media/game/gameplay/crystal-rope-anchor.webp",
             "method": "GET",
             "type": "Image",
@@ -2974,8 +3068,8 @@
             "errorText": null
           },
           {
-            "sequence": 95,
-            "requestId": "63652.113",
+            "sequence": 99,
+            "requestId": "31952.117",
             "url": "/media/game/gameplay/leaf-energy-orb.webp",
             "method": "GET",
             "type": "Image",
@@ -2988,8 +3082,8 @@
             "errorText": null
           },
           {
-            "sequence": 96,
-            "requestId": "63652.114",
+            "sequence": 100,
+            "requestId": "31952.118",
             "url": "/media/game/gameplay/seed-lantern-checkpoint.webp",
             "method": "GET",
             "type": "Image",
@@ -3002,8 +3096,8 @@
             "errorText": null
           },
           {
-            "sequence": 97,
-            "requestId": "63652.115",
+            "sequence": 101,
+            "requestId": "31952.119",
             "url": "/media/game/layout/root-spawn-gate.webp",
             "method": "GET",
             "type": "Image",
@@ -3016,8 +3110,8 @@
             "errorText": null
           },
           {
-            "sequence": 98,
-            "requestId": "63652.116",
+            "sequence": 102,
+            "requestId": "31952.120",
             "url": "/media/game/scene/background/distant-root-spires.webp",
             "method": "GET",
             "type": "Image",
@@ -3030,8 +3124,8 @@
             "errorText": null
           },
           {
-            "sequence": 99,
-            "requestId": "63652.117",
+            "sequence": 103,
+            "requestId": "31952.121",
             "url": "/media/game/scene/background/distant-trunk-grove.webp",
             "method": "GET",
             "type": "Image",
@@ -3044,8 +3138,8 @@
             "errorText": null
           },
           {
-            "sequence": 100,
-            "requestId": "63652.118",
+            "sequence": 104,
+            "requestId": "31952.122",
             "url": "/media/game/scene/atmosphere/cyan-mist-band.webp",
             "method": "GET",
             "type": "Image",
@@ -3058,8 +3152,8 @@
             "errorText": null
           },
           {
-            "sequence": 101,
-            "requestId": "63652.119",
+            "sequence": 105,
+            "requestId": "31952.123",
             "url": "/media/game/scene/background/moonlit-canopy-cluster.webp",
             "method": "GET",
             "type": "Image",
@@ -3072,8 +3166,8 @@
             "errorText": null
           },
           {
-            "sequence": 102,
-            "requestId": "63652.120",
+            "sequence": 106,
+            "requestId": "31952.124",
             "url": "/media/game/scene/trees/ancient-amber-tree.webp",
             "method": "GET",
             "type": "Image",
@@ -3086,8 +3180,8 @@
             "errorText": null
           },
           {
-            "sequence": 103,
-            "requestId": "63652.121",
+            "sequence": 107,
+            "requestId": "31952.125",
             "url": "/media/game/scene/trees/mid-tree-cluster.webp",
             "method": "GET",
             "type": "Image",
@@ -3100,8 +3194,8 @@
             "errorText": null
           },
           {
-            "sequence": 104,
-            "requestId": "63652.122",
+            "sequence": 108,
+            "requestId": "31952.126",
             "url": "/media/game/scene/structures/moss-root-boulders.webp",
             "method": "GET",
             "type": "Image",
@@ -3114,8 +3208,8 @@
             "errorText": null
           },
           {
-            "sequence": 105,
-            "requestId": "63652.123",
+            "sequence": 109,
+            "requestId": "31952.127",
             "url": "/media/game/scene/vegetation/aqua-bell-flowers.webp",
             "method": "GET",
             "type": "Image",
@@ -3128,8 +3222,8 @@
             "errorText": null
           },
           {
-            "sequence": 106,
-            "requestId": "63652.124",
+            "sequence": 110,
+            "requestId": "31952.128",
             "url": "/media/game/scene/vegetation/cyan-seed-plant.webp",
             "method": "GET",
             "type": "Image",
@@ -3142,8 +3236,8 @@
             "errorText": null
           },
           {
-            "sequence": 107,
-            "requestId": "63652.125",
+            "sequence": 111,
+            "requestId": "31952.129",
             "url": "/media/game/scene/atmosphere/forest-light-motes.webp",
             "method": "GET",
             "type": "Image",
@@ -3156,8 +3250,8 @@
             "errorText": null
           },
           {
-            "sequence": 108,
-            "requestId": "63652.126",
+            "sequence": 112,
+            "requestId": "31952.130",
             "url": "/media/game/scene/vegetation/moss-bush-cluster.webp",
             "method": "GET",
             "type": "Image",
@@ -3170,8 +3264,8 @@
             "errorText": null
           },
           {
-            "sequence": 109,
-            "requestId": "63652.127",
+            "sequence": 113,
+            "requestId": "31952.131",
             "url": "/media/game/scene/foreground/shadow-fern-cluster.webp",
             "method": "GET",
             "type": "Image",
@@ -3184,8 +3278,8 @@
             "errorText": null
           },
           {
-            "sequence": 110,
-            "requestId": "63652.128",
+            "sequence": 114,
+            "requestId": "31952.132",
             "url": "/media/game/scene/foreground/overhang-vine-branch.webp",
             "method": "GET",
             "type": "Image",
@@ -3198,8 +3292,8 @@
             "errorText": null
           },
           {
-            "sequence": 111,
-            "requestId": "63652.129",
+            "sequence": 115,
+            "requestId": "31952.133",
             "url": "/media/game/layout/golden-goal-gate.webp",
             "method": "GET",
             "type": "Image",
@@ -3212,8 +3306,8 @@
             "errorText": null
           },
           {
-            "sequence": 112,
-            "requestId": "63652.130",
+            "sequence": 116,
+            "requestId": "31952.134",
             "url": "/media/game/scene/structures/root-stone-arch.webp",
             "method": "GET",
             "type": "Image",
@@ -3226,8 +3320,36 @@
             "errorText": null
           },
           {
-            "sequence": 113,
-            "requestId": "63652.131",
+            "sequence": 117,
+            "requestId": "31952.135",
+            "url": "/__cablester/world-repository",
+            "method": "GET",
+            "type": "Fetch",
+            "status": 200,
+            "mimeType": "application/json",
+            "fromCache": false,
+            "transferBytes": 730,
+            "decodedBodyBytes": 515,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "sequence": 118,
+            "requestId": "31952.136",
+            "url": "/worlds/labs/cablester-composite-showcase.world.json",
+            "method": "GET",
+            "type": "Fetch",
+            "status": 200,
+            "mimeType": "application/json",
+            "fromCache": false,
+            "transferBytes": 626546,
+            "decodedBodyBytes": 626135,
+            "failed": false,
+            "errorText": null
+          },
+          {
+            "sequence": 119,
+            "requestId": "31952.137",
             "url": "/favicon.ico",
             "method": "GET",
             "type": "Other",
@@ -3238,63 +3360,35 @@
             "decodedBodyBytes": 9,
             "failed": false,
             "errorText": null
-          },
-          {
-            "sequence": 114,
-            "requestId": "63652.132",
-            "url": "/__cablester/world-repository",
-            "method": "GET",
-            "type": "Fetch",
-            "status": 200,
-            "mimeType": "application/json",
-            "fromCache": false,
-            "transferBytes": 593,
-            "decodedBodyBytes": 378,
-            "failed": false,
-            "errorText": null
-          },
-          {
-            "sequence": 115,
-            "requestId": "63652.133",
-            "url": "/worlds/labs/cablester-composite-showcase.world.json",
-            "method": "GET",
-            "type": "Fetch",
-            "status": 200,
-            "mimeType": "application/json",
-            "fromCache": false,
-            "transferBytes": 623365,
-            "decodedBodyBytes": 622954,
-            "failed": false,
-            "errorText": null
           }
         ]
       },
       "repositoryGets": [
         {
-          "sequence": 114,
-          "requestId": "63652.132",
+          "sequence": 117,
+          "requestId": "31952.135",
           "url": "/__cablester/world-repository",
           "method": "GET",
           "type": "Fetch",
           "status": 200,
           "mimeType": "application/json",
           "fromCache": false,
-          "transferBytes": 593,
-          "decodedBodyBytes": 378,
+          "transferBytes": 730,
+          "decodedBodyBytes": 515,
           "failed": false,
           "errorText": null
         },
         {
-          "sequence": 115,
-          "requestId": "63652.133",
+          "sequence": 118,
+          "requestId": "31952.136",
           "url": "/worlds/labs/cablester-composite-showcase.world.json",
           "method": "GET",
           "type": "Fetch",
           "status": 200,
           "mimeType": "application/json",
           "fromCache": false,
-          "transferBytes": 623365,
-          "decodedBodyBytes": 622954,
+          "transferBytes": 626546,
+          "decodedBodyBytes": 626135,
           "failed": false,
           "errorText": null
         }
@@ -3309,44 +3403,44 @@
       "beforeStudio": {
         "cdp": {
           "documents": 1,
-          "nodes": 1472,
-          "jsEventListeners": 150,
-          "jsHeapUsedBytes": 3213996,
-          "jsHeapTotalBytes": 6291456,
-          "layoutCount": 2,
+          "nodes": 1558,
+          "jsEventListeners": 159,
+          "jsHeapUsedBytes": 3944324,
+          "jsHeapTotalBytes": 6815744,
+          "layoutCount": 4,
           "recalcStyleCount": 3,
-          "taskDurationSeconds": 0.169715,
-          "scriptDurationSeconds": 0.105776
+          "taskDurationSeconds": 0.847161,
+          "scriptDurationSeconds": 0.686144
         },
         "page": {
           "jsHeapSizeLimit": 4395630592,
-          "totalJSHeapSize": 6918549,
-          "usedJSHeapSize": 3997989
+          "totalJSHeapSize": 7663327,
+          "usedJSHeapSize": 5340559
         }
       },
       "afterForest": {
         "cdp": {
           "documents": 1,
-          "nodes": 2176,
-          "jsEventListeners": 150,
-          "jsHeapUsedBytes": 6030724,
-          "jsHeapTotalBytes": 7864320,
-          "layoutCount": 8,
-          "recalcStyleCount": 9,
-          "taskDurationSeconds": 0.177114,
-          "scriptDurationSeconds": 0.087848
+          "nodes": 2268,
+          "jsEventListeners": 159,
+          "jsHeapUsedBytes": 6364096,
+          "jsHeapTotalBytes": 11796480,
+          "layoutCount": 92,
+          "recalcStyleCount": 103,
+          "taskDurationSeconds": 12.602346,
+          "scriptDurationSeconds": 8.053183
         },
         "page": {
           "jsHeapSizeLimit": 4395630592,
-          "totalJSHeapSize": 8639055,
-          "usedJSHeapSize": 6809491
+          "totalJSHeapSize": 12644273,
+          "usedJSHeapSize": 7566957
         }
       }
     }
   },
   "synthetic": {
     "import": {
-      "durationMs": 180.60000002384186,
+      "durationMs": 282.5,
       "sourceBytes": 2107248,
       "normalizedBytes": 2104448,
       "worldId": "synthetic-world-10x",
@@ -3368,36 +3462,36 @@
       "visibleLabel": "200/200 区块 · 0/10400 物件",
       "lodLabel": "LOD index-only",
       "realInputEvents": {
-        "pointermove": 226,
-        "wheel": 5
+        "pointermove": 198,
+        "wheel": 4
       },
-      "minimumCanvasDraws": 231,
+      "minimumCanvasDraws": 202,
       "inputToNextPaint": {
-        "count": 231,
-        "averageMs": 0.924,
-        "p50Ms": 0.9,
-        "p95Ms": 1.3,
-        "p99Ms": 1.6,
-        "maximumMs": 3.6
+        "count": 202,
+        "averageMs": 0.666,
+        "p50Ms": 0.6,
+        "p95Ms": 0.9,
+        "p99Ms": 1.2,
+        "maximumMs": 4.9
       },
       "frames": {
         "requestedDurationMs": 4000,
-        "measuredDurationMs": 4000.8,
-        "frameCount": 240,
-        "averageFps": 59.988,
-        "averageFrameMs": 16.67,
-        "p50FrameMs": 16.7,
-        "p95FrameMs": 18.5,
-        "p99FrameMs": 18.6,
-        "worstFrameMs": 18.6,
-        "framesOver16_7Ms": 93,
-        "framesOver33_3Ms": 0,
-        "framesOver50Ms": 0
+        "measuredDurationMs": 4000,
+        "frameCount": 3904,
+        "averageFps": 976,
+        "averageFrameMs": 1.025,
+        "p50FrameMs": 0.6,
+        "p95FrameMs": 1.7,
+        "p99FrameMs": 11.4,
+        "worstFrameMs": 209.1,
+        "framesOver16_7Ms": 35,
+        "framesOver33_3Ms": 1,
+        "framesOver50Ms": 1
       },
       "pixelEvidence": {
-        "start": "bc3632a9",
-        "firstInput": "bc3632a9",
-        "end": "26c79134",
+        "start": "8d35341d",
+        "firstInput": "8d35341d",
+        "end": "3c615982",
         "changed": true
       },
       "longTasks": {
@@ -3411,132 +3505,132 @@
       "selection": {
         "sync": {
           "count": 6,
-          "averageMs": 9.233333319425583,
-          "p50Ms": 8.5,
-          "p95Ms": 10.699999988079071,
-          "p99Ms": 10.699999988079071,
-          "maximumMs": 10.699999988079071
+          "averageMs": 20.066666667039197,
+          "p50Ms": 18.600000001490116,
+          "p95Ms": 27.90000000037253,
+          "p99Ms": 27.90000000037253,
+          "maximumMs": 27.90000000037253
         },
         "paint": {
           "count": 6,
-          "averageMs": 31.49999999006589,
-          "p50Ms": 31.899999976158142,
-          "p95Ms": 35.299999952316284,
-          "p99Ms": 35.299999952316284,
-          "maximumMs": 35.299999952316284
+          "averageMs": 27,
+          "p50Ms": 25.09999999962747,
+          "p95Ms": 35.5,
+          "p99Ms": 35.5,
+          "maximumMs": 35.5
         },
         "samples": [
           {
-            "syncMs": 10.699999988079071,
-            "paintMs": 20.30000001192093
+            "syncMs": 19.199999999254942,
+            "paintMs": 25.09999999962747
           },
           {
-            "syncMs": 10.699999988079071,
-            "paintMs": 31.899999976158142
+            "syncMs": 17.800000000745058,
+            "paintMs": 23.5
           },
           {
-            "syncMs": 8.399999976158142,
-            "paintMs": 35.10000002384186
+            "syncMs": 18.600000001490116,
+            "paintMs": 24.100000001490116
           },
           {
-            "syncMs": 8.5,
-            "paintMs": 31.399999976158142
+            "syncMs": 27.90000000037253,
+            "paintMs": 35.5
           },
           {
-            "syncMs": 8.299999952316284,
-            "paintMs": 35.299999952316284
+            "syncMs": 19.799999998882413,
+            "paintMs": 25.299999998882413
           },
           {
-            "syncMs": 8.800000011920929,
-            "paintMs": 35
+            "syncMs": 17.100000001490116,
+            "paintMs": 28.5
           }
         ]
       },
       "viewSwitch": {
         "sync": {
           "count": 6,
-          "averageMs": 1.4166666865348816,
-          "p50Ms": 1,
-          "p95Ms": 3.300000011920929,
-          "p99Ms": 3.300000011920929,
-          "maximumMs": 3.300000011920929
+          "averageMs": 1.1666666666666667,
+          "p50Ms": 1.099999999627471,
+          "p95Ms": 1.699999999254942,
+          "p99Ms": 1.699999999254942,
+          "maximumMs": 1.699999999254942
         },
         "paint": {
           "count": 6,
-          "averageMs": 33.03333334128062,
-          "p50Ms": 33.30000001192093,
-          "p95Ms": 33.5,
-          "p99Ms": 33.5,
-          "maximumMs": 33.5
+          "averageMs": 7.63333333345751,
+          "p50Ms": 4.200000001117587,
+          "p95Ms": 23,
+          "p99Ms": 23,
+          "maximumMs": 23
         },
         "samples": [
           {
-            "syncMs": 0.9000000357627869,
-            "paintMs": 31.5
+            "syncMs": 1.699999999254942,
+            "paintMs": 23
           },
           {
-            "syncMs": 0.9000000357627869,
-            "paintMs": 33.40000003576279
+            "syncMs": 1.099999999627471,
+            "paintMs": 7.099999999627471
           },
           {
-            "syncMs": 3.300000011920929,
-            "paintMs": 33.5
+            "syncMs": 1.300000000745058,
+            "paintMs": 4.5
           },
           {
-            "syncMs": 1.300000011920929,
-            "paintMs": 33.10000002384186
+            "syncMs": 1.300000000745058,
+            "paintMs": 4.200000001117587
           },
           {
-            "syncMs": 1,
-            "paintMs": 33.39999997615814
+            "syncMs": 0.6999999992549419,
+            "paintMs": 3.399999998509884
           },
           {
-            "syncMs": 1.100000023841858,
-            "paintMs": 33.30000001192093
+            "syncMs": 0.900000000372529,
+            "paintMs": 3.600000001490116
           }
         ]
       },
       "edit": {
         "sync": {
           "count": 6,
-          "averageMs": 36.5,
-          "p50Ms": 32.39999997615814,
-          "p95Ms": 49.19999998807907,
-          "p99Ms": 49.19999998807907,
-          "maximumMs": 49.19999998807907
+          "averageMs": 53.61666666654249,
+          "p50Ms": 50.09999999962747,
+          "p95Ms": 60.69999999925494,
+          "p99Ms": 60.69999999925494,
+          "maximumMs": 60.69999999925494
         },
         "paint": {
           "count": 6,
-          "averageMs": 52.51666667064031,
-          "p50Ms": 49.90000003576279,
-          "p95Ms": 66.5,
-          "p99Ms": 66.5,
-          "maximumMs": 66.5
+          "averageMs": 61.666666666666664,
+          "p50Ms": 56.90000000037253,
+          "p95Ms": 71.5,
+          "p99Ms": 71.5,
+          "maximumMs": 71.5
         },
         "samples": [
           {
-            "syncMs": 39.90000003576279,
-            "paintMs": 48.5
+            "syncMs": 60.69999999925494,
+            "paintMs": 66.79999999888241
           },
           {
-            "syncMs": 33.30000001192093,
-            "paintMs": 49.90000003576279
+            "syncMs": 59,
+            "paintMs": 71.5
           },
           {
-            "syncMs": 32.39999997615814,
-            "paintMs": 50.19999998807907
+            "syncMs": 54.09999999962747,
+            "paintMs": 65
           },
           {
-            "syncMs": 32.19999998807907,
-            "paintMs": 51.69999998807907
+            "syncMs": 50,
+            "paintMs": 56.90000000037253
           },
           {
-            "syncMs": 49.19999998807907,
-            "paintMs": 66.5
+            "syncMs": 50.09999999962747,
+            "paintMs": 56.19999999925494
           },
           {
-            "syncMs": 32,
-            "paintMs": 48.30000001192093
+            "syncMs": 47.80000000074506,
+            "paintMs": 53.600000001490116
           }
         ]
       },
@@ -3548,8 +3642,8 @@
       "cancelled": true,
       "errorName": "AbortError",
       "errorCode": "VALIDATION_CANCELLED",
-      "durationMs": 50.80000001192093,
-      "cancelResponseMs": 20.399999976158142,
+      "durationMs": 79,
+      "cancelResponseMs": 27.09999999962747,
       "progress": [
         {
           "stage": "schema",
@@ -3558,13 +3652,13 @@
           "total": 203,
           "progress": 0,
           "issueCount": 0,
-          "observedAtMs": 30.400000035762787
+          "observedAtMs": 51.90000000037253
         }
       ],
       "mainThreadHeartbeat": {
-        "count": 3,
-        "p95GapMs": 16.80000001192093,
-        "maximumGapMs": 16.80000001192093
+        "count": 4,
+        "p95GapMs": 24.09999999962747,
+        "maximumGapMs": 24.09999999962747
       }
     },
     "streamingCrossRegion": {
@@ -5866,97 +5960,107 @@
       "beforeImport": {
         "cdp": {
           "documents": 1,
-          "nodes": 2176,
-          "jsEventListeners": 150,
-          "jsHeapUsedBytes": 5054028,
-          "jsHeapTotalBytes": 7340032,
-          "layoutCount": 8,
-          "recalcStyleCount": 9,
-          "taskDurationSeconds": 0.198617,
-          "scriptDurationSeconds": 0.097708
+          "nodes": 2268,
+          "jsEventListeners": 159,
+          "jsHeapUsedBytes": 7701984,
+          "jsHeapTotalBytes": 11534336,
+          "layoutCount": 92,
+          "recalcStyleCount": 103,
+          "taskDurationSeconds": 12.725089,
+          "scriptDurationSeconds": 8.144731
         },
         "page": {
           "jsHeapSizeLimit": 4395630592,
-          "totalJSHeapSize": 8114767,
-          "usedJSHeapSize": 5833275
+          "totalJSHeapSize": 12379572,
+          "usedJSHeapSize": 6878484
         }
       },
       "afterImport": {
         "cdp": {
           "documents": 1,
-          "nodes": 3369,
-          "jsEventListeners": 150,
-          "jsHeapUsedBytes": 20408644,
-          "jsHeapTotalBytes": 23560192,
-          "layoutCount": 10,
-          "recalcStyleCount": 11,
-          "taskDurationSeconds": 0.438118,
-          "scriptDurationSeconds": 0.105383
+          "nodes": 3461,
+          "jsEventListeners": 159,
+          "jsHeapUsedBytes": 24762452,
+          "jsHeapTotalBytes": 33497088,
+          "layoutCount": 94,
+          "recalcStyleCount": 105,
+          "taskDurationSeconds": 13.159697,
+          "scriptDurationSeconds": 8.236133
         },
         "page": {
           "jsHeapSizeLimit": 4395630592,
-          "totalJSHeapSize": 23991192,
-          "usedJSHeapSize": 21187740
+          "totalJSHeapSize": 34342966,
+          "usedJSHeapSize": 26085378
         }
       },
       "beforeStreaming": {
         "cdp": {
           "documents": 1,
-          "nodes": 6274,
-          "jsEventListeners": 150,
-          "jsHeapUsedBytes": 20297328,
-          "jsHeapTotalBytes": 23560192,
-          "layoutCount": 57,
-          "recalcStyleCount": 63,
-          "taskDurationSeconds": 2.146203,
-          "scriptDurationSeconds": 1.292151
+          "nodes": 6700,
+          "jsEventListeners": 159,
+          "jsHeapUsedBytes": 19656512,
+          "jsHeapTotalBytes": 30351360,
+          "layoutCount": 142,
+          "recalcStyleCount": 155,
+          "taskDurationSeconds": 23.33533,
+          "scriptDurationSeconds": 14.390869
         },
         "page": {
           "jsHeapSizeLimit": 4395630592,
-          "totalJSHeapSize": 26268519,
-          "usedJSHeapSize": 22752723
+          "totalJSHeapSize": 31197172,
+          "usedJSHeapSize": 20810204
         }
       },
       "afterStreaming": {
         "cdp": {
           "documents": 1,
-          "nodes": 6274,
-          "jsEventListeners": 150,
-          "jsHeapUsedBytes": 19935852,
-          "jsHeapTotalBytes": 22773760,
-          "layoutCount": 58,
-          "recalcStyleCount": 64,
-          "taskDurationSeconds": 2.216635,
-          "scriptDurationSeconds": 1.314113
+          "nodes": 6366,
+          "jsEventListeners": 159,
+          "jsHeapUsedBytes": 20492100,
+          "jsHeapTotalBytes": 25370624,
+          "layoutCount": 142,
+          "recalcStyleCount": 155,
+          "taskDurationSeconds": 23.489554,
+          "scriptDurationSeconds": 14.479852
         },
         "page": {
           "jsHeapSizeLimit": 4395630592,
-          "totalJSHeapSize": 23532391,
-          "usedJSHeapSize": 20714899
+          "totalJSHeapSize": 26216436,
+          "usedJSHeapSize": 21610080
         }
       },
-      "retainedAfterStreamingBytes": -361476
+      "retainedAfterStreamingBytes": 835588
     }
   },
   "longTasks": {
     "supported": true,
     "observerErrors": [],
-    "count": 3,
-    "totalDurationMs": 276,
-    "maximumDurationMs": 170,
+    "count": 15,
+    "totalDurationMs": 2797,
+    "maximumDurationMs": 774,
     "sessions": [
       {
         "label": "initial-navigation-and-forest",
         "supported": true,
         "observerError": null,
-        "count": 1,
-        "totalDurationMs": 54,
-        "maximumDurationMs": 54,
+        "count": 3,
+        "totalDurationMs": 1179,
+        "maximumDurationMs": 602,
         "entries": [
           {
+            "name": "unknown",
+            "startTime": 901.9000000003725,
+            "duration": 62
+          },
+          {
             "name": "self",
-            "startTime": 842.1999999880791,
-            "duration": 54
+            "startTime": 5527.5,
+            "duration": 515
+          },
+          {
+            "name": "self",
+            "startTime": 11262.200000001118,
+            "duration": 602
           }
         ]
       },
@@ -5964,18 +6068,68 @@
         "label": "storage-cleared-reload-and-synthetic",
         "supported": true,
         "observerError": null,
-        "count": 2,
-        "totalDurationMs": 222,
-        "maximumDurationMs": 170,
+        "count": 12,
+        "totalDurationMs": 1618,
+        "maximumDurationMs": 774,
         "entries": [
           {
-            "name": "self",
-            "startTime": 936.7000000476837,
-            "duration": 170
+            "name": "unknown",
+            "startTime": 994.3000000007451,
+            "duration": 266
           },
           {
             "name": "self",
-            "startTime": 9193.400000035763,
+            "startTime": 5406.9000000003725,
+            "duration": 774
+          },
+          {
+            "name": "self",
+            "startTime": 10712.5,
+            "duration": 65
+          },
+          {
+            "name": "self",
+            "startTime": 10779.300000000745,
+            "duration": 59
+          },
+          {
+            "name": "self",
+            "startTime": 10841.400000000373,
+            "duration": 64
+          },
+          {
+            "name": "self",
+            "startTime": 10912.700000001118,
+            "duration": 51
+          },
+          {
+            "name": "self",
+            "startTime": 10966.60000000149,
+            "duration": 58
+          },
+          {
+            "name": "self",
+            "startTime": 11085.200000001118,
+            "duration": 54
+          },
+          {
+            "name": "self",
+            "startTime": 11142.300000000745,
+            "duration": 52
+          },
+          {
+            "name": "self",
+            "startTime": 11196.10000000149,
+            "duration": 54
+          },
+          {
+            "name": "self",
+            "startTime": 11252.200000001118,
+            "duration": 69
+          },
+          {
+            "name": "self",
+            "startTime": 11324.200000001118,
             "duration": 52
           }
         ]
@@ -6012,7 +6166,7 @@
     "failures": []
   },
   "notes": {
-    "browserSurface": "A fresh real Google Chrome renderer was controlled over its native DevTools protocol; no jsdom or Node-only Canvas was used.",
+    "browserSurface": "A fresh real Chromium-family renderer (Edg/149.0.4022.98) was controlled over its native DevTools protocol; no jsdom or Node-only Canvas was used.",
     "canvasInput": "CDP dispatched trusted mouse press/move/wheel/release events to the visible #world-preview-canvas while consecutive requestAnimationFrame timestamps, Long Tasks, paint latency, draw-trigger count and pixel digests were collected in-page.",
     "synthetic": "The browser imported createSyntheticWorld() through the real hidden file input, so the same WorldEditorSession, tree, inspector, Canvas, Worker client and streaming implementation were exercised as the product UI.",
     "heap": "Renderer heap is Performance.getMetrics after HeapProfiler.collectGarbage. Streaming memory is the product simulator's explicit active plus cache estimate, not measured GPU memory."

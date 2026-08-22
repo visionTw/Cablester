@@ -10,7 +10,7 @@ import {
   resolveVisualAsset
 } from "./asset-library.js";
 import { drawScaledAssetImage } from "./asset-scaling.js";
-import { calculateSeamlessPlacements, validateScene } from "./scene-layers.js";
+import { calculateSeamlessPlacements, sceneLayerBaselineY, validateScene } from "./scene-layers.js";
 import { rotate } from "./math.js";
 
 const QUALITY_PROFILES = Object.freeze({
@@ -500,6 +500,13 @@ export function requiredSceneResidencyDraws(layer, viewportWidth, overscan) {
   return Math.max(1, Math.floor((residentWidth + tileWidth) / step) + 1);
 }
 
+export function sceneLayerScreenBaselineY(layer, camera) {
+  const cameraY = Number.isFinite(camera?.y) ? camera.y : 0;
+  const viewportHeight = Number.isFinite(camera?.height) ? camera.height : 0;
+  if (!Number.isFinite(layer?.originY)) return viewportHeight;
+  return viewportHeight / 2 + sceneLayerBaselineY(layer, 0) - cameraY;
+}
+
 function drawSceneImage(ctx, entry, asset, layer, placement, camera, profile) {
   const source = tintedDrawable(entry, layer.tint);
   const dimensions = imageDimensions(source, asset);
@@ -507,7 +514,7 @@ function drawSceneImage(ctx, entry, asset, layer, placement, camera, profile) {
   const width = placement.width;
   const height = width * dimensions.height / dimensions.width;
   const screenX = camera.width / 2 + placement.x - camera.x * layer.parallax;
-  const screenY = camera.height - height;
+  const screenY = sceneLayerScreenBaselineY(layer, camera) - height;
   const blur = Math.min(profile.maxBlur, layer.blur);
   ctx.save();
   ctx.globalAlpha *= layer.opacity;
@@ -532,7 +539,7 @@ function drawProceduralScenePlacement(ctx, layer, placement, camera, profile) {
   ctx.globalAlpha *= layer.opacity;
   ctx.globalCompositeOperation = layer.blendMode;
   if (blur > 0 && "filter" in ctx) ctx.filter = `blur(${blur.toFixed(2)}px)`;
-  ctx.translate(screenX + width / 2, camera.height);
+  ctx.translate(screenX + width / 2, sceneLayerScreenBaselineY(layer, camera));
   if (placement.flipX) ctx.scale(-1, 1);
   if (layer.role === "foreground") {
     ctx.strokeStyle = "rgba(7, 26, 28, 0.72)";

@@ -1539,6 +1539,42 @@
       "defaultAssetId": "builtin:procedural",
       "defaultPrefabId": "prefab:sign",
       "editableProperties": {
+        "activationRadius": {
+          "default": 48,
+          "kind": "number",
+          "label": "激活半径",
+          "max": 400,
+          "min": 12,
+          "optional": true,
+          "step": 1
+        },
+        "completionFlag": {
+          "default": "",
+          "kind": "text",
+          "label": "完成进度标记",
+          "optional": true
+        },
+        "disabled": {
+          "default": false,
+          "kind": "boolean",
+          "label": "禁用",
+          "optional": true
+        },
+        "nearbyRadius": {
+          "default": 140,
+          "kind": "number",
+          "label": "临近提示半径",
+          "max": 800,
+          "min": 24,
+          "optional": true,
+          "step": 1
+        },
+        "oneShot": {
+          "default": false,
+          "kind": "boolean",
+          "label": "触发后完成",
+          "optional": true
+        },
         "text": {
           "default": "在这里输入提示",
           "kind": "text",

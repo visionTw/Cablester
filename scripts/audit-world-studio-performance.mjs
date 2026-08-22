@@ -3,6 +3,7 @@
 import { spawn } from "node:child_process";
 import { createHash, randomBytes } from "node:crypto";
 import { access, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { createServer as createNetServer } from "node:net";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,7 +16,7 @@ const DEFAULT_CANVAS_DURATION_MS = 4_000;
 const DEFAULT_INTERACTION_SAMPLES = 6;
 const DEFAULT_TRANSITION_COUNT = 50;
 const DEFAULT_VIEWPORT = Object.freeze({ width: 1440, height: 900 });
-const EXPECTED_FOREST_HASH = "sha256:dae9e5f40359f0e99e033babf3a251c76eddb4a3c82943f2c5a644f0c9ace560";
+const EXPECTED_FOREST_HASH = "sha256:6cf1cda4c2e221c77c135ff3a5c2c10aeefdae52bc61d64c06e500a4b347441e";
 const SOURCE_FINGERPRINT_PATHS = Object.freeze([
   "scripts/audit-world-studio-performance.mjs",
   "test/world-studio-performance.test.js",
@@ -243,9 +244,17 @@ async function launchChrome(executable) {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "cablester-world-studio-perf-"));
   const profileDirectory = join(temporaryRoot, "profile");
   await mkdir(profileDirectory, { recursive: true });
+  const port = await new Promise((resolvePromise, rejectPromise) => {
+    const probe = createNetServer();
+    probe.once("error", rejectPromise);
+    probe.listen(0, "127.0.0.1", () => {
+      const address = probe.address();
+      probe.close((error) => error ? rejectPromise(error) : resolvePromise(address.port));
+    });
+  });
   const child = spawn(executable, [
     "--headless=new",
-    "--remote-debugging-port=0",
+    `--remote-debugging-port=${port}`,
     `--user-data-dir=${profileDirectory}`,
     `--disk-cache-dir=${join(temporaryRoot, "cache")}`,
     "--remote-allow-origins=*",
@@ -253,6 +262,8 @@ async function launchChrome(executable) {
     "--no-default-browser-check",
     "--disable-background-networking",
     "--disable-background-timer-throttling",
+    "--disable-backgrounding-occluded-windows",
+    "--disable-frame-rate-limit",
     "--disable-renderer-backgrounding",
     "--disable-component-update",
     "--disable-default-apps",
@@ -263,26 +274,25 @@ async function launchChrome(executable) {
     "--mute-audio",
     `--window-size=${DEFAULT_VIEWPORT.width},${DEFAULT_VIEWPORT.height}`,
     "about:blank"
-  ], { stdio: ["ignore", "ignore", "pipe"] });
+  ], { stdio: ["ignore", "ignore", "pipe"], windowsHide: true });
   let stderr = "";
   child.stderr.on("data", (chunk) => { stderr = `${stderr}${chunk}`.slice(-32_000); });
-  const activePortPath = join(profileDirectory, "DevToolsActivePort");
   const deadline = Date.now() + 15_000;
-  let port;
-  let browserPath;
+  let browserWebSocketUrl;
   while (Date.now() < deadline) {
-    if (child.exitCode !== null) throw new Error(`Chrome exited before CDP startup (${child.exitCode}): ${stderr}`);
+    if (child.exitCode !== null && child.exitCode !== 0) throw new Error(`Chrome exited before CDP startup (${child.exitCode}): ${stderr}`);
     try {
-      const [portLine, pathLine] = (await readFile(activePortPath, "utf8")).trim().split(/\r?\n/);
-      port = Number(portLine);
-      browserPath = pathLine;
-      if (Number.isFinite(port) && browserPath) break;
+      const response = await fetch(`http://127.0.0.1:${port}/json/version`);
+      if (response.ok) {
+        browserWebSocketUrl = (await response.json()).webSocketDebuggerUrl;
+        if (browserWebSocketUrl) break;
+      }
     } catch {
-      // Chrome has not written its active port yet.
+      // Edge may hand off to a long-lived headless child on Windows.
     }
     await sleep(50);
   }
-  if (!Number.isFinite(port) || !browserPath) {
+  if (!browserWebSocketUrl) {
     child.kill("SIGTERM");
     throw new Error(`Chrome did not expose CDP within 15 seconds: ${stderr}`);
   }
@@ -290,7 +300,7 @@ async function launchChrome(executable) {
     child,
     port,
     temporaryRoot,
-    browserWebSocketUrl: `ws://127.0.0.1:${port}${browserPath}`,
+    browserWebSocketUrl,
     stderr: () => stderr,
     async close() {
       if (child.exitCode === null) child.kill("SIGTERM");
@@ -1750,7 +1760,7 @@ async function main() {
       },
       acceptance: { passed: failures.length === 0, failures },
       notes: {
-        browserSurface: "A fresh real Google Chrome renderer was controlled over its native DevTools protocol; no jsdom or Node-only Canvas was used.",
+		browserSurface: `A fresh real Chromium-family renderer (${environment.browserProtocolVersion.product || "unknown product"}) was controlled over its native DevTools protocol; no jsdom or Node-only Canvas was used.`,
         canvasInput: "CDP dispatched trusted mouse press/move/wheel/release events to the visible #world-preview-canvas while consecutive requestAnimationFrame timestamps, Long Tasks, paint latency, draw-trigger count and pixel digests were collected in-page.",
         synthetic: "The browser imported createSyntheticWorld() through the real hidden file input, so the same WorldEditorSession, tree, inspector, Canvas, Worker client and streaming implementation were exercised as the product UI.",
         heap: "Renderer heap is Performance.getMetrics after HeapProfiler.collectGarbage. Streaming memory is the product simulator's explicit active plus cache estimate, not measured GPU memory."
@@ -1769,6 +1779,7 @@ async function main() {
     }
   } finally {
     pageCdp?.close();
+    await browserCdp?.send("Browser.close").catch(() => {});
     browserCdp?.close();
     await chrome.close();
     await closeServer(server);

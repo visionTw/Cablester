@@ -235,6 +235,23 @@ export function hasClearLineOfSight(start, end, surfaces) {
   return firstLineOfSightBlocker(start, end, surfaces) === null;
 }
 
+export function isSurfaceFrontFacing(surface, point, tolerance = 0.001) {
+  if (surface.kind !== "platform" && surface.kind !== "boundaryWall") return true;
+  const edgeX = surface.bx - surface.ax;
+  const edgeY = surface.by - surface.ay;
+  const edgeLength = Math.hypot(edgeX, edgeY);
+  if (!Number.isFinite(edgeLength) || edgeLength <= 0.000001) return false;
+  const outwardNormalX = edgeY / edgeLength;
+  const outwardNormalY = -edgeX / edgeLength;
+  const signedDistance = dot(
+    point.x - surface.ax,
+    point.y - surface.ay,
+    outwardNormalX,
+    outwardNormalY
+  );
+  return signedDistance >= -Math.max(0, tolerance);
+}
+
 export function applySwingInput(state, pivot, screenRight, inputAxis, deltaTime, tuning) {
   const radial = normalize(state.x - pivot.x, state.y - pivot.y, 0, 1);
   const circleTangent = { x: radial.y, y: -radial.x };

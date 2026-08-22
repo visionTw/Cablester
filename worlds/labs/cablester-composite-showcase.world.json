@@ -1052,7 +1052,7 @@
   ],
   "manifest": {
     "assetRegistryVersion": "1",
-    "contentHash": "sha256:dae9e5f40359f0e99e033babf3a251c76eddb4a3c82943f2c5a644f0c9ace560",
+    "contentHash": "sha256:6cf1cda4c2e221c77c135ff3a5c2c10aeefdae52bc61d64c06e500a4b347441e",
     "contentVersion": "1.0.0",
     "gameplayTuningVersion": "approved-1",
     "namespace": "labs",
@@ -1997,6 +1997,11 @@
               "id": "seedgate-verge:route-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "暮种林入口 · 软绳摆荡与硬杆撑跳都能通过",
                 "visual": {
                   "anchorX": 0.5,
@@ -3462,6 +3467,11 @@
               "id": "lantern-crossing:fork-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "向下可进入苔蓄池 · 水闸开启后形成返回捷径",
                 "visual": {
                   "anchorX": 0.5,
@@ -4982,6 +4992,11 @@
               "id": "root-aqueduct:sluice-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "触碰种灯阀门可永久开启返水闸",
                 "visual": {
                   "anchorX": 0.5,
@@ -6579,6 +6594,11 @@
               "id": "canopy-lift:ability-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "取得回声种后可在空中再次跳跃",
                 "visual": {
                   "anchorX": 0.5,
@@ -8107,6 +8127,11 @@
               "id": "wind-terraces:glide-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "下降时按住跳跃展开滑翔；气流会强化升力",
                 "visual": {
                   "anchorX": 0.5,
@@ -9695,6 +9720,11 @@
               "id": "bellroot-court:bash-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "按住猛击选向，点响两侧根钟后东门保持开启",
                 "visual": {
                   "anchorX": 0.5,
@@ -11470,6 +11500,11 @@
               "id": "heartwood-ring:heart-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "抵达心木核会永久唤醒出口脉冲",
                 "visual": {
                   "anchorX": 0.5,
@@ -12954,6 +12989,11 @@
               "id": "afterglow-gate:exit-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "暮种林出口 · 第一阶段到此停止",
                 "visual": {
                   "anchorX": 0.5,
@@ -14320,6 +14360,11 @@
               "id": "moss-cistern:cistern-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "点亮水下阀门后可返回灯脉岔桥",
                 "visual": {
                   "anchorX": 0.5,
@@ -15641,6 +15686,11 @@
               "id": "echo-burrow:echo-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "靠近中央回声种可永久驱散洞穴黑暗",
                 "visual": {
                   "anchorX": 0.5,
@@ -17051,6 +17101,11 @@
               "id": "crown-overlook:crown-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "滑翔并串联空中冲刺；东端会开启顶部捷径",
                 "visual": {
                   "anchorX": 0.5,
@@ -18395,6 +18450,11 @@
               "id": "old-nursery:nursery-sign",
               "links": [],
               "properties": {
+                "activationRadius": 48,
+                "completionFlag": "",
+                "disabled": false,
+                "nearbyRadius": 140,
+                "oneShot": false,
                 "text": "修复旧种圃后，余辉林门会保留备用返回口",
                 "visual": {
                   "anchorX": 0.5,
@@ -20768,6 +20828,42 @@
         "defaultAssetId": "builtin:procedural",
         "defaultPrefabId": "prefab:sign",
         "editableProperties": {
+          "activationRadius": {
+            "default": 48,
+            "kind": "number",
+            "label": "激活半径",
+            "max": 400,
+            "min": 12,
+            "optional": true,
+            "step": 1
+          },
+          "completionFlag": {
+            "default": "",
+            "kind": "text",
+            "label": "完成进度标记",
+            "optional": true
+          },
+          "disabled": {
+            "default": false,
+            "kind": "boolean",
+            "label": "禁用",
+            "optional": true
+          },
+          "nearbyRadius": {
+            "default": 140,
+            "kind": "number",
+            "label": "临近提示半径",
+            "max": 800,
+            "min": 24,
+            "optional": true,
+            "step": 1
+          },
+          "oneShot": {
+            "default": false,
+            "kind": "boolean",
+            "label": "触发后完成",
+            "optional": true
+          },
           "text": {
             "default": "在这里输入提示",
             "kind": "text",

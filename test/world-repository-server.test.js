@@ -58,7 +58,7 @@ function waitUntilReady(child) {
   });
 }
 
-test("localhost repository endpoint is worlds-only, atomic and conflict-aware", async () => {
+test("localhost repository endpoint is worlds-only, atomic and conflict-aware", async (context) => {
   const sandbox = await mkdtemp(join(tmpdir(), "cablester-world-repository-"));
   const port = await availablePort();
   const repositoryCapability = "test-only-repository-capability-32-bytes";
@@ -161,8 +161,13 @@ test("localhost repository endpoint is worlds-only, atomic and conflict-aware", 
     assert.equal(externalLoad.body, formalContents);
     const outsideWorld = join(sandbox, "outside-private.world.json");
     await writeFile(outsideWorld, formalContents);
-    await symlink(outsideWorld, join(externalFormalRoot, "symlink-leak.world.json"));
-    assert.equal((await httpRequest(port, "/worlds/formal/symlink-leak.world.json")).status, 404);
+    try {
+      await symlink(outsideWorld, join(externalFormalRoot, "symlink-leak.world.json"));
+      assert.equal((await httpRequest(port, "/worlds/formal/symlink-leak.world.json")).status, 404);
+    } catch (error) {
+      if (process.platform !== "win32" || !["EACCES", "EPERM"].includes(error?.code)) throw error;
+      context.diagnostic("Windows denied unprivileged symlink creation; the leak assertion remains active on symlink-capable hosts.");
+    }
     const refreshedCapability = JSON.parse((await httpRequest(port, "/__cablester/world-repository", { headers: repositoryHeaders })).body);
     assert.ok(refreshedCapability.worlds.some((entry) => entry.path === "worlds/formal/private-test.world.json"));
     assert.equal(refreshedCapability.worlds.some((entry) => entry.path === "worlds/formal/symlink-leak.world.json"), false);

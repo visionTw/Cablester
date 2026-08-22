@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, isGoalReached, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
+import { Game } from "../src/game.js";
+import { advancePointTowards, applyConstraintDamping, applyMinimumUpdraftLift, applyRopeWinch, applySwingInput, applyWindForce, computeDamageRecoveryVelocity, computeDashVelocity, computeRopeVisualTarget, constrainRigidBar, decelerateUpdraftLift, firstLineOfSightBlocker, grantAbility, hasClearLineOfSight, hazardBaseSegment, hazardHardBarSurface, hazardTipSegment, isGoalReached, isSurfaceFrontFacing, limitSpeedAlongDirection, limitUpdraftLiftSpeed, resolveHazardBaseCollision, restoreResource, shouldReleaseBash, shouldUseRopeWinch, spendEnergy, takeDamage } from "../src/rules.js";
 
 test("energy spending is atomic", () => {
   assert.deepEqual(spendEnergy(2, 0.5), { ok: true, value: 1.5 });
@@ -244,6 +245,86 @@ test("line of sight rejects surfaces and anchors behind solid geometry", () => {
   assert.equal(hasClearLineOfSight({ x: 5, y: -5 }, { x: 5, y: 0 }, surfaces), true);
   assert.equal(hasClearLineOfSight({ x: 5, y: -5 }, { x: 15, y: -5 }, surfaces), false);
   assert.equal(hasClearLineOfSight({ x: 5, y: -5 }, { x: 10, y: -5 }, surfaces), true);
+});
+
+test("one-sided rectangular surfaces reject targets from their solid side", () => {
+  const top = { kind: "platform", ax: 0, ay: 0, bx: 100, by: 0 };
+  const right = { kind: "platform", ax: 100, ay: 0, bx: 100, by: 100 };
+  const bottom = { kind: "platform", ax: 100, ay: 100, bx: 0, by: 100 };
+  const left = { kind: "platform", ax: 0, ay: 100, bx: 0, by: 0 };
+  const boundaryWall = { kind: "boundaryWall", ax: 20, ay: 100, bx: 20, by: 0 };
+  const slope = { kind: "slope", ax: 0, ay: 0, bx: 100, by: -50 };
+  const hazard = { kind: "hazard", ax: 0, ay: 0, bx: 100, by: 0 };
+
+  assert.equal(isSurfaceFrontFacing(top, { x: 50, y: -20 }), true);
+  assert.equal(isSurfaceFrontFacing(top, { x: 50, y: 20 }), false);
+  assert.equal(isSurfaceFrontFacing(right, { x: 120, y: 50 }), true);
+  assert.equal(isSurfaceFrontFacing(right, { x: 80, y: 50 }), false);
+  assert.equal(isSurfaceFrontFacing(bottom, { x: 50, y: 120 }), true);
+  assert.equal(isSurfaceFrontFacing(bottom, { x: 50, y: 80 }), false);
+  assert.equal(isSurfaceFrontFacing(left, { x: -20, y: 50 }), true);
+  assert.equal(isSurfaceFrontFacing(left, { x: 20, y: 50 }), false);
+  assert.equal(isSurfaceFrontFacing(boundaryWall, { x: 0, y: 50 }), true);
+  assert.equal(isSurfaceFrontFacing(boundaryWall, { x: 40, y: 50 }), false);
+  assert.equal(isSurfaceFrontFacing(slope, { x: 50, y: 20 }), true);
+  assert.equal(isSurfaceFrontFacing(slope, { x: 50, y: -70 }), true);
+  assert.equal(isSurfaceFrontFacing(hazard, { x: 50, y: 20 }), true);
+  assert.equal(isSurfaceFrontFacing(hazard, { x: 50, y: -20 }), true);
+});
+
+test("rope and hard-bar corner targeting prefer the visible top over a platform back face", () => {
+  const game = Object.create(Game.prototype);
+  game.player = { x: 100, y: -20, facing: 1 };
+  game.input = { mouse: { x: 0, y: 0 } };
+  game.level = {
+    anchors: [],
+    boundaryWalls: [],
+    platforms: [{ id: "start-ground", x: 0, y: 0, w: 300, h: 200 }],
+    slopes: []
+  };
+  game.runtime = { bashTargets: [], fragilePlatforms: [], gates: [], movingObjects: [] };
+  game.abilities = new Set(["rope", "hardBar"]);
+  game.blockingSurfaces = game.buildBlockingSurfaces();
+  game.grappleSurfaces = game.blockingSurfaces.filter((surface) => surface.grapple);
+  game.hardBarSurfaces = [...game.grappleSurfaces];
+  game.screenToWorld = () => ({ x: 300, y: 0 });
+  game.isReachableTarget = () => true;
+
+  game.updateTargets();
+  assert.equal(game.ropeTarget.id, "start-ground:top");
+  assert.equal(game.hardBarTarget.id, "start-ground:top");
+
+  game.player = { x: 420, y: 80, facing: -1 };
+  game.screenToWorld = () => ({ x: 300, y: 80 });
+  game.updateTargets();
+  assert.equal(game.ropeTarget.id, "start-ground:right");
+  assert.equal(game.hardBarTarget.id, "start-ground:right");
+});
+
+test("rope and hard-bar targeting reject an isolated platform back face", () => {
+  const game = Object.create(Game.prototype);
+  const backFace = {
+    id: "start-ground:right",
+    kind: "platform",
+    ax: 300,
+    ay: 0,
+    bx: 300,
+    by: 200,
+    grapple: true
+  };
+  game.player = { x: 100, y: -20, facing: 1 };
+  game.input = { mouse: { x: 0, y: 0 } };
+  game.level = { anchors: [] };
+  game.runtime = { bashTargets: [], movingObjects: [] };
+  game.abilities = new Set(["rope", "hardBar"]);
+  game.grappleSurfaces = [backFace];
+  game.hardBarSurfaces = [backFace];
+  game.screenToWorld = () => ({ x: 300, y: 40 });
+  game.isReachableTarget = () => true;
+
+  game.updateTargets();
+  assert.equal(game.ropeTarget, null);
+  assert.equal(game.hardBarTarget, null);
 });
 
 test("swing input pumps existing motion, brakes proportionally, and cannot hold a static angle", () => {

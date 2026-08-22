@@ -4,8 +4,9 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
-const repositoryRoot = new URL("../", import.meta.url).pathname;
+const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
 function run(script, args) {
   return spawnSync(process.execPath, [script, ...args], {

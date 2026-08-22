@@ -8,6 +8,7 @@ import {
   deleteSceneLayer,
   duplicateSceneLayer,
   moveSceneLayer,
+  sceneLayerBaselineY,
   sortSceneLayers,
   updateSceneLayer,
   validateScene,
@@ -115,6 +116,25 @@ test("placement respects finite ranges, visibility and non-repeating layers", ()
   assert.equal(result.placements[0].x, 200);
   assert.deepEqual(calculateSeamlessPlacements({ ...layer, visible: false }, { cameraX: 300, viewportWidth: 600 }).placements, []);
   assert.deepEqual(calculateSeamlessPlacements(layer, { cameraX: 2000, viewportWidth: 200 }).placements, []);
+});
+
+test("scene layers support an optional world-space Y anchor without invalidating legacy JSON", () => {
+  const legacy = createSceneLayer({ id: "scene-legacy-y", role: "background" });
+  assert.equal(Object.hasOwn(legacy, "originY"), false);
+  assert.deepEqual(validateSceneLayer(legacy), []);
+  assert.equal(sceneLayerBaselineY(legacy, 720), 720);
+
+  const scene = createDefaultScene();
+  const background = scene.layers.find((layer) => layer.role === "background");
+  const anchored = updateSceneLayer(scene, background.id, { originY: 460 });
+  assert.equal(anchored.layers.find((layer) => layer.id === background.id).originY, 460);
+  assert.equal(Object.hasOwn(background, "originY"), false);
+  assert.equal(sceneLayerBaselineY(anchored.layers[0], 720), 460);
+
+  assert.deepEqual(validateSceneLayer({ ...legacy, originY: null }), []);
+  assert.ok(validateSceneLayer({ ...legacy, originY: Infinity }).some((error) => error.includes("originY")));
+  assert.ok(validateSceneLayer({ ...legacy, originY: 10000001 }).some((error) => error.includes("originY")));
+  assert.ok(validateSceneLayer({ ...legacy, originY: "460" }).some((error) => error.includes("originY")));
 });
 
 test("strict scene validation rejects malformed or unknown fields", () => {

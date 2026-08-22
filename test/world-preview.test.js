@@ -7,12 +7,34 @@ import {
   createChunkGraph,
   createSyntheticWorld,
   createWorldPreviewModel,
+  experienceCuePreviewForObject,
   getSnapshotStatus,
   measurePreviewQuery
 } from "../src/world-preview.js";
 import { buildWorldSpatialIndex } from "../src/world-streaming.js";
 
 const root = new URL("..", import.meta.url);
+
+test("world preview exposes canonical wind vectors and sign ranges without gameplay", () => {
+  assert.deepEqual(experienceCuePreviewForObject({ type: "windZone", properties: { forceX: 520, forceY: 0 } }), {
+    kind: "wind",
+    forceX: 520,
+    forceY: 0,
+    x: 1,
+    y: 0,
+    strength: 520,
+    direction: "right",
+    calm: false,
+    states: ["idle", "inside", "exiting"]
+  });
+  assert.deepEqual(experienceCuePreviewForObject({ type: "sign", properties: { nearbyRadius: 180, activationRadius: 52 } }), {
+    kind: "sign",
+    activationRadius: 52,
+    nearbyRadius: 180,
+    disabled: false,
+    states: ["idle", "nearby", "activated", "completed", "disabled"]
+  });
+});
 
 test("ChunkGraph consumes one frozen nested edge and derives bidirectional topology", () => {
   const world = createSyntheticWorld({ regionCount: 1, chunksPerRegion: 4, objectsPerChunk: 2 });

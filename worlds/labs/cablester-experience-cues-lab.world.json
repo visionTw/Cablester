@@ -871,47 +871,36 @@
   },
   "gameplayTuning": {
     "approved": {
-      "abilities": {
-        "bash": {
-          "id": "bash"
-        },
-        "dash": {
-          "id": "dash"
-        },
-        "doubleJump": {
-          "id": "doubleJump"
-        },
-        "glide": {
-          "id": "glide"
-        },
-        "hardBar": {
-          "id": "hardBar"
-        },
-        "rope": {
-          "id": "rope"
-        },
-        "wallGrab": {
-          "id": "wallGrab"
-        }
-      },
-      "inputDefinitions": {},
-      "resourceCosts": {},
-      "stateSemantics": {},
-      "tolerances": {}
+      "fixedStep": 0.008333,
+      "glideGravityScale": 0.2,
+      "glideMaximumFallSpeed": 190,
+      "gravity": 1550,
+      "jumpSpeed": 590,
+      "maximumEnergy": 6,
+      "maximumHealth": 5,
+      "playerRadius": 18,
+      "runSpeed": 350,
+      "startingAbilities": [
+        "glide"
+      ]
     },
     "draft": {},
     "version": "approved-1"
   },
+  "godotCompatibility": {
+    "importerContractVersion": "1",
+    "requiredBuildId": "4.7.1.stable.official.a13da4feb"
+  },
   "manifest": {
     "assetRegistryVersion": "1",
-    "contentHash": "sha256:7185c2e34c206b806fccb0bbe201aa52978c363a0e228b613af222fcad7b74ea",
+    "contentHash": "sha256:763c2d9361c05aaff9dcd8b210c158b446b27befb2ac552e79c20884c5ac2d07",
     "contentVersion": "1.0.0",
     "gameplayTuningVersion": "approved-1",
     "namespace": "labs",
     "prefabRegistryVersion": "1",
-    "title": "Golden Grove",
+    "title": "体验反馈一致性实验室",
     "typeRegistryVersion": "1",
-    "worldId": "fixture.golden-grove"
+    "worldId": "cablester-experience-cues-lab"
   },
   "prefabRegistry": {
     "entries": [
@@ -1071,113 +1060,41 @@
   "regions": [
     {
       "bounds": {
-        "h": 1700,
+        "h": 1200,
         "w": 2800,
-        "x": -500,
-        "y": -450
+        "x": 0,
+        "y": 0
       },
       "chunks": [
         {
           "bounds": {
-            "h": 1700,
+            "h": 1200,
             "w": 2800,
-            "x": -500,
-            "y": -450
+            "x": 0,
+            "y": 0
           },
           "connections": [],
-          "extensions": {
-            "legacyDocument": {
-              "customExtension": {
-                "nested": {
-                  "value": 1.234568
-                },
-                "preserved": true
-              }
-            },
-            "legacyMetadata": {
-              "authoringNote": "preserve metadata extension"
-            }
-          },
           "gameplay": {
-            "acceptanceLevel": "L1",
-            "category": "Fixture",
+            "acceptanceLevel": "L2",
+            "category": "体验反馈",
             "dashCapacity": 1,
             "startingAbilities": [
-              "rope",
-              "dash",
-              "wallGrab"
+              "glide"
             ],
-            "summary": "Canonical migration golden"
+            "summary": "公开安全的滑翔、四向风场与动态提示点验证场"
           },
-          "id": "fixture.golden-grove:chunk",
-          "name": "Golden Grove",
+          "id": "experience-cues-01",
+          "name": "Glide · Wind · Sign",
           "objects": [
             {
-              "editorExtension": {
-                "lockedBy": "fixture"
-              },
-              "id": "platform-1",
+              "id": "experience-spawn",
               "links": [],
-              "properties": {
-                "h": 180,
-                "visual": {
-                  "anchorX": 0.5,
-                  "anchorY": 0.5,
-                  "assetId": "gameplay:moss-platform",
-                  "drawLayer": 0,
-                  "flipX": false,
-                  "flipY": false,
-                  "offsetX": 0,
-                  "offsetY": 0,
-                  "opacity": 1,
-                  "scaleMode": "asset",
-                  "scaleX": 1,
-                  "scaleY": 1,
-                  "tileScale": 1,
-                  "tint": "#ffffff"
-                },
-                "w": 760
-              },
+              "properties": {},
               "tags": [],
               "transform": {
                 "position": {
-                  "x": -260,
-                  "y": 640
-                },
-                "rotationDegrees": 0,
-                "scale": {
-                  "x": 1,
-                  "y": 1
-                }
-              },
-              "type": "platform"
-            },
-            {
-              "id": "spawn-1",
-              "links": [],
-              "properties": {
-                "visual": {
-                  "anchorX": 0.5,
-                  "anchorY": 0.5,
-                  "assetId": "gameplay:spawn-gate",
-                  "drawLayer": 0,
-                  "flipX": false,
-                  "flipY": false,
-                  "offsetX": 0,
-                  "offsetY": 0,
-                  "opacity": 1,
-                  "scaleMode": "asset",
-                  "scaleX": 1,
-                  "scaleY": 1,
-                  "tileScale": 1,
-                  "tint": "#ffffff"
-                }
-              },
-              "tags": [],
-              "transform": {
-                "position": {
-                  "x": 120,
-                  "y": 590
+                  "x": 180,
+                  "y": 820
                 },
                 "rotationDegrees": 0,
                 "scale": {
@@ -1188,35 +1105,19 @@
               "type": "spawn"
             },
             {
-              "id": "checkpoint-1",
+              "id": "experience-ground",
               "links": [],
               "properties": {
-                "h": 90,
-                "spawnOffsetX": 45,
-                "spawnOffsetY": 40,
-                "visual": {
-                  "anchorX": 0.5,
-                  "anchorY": 0.5,
-                  "assetId": "gameplay:checkpoint-lantern",
-                  "drawLayer": 0,
-                  "flipX": false,
-                  "flipY": false,
-                  "offsetX": 0,
-                  "offsetY": 0,
-                  "opacity": 1,
-                  "scaleMode": "asset",
-                  "scaleX": 1,
-                  "scaleY": 1,
-                  "tileScale": 1,
-                  "tint": "#ffffff"
-                },
-                "w": 90
+                "h": 300,
+                "w": 2800
               },
-              "tags": [],
+              "tags": [
+                "experience-collision-baseline"
+              ],
               "transform": {
                 "position": {
-                  "x": 75,
-                  "y": 550
+                  "x": 0,
+                  "y": 900
                 },
                 "rotationDegrees": 0,
                 "scale": {
@@ -1224,35 +1125,174 @@
                   "y": 1
                 }
               },
-              "type": "checkpoint"
+              "type": "platform"
             },
             {
-              "id": "goal-1",
+              "id": "experience-glide-ledge",
               "links": [],
               "properties": {
-                "radius": 34,
-                "visual": {
-                  "anchorX": 0.5,
-                  "anchorY": 0.5,
-                  "assetId": "gameplay:goal-gate",
-                  "drawLayer": 0,
-                  "flipX": false,
-                  "flipY": false,
-                  "offsetX": 0,
-                  "offsetY": 0,
-                  "opacity": 1,
-                  "scaleMode": "asset",
-                  "scaleX": 1,
-                  "scaleY": 1,
-                  "tileScale": 1,
-                  "tint": "#ffffff"
+                "h": 40,
+                "w": 260
+              },
+              "tags": [
+                "glide-checkpoint"
+              ],
+              "transform": {
+                "position": {
+                  "x": 120,
+                  "y": 520
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
                 }
+              },
+              "type": "platform"
+            },
+            {
+              "id": "wind-up",
+              "links": [],
+              "properties": {
+                "forceX": 0,
+                "forceY": -520,
+                "h": 320,
+                "w": 280
+              },
+              "tags": [
+                "wind-up",
+                "experience-checkpoint"
+              ],
+              "transform": {
+                "position": {
+                  "x": 440,
+                  "y": 560
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "windZone"
+            },
+            {
+              "id": "wind-right",
+              "links": [],
+              "properties": {
+                "forceX": 520,
+                "forceY": 0,
+                "h": 320,
+                "w": 280
+              },
+              "tags": [
+                "wind-right",
+                "experience-checkpoint"
+              ],
+              "transform": {
+                "position": {
+                  "x": 780,
+                  "y": 560
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "windZone"
+            },
+            {
+              "id": "wind-down",
+              "links": [],
+              "properties": {
+                "forceX": 0,
+                "forceY": 520,
+                "h": 320,
+                "w": 280
+              },
+              "tags": [
+                "wind-down",
+                "experience-checkpoint"
+              ],
+              "transform": {
+                "position": {
+                  "x": 1120,
+                  "y": 560
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "windZone"
+            },
+            {
+              "id": "wind-left",
+              "links": [],
+              "properties": {
+                "forceX": -520,
+                "forceY": 0,
+                "h": 320,
+                "w": 280
+              },
+              "tags": [
+                "wind-left",
+                "experience-checkpoint"
+              ],
+              "transform": {
+                "position": {
+                  "x": 1460,
+                  "y": 560
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "windZone"
+            },
+            {
+              "id": "sign-dynamic",
+              "links": [],
+              "properties": {
+                "activationRadius": 54,
+                "completionFlag": "experience-sign-complete",
+                "disabled": false,
+                "nearbyRadius": 170,
+                "oneShot": true,
+                "text": "靠近、触发，再离开以完成提示"
+              },
+              "tags": [
+                "sign-lifecycle",
+                "experience-checkpoint"
+              ],
+              "transform": {
+                "position": {
+                  "x": 2050,
+                  "y": 780
+                },
+                "rotationDegrees": 0,
+                "scale": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "type": "sign"
+            },
+            {
+              "id": "experience-goal",
+              "links": [],
+              "properties": {
+                "radius": 34
               },
               "tags": [],
               "transform": {
                 "position": {
-                  "x": 420,
-                  "y": 585
+                  "x": 2600,
+                  "y": 830
                 },
                 "rotationDegrees": 0,
                 "scale": {
@@ -1263,86 +1303,8 @@
               "type": "goal"
             }
           ],
-          "reference": {
-            "notes": [
-              "preserve reference"
-            ],
-            "source": "fixture"
-          },
           "scene": {
             "layers": [
-              {
-                "assets": [
-                  {
-                    "assetId": "builtin:procedural",
-                    "weight": 1
-                  }
-                ],
-                "blendMode": "source-over",
-                "blur": 3,
-                "density": 1,
-                "depth": -100,
-                "drawCap": 256,
-                "fog": 0.45,
-                "id": "scene-background",
-                "locked": false,
-                "name": "背景",
-                "opacity": 0.72,
-                "originX": 0,
-                "parallax": 0.18,
-                "range": {
-                  "endX": null,
-                  "startX": null
-                },
-                "repeatX": true,
-                "role": "background",
-                "scale": 1,
-                "seamless": {
-                  "mode": "tile",
-                  "overlap": 0,
-                  "tileWidth": 1280
-                },
-                "seed": "background-default",
-                "spacing": 0,
-                "tint": "#ffffff",
-                "visible": true
-              },
-              {
-                "assets": [
-                  {
-                    "assetId": "builtin:procedural",
-                    "weight": 1
-                  }
-                ],
-                "blendMode": "source-over",
-                "blur": 1,
-                "density": 1,
-                "depth": -20,
-                "drawCap": 256,
-                "fog": 0.18,
-                "id": "scene-midground",
-                "locked": false,
-                "name": "中景",
-                "opacity": 0.9,
-                "originX": 0,
-                "parallax": 0.58,
-                "range": {
-                  "endX": null,
-                  "startX": null
-                },
-                "repeatX": true,
-                "role": "midground",
-                "scale": 1,
-                "seamless": {
-                  "mode": "tile",
-                  "overlap": 0,
-                  "tileWidth": 1280
-                },
-                "seed": "midground-default",
-                "spacing": 0,
-                "tint": "#ffffff",
-                "visible": true
-              },
               {
                 "assets": [
                   {
@@ -1354,7 +1316,7 @@
                 "blur": 0,
                 "density": 1,
                 "depth": 0,
-                "drawCap": 256,
+                "drawCap": 64,
                 "fog": 0,
                 "id": "scene-player",
                 "locked": true,
@@ -1374,43 +1336,7 @@
                   "overlap": 0,
                   "tileWidth": 1280
                 },
-                "seed": "player-default",
-                "spacing": 0,
-                "tint": "#ffffff",
-                "visible": true
-              },
-              {
-                "assets": [
-                  {
-                    "assetId": "builtin:procedural",
-                    "weight": 1
-                  }
-                ],
-                "blendMode": "source-over",
-                "blur": 0,
-                "density": 1,
-                "depth": 100,
-                "drawCap": 256,
-                "fog": 0.08,
-                "id": "scene-foreground",
-                "locked": false,
-                "name": "前景",
-                "opacity": 0.82,
-                "originX": 0,
-                "parallax": 1.22,
-                "range": {
-                  "endX": null,
-                  "startX": null
-                },
-                "repeatX": true,
-                "role": "foreground",
-                "scale": 1,
-                "seamless": {
-                  "mode": "tile",
-                  "overlap": 0,
-                  "tileWidth": 1280
-                },
-                "seed": "foreground-default",
+                "seed": "experience-player",
                 "spacing": 0,
                 "tint": "#ffffff",
                 "visible": true
@@ -1428,12 +1354,16 @@
           },
           "streaming": {
             "hysteresis": 256,
-            "keepAlive": false,
+            "keepAlive": true,
             "memoryEstimateBytes": 0,
             "prefetchDistance": 960,
             "unloadDelaySeconds": 2
           },
-          "tags": [],
+          "tags": [
+            "start",
+            "3c-lab",
+            "experience-parity"
+          ],
           "transform": {
             "position": {
               "x": 0,
@@ -1447,11 +1377,14 @@
           }
         }
       ],
-      "id": "fixture.golden-grove:region",
+      "id": "experience-region",
       "landmarks": [],
-      "name": "Golden Grove",
+      "name": "Experience Cue Region",
       "routes": [],
-      "tags": [],
+      "tags": [
+        "public-lab",
+        "experience-parity"
+      ],
       "transform": {
         "position": {
           "x": 0,
@@ -1466,6 +1399,21 @@
     }
   ],
   "schemaVersion": 3,
+  "stateDefinitions": {
+    "flags": [
+      {
+        "id": "experience-sign-complete",
+        "initialValue": false,
+        "persistence": "world"
+      }
+    ],
+    "keys": [
+      "checkpointId",
+      "ownedAbilities",
+      "consumedPickups",
+      "openGates"
+    ]
+  },
   "typeRegistry": {
     "entries": [
       {

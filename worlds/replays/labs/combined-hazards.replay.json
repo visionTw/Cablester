@@ -1,7 +1,7 @@
 {
   "replayVersion": 1,
   "worldId": "cablester-3c-labs",
-  "contentHash": "sha256:c42c17c59a4e750fd440f5d63b982708581ddd5da842ce1efcedb5a2a2ce3d3d",
+  "contentHash": "sha256:615aa65a395efffbd7e61f6d8662ff483835b9ed95f04428ae2e90f99f4c40dd",
   "gameplayTuningVersion": "approved-1",
   "fixedDelta": 0.008333333333333333,
   "spawn": {

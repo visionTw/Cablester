@@ -6,6 +6,7 @@ import {
   normalizeBounds,
   queryVisibleWorld
 } from "./world-streaming.js";
+import { resolveWindCue } from "./experience-cues.js";
 
 export const WORLD_PREVIEW_VIEWS = Object.freeze(["world", "region", "chunk", "godot"]);
 
@@ -23,6 +24,24 @@ export const SNAPSHOT_STATES = Object.freeze({
   INCOMPATIBLE: "incompatible",
   MISSING: "missing/import-failed"
 });
+
+export function experienceCuePreviewForObject(object) {
+  const properties = object?.properties || {};
+  if (object?.type === "windZone") {
+    return { kind: "wind", ...resolveWindCue(properties.forceX, properties.forceY), states: ["idle", "inside", "exiting"] };
+  }
+  if (object?.type === "sign") {
+    const activationRadius = Math.max(12, finite(properties.activationRadius, 48));
+    return {
+      kind: "sign",
+      activationRadius,
+      nearbyRadius: Math.max(activationRadius, finite(properties.nearbyRadius, 140)),
+      disabled: Boolean(properties.disabled),
+      states: ["idle", "nearby", "activated", "completed", "disabled"]
+    };
+  }
+  return null;
+}
 
 const SOURCE_LABELS = Object.freeze({
   [PREVIEW_SOURCE_KINDS.CANONICAL]: "Canonical 推算",
@@ -712,6 +731,34 @@ export class WorldPreviewCanvas {
     ctx.beginPath();
     ctx.arc(position.x, position.y, size, 0, Math.PI * 2);
     ctx.fill();
+    const cue = experienceCuePreviewForObject(record.object);
+    if (cue?.kind === "wind" && !cue.calm) {
+      const arrowLength = Math.max(14, Math.min(34, Math.max(record.bounds.w, record.bounds.h) * this.view.zoom * 0.18));
+      const side = { x: -cue.y, y: cue.x };
+      ctx.strokeStyle = "#a6eeff";
+      ctx.fillStyle = "#a6eeff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(position.x - cue.x * arrowLength, position.y - cue.y * arrowLength);
+      ctx.lineTo(position.x + cue.x * arrowLength, position.y + cue.y * arrowLength);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(position.x + cue.x * (arrowLength + 5), position.y + cue.y * (arrowLength + 5));
+      ctx.lineTo(position.x + cue.x * (arrowLength - 7) + side.x * 5, position.y + cue.y * (arrowLength - 7) + side.y * 5);
+      ctx.lineTo(position.x + cue.x * (arrowLength - 7) - side.x * 5, position.y + cue.y * (arrowLength - 7) - side.y * 5);
+      ctx.closePath();
+      ctx.fill();
+    } else if (cue?.kind === "sign") {
+      ctx.strokeStyle = cue.disabled ? "#77858c" : "#f2e4b8";
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.arc(position.x, position.y, Math.max(size + 4, cue.nearbyRadius * this.view.zoom), 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.arc(position.x, position.y, Math.max(size + 2, cue.activationRadius * this.view.zoom), 0, Math.PI * 2);
+      ctx.stroke();
+    }
     this.hitTargets.push({
       id: record.id,
       kind: "object",

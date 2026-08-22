@@ -36,6 +36,7 @@
       "seed": "forest-distant-trunks",
       "range": { "startX": null, "endX": null },
       "originX": 0,
+      "originY": 720,
       "spacing": 0,
       "density": 1,
       "drawCap": 64
@@ -79,7 +80,7 @@ Scene 必须恰好有一个玩家层。玩家层的 `role` 不可修改，`depth
 | `depth` | `-10000–10000`；数值越小越远，玩家基准为 0。 |
 | `assets` | 至少一个 `{ assetId, weight }`；weight 为 `0.0001–100000`。 |
 | `visible` / `locked` | 显示和编辑锁定状态。 |
-| `parallax` | `-4–4`；0 近似屏幕固定，1 跟随玩法世界，更大值产生近景加速。 |
+| `parallax` | `-4–4`；控制横向视差，0 近似横向屏幕固定，1 跟随玩法世界，更大值产生近景加速。显式 `originY` 始终使用普通世界 Y。 |
 | `scale` | `0.01–16`，同时影响 tile 宽度。 |
 | `opacity` | `0–1`。 |
 | `tint` | `#rrggbb` 或 `#rrggbbaa`。 |
@@ -93,6 +94,7 @@ Scene 必须恰好有一个玩家层。玩家层的 `role` 不可修改，`depth
 | `seed` | 非空确定性随机种子。 |
 | `range.startX` / `endX` | 数字或 `null`；两者都有值时 start 不得大于 end。 |
 | `originX` | `-10000000–10000000`，placement 网格原点。 |
+| `originY` | 可选的 `-10000000–10000000` 世界坐标；表示素材底边锚点，Y 向下为正。缺失或 `null` 只用于兼容旧文档；编辑器载入时会以关卡 bounds 底边补齐。 |
 | `spacing` | `-100000–100000`，附加间距；负值可产生重叠。 |
 | `density` | `0.01–100`，越高 placement 越密。 |
 | `drawCap` | 整数 `1–4096`，单图层配置上限。 |
@@ -136,7 +138,9 @@ center    = cameraX × parallax
 
 当前帧顺序是：基础渐变背景 → scene background → scene midground → scene player → 玩法世界 → 玩家 → scene foreground → 玩法提示 → HUD。前景可以覆盖玩家和世界，但不会覆盖关键 gameplay cue 或 HUD；美术验收仍必须确认它不遮挡路线、危险物、锚点、目标和交互提示。
 
-编辑器与运行时都把场景素材贴在当前视口底边，使用同一 parallax、placement 宽高比、opacity、tint、blur、fog 和 blend 语义。编辑器通过缩放和平移改变预览相机，不会写回关卡数据。
+带显式 `originY` 的场景层是可摆放的视觉关卡物件：`originX` 定义横向 placement 网格，`originY` 定义所有 placement 的底边世界锚点。编辑器直接在画布中命中并拖动它们，平移或缩放相机不会写回位置；Web 与 Godot 运行时都让 Y 按普通世界坐标跟随相机，横向仍使用 `parallax`。旧文档缺失 `originY` 时保留各运行时的历史回退，进入编辑器后会物化为关卡 bounds 底边，首次保存即得到跨端一致的显式坐标。
+
+`repeatX: true` 或包含多个带权重素材时，画布中的每个可见贴片都是同一层网格的命中代理；拖动任一贴片会移动整层，而不是把生成贴片拆成独立实例。需要逐个摆放时，应创建多个 `repeatX: false` 的单素材层。
 
 ## 运行时加载与缓存
 
@@ -180,7 +184,9 @@ center    = cameraX × parallax
 - [ ] 素材只使用 `scene` / `*` 适用记录；
 - [ ] tile、mirror、random 在长距离平移时无接缝、跳变和明显重复；
 - [ ] range、origin、spacing、density 和 drawCap 在极值下仍通过 validation；
-- [ ] 编辑器与试玩的 Y 位置、视差、opacity、tint、blur、fog 和 blend 一致；
+- [ ] 场景物件可在画布中选中、拖动和撤销，锁定层不可拖动，重复层按整层移动；
+- [ ] 显式 originX/originY 在编辑器、Web 试玩和 Godot 中位置一致，平移/缩放不改写 canonical 坐标；
+- [ ] 编辑器与试玩的视差、opacity、tint、blur、fog 和 blend 一致；
 - [ ] 前景不遮挡关键路线和提示；
 - [ ] low / balanced / high 都有浏览器证据和性能记录；
 - [ ] 缺失、错误路径和不适用素材均安全回退。

@@ -22,6 +22,7 @@ import {
   deleteSceneLayer,
   duplicateSceneLayer,
   moveSceneLayer,
+  sceneLayerBaselineY,
   updateSceneLayer
 } from "./scene-layers.js";
 import {
@@ -54,6 +55,8 @@ import {
   replaceStartingAbilities,
   setStartingAbility
 } from "./level-support.js";
+import { applyTerrainStamp, applyTerrainStroke, TERRAIN_STAMPS, TERRAIN_TOOLS } from "./terrain-authoring.js";
+import { resolveWindCue } from "./experience-cues.js";
 
 const STORAGE_KEY = "cablester.level-editor.documents.v2";
 const LEGACY_STORAGE_KEY = "cablester.level-editor.documents.v1";
@@ -61,6 +64,7 @@ const GRID_SIZE = 20;
 const PROCEDURAL_ASSET_ID = BUILTIN_PROCEDURAL_ASSET_ID;
 const EDITOR_MODE_LABELS = Object.freeze({
   objects: "物件编辑",
+  terrain: "地形刷",
   support: "关卡支持",
   assets: "物件素材",
   scene: "场景分层"
@@ -89,8 +93,19 @@ const ASSET_CATEGORY_LABELS = Object.freeze({
   other: "其他"
 });
 
-function ensureEditorDocument(document) {
-  return migrateLevelDocument(document);
+function ensureEditorDocument(document, { preserveImplicitSceneOrigins = false } = {}) {
+  const migrated = migrateLevelDocument(document);
+  if (preserveImplicitSceneOrigins) return migrated;
+  const boundsBottom = Number(migrated.bounds?.y) + Number(migrated.bounds?.h);
+  const fallbackY = Number.isFinite(boundsBottom) ? boundsBottom : 0;
+  if (Array.isArray(migrated.scene?.layers)) {
+    migrated.scene.layers = migrated.scene.layers.map((layer) => (
+      layer?.originY !== undefined && layer.originY !== null
+        ? layer
+        : { ...layer, originY: fallbackY }
+    ));
+  }
+  return migrated;
 }
 
 function isProtectedPlayerLayer(layer) {
@@ -179,6 +194,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   const canvas = root.querySelector("#editor-canvas");
   const ctx = canvas.getContext("2d");
   const objectPanel = root.querySelector("#object-panel");
+  const terrainPanel = root.querySelector("#terrain-panel");
   const supportPanel = root.querySelector("#support-panel");
   const assetPanel = root.querySelector("#asset-panel");
   const scenePanel = root.querySelector("#scene-panel");
@@ -200,20 +216,30 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   const generatorDifficulty = root.querySelector("#generator-difficulty");
   const snapInput = root.querySelector("#editor-snap");
   const objectSearch = root.querySelector("#object-search");
+  const terrainBrushWidth = root.querySelector("#terrain-brush-width");
+  const terrainBrushDepth = root.querySelector("#terrain-brush-depth");
+  const applyWorldButton = root.querySelector("#editor-apply-world");
   const builtInDocuments = new Map(sourceLevels.map((level) => [level.id, ensureEditorDocument(levelToDocument(level))]));
   let savedDocuments = readStoredDocuments();
   let activeDocument = ensureEditorDocument(createBlankLevelDocument());
   let selectedId = null;
   let selectedLayerId = activeDocument.scene.layers.find((layer) => layer.role === "player")?.id || null;
+  let selectedScenePlacementIndex = null;
   let selectedAssetId = PROCEDURAL_ASSET_ID;
   let editorMode = "objects";
   let hasOpened = false;
   let placingType = null;
+  let terrainTool = "platform";
+  let terrainStampId = null;
+  let terrainStroke = null;
   let dragState = null;
   let panState = null;
+  let sceneHitTargets = [];
   let histories = [clone(activeDocument)];
   let historyIndex = 0;
   let statusTimer = 0;
+  let externalSession = null;
+  let suspendedLocalState = null;
   let view = { x: 800, y: 400, zoom: 0.72 };
   const assetRegistry = DEFAULT_ASSET_REGISTRY;
   let assetRecords = assetRegistry.assets.map(normalizeAssetRecord).filter(Boolean);
@@ -275,6 +301,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
 
   function updateModeChrome() {
     objectPanel.hidden = editorMode !== "objects";
+    terrainPanel.hidden = editorMode !== "terrain";
     supportPanel.hidden = editorMode !== "support";
     assetPanel.hidden = editorMode !== "assets";
     scenePanel.hidden = editorMode !== "scene";
@@ -290,18 +317,23 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     }
     root.querySelector("#editor-mode-label").textContent = EDITOR_MODE_LABELS[editorMode];
     root.querySelector("#editor-canvas-help").textContent = editorMode === "scene"
-      ? "场景实时预览 · 滚轮缩放 · 左键、右键或 ⌥ 拖动画布"
+      ? "左键选择/拖动场景物件 · 滚轮缩放 · 右键或 ⌥ 拖动画布"
       : editorMode === "assets"
         ? "左键选择物件 · 素材加载失败时显示程序化回退 · 滚轮缩放"
         : editorMode === "support"
           ? "能力支持只改变开局能力 · 玩法物件与碰撞保持不变"
-          : "左键选择/拖动 · 滚轮缩放 · 右键或 ⌥ 拖动画布";
+          : editorMode === "terrain"
+            ? terrainStampId
+              ? "点击画布放置组合图章 · 图章会展开为可独立编辑的 canonical 物件"
+              : "左键拖动绘制地形 · 右键或 ⌥ 拖动画布 · 网格吸附可选"
+          : "左键选择/拖动玩法或场景物件 · 滚轮缩放 · 右键或 ⌥ 拖动画布";
   }
 
   function setEditorMode(mode) {
     if (!EDITOR_MODE_LABELS[mode]) return;
     editorMode = mode;
     if (mode !== "objects") placingType = null;
+    if (mode !== "terrain") terrainStroke = null;
     if (mode === "assets" && selectedObject()) selectedAssetId = configuredObjectVisual(selectedObject()).assetId;
     if (mode === "scene" && selectedLayer()?.assets?.[0]?.assetId) selectedAssetId = selectedLayer().assets[0].assetId;
     updateModeChrome();
@@ -316,9 +348,13 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
 
   function defaultStatusText() {
     if (placingType) return `放置模式 · ${LEVEL_OBJECT_LIBRARY[placingType].label}`;
+    if (editorMode === "terrain") {
+      if (terrainStampId) return `组合图章 · ${TERRAIN_STAMPS.find((stamp) => stamp.id === terrainStampId)?.label || terrainStampId}`;
+      return `${TERRAIN_TOOLS[terrainTool]?.label || "地形刷"} · 拖动画布绘制，单次笔划可整体撤销`;
+    }
     if (editorMode === "support") return "设置出生即用能力，并检查能力物件覆盖警告";
     if (editorMode === "assets") return "选择物件和素材后可单独或同类型批量应用";
-    if (editorMode === "scene") return "场景图层与关卡文档共同保存，玩家基准层受保护";
+    if (editorMode === "scene") return "场景物件可在画布中直接拖动，位置与关卡文档共同保存";
     return "选择物件后可拖动，滚轮缩放画布";
   }
 
@@ -362,11 +398,12 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   function restoreHistory(nextIndex) {
     if (nextIndex < 0 || nextIndex >= histories.length) return;
     historyIndex = nextIndex;
-    activeDocument = ensureEditorDocument(clone(histories[historyIndex]));
+    activeDocument = ensureEditorDocument(clone(histories[historyIndex]), { preserveImplicitSceneOrigins: Boolean(externalSession) });
     if (!activeDocument.objects.some((object) => object.id === selectedId)) selectedId = null;
     if (!activeDocument.scene.layers.some((layer) => layer.id === selectedLayerId)) {
       selectedLayerId = activeDocument.scene.layers.find((layer) => layer.role === "player")?.id || activeDocument.scene.layers[0]?.id || null;
     }
+    selectedScenePlacementIndex = null;
     renderLibrary();
     renderSupportPanel();
     renderAssetLibrary();
@@ -542,7 +579,40 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
         ctx.lineTo(x + (index + 1) * unit, y + p.h);
       }
       ctx.fill();
-    } else if (["windZone", "liquidZone", "darknessZone", "checkpoint", "roomEntrance", "roomExit", "rotationTrigger", "launcher", "fragilePlatform", "gate", "stateTrigger"].includes(object.type)) {
+    } else if (object.type === "windZone") {
+      ctx.setLineDash([12 / view.zoom, 8 / view.zoom]);
+      drawRectObject(object, "20", "bb");
+      ctx.setLineDash([]);
+      const cue = resolveWindCue(p.forceX, p.forceY);
+      const centerX = x + p.w / 2;
+      const centerY = y + p.h / 2;
+      if (cue.calm) {
+        ctx.strokeStyle = definition.color;
+        ctx.lineWidth = 3 / view.zoom;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 10 / view.zoom, 0, Math.PI * 2);
+        ctx.stroke();
+      } else {
+        const arrowLength = Math.min(p.w, p.h, 110 / view.zoom) * 0.38;
+        const sideX = -cue.y;
+        const sideY = cue.x;
+        ctx.strokeStyle = definition.color;
+        ctx.fillStyle = definition.color;
+        ctx.lineWidth = 4 / view.zoom;
+        ctx.beginPath();
+        ctx.moveTo(centerX - cue.x * arrowLength, centerY - cue.y * arrowLength);
+        ctx.lineTo(centerX + cue.x * arrowLength, centerY + cue.y * arrowLength);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(centerX + cue.x * (arrowLength + 9 / view.zoom), centerY + cue.y * (arrowLength + 9 / view.zoom));
+        ctx.lineTo(centerX + cue.x * (arrowLength - 10 / view.zoom) + sideX * 8 / view.zoom, centerY + cue.y * (arrowLength - 10 / view.zoom) + sideY * 8 / view.zoom);
+        ctx.lineTo(centerX + cue.x * (arrowLength - 10 / view.zoom) - sideX * 8 / view.zoom, centerY + cue.y * (arrowLength - 10 / view.zoom) - sideY * 8 / view.zoom);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.fillStyle = "rgba(230, 255, 252, 0.84)";
+      ctx.fillText(`${cue.direction} · ${Math.round(cue.strength)}`, centerX + 8 / view.zoom, centerY - 12 / view.zoom);
+    } else if (["liquidZone", "darknessZone", "checkpoint", "roomEntrance", "roomExit", "rotationTrigger", "launcher", "fragilePlatform", "gate", "stateTrigger"].includes(object.type)) {
       ctx.setLineDash([12 / view.zoom, 8 / view.zoom]);
       drawRectObject(object, "20", "bb");
       ctx.setLineDash([]);
@@ -583,6 +653,22 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
       drawHexagon(ctx, x, y, 18);
       ctx.fill();
       ctx.stroke();
+    } else if (object.type === "sign") {
+      const nearbyRadius = Math.max(p.activationRadius ?? 48, p.nearbyRadius ?? 140);
+      const activationRadius = Math.max(12, p.activationRadius ?? 48);
+      ctx.fillStyle = `${definition.color}35`;
+      ctx.strokeStyle = definition.color;
+      ctx.setLineDash([8 / view.zoom, 7 / view.zoom]);
+      ctx.beginPath();
+      ctx.arc(x, y, nearbyRadius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.arc(x, y, activationRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "rgba(230, 255, 252, 0.9)";
+      ctx.fillText(p.disabled ? "disabled" : "idle → nearby → activated → completed", x + 16 / view.zoom, y - activationRadius - 10 / view.zoom);
     } else {
       ctx.fillStyle = `${definition.color}55`;
       ctx.strokeStyle = definition.color;
@@ -741,9 +827,65 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     else drawObjectAssetLabel(object);
   }
 
-  function sceneBaselineY() {
-    const size = canvasSize();
-    return view.y + size.height / (2 * view.zoom);
+  function sceneWorldBaselineY(layer) {
+    const bounds = activeDocument.bounds;
+    return sceneLayerBaselineY(layer, bounds.y + bounds.h);
+  }
+
+  function terrainOptions(points) {
+    return {
+      tool: terrainTool,
+      points,
+      width: Number(terrainBrushWidth.value) || 120,
+      depth: Number(terrainBrushDepth.value) || 60,
+      spacing: Math.max(20, Math.min(80, (Number(terrainBrushWidth.value) || 120) * 0.4)),
+      snap: snapInput.checked,
+      grid: GRID_SIZE
+    };
+  }
+
+  function updateTerrainToolChrome() {
+    for (const button of terrainPanel.querySelectorAll("[data-terrain-tool]")) {
+      button.dataset.active = String(!terrainStampId && button.dataset.terrainTool === terrainTool);
+    }
+    for (const button of terrainPanel.querySelectorAll("[data-terrain-stamp]")) {
+      button.dataset.active = String(button.dataset.terrainStamp === terrainStampId);
+    }
+    updateModeChrome();
+  }
+
+  function setTerrainTool(tool) {
+    if (!TERRAIN_TOOLS[tool]) return;
+    terrainTool = tool;
+    terrainStampId = null;
+    updateTerrainToolChrome();
+    setStatus(`${TERRAIN_TOOLS[tool].label}已启用`);
+  }
+
+  function setTerrainStamp(stampId) {
+    if (!TERRAIN_STAMPS.some((stamp) => stamp.id === stampId)) return;
+    terrainStampId = stampId;
+    updateTerrainToolChrome();
+    setStatus(`点击画布放置「${TERRAIN_STAMPS.find((stamp) => stamp.id === stampId).label}」`);
+  }
+
+  function updateTerrainStroke(point) {
+    if (!terrainStroke) return;
+    const previous = terrainStroke.points[terrainStroke.points.length - 1];
+    if (!previous || Math.hypot(point.x - previous.x, point.y - previous.y) >= Math.max(2, 6 / view.zoom)) {
+      terrainStroke.points.push(point);
+    }
+    const result = applyTerrainStroke(terrainStroke.before, terrainOptions(terrainStroke.points));
+    activeDocument = ensureEditorDocument(result.document, { preserveImplicitSceneOrigins: Boolean(externalSession) });
+    terrainStroke.changed = result.createdIds.length > 0 || result.removedIds.length > 0;
+    terrainStroke.createdIds = result.createdIds;
+    terrainStroke.removedIds = result.removedIds;
+    renderInspector();
+    render();
+  }
+
+  function sceneBaselineY(layer) {
+    return sceneWorldBaselineY(layer);
   }
 
   function drawProceduralScenePlacement(layer, placement, drawX, baselineY) {
@@ -776,6 +918,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
       ctx.fill();
     }
     ctx.restore();
+    return { width, height };
   }
 
   function drawSceneLayer(layer) {
@@ -793,7 +936,8 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     } catch {
       return;
     }
-    const baselineY = sceneBaselineY();
+    const baselineY = sceneBaselineY(layer);
+    const layerHitTargets = [];
     ctx.save();
     ctx.globalAlpha = layer.opacity;
     ctx.globalCompositeOperation = layer.blendMode;
@@ -818,8 +962,24 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
         if (placement.flipX) ctx.scale(-1, 1);
         ctx.drawImage(source, -width / 2, -height, width, height);
         ctx.restore();
+        const target = {
+          layerId: layer.id,
+          placementIndex: placement.index,
+          depth: layer.depth,
+          bounds: { x: drawX, y: baselineY - height, w: width, h: height }
+        };
+        layerHitTargets.push(target);
+        sceneHitTargets.push(target);
       } else if (layer.role !== "player") {
-        drawProceduralScenePlacement(layer, placement, drawX, baselineY);
+        const dimensions = drawProceduralScenePlacement(layer, placement, drawX, baselineY);
+        const target = {
+          layerId: layer.id,
+          placementIndex: placement.index,
+          depth: layer.depth,
+          bounds: { x: drawX, y: baselineY - dimensions.height, w: dimensions.width, h: dimensions.height }
+        };
+        layerHitTargets.push(target);
+        sceneHitTargets.push(target);
       }
     }
     ctx.filter = "none";
@@ -841,20 +1001,42 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
       ctx.strokeStyle = "rgba(255, 236, 158, 0.72)";
       ctx.lineWidth = 1.5 / view.zoom;
       ctx.setLineDash([10 / view.zoom, 8 / view.zoom]);
-      ctx.beginPath();
-      ctx.moveTo(activeDocument.bounds.x, baselineY);
-      ctx.lineTo(activeDocument.bounds.x + activeDocument.bounds.w, baselineY);
-      ctx.stroke();
+      const selectedTarget = layerHitTargets.find((target) => target.placementIndex === selectedScenePlacementIndex)
+        || layerHitTargets[0];
+      if (selectedTarget) {
+        const padding = 6 / view.zoom;
+        const targetBounds = selectedTarget.bounds;
+        ctx.strokeRect(
+          targetBounds.x - padding,
+          targetBounds.y - padding,
+          targetBounds.w + padding * 2,
+          targetBounds.h + padding * 2
+        );
+        const anchorX = targetBounds.x + targetBounds.w / 2;
+        const anchorRadius = 7 / view.zoom;
+        ctx.beginPath();
+        ctx.moveTo(anchorX - anchorRadius, baselineY);
+        ctx.lineTo(anchorX + anchorRadius, baselineY);
+        ctx.moveTo(anchorX, baselineY - anchorRadius);
+        ctx.lineTo(anchorX, baselineY + anchorRadius);
+        ctx.stroke();
+      }
       ctx.setLineDash([]);
       ctx.fillStyle = "rgba(255, 239, 175, 0.84)";
       ctx.font = `${Math.max(10, 11 / view.zoom)}px ui-monospace, monospace`;
-      ctx.fillText(`${layer.name} · depth ${layer.depth}`, activeDocument.bounds.x + 12 / view.zoom, baselineY - 8 / view.zoom);
+      const labelX = selectedTarget?.bounds.x ?? activeDocument.bounds.x;
+      ctx.fillText(
+        `${layer.name} · 网格 X ${Math.round(layer.originX)} · 底边 Y ${Math.round(sceneWorldBaselineY(layer))}`,
+        labelX + 8 / view.zoom,
+        baselineY - 10 / view.zoom
+      );
     }
     ctx.restore();
   }
 
   function render() {
     if (root.hidden) return;
+    sceneHitTargets = [];
     const size = canvasSize();
     ctx.clearRect(0, 0, size.width, size.height);
     ctx.fillStyle = "#071720";
@@ -1077,6 +1259,8 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     for (const layer of activeDocument.scene?.layers || []) {
       const row = documentBody().createElement("div");
       row.className = "scene-layer-item";
+      row.dataset.layerId = layer.id;
+      row.dataset.role = layer.role;
       row.dataset.active = String(layer.id === selectedLayerId);
       row.dataset.visible = String(layer.visible);
       row.setAttribute("role", "option");
@@ -1118,6 +1302,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
       depth.textContent = isProtectedPlayerLayer(layer) ? "基准" : String(layer.depth);
       const select = () => {
         selectedLayerId = layer.id;
+        selectedScenePlacementIndex = null;
         renderSceneLayers();
         renderInspector();
         updateToolbarState();
@@ -1570,12 +1755,17 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     appearance.append(fieldRow("雾化", makeInput(layer.fog, (input) => commitSelectedLayerChanges({ fog: Number(input.value) }), { type: "number", min: 0, max: 1, step: 0.05, disabled: locked })));
     appearance.append(fieldRow("混合方式", makeSelect(SCENE_BLEND_MODES.map((mode) => [mode, mode]), layer.blendMode, (select) => commitSelectedLayerChanges({ blendMode: select.value }), { disabled: locked })));
 
-    const repeat = appendInspectorSection("范围与无缝", layer.repeatX ? "横向延伸" : "单次绘制");
+    const repeat = appendInspectorSection("位置、范围与无缝", layer.repeatX ? "横向延伸" : "单个场景物件");
+    const originXInput = makeInput(layer.originX, (input) => commitSelectedLayerChanges({ originX: Number(input.value) }), { type: "number", step: snapInput.checked ? GRID_SIZE : 1, disabled: locked });
+    originXInput.dataset.scenePath = "originX";
+    const originYInput = makeInput(sceneWorldBaselineY(layer), (input) => commitSelectedLayerChanges({ originY: Number(input.value) }), { type: "number", step: snapInput.checked ? GRID_SIZE : 1, disabled: locked });
+    originYInput.dataset.scenePath = "originY";
+    repeat.append(fieldRow("网格起点 X", originXInput));
+    repeat.append(fieldRow("位置 Y（底部锚点）", originYInput));
     repeat.append(fieldRow("横向重复", makeCheckbox(layer.repeatX, (input) => commitSelectedLayerChanges({ repeatX: input.checked }), { disabled: locked })));
     repeat.append(fieldRow("无缝规则", makeSelect(SCENE_SEAMLESS_MODES.map((mode) => [mode, mode]), layer.seamless.mode, (select) => commitSelectedLayerChanges({ seamless: { mode: select.value } }), { disabled: locked })));
     repeat.append(fieldRow("平铺宽度", makeInput(layer.seamless.tileWidth, (input) => commitSelectedLayerChanges({ seamless: { tileWidth: Number(input.value) } }), { type: "number", min: 1, max: 100000, step: 1, disabled: locked })));
     repeat.append(fieldRow("衔接重叠", makeInput(layer.seamless.overlap, (input) => commitSelectedLayerChanges({ seamless: { overlap: Number(input.value) } }), { type: "number", min: 0, max: Math.max(0, layer.seamless.tileWidth - 1), step: 1, disabled: locked })));
-    repeat.append(fieldRow("原点 X", makeInput(layer.originX, (input) => commitSelectedLayerChanges({ originX: Number(input.value) }), { type: "number", step: 1, disabled: locked })));
     repeat.append(fieldRow("出现范围起点", makeInput(layer.range.startX, (input) => commitSelectedLayerChanges({ range: { startX: input.value === "" ? null : Number(input.value) } }), { type: "number", step: 1, disabled: locked, placeholder: "自动" })));
     repeat.append(fieldRow("出现范围终点", makeInput(layer.range.endX, (input) => commitSelectedLayerChanges({ range: { endX: input.value === "" ? null : Number(input.value) } }), { type: "number", step: 1, disabled: locked, placeholder: "自动" })));
   }
@@ -1664,7 +1854,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   }
 
   function loadDocument(document, { builtIn = false } = {}) {
-    activeDocument = ensureEditorDocument(document);
+    activeDocument = ensureEditorDocument(document, { preserveImplicitSceneOrigins: Boolean(externalSession) });
     if (builtIn) {
       activeDocument.metadata.id = `custom-${document.metadata.id}`;
       activeDocument.metadata.name = `${document.metadata.name} · 副本`;
@@ -1672,6 +1862,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     }
     selectedId = null;
     selectedLayerId = activeDocument.scene.layers.find((layer) => layer.role === "player")?.id || activeDocument.scene.layers[0]?.id || null;
+    selectedScenePlacementIndex = null;
     selectedAssetId = PROCEDURAL_ASSET_ID;
     placingType = null;
     resetHistory();
@@ -1687,9 +1878,24 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     });
   }
 
+  function updateSessionChrome() {
+    const canonical = Boolean(externalSession);
+    root.dataset.session = canonical ? "canonical" : "local";
+    applyWorldButton.hidden = !canonical;
+    root.querySelector("#editor-save").hidden = canonical;
+    root.querySelector("#editor-new").disabled = canonical;
+    root.querySelector("#editor-generator-toggle").disabled = canonical;
+    root.querySelector("#editor-play").disabled = canonical && !activeDocument.objects.some((object) => object.type === "goal");
+    root.querySelector("#editor-import").disabled = canonical;
+    documentSelect.disabled = canonical;
+  }
+
   function validateCurrent() {
-    const documentErrors = validateLevelDocument(activeDocument);
+    const documentErrors = validateLevelDocument(activeDocument).filter((error) => (
+      !externalSession || error !== "Document must contain exactly one goal object"
+    ));
     if (documentErrors.length) return documentErrors;
+    if (externalSession) return [];
     try {
       return validateLevel(compileLevelDocument(activeDocument));
     } catch (error) {
@@ -1763,6 +1969,23 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     }) || null;
   }
 
+  function findSceneLayerAt(point, preferredLayerId = null) {
+    const padding = Math.max(6 / view.zoom, 4);
+    const findMatch = (requiredLayerId = null) => {
+      for (let index = sceneHitTargets.length - 1; index >= 0; index -= 1) {
+        const target = sceneHitTargets[index];
+        if (requiredLayerId && target.layerId !== requiredLayerId) continue;
+        if (pointInBounds(point, target.bounds, padding)) return target;
+      }
+      return null;
+    };
+    if (preferredLayerId) {
+      const preferred = findMatch(preferredLayerId);
+      if (preferred) return preferred;
+    }
+    return findMatch();
+  }
+
   function placeObject(point) {
     const definition = LEVEL_OBJECT_LIBRARY[placingType];
     if (definition.unique) {
@@ -1786,17 +2009,44 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
 
   canvas.addEventListener("pointerdown", (event) => {
     const point = screenToWorld(event.clientX, event.clientY);
-    if (event.button === 1 || event.button === 2 || event.altKey || (editorMode === "scene" && event.button === 0)) {
+    const sceneTarget = event.button === 0 && new Set(["objects", "scene"]).has(editorMode)
+      ? findSceneLayerAt(point, editorMode === "scene" ? selectedLayerId : null)
+      : null;
+    if (event.button === 1 || event.button === 2 || event.altKey || (editorMode === "scene" && event.button === 0 && !sceneTarget)) {
       panState = { clientX: event.clientX, clientY: event.clientY, viewX: view.x, viewY: view.y };
       canvas.setPointerCapture(event.pointerId);
       return;
     }
     if (event.button !== 0) return;
+    if (editorMode === "terrain") {
+      selectedId = null;
+      if (terrainStampId) {
+        const stamp = TERRAIN_STAMPS.find((candidate) => candidate.id === terrainStampId);
+        commitMutation(() => {
+          activeDocument = ensureEditorDocument(applyTerrainStamp(activeDocument, terrainStampId, point, {
+            snap: snapInput.checked,
+            grid: GRID_SIZE
+          }).document, { preserveImplicitSceneOrigins: Boolean(externalSession) });
+        });
+        setStatus(`已放置 ${stamp?.label || "组合图章"}；各组成项可继续单独编辑`, "success");
+        return;
+      }
+      terrainStroke = {
+        before: clone(activeDocument),
+        points: [point],
+        createdIds: [],
+        removedIds: [],
+        changed: false
+      };
+      updateTerrainStroke(point);
+      canvas.setPointerCapture(event.pointerId);
+      return;
+    }
     if (editorMode === "objects" && placingType) {
       placeObject(point);
       return;
     }
-    const object = findObjectAt(point);
+    const object = editorMode === "scene" ? null : findObjectAt(point);
     selectedId = object?.id || null;
     if (object && editorMode === "assets") {
       selectedAssetId = configuredObjectVisual(object).assetId;
@@ -1804,6 +2054,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     }
     if (object && editorMode === "objects") {
       dragState = {
+        kind: "object",
         id: object.id,
         start: point,
         objectX: object.position.x,
@@ -1811,6 +2062,25 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
         changed: false
       };
       canvas.setPointerCapture(event.pointerId);
+    } else if (!object && sceneTarget) {
+      const layer = activeDocument.scene.layers.find((item) => item.id === sceneTarget.layerId);
+      selectedLayerId = sceneTarget.layerId;
+      selectedScenePlacementIndex = sceneTarget.placementIndex;
+      if (editorMode !== "scene") setEditorMode("scene");
+      if (layer && !layer.locked) {
+        dragState = {
+          kind: "scene-layer",
+          id: layer.id,
+          start: point,
+          originX: layer.originX,
+          originY: sceneWorldBaselineY(layer),
+          changed: false
+        };
+        setStatus(layer.repeatX ? "拖动将移动整层重复景物" : "拖动场景物件以修改关卡位置");
+        canvas.setPointerCapture(event.pointerId);
+      } else if (layer?.locked) {
+        setStatus("场景物件已锁定；先在左侧图层列表解锁", "error");
+      }
     }
     renderInspector();
     updateToolbarState();
@@ -1824,18 +2094,43 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
       render();
       return;
     }
+    if (terrainStroke) {
+      updateTerrainStroke(screenToWorld(event.clientX, event.clientY));
+      return;
+    }
     if (!dragState) return;
-    const object = activeDocument.objects.find((item) => item.id === dragState.id);
     const point = screenToWorld(event.clientX, event.clientY);
-    if (!object) return;
-    object.position.x = snap(dragState.objectX + point.x - dragState.start.x);
-    object.position.y = snap(dragState.objectY + point.y - dragState.start.y);
+    if (dragState.kind === "scene-layer") {
+      const layer = activeDocument.scene.layers.find((item) => item.id === dragState.id);
+      if (!layer || layer.locked) return;
+      layer.originX = snap(dragState.originX + point.x - dragState.start.x);
+      layer.originY = snap(dragState.originY + point.y - dragState.start.y);
+    } else {
+      const object = activeDocument.objects.find((item) => item.id === dragState.id);
+      if (!object) return;
+      object.position.x = snap(dragState.objectX + point.x - dragState.start.x);
+      object.position.y = snap(dragState.objectY + point.y - dragState.start.y);
+    }
     dragState.changed = true;
     renderInspector();
     render();
   });
 
   canvas.addEventListener("pointerup", (event) => {
+    if (terrainStroke) {
+      updateTerrainStroke(screenToWorld(event.clientX, event.clientY));
+      if (terrainStroke.changed) {
+        pushHistory();
+        renderLibrary();
+        renderSupportPanel();
+        renderSceneLayers();
+        updateToolbarState();
+        setStatus(terrainTool === "erase"
+          ? `已擦除 ${terrainStroke.removedIds.length} 个地形物件`
+          : `已生成 ${terrainStroke.createdIds.length} 个 ${TERRAIN_TOOLS[terrainTool].label}物件`, "success");
+      }
+      terrainStroke = null;
+    }
     if (dragState?.changed) pushHistory();
     dragState = null;
     panState = null;
@@ -1843,6 +2138,29 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   });
 
   canvas.addEventListener("pointercancel", () => {
+    if (terrainStroke) {
+      activeDocument = ensureEditorDocument(terrainStroke.before, { preserveImplicitSceneOrigins: Boolean(externalSession) });
+      terrainStroke = null;
+      renderInspector();
+      render();
+    }
+    if (dragState?.changed) {
+      if (dragState.kind === "scene-layer") {
+        const layer = activeDocument.scene.layers.find((item) => item.id === dragState.id);
+        if (layer) {
+          layer.originX = dragState.originX;
+          layer.originY = dragState.originY;
+        }
+      } else {
+        const object = activeDocument.objects.find((item) => item.id === dragState.id);
+        if (object) {
+          object.position.x = dragState.objectX;
+          object.position.y = dragState.objectY;
+        }
+      }
+      renderInspector();
+      render();
+    }
     dragState = null;
     panState = null;
   });
@@ -1864,6 +2182,18 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     setStatus("已创建空白关卡");
   });
   root.querySelector("#editor-save").addEventListener("click", saveCurrent);
+  applyWorldButton.addEventListener("click", () => {
+    if (!externalSession) return;
+    const errors = validateCurrent();
+    if (errors.length) return setStatus(`无法应用 · ${errors[0]}`, "error");
+    try {
+      externalSession.onApply?.(clone(activeDocument));
+      setStatus("已应用到 canonical Chunk 草稿；仍需在世界工作室保存", "success");
+      close();
+    } catch (error) {
+      setStatus(`应用失败 · ${error.message}`, "error");
+    }
+  });
   root.querySelector("#editor-export").addEventListener("click", () => {
     const errors = validateCurrent();
     if (errors.length) return setStatus(`无法导出 · ${errors[0]}`, "error");
@@ -1899,6 +2229,12 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   root.querySelector("#editor-zoom-out").addEventListener("click", () => { view.zoom = Math.max(0.08, view.zoom / 1.25); render(); });
   for (const button of root.querySelectorAll(".editor-mode-tabs [data-mode]")) {
     button.addEventListener("click", () => setEditorMode(button.dataset.mode));
+  }
+  for (const button of terrainPanel.querySelectorAll("[data-terrain-tool]")) {
+    button.addEventListener("click", () => setTerrainTool(button.dataset.terrainTool));
+  }
+  for (const button of terrainPanel.querySelectorAll("[data-terrain-stamp]")) {
+    button.addEventListener("click", () => setTerrainStamp(button.dataset.terrainStamp));
   }
   assetSearch.addEventListener("input", renderAssetLibrary);
   assetCategory.addEventListener("change", renderAssetLibrary);
@@ -1981,8 +2317,12 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   root.querySelector("#scene-add").addEventListener("click", () => {
     const role = root.querySelector("#scene-new-role").value;
     commitMutation(() => {
-      activeDocument.scene = addSceneLayer(activeDocument.scene, { role });
+      activeDocument.scene = addSceneLayer(activeDocument.scene, {
+        role,
+        originY: activeDocument.bounds.y + activeDocument.bounds.h
+      });
       selectedLayerId = activeDocument.scene.layers.at(-1).id;
+      selectedScenePlacementIndex = null;
     });
     setStatus("已新增场景图层", "success");
   });
@@ -2016,6 +2356,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
         const sourceIndex = activeDocument.scene.layers.findIndex((item) => item.id === layer.id);
         activeDocument.scene = duplicateSceneLayer(activeDocument.scene, layer.id);
         selectedLayerId = activeDocument.scene.layers[sourceIndex + 1].id;
+        selectedScenePlacementIndex = null;
       });
       setStatus("图层已复制", "success");
     } catch (error) {
@@ -2030,6 +2371,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
         const index = activeDocument.scene.layers.findIndex((item) => item.id === layer.id);
         activeDocument.scene = deleteSceneLayer(activeDocument.scene, layer.id);
         selectedLayerId = activeDocument.scene.layers[Math.min(index, activeDocument.scene.layers.length - 1)]?.id || null;
+        selectedScenePlacementIndex = null;
       });
       setStatus("图层已删除", "success");
     } catch (error) {
@@ -2089,6 +2431,7 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
   const observer = new ResizeObserver(resizeCanvas);
   observer.observe(canvas);
   updateModeChrome();
+  updateSessionChrome();
   renderLibrary();
   renderSupportPanel();
   renderAssetCategoryOptions();
@@ -2115,11 +2458,70 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     });
   }
 
+  function openDocument(document, { onApply, onClose, sourceLabel = "canonical Chunk" } = {}) {
+    if (!externalSession) {
+      suspendedLocalState = {
+        activeDocument: clone(activeDocument),
+        selectedId,
+        selectedLayerId,
+        selectedScenePlacementIndex,
+        selectedAssetId,
+        editorMode,
+        placingType,
+        terrainTool,
+        terrainStampId,
+        histories: clone(histories),
+        historyIndex,
+        view: { ...view },
+        documentValue: documentSelect.value
+      };
+    }
+    externalSession = { onApply, onClose, sourceLabel };
+    terrainTool = "platform";
+    terrainStampId = null;
+    hasOpened = true;
+    updateSessionChrome();
+    loadDocument(clone(document));
+    updateSessionChrome();
+    setEditorMode("terrain");
+    root.hidden = false;
+    setStatus(`正在编辑 ${sourceLabel}；“应用”只回写世界工作室草稿`, "success");
+  }
+
   function close() {
     root.hidden = true;
     placingType = null;
     dragState = null;
     panState = null;
+    terrainStroke = null;
+    const onClose = externalSession?.onClose;
+    const localState = externalSession ? suspendedLocalState : null;
+    externalSession = null;
+    suspendedLocalState = null;
+    if (localState) {
+      activeDocument = localState.activeDocument;
+      selectedId = localState.selectedId;
+      selectedLayerId = localState.selectedLayerId;
+      selectedScenePlacementIndex = localState.selectedScenePlacementIndex;
+      selectedAssetId = localState.selectedAssetId;
+      editorMode = localState.editorMode;
+      placingType = localState.placingType;
+      terrainTool = localState.terrainTool;
+      terrainStampId = localState.terrainStampId;
+      histories = localState.histories;
+      historyIndex = localState.historyIndex;
+      view = localState.view;
+      documentSelect.value = localState.documentValue;
+      updateModeChrome();
+      renderLibrary();
+      renderSupportPanel();
+      renderAssetLibrary();
+      renderSceneLayers();
+      renderInspector();
+      updateToolbarState();
+    }
+    updateSessionChrome();
+    onClose?.();
   }
 
   function addSourceDocuments(documents) {
@@ -2132,5 +2534,5 @@ export function createLevelEditor({ root, sourceLevels, onPlay, onSavedLevelsCha
     renderDocumentSelect();
   }
 
-  return { open, close, addSourceDocuments, getSavedDocuments: () => clone(savedDocuments) };
+  return { open, openDocument, close, addSourceDocuments, getSavedDocuments: () => clone(savedDocuments) };
 }
